@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add New User</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4f46e5',secondary:'#8b5cf6'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+ /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+body {
+/* font-family: 'Inter', sans-serif; */
+overflow-x: hidden;
+}
+.sidebar-link.active {
+background-color: rgba(79, 70, 229, 0.1);
+color: #4f46e5;
+border-left: 3px solid #4f46e5;
+}
+.sidebar-link:hover:not(.active) {
+background-color: rgba(79, 70, 229, 0.05);
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+display: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 48px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .4s;
+border-radius: 24px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .switch-slider {
+background-color: #4f46e5;
+}
+input:checked + .switch-slider:before {
+transform: translateX(24px);
+}
+.password-strength-meter {
+height: 4px;
+background-color: #e5e7eb;
+border-radius: 2px;
+overflow: hidden;
+}
+.password-strength-meter div {
+height: 100%;
+transition: width 0.3s ease;
+}
+.file-drop-area {
+border: 2px dashed #e5e7eb;
+border-radius: 8px;
+transition: all 0.3s ease;
+}
+.file-drop-area.drag-over {
+border-color: #4f46e5;
+background-color: rgba(79, 70, 229, 0.05);
+}
+.progress-indicator {
+position: relative;
+display: flex;
+justify-content: space-between;
+}
+.progress-indicator::before {
+content: "";
+position: absolute;
+top: 50%;
+left: 0;
+right: 0;
+height: 2px;
+background-color: #e5e7eb;
+transform: translateY(-50%);
+z-index: 0;
+}
+.progress-step {
+position: relative;
+z-index: 1;
+background-color: white;
+padding: 0 8px;
+}
+.progress-step.active {
+color: #4f46e5;
+}
+.progress-step.completed {
+color: #10b981;
+}
+.custom-radio {
+display: flex;
+align-items: center;
+cursor: pointer;
+}
+.custom-radio input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.radio-checkmark {
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 2px solid #e5e7eb;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-right: 8px;
+}
+.custom-radio input:checked ~ .radio-checkmark {
+border-color: #4f46e5;
+}
+.radio-checkmark:after {
+content: "";
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: #4f46e5;
+display: none;
+}
+.custom-radio input:checked ~ .radio-checkmark:after {
+display: block;
+}
+.custom-checkbox {
+display: flex;
+align-items: center;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkbox-checkmark {
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 2px solid #e5e7eb;
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-right: 8px;
+}
+.custom-checkbox input:checked ~ .checkbox-checkmark {
+background-color: #4f46e5;
+border-color: #4f46e5;
+}
+.checkbox-checkmark:after {
+content: "";
+width: 6px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+display: none;
+}
+.custom-checkbox input:checked ~ .checkbox-checkmark:after {
+display: block;
+}
+</style>
+</head>
+<body class="bg-gray-50 flex h-screen">
+<!-- Sidebar Navigation -->
+<aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+<div class="p-6 flex items-center border-b">
+<span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+</div>
+<nav class="flex-1 overflow-y-auto py-4">
+<ul class="space-y-1 px-3">
+<li>
+<a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320" data-readdy="true" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+Dashboard
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-map-pin-line"></i>
+</div>
+Attractions
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-run-line"></i>
+</div>
+Activities
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-calendar-check-line"></i>
+</div>
+Bookings
+</a>
+</li>
+<li>
+<button class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-store-2-line"></i>
+</div>
+Business
+</div>
+<div class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Business Overview</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage Listings</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Revenue Analytics</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Business Settings</a></li>
+</ul>
+</li>
+<li>
+<button class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-team-line"></i>
+</div>
+Employees
+</div>
+<div class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Add Employee & Role</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Staff Directory</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour Guides</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+</ul>
+</li>
+<li>
+<button class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/10 rounded-button group">
+<div class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-user-line"></i>
+</div>
+Users
+</div>
+<div class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<ul class="pl-12 mt-1 space-y-1 bg-gray-50/50">
+<li><a href="#" class="block py-2 text-sm text-primary font-medium">Add User</a></li>
+<li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/bd2a83da-ef72-4279-a17c-2358fec3d78f" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Customer List</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Elite Club</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Membership Tiers</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Reviews & Ratings</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Support Tickets</a></li>
+<li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">User Analytics</a></li>
+</ul>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-bar-chart-line"></i>
+</div>
+Reports
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-3">
+<i class="ri-settings-line"></i>
+</div>
+Settings
+</a>
+</li>
+</ul>
+</nav>
+<div class="p-4 border-t">
+<button id="collapse-sidebar" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-arrow-left-line"></i>
+</div>
+Collapse Sidebar
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Header -->
+<header class="bg-white shadow-sm z-10">
+<div class="flex items-center justify-between px-6 py-4">
+<div class="flex items-center flex-1">
+<button id="expand-sidebar" class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+<i class="ri-menu-line ri-lg"></i>
+</button>
+<div class="flex items-center">
+<a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320" data-readdy="true" class="flex items-center text-gray-500 hover:text-primary mr-4">
+<div class="w-5 h-5 flex items-center justify-center mr-1">
+<i class="ri-arrow-left-line"></i>
+</div>
+<span class="text-sm font-medium">Back to Dashboard</span>
+</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="text-sm text-gray-600 hidden md:block">
+July 6, 2025 • Sunday
+</div>
+<div class="relative">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+<div class="w-6 h-6 flex items-center justify-center relative">
+<i class="ri-notification-3-line"></i>
+<span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+</div>
+</button>
+</div>
+<div class="relative">
+<button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+<div class="w-6 h-6 flex items-center justify-center text-gray-600">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<div class="hidden md:block text-left">
+<div class="text-sm font-medium">Emma Thompson</div>
+<div class="text-xs text-gray-500">Admin</div>
+</div>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+<div class="max-w-7xl mx-auto">
+<div class="flex items-center justify-between mb-6">
+<h1 class="text-2xl font-bold text-gray-900">Add New User</h1>
+<div class="flex space-x-3">
+<a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320" data-readdy="true" class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+<div class="w-4 h-4 flex items-center justify-center mr-2">
+<i class="ri-arrow-left-line"></i>
+</div>
+Cancel
+</a>
+</div>
+</div>
+<!-- Form Progress Indicator -->
+<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+<div class="progress-indicator flex justify-between mb-2">
+<div class="progress-step active">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2 mx-auto">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<span class="text-xs font-medium block text-center">Basic Info</span>
+</div>
+<div class="progress-step">
+<div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mb-2 mx-auto">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-contacts-line"></i>
+</div>
+</div>
+<span class="text-xs font-medium block text-center">Contact</span>
+</div>
+<div class="progress-step">
+<div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mb-2 mx-auto">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-lock-line"></i>
+</div>
+</div>
+<span class="text-xs font-medium block text-center">Permissions</span>
+</div>
+<div class="progress-step">
+<div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 mb-2 mx-auto">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-notification-3-line"></i>
+</div>
+</div>
+<span class="text-xs font-medium block text-center">Notifications</span>
+</div>
+</div>
+</div>
+<form id="add-user-form">
+<!-- Basic Information Section -->
+<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+<h2 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-user-line"></i>
+</div>
+Basic Information
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-1">
+<div class="mb-4">
+<label class="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
+<div id="profile-image-drop" class="file-drop-area flex flex-col items-center justify-center p-6 cursor-pointer">
+<div id="profile-preview" class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-4 overflow-hidden">
+<div class="w-8 h-8 flex items-center justify-center text-gray-400">
+<i class="ri-user-line"></i>
+</div>
+</div>
+<div class="text-center">
+<p class="text-sm text-gray-600 mb-1">Drag & drop your image here</p>
+<p class="text-xs text-gray-500">PNG, JPG up to 2MB</p>
+</div>
+<button type="button" class="mt-3 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 whitespace-nowrap !rounded-button">
+Browse Files
+</button>
+<input type="file" id="profile-image-input" class="hidden" accept="image/*">
+</div>
+</div>
+</div>
+<div class="md:col-span-2">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="mb-4">
+<label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">
+Full Name <span class="text-red-500">*</span>
+</label>
+<input type="text" id="full-name" name="full-name" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Enter full name" required>
+<div class="hidden text-red-500 text-xs mt-1">Full name is required</div>
+</div>
+<div class="mb-4">
+<label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+Email Address <span class="text-red-500">*</span>
+</label>
+<input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Enter email address" required>
+<div class="hidden text-red-500 text-xs mt-1">Please enter a valid email address</div>
+</div>
+<div class="mb-4">
+<label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+Password <span class="text-red-500">*</span>
+</label>
+<div class="relative">
+<input type="password" id="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Create password" required>
+<button type="button" id="toggle-password" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+</div>
+<div class="mt-2">
+<div class="text-xs text-gray-500 mb-1">Password strength</div>
+<div class="password-strength-meter">
+<div id="password-strength-bar" class="bg-gray-300" style="width: 0%"></div>
+</div>
+</div>
+<div class="hidden text-red-500 text-xs mt-1">Password must be at least 8 characters</div>
+</div>
+<div class="mb-4">
+<label for="user-role" class="block text-sm font-medium text-gray-700 mb-1">
+User Role <span class="text-red-500">*</span>
+</label>
+<div class="relative">
+<div class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm flex items-center justify-between cursor-pointer" id="role-dropdown-btn">
+<span id="selected-role">Select role</span>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+<div id="role-dropdown" class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-button shadow-lg hidden">
+<div class="py-1">
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="admin">Administrator</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="manager">Manager</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="staff">Staff Member</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="guest">Guest</div>
+</div>
+</div>
+<input type="hidden" id="user-role" name="user-role" required>
+</div>
+<div class="hidden text-red-500 text-xs mt-1">Please select a user role</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Contact Information Section -->
+<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+<h2 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-contacts-line"></i>
+</div>
+Contact Information
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="mb-4">
+<label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+Phone Number
+</label>
+<div class="flex">
+<div class="relative w-24">
+<div class="w-full px-3 py-2 border border-gray-300 rounded-l-button text-sm flex items-center justify-between cursor-pointer" id="country-code-btn">
+<span id="selected-code">+1</span>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+<div id="country-code-dropdown" class="absolute z-10 mt-1 w-48 bg-white border border-gray-200 rounded-button shadow-lg hidden">
+<div class="py-1 max-h-48 overflow-y-auto">
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+1">+1 (US/Canada)</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+44">+44 (UK)</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+61">+61 (Australia)</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+33">+33 (France)</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+49">+49 (Germany)</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+81">+81 (Japan)</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-code="+86">+86 (China)</div>
+</div>
+</div>
+<input type="hidden" id="country-code" name="country-code" value="+1">
+</div>
+<input type="tel" id="phone" name="phone" class="flex-1 px-3 py-2 border border-gray-300 rounded-r-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="(555) 123-4567">
+</div>
+</div>
+<div class="mb-4">
+<label for="address" class="block text-sm font-medium text-gray-700 mb-1">
+Street Address
+</label>
+<input type="text" id="address" name="address" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Enter street address">
+</div>
+<div class="mb-4">
+<label for="city" class="block text-sm font-medium text-gray-700 mb-1">
+City
+</label>
+<input type="text" id="city" name="city" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Enter city">
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="mb-4">
+<label for="state" class="block text-sm font-medium text-gray-700 mb-1">
+State/Province
+</label>
+<input type="text" id="state" name="state" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Enter state">
+</div>
+<div class="mb-4">
+<label for="zip" class="block text-sm font-medium text-gray-700 mb-1">
+ZIP/Postal Code
+</label>
+<input type="text" id="zip" name="zip" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="Enter ZIP code">
+</div>
+</div>
+<div class="mb-4">
+<label for="country" class="block text-sm font-medium text-gray-700 mb-1">
+Country
+</label>
+<div class="relative">
+<div class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm flex items-center justify-between cursor-pointer" id="country-dropdown-btn">
+<span id="selected-country">United States</span>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+<div id="country-dropdown" class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-button shadow-lg hidden">
+<div class="py-1 max-h-48 overflow-y-auto">
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="US">United States</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="CA">Canada</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="UK">United Kingdom</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="AU">Australia</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="DE">Germany</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="FR">France</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="JP">Japan</div>
+</div>
+</div>
+<input type="hidden" id="country" name="country" value="US">
+</div>
+</div>
+</div>
+</div>
+<!-- Permissions & Access Section -->
+<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+<h2 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-lock-line"></i>
+</div>
+Permissions & Access
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-3">Access Level</h3>
+<div class="space-y-3">
+<label class="custom-radio">
+<input type="radio" name="access-level" value="full" checked>
+<span class="radio-checkmark"></span>
+<div>
+<div class="text-sm font-medium">Full Access</div>
+<div class="text-xs text-gray-500">Can view and edit all resources</div>
+</div>
+</label>
+<label class="custom-radio">
+<input type="radio" name="access-level" value="restricted">
+<span class="radio-checkmark"></span>
+<div>
+<div class="text-sm font-medium">Restricted Access</div>
+<div class="text-xs text-gray-500">Limited to specific modules</div>
+</div>
+</label>
+<label class="custom-radio">
+<input type="radio" name="access-level" value="readonly">
+<span class="radio-checkmark"></span>
+<div>
+<div class="text-sm font-medium">Read-Only Access</div>
+<div class="text-xs text-gray-500">Can only view resources</div>
+</div>
+</label>
+</div>
+<h3 class="text-sm font-medium text-gray-700 mt-6 mb-3">Department Assignment</h3>
+<div class="relative">
+<div class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm flex items-center justify-between cursor-pointer" id="department-dropdown-btn">
+<span id="selected-department">Select department</span>
+<div class="w-5 h-5 flex items-center justify-center text-gray-500">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+<div id="department-dropdown" class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-button shadow-lg hidden">
+<div class="py-1">
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="operations">Operations</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="marketing">Marketing</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="sales">Sales</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="support">Customer Support</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="finance">Finance</div>
+<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm" data-value="hr">Human Resources</div>
+</div>
+</div>
+<input type="hidden" id="department" name="department">
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-3">Module Access</h3>
+<div class="space-y-3">
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="dashboard" checked>
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Dashboard</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="attractions" checked>
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Attractions</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="activities" checked>
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Activities</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="bookings">
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Bookings</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="users">
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Users</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="reports">
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Reports</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="module-access" value="settings">
+<span class="checkbox-checkmark"></span>
+<span class="text-sm">Settings</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Preferences Section -->
+<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+<h2 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+<div class="w-5 h-5 flex items-center justify-center mr-2 text-primary">
+<i class="ri-notification-3-line"></i>
+</div>
+Notification Preferences
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-3">Email Notifications</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Account Updates</div>
+<div class="text-xs text-gray-500">Changes to account settings</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="email-account-updates" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">New Bookings</div>
+<div class="text-xs text-gray-500">When new bookings are made</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="email-new-bookings" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">System Alerts</div>
+<div class="text-xs text-gray-500">Important system notifications</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="email-system-alerts" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-3">SMS Notifications</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Booking Confirmations</div>
+<div class="text-xs text-gray-500">When bookings are confirmed</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="sms-booking-confirmations">
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Cancellations</div>
+<div class="text-xs text-gray-500">When bookings are cancelled</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="sms-cancellations">
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Emergency Alerts</div>
+<div class="text-xs text-gray-500">Critical system issues</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="sms-emergency-alerts">
+<span class="switch-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-medium text-gray-700 mb-3">In-App Notifications</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Activity Feed</div>
+<div class="text-xs text-gray-500">Updates in system activity</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="app-activity-feed" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Task Assignments</div>
+<div class="text-xs text-gray-500">When tasks are assigned</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="app-task-assignments" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm font-medium">Mentions</div>
+<div class="text-xs text-gray-500">When mentioned in comments</div>
+</div>
+<label class="custom-switch">
+<input type="checkbox" name="app-mentions" checked>
+<span class="switch-slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Form Actions -->
+<div class="flex items-center justify-between">
+<button type="button" id="clear-form" class="ctaz px-6 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">
+Clear Form
+</button>
+<div class="ctaz flex space-x-3">
+<a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320" data-readdy="true" class="px-6 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">
+Cancel
+</a>
+<button type="submit" class="ctaz px-6 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap !rounded-button">
+Create User
+</button>
+</div>
+</div>
+</form>
+</div>
+</main>
+</div>
+<script id="sidebar-toggle-script">
+document.addEventListener('DOMContentLoaded', function() {
+const sidebar = document.getElementById('sidebar');
+const collapseBtn = document.getElementById('collapse-sidebar');
+const expandBtn = document.getElementById('expand-sidebar');
+// Add submenu toggle functionality
+const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+sidebarButtons.forEach(button => {
+const submenu = button.nextElementSibling;
+button.addEventListener('click', function(e) {
+e.preventDefault();
+submenu.classList.toggle('hidden');
+button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+// Find and rotate the arrow icon
+const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+if (submenu.classList.contains('hidden')) {
+arrowIcon.style.transform = 'rotate(0deg)';
+} else {
+arrowIcon.style.transform = 'rotate(180deg)';
+}
+});
+});
+collapseBtn.addEventListener('click', function() {
+sidebar.classList.add('w-20');
+sidebar.classList.remove('w-64');
+// Hide text and show only icons
+document.querySelectorAll('.sidebar-link span').forEach(el => {
+el.classList.add('hidden');
+});
+collapseBtn.classList.add('hidden');
+expandBtn.classList.remove('hidden');
+});
+expandBtn.addEventListener('click', function() {
+sidebar.classList.remove('w-20');
+sidebar.classList.add('w-64');
+// Show text again
+document.querySelectorAll('.sidebar-link span').forEach(el => {
+el.classList.remove('hidden');
+});
+collapseBtn.classList.remove('hidden');
+expandBtn.classList.add('hidden');
+});
+});
+</script>
+<script id="profile-dropdown-script">
+document.addEventListener('DOMContentLoaded', function() {
+const profileMenuButton = document.getElementById('profile-menu-button');
+const profileDropdown = document.getElementById('profile-dropdown');
+profileMenuButton.addEventListener('click', function() {
+profileDropdown.classList.toggle('hidden');
+});
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+profileDropdown.classList.add('hidden');
+}
+});
+});
+</script>
+<script id="form-dropdowns-script">
+document.addEventListener('DOMContentLoaded', function() {
+// Role dropdown
+const roleBtn = document.getElementById('role-dropdown-btn');
+const roleDropdown = document.getElementById('role-dropdown');
+const selectedRole = document.getElementById('selected-role');
+const roleInput = document.getElementById('user-role');
+roleBtn.addEventListener('click', function() {
+roleDropdown.classList.toggle('hidden');
+});
+const roleOptions = roleDropdown.querySelectorAll('[data-value]');
+roleOptions.forEach(option => {
+option.addEventListener('click', function() {
+const value = this.getAttribute('data-value');
+selectedRole.textContent = this.textContent;
+roleInput.value = value;
+roleDropdown.classList.add('hidden');
+});
+});
+// Country code dropdown
+const countryCodeBtn = document.getElementById('country-code-btn');
+const countryCodeDropdown = document.getElementById('country-code-dropdown');
+const selectedCode = document.getElementById('selected-code');
+const countryCodeInput = document.getElementById('country-code');
+countryCodeBtn.addEventListener('click', function() {
+countryCodeDropdown.classList.toggle('hidden');
+});
+const codeOptions = countryCodeDropdown.querySelectorAll('[data-code]');
+codeOptions.forEach(option => {
+option.addEventListener('click', function() {
+const code = this.getAttribute('data-code');
+selectedCode.textContent = code;
+countryCodeInput.value = code;
+countryCodeDropdown.classList.add('hidden');
+});
+});
+// Country dropdown
+const countryBtn = document.getElementById('country-dropdown-btn');
+const countryDropdown = document.getElementById('country-dropdown');
+const selectedCountry = document.getElementById('selected-country');
+const countryInput = document.getElementById('country');
+countryBtn.addEventListener('click', function() {
+countryDropdown.classList.toggle('hidden');
+});
+const countryOptions = countryDropdown.querySelectorAll('[data-value]');
+countryOptions.forEach(option => {
+option.addEventListener('click', function() {
+const value = this.getAttribute('data-value');
+selectedCountry.textContent = this.textContent;
+countryInput.value = value;
+countryDropdown.classList.add('hidden');
+});
+});
+// Department dropdown
+const departmentBtn = document.getElementById('department-dropdown-btn');
+const departmentDropdown = document.getElementById('department-dropdown');
+const selectedDepartment = document.getElementById('selected-department');
+const departmentInput = document.getElementById('department');
+departmentBtn.addEventListener('click', function() {
+departmentDropdown.classList.toggle('hidden');
+});
+const departmentOptions = departmentDropdown.querySelectorAll('[data-value]');
+departmentOptions.forEach(option => {
+option.addEventListener('click', function() {
+const value = this.getAttribute('data-value');
+selectedDepartment.textContent = this.textContent;
+departmentInput.value = value;
+departmentDropdown.classList.add('hidden');
+});
+});
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+// Role dropdown
+if (!roleBtn.contains(event.target) && !roleDropdown.contains(event.target)) {
+roleDropdown.classList.add('hidden');
+}
+// Country code dropdown
+if (!countryCodeBtn.contains(event.target) && !countryCodeDropdown.contains(event.target)) {
+countryCodeDropdown.classList.add('hidden');
+}
+// Country dropdown
+if (!countryBtn.contains(event.target) && !countryDropdown.contains(event.target)) {
+countryDropdown.classList.add('hidden');
+}
+// Department dropdown
+if (!departmentBtn.contains(event.target) && !departmentDropdown.contains(event.target)) {
+departmentDropdown.classList.add('hidden');
+}
+});
+});
+</script>
+<script id="password-strength-script">
+document.addEventListener('DOMContentLoaded', function() {
+const passwordInput = document.getElementById('password');
+const strengthBar = document.getElementById('password-strength-bar');
+const togglePasswordBtn = document.getElementById('toggle-password');
+passwordInput.addEventListener('input', function() {
+const password = this.value;
+let strength = 0;
+if (password.length >= 8) strength += 25;
+if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
+if (password.match(/\d/)) strength += 25;
+if (password.match(/[^a-zA-Z\d]/)) strength += 25;
+strengthBar.style.width = strength + '%';
+if (strength <= 25) {
+strengthBar.className = 'bg-red-500';
+} else if (strength <= 50) {
+strengthBar.className = 'bg-orange-500';
+} else if (strength <= 75) {
+strengthBar.className = 'bg-yellow-500';
+} else {
+strengthBar.className = 'bg-green-500';
+}
+});
+togglePasswordBtn.addEventListener('click', function() {
+const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+passwordInput.setAttribute('type', type);
+// Toggle icon
+const icon = togglePasswordBtn.querySelector('i');
+if (type === 'password') {
+icon.className = 'ri-eye-line';
+} else {
+icon.className = 'ri-eye-off-line';
+}
+});
+});
+</script>
+<script id="profile-image-upload-script">
+document.addEventListener('DOMContentLoaded', function() {
+const dropArea = document.getElementById('profile-image-drop');
+const fileInput = document.getElementById('profile-image-input');
+const preview = document.getElementById('profile-preview');
+// Open file dialog when clicking on the drop area
+dropArea.addEventListener('click', function() {
+fileInput.click();
+});
+// Handle drag events
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+dropArea.addEventListener(eventName, preventDefaults, false);
+});
+function preventDefaults(e) {
+e.preventDefault();
+e.stopPropagation();
+}
+['dragenter', 'dragover'].forEach(eventName => {
+dropArea.addEventListener(eventName, highlight, false);
+});
+['dragleave', 'drop'].forEach(eventName => {
+dropArea.addEventListener(eventName, unhighlight, false);
+});
+function highlight() {
+dropArea.classList.add('drag-over');
+}
+function unhighlight() {
+dropArea.classList.remove('drag-over');
+}
+// Handle dropped files
+dropArea.addEventListener('drop', handleDrop, false);
+function handleDrop(e) {
+const dt = e.dataTransfer;
+const files = dt.files;
+if (files.length) {
+handleFiles(files);
+}
+}
+// Handle file input change
+fileInput.addEventListener('change', function() {
+if (this.files.length) {
+handleFiles(this.files);
+}
+});
+function handleFiles(files) {
+const file = files[0];
+if (file.type.startsWith('image/')) {
+const reader = new FileReader();
+reader.onload = function(e) {
+preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover" alt="Profile preview">`;
+};
+reader.readAsDataURL(file);
+}
+}
+});
+</script>
+<script id="form-validation-script">
+document.addEventListener('DOMContentLoaded', function() {
+const form = document.getElementById('add-user-form');
+const fullNameInput = document.getElementById('full-name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const roleInput = document.getElementById('user-role');
+const clearFormBtn = document.getElementById('clear-form');
+// Form submission
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+// Validate required fields
+let isValid = true;
+// Full name validation
+if (!fullNameInput.value.trim()) {
+showError(fullNameInput, 'Full name is required');
+isValid = false;
+} else {
+hideError(fullNameInput);
+}
+// Email validation
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailInput.value.trim()) {
+showError(emailInput, 'Email address is required');
+isValid = false;
+} else if (!emailRegex.test(emailInput.value.trim())) {
+showError(emailInput, 'Please enter a valid email address');
+isValid = false;
+} else {
+hideError(emailInput);
+}
+// Password validation
+if (!passwordInput.value) {
+showError(passwordInput, 'Password is required');
+isValid = false;
+} else if (passwordInput.value.length < 8) {
+showError(passwordInput, 'Password must be at least 8 characters');
+isValid = false;
+} else {
+hideError(passwordInput);
+}
+// Role validation
+if (!roleInput.value) {
+showError(document.getElementById('role-dropdown-btn'), 'Please select a user role');
+isValid = false;
+} else {
+hideError(document.getElementById('role-dropdown-btn'));
+}
+if (isValid) {
+// Show success message
+alert('User created successfully!');
+// Redirect to original page
+window.location.href = 'https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320';
+}
+});
+// Clear form button
+clearFormBtn.addEventListener('click', function() {
+if (confirm('Are you sure you want to clear all form fields?')) {
+form.reset();
+document.getElementById('profile-preview').innerHTML = `
+<div class="w-8 h-8 flex items-center justify-center text-gray-400">
+<i class="ri-user-line"></i>
+</div>
+`;
+document.getElementById('selected-role').textContent = 'Select role';
+document.getElementById('selected-country').textContent = 'United States';
+document.getElementById('selected-department').textContent = 'Select department';
+document.getElementById('password-strength-bar').style.width = '0%';
+document.getElementById('password-strength-bar').className = 'bg-gray-300';
+// Hide all error messages
+document.querySelectorAll('.text-red-500').forEach(el => {
+el.classList.add('hidden');
+});
+// Reset borders
+document.querySelectorAll('input, .border').forEach(el => {
+el.classList.remove('border-red-500');
+});
+}
+});
+// Helper functions for form validation
+function showError(inputElement, message) {
+const errorElement = inputElement.nextElementSibling;
+if (errorElement && errorElement.classList.contains('text-red-500')) {
+errorElement.textContent = message;
+errorElement.classList.remove('hidden');
+}
+inputElement.classList.add('border-red-500');
+}
+function hideError(inputElement) {
+const errorElement = inputElement.nextElementSibling;
+if (errorElement && errorElement.classList.contains('text-red-500')) {
+errorElement.classList.add('hidden');
+}
+inputElement.classList.remove('border-red-500');
+}
+});
+</script>
+<script id="unsaved-changes-script">
+document.addEventListener('DOMContentLoaded', function() {
+const form = document.getElementById('add-user-form');
+let formChanged = false;
+// Track form changes
+form.addEventListener('change', function() {
+formChanged = true;
+});
+// Warn about unsaved changes when navigating away
+window.addEventListener('beforeunload', function(e) {
+if (formChanged) {
+const message = 'You have unsaved changes. Are you sure you want to leave?';
+e.returnValue = message;
+return message;
+}
+});
+// Reset the form changed flag when submitting
+form.addEventListener('submit', function() {
+formChanged = false;
+});
+});
+</script>
+</body>
+</html>
