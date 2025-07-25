@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Performance</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .rating-star {
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .rating-star.filled {
+            background-color: #FBBF24;
+        }
+
+        .rating-star.half {
+            background: linear-gradient(90deg, #FBBF24 50%, #E5E7EB 50%);
+        }
+
+        .rating-star.empty {
+            background-color: #E5E7EB;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+    <!-- <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/f3fa83d0-d719-459c-8d9d-361307ff9629"
+                        data-readdy="true"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+                        Attractions
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-run-line"></i>
+                        </div>
+                        Activities
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-calendar-check-line"></i>
+                        </div>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Business
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Business
+                                Overview</a></li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage Listings</a>
+                        </li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Revenue
+                                Analytics</a></li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Business
+                                Settings</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 bg-primary/10 text-primary border-l-3 border-primary rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Employees
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 bg-gray-50/50">
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/b0c526e7-3f79-4734-87c2-291636bbc06e"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Employee & Role</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/60b4cc81-64dc-44a6-a4d7-ed9e4acf750f"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Staff
+                                Directory</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/d4a7c3c9-1601-433b-9f45-732a93747bcb"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/06add0a6-b8e7-4e8d-a8c5-7ab579fb520f"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                                data-readdy="true" class="block py-2 text-sm text-primary font-medium">Performance</a>
+                        </li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/d6ef717d-e3e6-43f1-8956-86a0d963ae6d"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                User</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/14c7f347-3115-45ea-a06c-387ae1476f93"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Customer
+                                List</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/75f7ced1-23f2-4ace-93c9-848c8d4fa3f3"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Elite
+                                Club</a></li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">Membership Tiers</a>
+                        </li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/39e3cb65-daa7-4de5-991f-0b46986cd6a7"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Reviews &
+                                Ratings</a></li>
+                        <li><a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/7dc58122-fc68-4f6a-a1ab-7cf7d013ce64"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Support
+                                Tickets</a></li>
+                        <li><a href="#" class="block py-2 text-sm text-gray-600 hover:text-primary">User Analytics</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-bar-chart-line"></i>
+                        </div>
+                        Reports
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside> -->
+
+     <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                        data-readdy="true" class="mr-4 flex items-center text-gray-500 hover:text-gray-700">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-arrow-left-line ri-lg"></i>
+                        </div>
+                    </a>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search employees, reviews, departments...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">HR Manager</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Staff Performance</h1>
+                    <div class="flex space-x-3">
+                        <button
+                            class="ctaz px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-calendar-line"></i>
+                            </div>
+                            Q2 2025
+                            <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <button
+                            class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-download-line"></i>
+                            </div>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Performance Overview Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Overall Performance Score</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-blue-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                    <i class="ri-star-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">4.2/5.0</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                0.3
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous quarter</p>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Completed Reviews</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-green-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">24</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                8
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous quarter</p>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Pending Reviews</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-yellow-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">8</span>
+                            <span class="ml-2 text-sm font-medium text-red-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                2
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous quarter</p>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Department Average</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-purple-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">3.8/5.0</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                0.2
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous quarter</p>
+                    </div>
+                </div>
+
+                <!-- Performance Filters -->
+                <div class="bg-white rounded-lg shadow-sm p-4 mb-8">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="relative">
+                            <button id="department-filter"
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-building-line"></i>
+                                </div>
+                                All Departments
+                                <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div id="department-dropdown"
+                                class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All
+                                    Departments</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tour
+                                    Operations</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Customer
+                                    Service</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Marketing</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sales</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Finance</a>
+                            </div>
+                        </div>
+
+                        <div class="flex bg-gray-100 rounded-full p-1">
+                            <button
+                                class="px-4 py-1.5 text-xs font-medium rounded-full bg-white shadow-sm text-gray-800 whitespace-nowrap">Weekly</button>
+                            <button
+                                class="px-4 py-1.5 text-xs font-medium rounded-full text-gray-600 hover:bg-gray-200 whitespace-nowrap">Monthly</button>
+                            <button
+                                class="px-4 py-1.5 text-xs font-medium rounded-full text-gray-600 hover:bg-gray-200 whitespace-nowrap">Quarterly</button>
+                            <button
+                                class="px-4 py-1.5 text-xs font-medium rounded-full text-gray-600 hover:bg-gray-200 whitespace-nowrap">Yearly</button>
+                        </div>
+
+                        <div class="relative flex-grow">
+                            <button id="criteria-filter"
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-filter-line"></i>
+                                </div>
+                                Performance Criteria
+                                <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div id="criteria-dropdown"
+                                class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg p-3 hidden z-20">
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox"
+                                            class="form-checkbox h-4 w-4 text-primary rounded border-gray-300" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Job Knowledge</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox"
+                                            class="form-checkbox h-4 w-4 text-primary rounded border-gray-300" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Quality of Work</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox"
+                                            class="form-checkbox h-4 w-4 text-primary rounded border-gray-300" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Communication Skills</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox"
+                                            class="form-checkbox h-4 w-4 text-primary rounded border-gray-300" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Teamwork</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox"
+                                            class="form-checkbox h-4 w-4 text-primary rounded border-gray-300" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Initiative</span>
+                                    </label>
+                                </div>
+                                <div class="mt-3 flex justify-end">
+                                    <button
+                                        class="px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-button hover:bg-primary/20 whitespace-nowrap !rounded-button">Apply
+                                        Filters</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            class="ctaz ml-auto px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-file-download-line"></i>
+                            </div>
+                            Export Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Performance Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Performance Trend</h3>
+                            <div class="relative">
+                                <button id="trend-metrics"
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                    Overall Score
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div id="trend-metrics-dropdown"
+                                    class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Overall
+                                        Score</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Job
+                                        Knowledge</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Quality
+                                        of Work</a>
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Communication</a>
+                                    <a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Teamwork</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="performance-trend-chart" class="h-64"></div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Department Comparison</h3>
+                            <div class="relative">
+                                <button id="comparison-metrics"
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                    Q2 2025
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div id="comparison-metrics-dropdown"
+                                    class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Q2
+                                        2025</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Q1
+                                        2025</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Q4
+                                        2024</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Q3
+                                        2024</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="department-comparison-chart" class="h-64"></div>
+                    </div>
+                </div>
+
+                <!-- Top Performers Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-base font-medium text-gray-900">Top Performers</h3>
+                        <button class="text-sm text-primary font-medium flex items-center whitespace-nowrap">
+                            View All
+                            <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                <i class="ri-arrow-right-line"></i>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-top mb-4">
+                                <div class="w-12 h-12 rounded-full bg-blue-100 flex flex-shrink-0 items-center justify-center mr-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Michael Anderson</h4>
+                                    <p class="text-xs text-gray-500">Tour Operations Manager</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex space-x-1 mr-2">
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star half w-4 h-4"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-700">4.7/5.0</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                <p class="mb-1"><span class="font-medium">Key Achievement:</span> Increased tour
+                                    efficiency by 18%</p>
+                                <p><span class="font-medium">Strengths:</span> Leadership, Problem-solving</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-green-600 font-medium flex items-center">
+                                    <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    0.3 from last review
+                                </span>
+                                <button class="text-xs text-primary font-medium">View Details</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-top mb-4">
+                                <div class="w-12 h-12 rounded-full flex-shrink-0  bg-purple-100 flex flex-shrink-0 items-center justify-center mr-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-purple-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Sophia Martinez</h4>
+                                    <p class="text-xs text-gray-500">Senior Tour Guide</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex space-x-1 mr-2">
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star half w-4 h-4"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-700">4.5/5.0</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                <p class="mb-1"><span class="font-medium">Key Achievement:</span> 98% positive customer
+                                    feedback</p>
+                                <p><span class="font-medium">Strengths:</span> Communication, Customer service</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-green-600 font-medium flex items-center">
+                                    <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    0.2 from last review
+                                </span>
+                                <button class="text-xs text-primary font-medium">View Details</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-top mb-4">
+                                <div class="w-12 h-12 rounded-full flex-shrink-0 bg-green-100 flex items-center justify-center mr-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-green-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Daniel Wilson</h4>
+                                    <p class="text-xs text-gray-500">Marketing Specialist</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex space-x-1 mr-2">
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star half w-4 h-4"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-700">4.4/5.0</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                <p class="mb-1"><span class="font-medium">Key Achievement:</span> Led campaign with 32%
+                                    ROI</p>
+                                <p><span class="font-medium">Strengths:</span> Creativity, Analytics</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-green-600 font-medium flex items-center">
+                                    <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    0.4 from last review
+                                </span>
+                                <button class="text-xs text-primary font-medium">View Details</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-top mb-4">
+                                <div class="w-12 h-12 rounded-full flex-shrink-0 bg-yellow-100 flex items-center justify-center mr-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-yellow-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Olivia Johnson</h4>
+                                    <p class="text-xs text-gray-500">Customer Service Lead</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex space-x-1 mr-2">
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star filled w-4 h-4"></div>
+                                    <div class="rating-star empty w-4 h-4"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-700">4.2/5.0</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                <p class="mb-1"><span class="font-medium">Key Achievement:</span> Reduced ticket
+                                    resolution time by 25%</p>
+                                <p><span class="font-medium">Strengths:</span> Empathy, Problem-solving</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-green-600 font-medium flex items-center">
+                                    <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    0.3 from last review
+                                </span>
+                                <button class="text-xs text-primary font-medium">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Evaluations Table -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-base font-medium text-gray-900">Recent Evaluations</h3>
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <button
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-filter-line"></i>
+                                    </div>
+                                    Filter
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <button
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-sort-desc"></i>
+                                    </div>
+                                    Sort
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Employee</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Review Date</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Reviewer</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Score</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Michael Anderson</div>
+                                                <div class="text-xs text-gray-500">Tour Operations Manager</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">June 28, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Emma Thompson</div>
+                                        <div class="text-xs text-gray-500">HR Manager</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex space-x-1 mr-2">
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star half w-3 h-3"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-900">4.7</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Sophia Martinez</div>
+                                                <div class="text-xs text-gray-500">Senior Tour Guide</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">June 24, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Robert Chen</div>
+                                        <div class="text-xs text-gray-500">Tour Operations Director</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex space-x-1 mr-2">
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star half w-3 h-3"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-900">4.5</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Daniel Wilson</div>
+                                                <div class="text-xs text-gray-500">Marketing Specialist</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">June 22, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jennifer Park</div>
+                                        <div class="text-xs text-gray-500">Marketing Director</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex space-x-1 mr-2">
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star half w-3 h-3"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-900">4.4</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Olivia Johnson</div>
+                                                <div class="text-xs text-gray-500">Customer Service Lead</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">June 20, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Emma Thompson</div>
+                                        <div class="text-xs text-gray-500">HR Manager</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex space-x-1 mr-2">
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star filled w-3 h-3"></div>
+                                                <div class="rating-star empty w-3 h-3"></div>
+                                            </div>
+                                            <span class="text-sm text-gray-900">4.2</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">James Rodriguez</div>
+                                                <div class="text-xs text-gray-500">Tour Guide</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">July 15, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Robert Chen</div>
+                                        <div class="text-xs text-gray-500">Tour Operations Director</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">--</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
+                                class="font-medium">32</span> results
+                        </div>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">Previous</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Sections -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Action Panel -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-base font-medium text-gray-900 mb-4">Quick Actions</h3>
+                        <div class="ctaz space-y-3">
+                            <button
+                                class="w-full flex items-center justify-center px-4 py-3 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap !rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule New Review
+                            </button>
+                            <button
+                                class="w-full flex items-center justify-center px-4 py-3 bg-purple-100 text-purple-700 rounded-button hover:bg-purple-200 transition-colors whitespace-nowrap !rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                    <i class="ri-edit-line"></i>
+                                </div>
+                                Add Performance Note
+                            </button>
+                            <button
+                                class="w-full flex items-center justify-center px-4 py-3 bg-blue-100 text-blue-700 rounded-button hover:bg-blue-200 transition-colors whitespace-nowrap !rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                    <i class="ri-file-chart-line"></i>
+                                </div>
+                                Generate Report
+                            </button>
+                            <button
+                                class="w-full flex items-center justify-center px-4 py-3 bg-green-100 text-green-700 rounded-button hover:bg-green-200 transition-colors whitespace-nowrap !rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                    <i class="ri-flag-line"></i>
+                                </div>
+                                Set Department Goals
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Areas for Improvement -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 lg:col-span-2">
+                        <h3 class="text-base font-medium text-gray-900 mb-4">Areas for Improvement</h3>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="text-sm font-medium text-gray-900 mb-2">Communication Skills</h4>
+                                <p class="text-sm text-gray-600 mb-3">Identified in 42% of reviews as an area needing
+                                    improvement across departments.</p>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="text-xs font-medium text-gray-700">Recommended Training:</span>
+                                        <span class="text-xs text-gray-600">Effective Communication Workshop</span>
+                                    </div>
+                                    <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="text-sm font-medium text-gray-900 mb-2">Technical Knowledge</h4>
+                                <p class="text-sm text-gray-600 mb-3">Tour guides need updated information on new
+                                    attractions and historical facts.</p>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="text-xs font-medium text-gray-700">Recommended Training:</span>
+                                        <span class="text-xs text-gray-600">Destination Knowledge Refresher</span>
+                                    </div>
+                                    <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="text-sm font-medium text-gray-900 mb-2">Time Management</h4>
+                                <p class="text-sm text-gray-600 mb-3">Customer service team needs improvement in
+                                    handling multiple tickets efficiently.</p>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="text-xs font-medium text-gray-700">Recommended Training:</span>
+                                        <span class="text-xs text-gray-600">Productivity & Prioritization Course</span>
+                                    </div>
+                                    <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: 25%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                if (submenu) {
+                    if (button.classList.contains('bg-primary/10')) {
+                        submenu.classList.remove('hidden');
+                        button.setAttribute('data-expanded', 'true');
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (arrowIcon) arrowIcon.style.transform = 'rotate(180deg)';
+                    } else {
+                        button.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            submenu.classList.toggle('hidden');
+                            button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                            // Find and rotate the arrow icon
+                            const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                            if (arrowIcon) {
+                                if (submenu.classList.contains('hidden')) {
+                                    arrowIcon.style.transform = 'rotate(0deg)';
+                                } else {
+                                    arrowIcon.style.transform = 'rotate(180deg)';
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script id="filter-dropdowns-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownPairs = [
+                ['department-filter', 'department-dropdown'],
+                ['criteria-filter', 'criteria-dropdown'],
+                ['trend-metrics', 'trend-metrics-dropdown'],
+                ['comparison-metrics', 'comparison-metrics-dropdown']
+            ];
+
+            dropdownPairs.forEach(pair => {
+                const button = document.getElementById(pair[0]);
+                const dropdown = document.getElementById(pair[1]);
+
+
+                if (button && dropdown) {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        dropdown.classList.toggle('hidden');
+
+
+                        // Close other dropdowns
+                        dropdownPairs.forEach(otherPair => {
+                            if (otherPair[1] !== pair[1]) {
+                                const otherDropdown = document.getElementById(otherPair[1]);
+                                if (otherDropdown) otherDropdown.classList.add('hidden');
+                            }
+                        });
+                    });
+                }
+            });
+
+            // Close all dropdowns when clicking outside
+            document.addEventListener('click', function (event) {
+                dropdownPairs.forEach(pair => {
+                    const button = document.getElementById(pair[0]);
+                    const dropdown = document.getElementById(pair[1]);
+
+
+                    if (button && dropdown && !button.contains(event.target) && !dropdown.contains(event.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script id="charts-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Performance Trend Chart
+            const performanceTrendChart = echarts.init(document.getElementById('performance-trend-chart'));
+            const performanceTrendOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#f0f0f0',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 0,
+                    top: 10,
+                    bottom: 0,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Q3 2023', 'Q4 2023', 'Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 3,
+                    max: 5,
+                    interval: 0.5,
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Overall Score',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(87, 181, 231, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(87, 181, 231, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [3.7, 3.8, 3.9, 3.9, 4.0, 4.1, 4.1, 4.2]
+                    }
+                ]
+            };
+            performanceTrendChart.setOption(performanceTrendOption);
+
+            // Department Comparison Chart
+            const departmentComparisonChart = echarts.init(document.getElementById('department-comparison-chart'));
+            const departmentComparisonOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#f0f0f0',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 0,
+                    top: 10,
+                    bottom: 0,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Tour Ops', 'Cust Svc', 'Marketing', 'Sales', 'Finance'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 3,
+                    max: 5,
+                    interval: 0.5,
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Department Average',
+                        type: 'bar',
+                        barWidth: '40%',
+                        itemStyle: {
+                            borderRadius: 6,
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        data: [4.2, 3.9, 4.1, 3.7, 3.8]
+                    }
+                ]
+            };
+            departmentComparisonChart.setOption(departmentComparisonOption);
+
+            // Resize charts when window resizes
+            window.addEventListener('resize', function () {
+                performanceTrendChart.resize();
+                departmentComparisonChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

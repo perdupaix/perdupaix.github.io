@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Business - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-radio {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        .custom-radio input {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .custom-radio-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            background-color: white;
+            transition: all 0.2s;
+        }
+
+        .custom-radio input:checked+.custom-radio-circle {
+            border-color: #4f46e5;
+            background-color: #4f46e5;
+        }
+
+        .custom-radio input:checked+.custom-radio-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: white;
+            transform: translate(-50%, -50%);
+        }
+
+        .form-error {
+            border-color: #ef4444;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .plan-card {
+            border: 2px solid #e5e7eb;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .plan-card:hover {
+            border-color: #4f46e5;
+        }
+
+        .plan-card.selected {
+            border-color: #4f46e5;
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+     <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+     
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar" class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search" class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm" placeholder="Search listings, attractions, activities...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50">
+
+            
+            <div class="max-w-7xl mx-auto p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                    <div>
+                        <!-- <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320" data-readdy="true" class="hover:text-primary">Providers</a>
+                            <div class="w-4 h-4 flex items-center justify-center mx-1">
+                                <i class="ri-arrow-right-s-line"></i>
+                            </div>
+                            <span class="font-medium text-gray-700">Add Provider</span>
+                        </div> -->
+                        <h1 class="text-2xl font-bold text-gray-900">Add Provider</h1>
+                    </div>
+                    <!-- <div class="mt-4 md:mt-0">
+                        <button class="ctaz px-4 py-2.5 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 shadow-sm whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-add-line"></i>
+                            </div>
+                            Add New Provider
+                        </button>
+                    </div> -->
+                </div>
+                <form id="business-form" class="space-y-8">
+                    <!-- Business Details Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-6 flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3 bg-primary/10 rounded-full">
+                                <i class="ri-store-2-line text-primary"></i>
+                            </div>
+                            Provider Details
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="business-name" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Business Name <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="business-name" name="business-name" required
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="Enter business name">
+                                <div class="error-message hidden" id="business-name-error"></div>
+                            </div>
+                            <div>
+                                <label for="business-type" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Business Type <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <button type="button" id="business-type-btn"
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-left bg-white">
+                                        <span id="business-type-text" class="text-gray-500">Select business type</span>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <div id="business-type-dropdown"
+                                        class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-button shadow-lg hidden">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="restaurant">Restaurant</button>
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="retail">Retail Store</button>
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="service">Service Provider</button>
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="tourism">Tourism & Travel</button>
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="entertainment">Entertainment</button>
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="healthcare">Healthcare</button>
+                                            <button type="button"
+                                                class="business-type-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="education">Education</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="business-type" name="business-type" required>
+                                <div class="error-message hidden" id="business-type-error"></div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="business-description" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Business Description
+                                </label>
+                                <textarea id="business-description" name="business-description" rows="4"
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+                                    placeholder="Describe your business, services, and what makes it unique..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-6 flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3 bg-primary/10 rounded-full">
+                                <i class="ri-phone-line text-primary"></i>
+                            </div>
+                            Contact Information
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Email Address <span class="text-red-500">*</span>
+                                </label>
+                                <input type="email" id="email" name="email" required
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="business@example.com">
+                                <div class="error-message hidden" id="email-error"></div>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Phone Number <span class="text-red-500">*</span>
+                                </label>
+                                <input type="tel" id="phone" name="phone" required
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="+1 (555) 123-4567">
+                                <div class="error-message hidden" id="phone-error"></div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="website" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Website URL
+                                </label>
+                                <input type="url" id="website" name="website"
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="https://www.example.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-6 flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3 bg-primary/10 rounded-full">
+                                <i class="ri-map-pin-line text-primary"></i>
+                            </div>
+                            Business Location
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="md:col-span-2">
+                                <label for="street-address" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Street Address <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="street-address" name="street-address" required
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="123 Main Street">
+                                <div class="error-message hidden" id="street-address-error"></div>
+                            </div>
+                            <div>
+                                <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                                    City <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="city" name="city" required
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="San Francisco">
+                                <div class="error-message hidden" id="city-error"></div>
+                            </div>
+                            <div>
+                                <label for="state" class="block text-sm font-medium text-gray-700 mb-2">
+                                    State/Province <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <button type="button" id="state-btn"
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-left bg-white">
+                                        <span id="state-text" class="text-gray-500">Select state</span>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <div id="state-dropdown"
+                                        class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-button shadow-lg hidden max-h-48 overflow-y-auto">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="state-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="CA">California</button>
+                                            <button type="button"
+                                                class="state-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="NY">New York</button>
+                                            <button type="button"
+                                                class="state-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="TX">Texas</button>
+                                            <button type="button"
+                                                class="state-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="FL">Florida</button>
+                                            <button type="button"
+                                                class="state-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="IL">Illinois</button>
+                                            <button type="button"
+                                                class="state-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="WA">Washington</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="state" name="state" required>
+                                <div class="error-message hidden" id="state-error"></div>
+                            </div>
+                            <div>
+                                <label for="postal-code" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Postal Code <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="postal-code" name="postal-code" required
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                                    placeholder="94102">
+                                <div class="error-message hidden" id="postal-code-error"></div>
+                            </div>
+                            <div>
+                                <label for="country" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Country <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <button type="button" id="country-btn"
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-left bg-white">
+                                        <span id="country-text" class="text-gray-500">Select country</span>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <div id="country-dropdown"
+                                        class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-button shadow-lg hidden">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="country-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="US">United States</button>
+                                            <button type="button"
+                                                class="country-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="CA">Canada</button>
+                                            <button type="button"
+                                                class="country-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="UK">United Kingdom</button>
+                                            <button type="button"
+                                                class="country-option w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                                                data-value="AU">Australia</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="country" name="country" required>
+                                <div class="error-message hidden" id="country-error"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subscription Plan Section -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-6 flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center mr-3 bg-primary/10 rounded-full">
+                                <i class="ri-vip-crown-line text-primary"></i>
+                            </div>
+                            Choose Subscription Plan
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Free Plan -->
+                            <div class="plan-card rounded-lg p-6" data-plan="free">
+                                <div class="custom-radio mb-4">
+                                    <input type="radio" name="plan" value="free" id="plan-free">
+                                    <div class="custom-radio-circle"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Free Plan</h3>
+                                    <div class="text-3xl font-bold text-gray-900 mt-2">$0<span
+                                            class="text-base font-normal text-gray-500">/month</span></div>
+                                </div>
+                                <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Up to 3 business listings
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Basic analytics
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Email support
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-gray-400">
+                                            <i class="ri-close-line"></i>
+                                        </div>
+                                        Priority support
+                                    </li>
+                                </ul>
+                                <div class="text-xs text-gray-500">Perfect for small businesses getting started</div>
+                            </div>
+
+                            <!-- Premium Plan -->
+                            <div class="plan-card rounded-lg p-6 relative" data-plan="premium">
+                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                    <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-medium">Most
+                                        Popular</span>
+                                </div>
+                                <div class="custom-radio mb-4">
+                                    <input type="radio" name="plan" value="premium" id="plan-premium">
+                                    <div class="custom-radio-circle"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Premium Plan</h3>
+                                    <div class="text-3xl font-bold text-gray-900 mt-2">$29<span
+                                            class="text-base font-normal text-gray-500">/month</span></div>
+                                </div>
+                                <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Up to 25 business listings
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Advanced analytics & insights
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Priority email & chat support
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Custom branding options
+                                    </li>
+                                </ul>
+                                <div class="text-xs text-gray-500">Ideal for growing businesses with multiple locations
+                                </div>
+                            </div>
+
+                            <!-- Enterprise Plan -->
+                            <div class="plan-card rounded-lg p-6" data-plan="enterprise">
+                                <div class="custom-radio mb-4">
+                                    <input type="radio" name="plan" value="enterprise" id="plan-enterprise">
+                                    <div class="custom-radio-circle"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-900">Enterprise Plan</h3>
+                                    <div class="text-3xl font-bold text-gray-900 mt-2">$99<span
+                                            class="text-base font-normal text-gray-500">/month</span></div>
+                                </div>
+                                <ul class="space-y-3 text-sm text-gray-600 mb-6">
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Unlimited business listings
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        Enterprise-grade analytics
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        24/7 dedicated support
+                                    </li>
+                                    <li class="flex items-center">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2 text-green-500">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        API access & integrations
+                                    </li>
+                                </ul>
+                                <div class="text-xs text-gray-500">For large enterprises with complex needs</div>
+                            </div>
+                        </div>
+                        <div class="error-message hidden" id="plan-error"></div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="ctaz bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+                            <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/8356a4dc-10e4-457a-8844-4fb5e96f5a9a"
+                                data-readdy="true"
+                                class="px-6 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 text-center whitespace-nowrap !rounded-button">
+                                Cancel
+                            </a>
+                            <button type="submit"
+                                class="px-6 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                                <span id="submit-text">Save</span>
+                                <div id="submit-loading" class="hidden w-4 h-4 flex items-center justify-center ml-2">
+                                    <i class="ri-loader-4-line animate-spin"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                if (button.classList.contains('active')) {
+                    submenu.classList.remove('hidden');
+                    button.setAttribute('data-expanded', 'true');
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (arrowIcon) {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                }
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script id="dropdown-handlers-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            function setupDropdown(buttonId, dropdownId, textId, hiddenInputId, optionClass) {
+                const button = document.getElementById(buttonId);
+                const dropdown = document.getElementById(dropdownId);
+                const text = document.getElementById(textId);
+                const hiddenInput = document.getElementById(hiddenInputId);
+                const options = document.querySelectorAll(`.${optionClass}`);
+
+                button.addEventListener('click', function () {
+                    dropdown.classList.toggle('hidden');
+                });
+
+                options.forEach(option => {
+                    option.addEventListener('click', function () {
+                        const value = this.getAttribute('data-value');
+                        const displayText = this.textContent;
+                        text.textContent = displayText;
+                        text.classList.remove('text-gray-500');
+                        text.classList.add('text-gray-900');
+                        hiddenInput.value = value;
+                        dropdown.classList.add('hidden');
+                    });
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            }
+
+            setupDropdown('business-type-btn', 'business-type-dropdown', 'business-type-text', 'business-type', 'business-type-option');
+            setupDropdown('state-btn', 'state-dropdown', 'state-text', 'state', 'state-option');
+            setupDropdown('country-btn', 'country-dropdown', 'country-text', 'country', 'country-option');
+        });
+    </script>
+
+    <script id="plan-selection-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const planCards = document.querySelectorAll('.plan-card');
+            const planRadios = document.querySelectorAll('input[name="plan"]');
+
+            planCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    const planValue = this.getAttribute('data-plan');
+                    const radio = document.getElementById(`plan-${planValue}`);
+
+                    planCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    planRadios.forEach(r => r.checked = false);
+                    radio.checked = true;
+                });
+            });
+
+            planRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    const planValue = this.value;
+                    const card = document.querySelector(`[data-plan="${planValue}"]`);
+                    planCards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                });
+            });
+        });
+    </script>
+
+    <script id="form-validation-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('business-form');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const submitText = document.getElementById('submit-text');
+            const submitLoading = document.getElementById('submit-loading');
+
+            function showError(fieldId, message) {
+                const field = document.getElementById(fieldId);
+                const errorDiv = document.getElementById(`${fieldId}-error`);
+                field.classList.add('form-error');
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
+            }
+
+            function hideError(fieldId) {
+                const field = document.getElementById(fieldId);
+                const errorDiv = document.getElementById(`${fieldId}-error`);
+                field.classList.remove('form-error');
+                errorDiv.classList.add('hidden');
+            }
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function validatePhone(phone) {
+                const re = /^[\+]?[1-9][\d]{0,15}$/;
+                return re.test(phone.replace(/[\s\-\(\)]/g, ''));
+            }
+
+            function validateForm() {
+                let isValid = true;
+                const formData = new FormData(form);
+
+                document.querySelectorAll('.error-message').forEach(error => {
+                    error.classList.add('hidden');
+                });
+                document.querySelectorAll('.form-error').forEach(field => {
+                    field.classList.remove('form-error');
+                });
+
+                const businessName = document.getElementById('business-name').value.trim();
+                if (!businessName) {
+                    showError('business-name', 'Business name is required');
+                    isValid = false;
+                }
+
+                const businessType = document.getElementById('business-type').value;
+                if (!businessType) {
+                    showError('business-type', 'Please select a business type');
+                    isValid = false;
+                }
+
+                const email = document.getElementById('email').value.trim();
+                if (!email) {
+                    showError('email', 'Email address is required');
+                    isValid = false;
+                } else if (!validateEmail(email)) {
+                    showError('email', 'Please enter a valid email address');
+                    isValid = false;
+                }
+
+                const phone = document.getElementById('phone').value.trim();
+                if (!phone) {
+                    showError('phone', 'Phone number is required');
+                    isValid = false;
+                } else if (!validatePhone(phone)) {
+                    showError('phone', 'Please enter a valid phone number');
+                    isValid = false;
+                }
+                const streetAddress = document.getElementById('street-address').value.trim();
+                if (!streetAddress) {
+                    showError('street-address', 'Street address is required');
+                    isValid = false;
+                }
+
+                const city = document.getElementById('city').value.trim();
+                if (!city) {
+                    showError('city', 'City is required');
+                    isValid = false;
+                }
+
+                const state = document.getElementById('state').value;
+                if (!state) {
+                    showError('state', 'Please select a state');
+                    isValid = false;
+                }
+
+                const postalCode = document.getElementById('postal-code').value.trim();
+                if (!postalCode) {
+                    showError('postal-code', 'Postal code is required');
+                    isValid = false;
+                }
+
+                const country = document.getElementById('country').value;
+                if (!country) {
+                    showError('country', 'Please select a country');
+                    isValid = false;
+                }
+
+                const selectedPlan = document.querySelector('input[name="plan"]:checked');
+                if (!selectedPlan) {
+                    showError('plan', 'Please select a subscription plan');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (validateForm()) {
+                    submitText.textContent = 'Saving...';
+                    submitLoading.classList.remove('hidden');
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-75');
+
+                    setTimeout(() => {
+                        alert('Business has been successfully created!');
+                        window.location.href = 'https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/8356a4dc-10e4-457a-8844-4fb5e96f5a9a';
+                    }, 2000);
+                }
+            });
+
+            const inputs = form.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    if (this.classList.contains('form-error')) {
+                        hideError(this.id);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

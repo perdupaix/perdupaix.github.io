@@ -1,0 +1,2898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Guides Management</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        .language-badge i {
+  display: none;
+}
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .guide-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .language-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .specialty-icon {
+            width: 1.75rem;
+            height: 1.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            margin-right: 0.25rem;
+        }
+
+        .rating-stars .filled {
+            color: #FBBF24;
+        }
+
+        .rating-stars .empty {
+            color: #E5E7EB;
+        }
+
+        .filter-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .filter-dropdown.active {
+            max-height: 500px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+     <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search guides by name, specialty, language...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- Breadcrumb -->
+                <!-- <nav class="flex mb-5" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="#"
+                                class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-dashboard-line"></i>
+                                </div>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center text-gray-400 mx-1">
+                                    <i class="ri-arrow-right-s-line"></i>
+                                </div>
+                                <a href="#" class="text-sm font-medium text-gray-700 hover:text-primary">Employees</a>
+                            </div>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center text-gray-400 mx-1">
+                                    <i class="ri-arrow-right-s-line"></i>
+                                </div>
+                                <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                                    data-readdy="true" class="text-sm font-medium text-primary">Tour Guides</a>
+                            </div>
+                        </li>
+                    </ol>
+                </nav> -->
+
+                <!-- Header with Actions -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Tour Guides Management</h1>
+                        <p class="text-sm text-gray-600 mt-1">Manage your tour guides, view performance, and assign
+                            activities</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button id="add-guide-btn"
+                            class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-user-add-line"></i>
+                            </div>
+                            Add New Guide
+                        </button>
+                        <!-- <button id="filter-btn"
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-filter-3-line"></i>
+                            </div>
+                            Filter
+                        </button>
+                        <button id="sort-btn"
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-sort-desc"></i>
+                            </div>
+                            Sort
+                        </button>
+                        <div class="relative" id="view-toggle">
+                            <button
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-l-button text-sm font-medium text-primary flex items-center hover:bg-gray-50 whitespace-nowrap border-r-0">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-layout-grid-line"></i>
+                                </div>
+                                Grid
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-r-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-list-check"></i>
+                                </div>
+                                List
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Filters Panel (Hidden by default) -->
+                <!-- <div id="filters-panel" class="bg-white rounded-lg shadow-sm p-6 mb-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-medium text-gray-900">Filter Tour Guides</h3>
+                        <button id="close-filters" class="text-gray-500 hover:text-gray-700">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Specialties</label>
+                            <div class="space-y-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Historical Tours</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Adventure Activities</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Cultural Experiences</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Food & Culinary</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Nature & Wildlife</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Languages</label>
+                            <div class="space-y-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">English</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Spanish</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">French</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Mandarin</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Japanese</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <div class="space-y-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">All</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">Available</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">Assigned</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">Off-duty</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                                <div class="px-2">
+                                    <input type="range" min="1" max="5" step="0.5" value="3"
+                                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                    <div class="flex justify-between text-xs text-gray-600 mt-1">
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>3</span>
+                                        <span>4</span>
+                                        <span>5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-6 space-x-3">
+                        <button
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Reset</button>
+                        <button
+                            class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">Apply
+                            Filters</button>
+                    </div>
+                </div> -->
+
+                <!-- Performance Summary -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-base font-medium text-gray-900">Tour Guide Performance Summary</h3>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Weekly</button>
+                            <button
+                                class="px-3 py-1 text-xs font-medium text-white bg-primary rounded-full whitespace-nowrap">Monthly</button>
+                            <button
+                                class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Yearly</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Total Guides</h4>
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <div class="w-4 h-4 flex items-center justify-center text-blue-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-2xl font-bold text-gray-900">32</span>
+                                <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    4.2%
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Average Rating</h4>
+                                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                    <div class="w-4 h-4 flex items-center justify-center text-yellow-600">
+                                        <i class="ri-star-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-2xl font-bold text-gray-900">4.7</span>
+                                <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    0.3
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Tours Completed</h4>
+                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                                    <div class="w-4 h-4 flex items-center justify-center text-green-600">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-2xl font-bold text-gray-900">428</span>
+                                <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    12.8%
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-sm font-medium text-gray-500">Customer Satisfaction</h4>
+                                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                    <div class="w-4 h-4 flex items-center justify-center text-purple-600">
+                                        <i class="ri-emotion-happy-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-2xl font-bold text-gray-900">96%</span>
+                                <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                    2.1%
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                        </div>
+                    </div>
+                </div>
+
+<!-- Header with Actions -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <!-- <h1 class="text-2xl font-bold text-gray-900">Tour Guides Management</h1>
+                        <p class="text-sm text-gray-600 mt-1">Manage your tour guides, view performance, and assign
+                            activities</p> -->
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        
+                        <button id="filter-btn"
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-filter-3-line"></i>
+                            </div>
+                            Filter
+                        </button>
+                        <button id="sort-btn"
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-sort-desc"></i>
+                            </div>
+                            Sort
+                        </button>
+                        <div class="relative inline-flex" id="view-toggle">
+                            <button
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-l-button text-sm font-medium text-primary flex items-center hover:bg-gray-50 whitespace-nowrap border-r-0">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-layout-grid-line"></i>
+                                </div>
+                                Grid
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-r-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-list-check"></i>
+                                </div>
+                                List
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters Panel (Hidden by default) -->
+                <div id="filters-panel" class="bg-white rounded-lg shadow-sm p-6 mb-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-medium text-gray-900">Filter Tour Guides</h3>
+                        <button id="close-filters" class="text-gray-500 hover:text-gray-700">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Specialties</label>
+                            <div class="space-y-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Historical Tours</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Adventure Activities</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Cultural Experiences</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Food & Culinary</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Nature & Wildlife</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Languages</label>
+                            <div class="space-y-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">English</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Spanish</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">French</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Mandarin</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox"
+                                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                    <span class="ml-2 text-sm text-gray-700">Japanese</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <div class="space-y-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">All</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">Available</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">Assigned</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="status"
+                                            class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                                        <span class="ml-2 text-sm text-gray-700">Off-duty</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                                <div class="px-2">
+                                    <input type="range" min="1" max="5" step="0.5" value="3"
+                                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                    <div class="flex justify-between text-xs text-gray-600 mt-1">
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>3</span>
+                                        <span>4</span>
+                                        <span>5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-6 space-x-3">
+                        <button
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Reset</button>
+                        <button
+                            class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">Apply
+                            Filters</button>
+                    </div>
+                </div>
+
+
+                <!-- Tour Guides Grid View -->
+                <div id="guides-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Guide Card 1 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden guide-card transition-all duration-200 flex flex-col">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <!-- <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20short%20brown%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=1&orientation=squarish"
+                                            alt="Daniel Mitchell" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">Daniel Mitchell</h3>
+                                        <div class="flex items-center mt-1">
+                                            <div class="rating-stars flex">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-2">4.9 (128 reviews)</span>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-2">
+                                            Available
+                                        </span>
+                                    </div>
+                                </div> -->
+
+                            <div class="flex flex-col items-center text-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-2 border-primary mb-2">
+        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20short%20brown%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=1&orientation=squarish"
+            alt="Daniel Mitchell" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 truncate w-full">Daniel Mitchell</h3>
+    <div class="flex items-center justify-center mt-1 gap-1">
+        <div class="rating-stars flex text-yellow-400 text-base">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+        </div>
+        <span class="text-sm text-gray-600">(4.9, 128 reviews)</span>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 mt-2">
+        Available
+    </span>
+</div>
+
+
+                                
+                                <div class="relative">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <div class="w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Specialties</h4>
+                                <div class="flex flex-wrap">
+                                    <div class="specialty-icon bg-blue-100 text-blue-600">
+                                        <i class="ri-history-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-green-100 text-green-600">
+                                        <i class="ri-footprint-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-yellow-100 text-yellow-600">
+                                        <i class="ri-compass-3-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Languages</h4>
+                                <div class="flex flex-wrap">
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-english-input mr-1"></i> English
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-spain-flag-line mr-1"></i> Spanish
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-france-flag-line mr-1"></i> French
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Tours Completed</h4>
+                                    <p class="text-base font-semibold text-gray-900">142</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Years Experience</h4>
+                                    <p class="text-base font-semibold text-gray-900">8</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Completion Rate</h4>
+                                    <p class="text-base font-semibold text-gray-900">98%</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Satisfaction</h4>
+                                    <p class="text-base font-semibold text-gray-900">97%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 flex justify-between mt-auto">
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                View Details
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-user-settings-line"></i>
+                                </div>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 2 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden guide-card transition-all duration-200 flex flex-col">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <!-- <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20long%20dark%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=2&orientation=squarish"
+                                            alt="Sophia Rodriguez" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">Sophia Rodriguez</h3>
+                                        <div class="flex items-center mt-1">
+                                            <div class="rating-stars flex">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-half-fill filled"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-2">4.5 (96 reviews)</span>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2">
+                                            Assigned
+                                        </span>
+                                    </div>
+                                </div> -->
+<div class="flex flex-col items-center text-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-2 border-primary mb-2">
+        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20long%20dark%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=2&orientation=squarish"
+            alt="Sophia Rodriguez" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 truncate max-w-[180px] mx-auto">Sophia Rodriguez</h3>
+    <div class="flex items-center justify-center mt-1 gap-1">
+        <div class="rating-stars flex text-yellow-400 text-base">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-half-fill"></i>
+        </div>
+        <span class="text-sm text-gray-600">(4.5, 96 reviews)</span>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 mt-2">
+        Assigned
+    </span>
+</div>
+
+
+
+                                <div class="relative">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <div class="w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Specialties</h4>
+                                <div class="flex flex-wrap">
+                                    <div class="specialty-icon bg-red-100 text-red-600">
+                                        <i class="ri-restaurant-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-purple-100 text-purple-600">
+                                        <i class="ri-building-4-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-indigo-100 text-indigo-600">
+                                        <i class="ri-palette-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Languages</h4>
+                                <div class="flex flex-wrap">
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-english-input mr-1"></i> English
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-spain-flag-line mr-1"></i> Spanish
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-italy-flag-line mr-1"></i> Italian
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Tours Completed</h4>
+                                    <p class="text-base font-semibold text-gray-900">89</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Years Experience</h4>
+                                    <p class="text-base font-semibold text-gray-900">5</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Completion Rate</h4>
+                                    <p class="text-base font-semibold text-gray-900">96%</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Satisfaction</h4>
+                                    <p class="text-base font-semibold text-gray-900">94%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 flex justify-between mt-auto">
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                View Details
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-user-settings-line"></i>
+                                </div>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 3 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden guide-card transition-all duration-200 flex flex-col">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                
+                                <!-- <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20asian%20male%20tour%20guide%20with%20glasses%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=3&orientation=squarish"
+                                            alt="James Chen" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">James Chen</h3>
+                                        <div class="flex items-center mt-1">
+                                            <div class="rating-stars flex">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-line empty"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-2">4.1 (78 reviews)</span>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 mt-2">
+                                            Off-duty
+                                        </span>
+                                    </div>
+                                </div> -->
+<div class="flex flex-col items-center text-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-2 border-primary mb-2">
+        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20asian%20male%20tour%20guide%20with%20glasses%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=3&orientation=squarish"
+            alt="James Chen" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 truncate max-w-[180px] mx-auto">James Chen</h3>
+    <div class="flex items-center justify-center mt-1 gap-1">
+        <div class="rating-stars flex text-yellow-400 text-base">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-line"></i>
+        </div>
+        <span class="text-sm text-gray-600">(4.1, 78 reviews)</span>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 mt-2">
+        Off-duty
+    </span>
+</div>
+
+                                <div class="relative">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <div class="w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+
+
+                                
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Specialties</h4>
+                                <div class="flex flex-wrap">
+                                    <div class="specialty-icon bg-green-100 text-green-600">
+                                        <i class="ri-plant-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-blue-100 text-blue-600">
+                                        <i class="ri-ship-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-yellow-100 text-yellow-600">
+                                        <i class="ri-camera-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Languages</h4>
+                                <div class="flex flex-wrap">
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-english-input mr-1"></i> English
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-china-flag-line mr-1"></i> Mandarin
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-japan-flag-line mr-1"></i> Japanese
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Tours Completed</h4>
+                                    <p class="text-base font-semibold text-gray-900">67</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Years Experience</h4>
+                                    <p class="text-base font-semibold text-gray-900">3</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Completion Rate</h4>
+                                    <p class="text-base font-semibold text-gray-900">92%</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Satisfaction</h4>
+                                    <p class="text-base font-semibold text-gray-900">89%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 flex justify-between mt-auto">
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                View Details
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-user-settings-line"></i>
+                                </div>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 4 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden guide-card transition-all duration-200 flex flex-col">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+
+
+                                <!-- <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20blonde%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=4&orientation=squarish"
+                                            alt="Emily Johnson" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">Emily Johnson</h3>
+                                        <div class="flex items-center mt-1">
+                                            <div class="rating-stars flex">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-2">4.8 (112 reviews)</span>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-2">
+                                            Available
+                                        </span>
+                                    </div>
+                                </div> -->
+
+<div class="flex flex-col items-center text-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-2 border-primary mb-2">
+        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20blonde%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=4&orientation=squarish"
+            alt="Emily Johnson" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 truncate max-w-[180px] mx-auto">Emily Johnson</h3>
+    <div class="flex items-center justify-center mt-1 gap-1">
+        <div class="rating-stars flex text-yellow-400 text-base">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+        </div>
+        <span class="text-sm text-gray-600">(4.8, 112 reviews)</span>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 mt-2">
+        Available
+    </span>
+</div>
+
+
+                                <div class="relative">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <div class="w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Specialties</h4>
+                                <div class="flex flex-wrap">
+                                    <div class="specialty-icon bg-blue-100 text-blue-600">
+                                        <i class="ri-history-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-purple-100 text-purple-600">
+                                        <i class="ri-building-4-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-red-100 text-red-600">
+                                        <i class="ri-restaurant-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Languages</h4>
+                                <div class="flex flex-wrap">
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-english-input mr-1"></i> English
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-germany-flag-line mr-1"></i> German
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-france-flag-line mr-1"></i> French
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Tours Completed</h4>
+                                    <p class="text-base font-semibold text-gray-900">134</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Years Experience</h4>
+                                    <p class="text-base font-semibold text-gray-900">7</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Completion Rate</h4>
+                                    <p class="text-base font-semibold text-gray-900">99%</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Satisfaction</h4>
+                                    <p class="text-base font-semibold text-gray-900">98%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 flex justify-between mt-auto">
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                View Details
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-user-settings-line"></i>
+                                </div>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 5 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden guide-card transition-all duration-200 flex flex-col">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+
+
+                                <!-- <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20beard%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=5&orientation=squarish"
+                                            alt="Michael Patel" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">Michael Patel</h3>
+                                        <div class="flex items-center mt-1">
+                                            <div class="rating-stars flex">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-half-fill filled"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-2">4.6 (92 reviews)</span>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2">
+                                            Assigned
+                                        </span>
+                                    </div>
+                                </div> -->
+
+<div class="flex flex-col items-center text-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-2 border-primary mb-2">
+        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20beard%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=5&orientation=squarish"
+            alt="Michael Patel" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 truncate max-w-[180px] mx-auto">Michael Patel</h3>
+    <div class="flex items-center justify-center mt-1 gap-1">
+        <div class="rating-stars flex text-yellow-400 text-base">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-half-fill"></i>
+        </div>
+        <span class="text-sm text-gray-600">(4.6, 92 reviews)</span>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 mt-2">
+        Assigned
+    </span>
+</div>
+
+
+                                <div class="relative">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <div class="w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Specialties</h4>
+                                <div class="flex flex-wrap">
+                                    <div class="specialty-icon bg-green-100 text-green-600">
+                                        <i class="ri-footprint-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-yellow-100 text-yellow-600">
+                                        <i class="ri-compass-3-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-blue-100 text-blue-600">
+                                        <i class="ri-ship-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Languages</h4>
+                                <div class="flex flex-wrap">
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-english-input mr-1"></i> English
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-india-flag-line mr-1"></i> Hindi
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-spain-flag-line mr-1"></i> Spanish
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Tours Completed</h4>
+                                    <p class="text-base font-semibold text-gray-900">104</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Years Experience</h4>
+                                    <p class="text-base font-semibold text-gray-900">6</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Completion Rate</h4>
+                                    <p class="text-base font-semibold text-gray-900">97%</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Satisfaction</h4>
+                                    <p class="text-base font-semibold text-gray-900">95%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 flex justify-between mt-auto">
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                View Details
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-user-settings-line"></i>
+                                </div>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Guide Card 6 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden guide-card transition-all duration-200 flex flex-col">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+
+
+                                <!-- <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20red%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=6&orientation=squarish"
+                                            alt="Sarah O'Connor" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-lg font-semibold text-gray-900">Sarah O'Connor</h3>
+                                        <div class="flex items-center mt-1">
+                                            <div class="rating-stars flex">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-line empty"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600 ml-2">4.2 (84 reviews)</span>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-2">
+                                            Available
+                                        </span>
+                                    </div>
+                                </div> -->
+<div class="flex flex-col items-center text-center mb-4">
+    <div class="w-20 h-20 rounded-full bg-gray-200 overflow-hidden border-2 border-primary mb-2">
+        <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20red%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=6&orientation=squarish"
+            alt="Sarah O'Connor" class="w-full h-full object-cover">
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 truncate max-w-[180px] mx-auto">Sarah O'Connor</h3>
+    <div class="flex items-center justify-center mt-1 gap-1">
+        <div class="rating-stars flex text-yellow-400 text-base">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-line"></i>
+        </div>
+        <span class="text-sm text-gray-600">(4.2, 84 reviews)</span>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 mt-2">
+        Available
+    </span>
+</div>
+
+                                <div class="relative">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <div class="w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Specialties</h4>
+                                <div class="flex flex-wrap">
+                                    <div class="specialty-icon bg-red-100 text-red-600">
+                                        <i class="ri-restaurant-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-indigo-100 text-indigo-600">
+                                        <i class="ri-palette-line"></i>
+                                    </div>
+                                    <div class="specialty-icon bg-green-100 text-green-600">
+                                        <i class="ri-plant-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Languages</h4>
+                                <div class="flex flex-wrap">
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-english-input mr-1"></i> English
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-ireland-flag-line mr-1"></i> Irish
+                                    </span>
+                                    <span class="language-badge bg-gray-100 text-gray-800">
+                                        <i class="ri-france-flag-line mr-1"></i> French
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Tours Completed</h4>
+                                    <p class="text-base font-semibold text-gray-900">78</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Years Experience</h4>
+                                    <p class="text-base font-semibold text-gray-900">4</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Completion Rate</h4>
+                                    <p class="text-base font-semibold text-gray-900">94%</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-medium text-gray-500">Satisfaction</h4>
+                                    <p class="text-base font-semibold text-gray-900">91%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-4 flex justify-between mt-auto">
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                View Details
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Schedule
+                            </button>
+                            <button class="text-primary hover:text-primary/80 text-sm font-medium flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-user-settings-line"></i>
+                                </div>
+                                Assign
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tour Guides List View (Hidden by default) -->
+                <div id="guides-list" class="bg-white rounded-lg shadow-sm overflow-hidden mb-8 hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Guide</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Specialties</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Languages</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Rating</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Performance</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Guide Row 1 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20short%20brown%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=1&orientation=squarish"
+                                                    alt="Daniel Mitchell" class="h-10 w-10 object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Daniel Mitchell</div>
+                                                <div class="text-xs text-gray-500">8 years experience</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex">
+                                            <div class="specialty-icon bg-blue-100 text-blue-600">
+                                                <i class="ri-history-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-green-100 text-green-600">
+                                                <i class="ri-footprint-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-yellow-100 text-yellow-600">
+                                                <i class="ri-compass-3-line"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">English, Spanish, French</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="rating-stars flex text-sm">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                            </div>
+                                            <span class="ml-1 text-sm text-gray-700">4.9</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">98% Completion</div>
+                                        <div class="text-xs text-gray-500">97% Satisfaction</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-user-settings-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guide Row 2 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20long%20dark%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=2&orientation=squarish"
+                                                    alt="Sophia Rodriguez" class="h-10 w-10 object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Sophia Rodriguez</div>
+                                                <div class="text-xs text-gray-500">5 years experience</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex">
+                                            <div class="specialty-icon bg-red-100 text-red-600">
+                                                <i class="ri-restaurant-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-purple-100 text-purple-600">
+                                                <i class="ri-building-4-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-indigo-100 text-indigo-600">
+                                                <i class="ri-palette-line"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">English, Spanish, Italian</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Assigned</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="rating-stars flex text-sm">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-half-fill filled"></i>
+                                            </div>
+                                            <span class="ml-1 text-sm text-gray-700">4.5</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">96% Completion</div>
+                                        <div class="text-xs text-gray-500">94% Satisfaction</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-user-settings-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guide Row 3 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20an%20asian%20male%20tour%20guide%20with%20glasses%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=3&orientation=squarish"
+                                                    alt="James Chen" class="h-10 w-10 object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">James Chen</div>
+                                                <div class="text-xs text-gray-500">3 years experience</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex">
+                                            <div class="specialty-icon bg-green-100 text-green-600">
+                                                <i class="ri-plant-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-blue-100 text-blue-600">
+                                                <i class="ri-ship-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-yellow-100 text-yellow-600">
+                                                <i class="ri-camera-line"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">English, Mandarin, Japanese</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Off-duty</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="rating-stars flex text-sm">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-line empty"></i>
+                                            </div>
+                                            <span class="ml-1 text-sm text-gray-700">4.1</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">92% Completion</div>
+                                        <div class="text-xs text-gray-500">89% Satisfaction</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-user-settings-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guide Row 4 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20female%20tour%20guide%20with%20blonde%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=4&orientation=squarish"
+                                                    alt="Emily Johnson" class="h-10 w-10 object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Emily Johnson</div>
+                                                <div class="text-xs text-gray-500">7 years experience</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex">
+                                            <div class="specialty-icon bg-blue-100 text-blue-600">
+                                                <i class="ri-history-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-purple-100 text-purple-600">
+                                                <i class="ri-building-4-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-red-100 text-red-600">
+                                                <i class="ri-restaurant-line"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">English, German, French</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="rating-stars flex text-sm">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                            </div>
+                                            <span class="ml-1 text-sm text-gray-700">4.8</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">99% Completion</div>
+                                        <div class="text-xs text-gray-500">98% Satisfaction</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-user-settings-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Guide Row 5 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20beard%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=5&orientation=squarish"
+                                                    alt="Michael Patel" class="h-10 w-10 object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Michael Patel</div>
+                                                <div class="text-xs text-gray-500">6 years experience</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex">
+                                            <div class="specialty-icon bg-green-100 text-green-600">
+                                                <i class="ri-footprint-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-yellow-100 text-yellow-600">
+                                                <i class="ri-compass-3-line"></i>
+                                            </div>
+                                            <div class="specialty-icon bg-blue-100 text-blue-600">
+                                                <i class="ri-ship-line"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">English, Hindi, Spanish</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Assigned</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="rating-stars flex text-sm">
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-fill filled"></i>
+                                                <i class="ri-star-half-fill filled"></i>
+                                            </div>
+                                            <span class="ml-1 text-sm text-gray-700">4.6</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">97% Completion</div>
+                                        <div class="text-xs text-gray-500">95% Satisfaction</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-user-settings-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
+                                class="font-medium">32</span> guides
+                        </div>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap">Previous</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add New Guide Modal (Hidden by default) -->
+                <div id="add-guide-modal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+                    <div
+                        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true">&#8203;</span>
+                        <div
+                            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add New Tour Guide
+                                        </h3>
+                                        <div class="mt-2 space-y-4">
+                                            <div>
+                                                <label for="guide-name"
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Full
+                                                    Name</label>
+                                                <input type="text" id="guide-name"
+                                                    class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-button">
+                                            </div>
+                                            <div>
+                                                <label for="guide-email"
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Email
+                                                    Address</label>
+                                                <input type="email" id="guide-email"
+                                                    class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-button">
+                                            </div>
+                                            <div>
+                                                <label for="guide-phone"
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Phone
+                                                    Number</label>
+                                                <input type="tel" id="guide-phone"
+                                                    class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-button">
+                                            </div>
+                                            <div>
+                                                <label for="guide-experience"
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Years of
+                                                    Experience</label>
+                                                <input type="number" id="guide-experience"
+                                                    class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-button">
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Specialties</label>
+                                                <div class="space-y-2">
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Historical Tours</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Adventure
+                                                            Activities</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Cultural
+                                                            Experiences</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Food & Culinary</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Nature &
+                                                            Wildlife</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Languages</label>
+                                                <div class="space-y-2">
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">English</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Spanish</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">French</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center mr-4">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Mandarin</span>
+                                                    </label>
+                                                    <label class="inline-flex items-center">
+                                                        <input type="checkbox"
+                                                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                                        <span class="ml-2 text-sm text-gray-700">Japanese</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label for="guide-photo"
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Profile
+                                                    Photo</label>
+                                                <div class="mt-1 flex items-center">
+                                                    <span
+                                                        class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                                                        <div
+                                                            class="w-full h-full flex items-center justify-center text-gray-400">
+                                                            <i class="ri-user-line ri-lg"></i>
+                                                        </div>
+                                                    </span>
+                                                    <button type="button"
+                                                        class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-button text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary whitespace-nowrap">
+                                                        Upload
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <button type="button"
+                                    class="w-full inline-flex justify-center rounded-button border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm whitespace-nowrap !rounded-button">
+                                    Add Guide
+                                </button>
+                                <button type="button" id="close-add-guide-modal"
+                                    class="mt-3 w-full inline-flex justify-center rounded-button border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm whitespace-nowrap !rounded-button">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guide Details Modal (Hidden by default) -->
+                <div id="guide-details-modal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+                    <div
+                        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true">&#8203;</span>
+                        <div
+                            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="absolute top-0 right-0 pt-4 pr-4">
+                                    <button id="close-guide-details-modal"
+                                        class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                                        <div class="w-6 h-6 flex items-center justify-center">
+                                            <i class="ri-close-line"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div class="sm:flex sm:items-start">
+                                    <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                                        <div class="flex items-center mb-6">
+                                            <div
+                                                class="w-20 h-20 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20male%20tour%20guide%20with%20short%20brown%20hair%20and%20friendly%20smile%2C%20outdoor%20setting%2C%20natural%20lighting%2C%20high%20quality%20portrait&width=200&height=200&seq=1&orientation=squarish"
+                                                    alt="Daniel Mitchell" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <h3 class="text-xl font-bold text-gray-900">Daniel Mitchell</h3>
+                                                <div class="flex items-center mt-1">
+                                                    <div class="rating-stars flex">
+                                                        <i class="ri-star-fill filled"></i>
+                                                        <i class="ri-star-fill filled"></i>
+                                                        <i class="ri-star-fill filled"></i>
+                                                        <i class="ri-star-fill filled"></i>
+                                                        <i class="ri-star-fill filled"></i>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600 ml-2">4.9 (128 reviews)</span>
+                                                </div>
+                                                <div class="flex mt-2">
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mr-2">
+                                                        Available
+                                                    </span>
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        8 years experience
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border-t border-gray-200 pt-4">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-500 mb-2">Contact
+                                                        Information</h4>
+                                                    <ul class="space-y-2">
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-gray-400">
+                                                                <i class="ri-mail-line"></i>
+                                                            </div>
+                                                            daniel.mitchell@example.com
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-gray-400">
+                                                                <i class="ri-phone-line"></i>
+                                                            </div>
+                                                            (555) 123-4567
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-gray-400">
+                                                                <i class="ri-map-pin-line"></i>
+                                                            </div>
+                                                            San Francisco, CA
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-500 mb-2">Certifications
+                                                    </h4>
+                                                    <ul class="space-y-2">
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-green-500">
+                                                                <i class="ri-check-line"></i>
+                                                            </div>
+                                                            Wilderness First Responder
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-green-500">
+                                                                <i class="ri-check-line"></i>
+                                                            </div>
+                                                            CPR & First Aid
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-green-500">
+                                                                <i class="ri-check-line"></i>
+                                                            </div>
+                                                            Professional Tour Guide Association
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border-t border-gray-200 pt-4 mt-4">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-500 mb-2">Specialties</h4>
+                                                    <ul class="space-y-2">
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-blue-600">
+                                                                <i class="ri-history-line"></i>
+                                                            </div>
+                                                            Historical Tours
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-green-600">
+                                                                <i class="ri-footprint-line"></i>
+                                                            </div>
+                                                            Adventure Activities
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-yellow-600">
+                                                                <i class="ri-compass-3-line"></i>
+                                                            </div>
+                                                            Outdoor Exploration
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-500 mb-2">Languages</h4>
+                                                    <ul class="space-y-2">
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-gray-600">
+                                                                <i class="ri-english-input"></i>
+                                                            </div>
+                                                            English (Native)
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-gray-600">
+                                                                <i class="ri-spain-flag-line"></i>
+                                                            </div>
+                                                            Spanish (Fluent)
+                                                        </li>
+                                                        <li class="flex items-center text-sm text-gray-700">
+                                                            <div
+                                                                class="w-5 h-5 flex items-center justify-center mr-2 text-gray-600">
+                                                                <i class="ri-france-flag-line"></i>
+                                                            </div>
+                                                            French (Conversational)
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border-t border-gray-200 pt-4 mt-4">
+                                            <h4 class="text-sm font-medium text-gray-500 mb-2">Performance Metrics</h4>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                <div class="bg-gray-50 p-3 rounded-lg">
+                                                    <h5 class="text-xs font-medium text-gray-500">Tours Completed</h5>
+                                                    <p class="text-lg font-semibold text-gray-900">142</p>
+                                                </div>
+                                                <div class="bg-gray-50 p-3 rounded-lg">
+                                                    <h5 class="text-xs font-medium text-gray-500">Completion Rate</h5>
+                                                    <p class="text-lg font-semibold text-gray-900">98%</p>
+                                                </div>
+                                                <div class="bg-gray-50 p-3 rounded-lg">
+                                                    <h5 class="text-xs font-medium text-gray-500">Customer Satisfaction
+                                                    </h5>
+                                                    <p class="text-lg font-semibold text-gray-900">97%</p>
+                                                </div>
+                                                <div class="bg-gray-50 p-3 rounded-lg">
+                                                    <h5 class="text-xs font-medium text-gray-500">On-Time Rate</h5>
+                                                    <p class="text-lg font-semibold text-gray-900">99%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border-t border-gray-200 pt-4 mt-4">
+                                            <h4 class="text-sm font-medium text-gray-500 mb-2">Recent Reviews</h4>
+                                            <div class="space-y-4">
+                                                <div class="bg-gray-50 p-3 rounded-lg">
+                                                    <div class="flex items-center justify-between mb-2">
+                                                        <div class="flex items-center">
+                                                            <div class="rating-stars flex text-sm">
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                            </div>
+                                                            <span class="ml-2 text-sm font-medium text-gray-700">Rebecca
+                                                                Wilson</span>
+                                                        </div>
+                                                        <span class="text-xs text-gray-500">July 2, 2025</span>
+                                                    </div>
+                                                    <p class="text-sm text-gray-700">Daniel was an exceptional guide!
+                                                        His knowledge of the city's history was impressive, and he made
+                                                        our tour both educational and entertaining. Highly recommend!
+                                                    </p>
+                                                </div>
+                                                <div class="bg-gray-50 p-3 rounded-lg">
+                                                    <div class="flex items-center justify-between mb-2">
+                                                        <div class="flex items-center">
+                                                            <div class="rating-stars flex text-sm">
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                                <i class="ri-star-fill filled"></i>
+                                                            </div>
+                                                            <span class="ml-2 text-sm font-medium text-gray-700">Thomas
+                                                                Anderson</span>
+                                                        </div>
+                                                        <span class="text-xs text-gray-500">June 28, 2025</span>
+                                                    </div>
+                                                    <p class="text-sm text-gray-700">We had a fantastic experience with
+                                                        Daniel. He was patient with our large group and accommodated all
+                                                        our requests. His local insights made the tour special.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <button type="button"
+                                    class="w-full inline-flex justify-center rounded-button border border-transparent shadow-sm px-4 py-2 bg-primary text-base font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-user-settings-line"></i>
+                                    </div>
+                                    Assign to Activity
+                                </button>
+                                <button type="button"
+                                    class="mt-3 w-full inline-flex justify-center rounded-button border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                    View Schedule
+                                </button>
+                                <button type="button"
+                                    class="mt-3 w-full inline-flex justify-center rounded-button border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-edit-line"></i>
+                                    </div>
+                                    Edit Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span
+                            class="font-medium">32</span> guides
+                    </div>
+                    <div class="flex space-x-1">
+                        <button
+                            class="px-3 py-1 border border-gray-300 rounded-l-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap">Previous</button>
+                        <button
+                            class="px-3 py-1 border border-gray-300 text-sm font-medium text-white bg-primary whitespace-nowrap">1</button>
+                        <button
+                            class="px-3 py-1 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">2</button>
+                        <button
+                            class="px-3 py-1 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">3</button>
+                        <button
+                            class="px-3 py-1 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">4</button>
+                        <button
+                            class="px-3 py-1 border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">5</button>
+                        <button
+                            class="px-3 py-1 border border-gray-300 rounded-r-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Next</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script id="tour-guides-interactions">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Filter panel toggle
+            const filterBtn = document.getElementById('filter-btn');
+            const filtersPanel = document.getElementById('filters-panel');
+            const closeFiltersBtn = document.getElementById('close-filters');
+
+            filterBtn.addEventListener('click', function () {
+                filtersPanel.classList.toggle('hidden');
+            });
+
+            closeFiltersBtn.addEventListener('click', function () {
+                filtersPanel.classList.add('hidden');
+            });
+
+            // View toggle (Grid/List)
+            // ...existing code...
+// View toggle (Grid/List)
+const viewToggle = document.getElementById('view-toggle');
+const gridBtn = viewToggle.querySelector('button:first-child');
+const listBtn = viewToggle.querySelector('button:last-child');
+const guidesGrid = document.getElementById('guides-grid');
+const guidesList = document.getElementById('guides-list');
+
+function activateGrid() {
+    gridBtn.classList.add('text-primary', 'bg-white', 'border-primary', 'z-10');
+    gridBtn.classList.remove('text-gray-700', 'bg-gray-50', 'border-gray-300');
+    gridBtn.classList.add('border-r-0');
+    listBtn.classList.add('text-gray-700', 'bg-gray-50', 'border-gray-300');
+    listBtn.classList.remove('text-primary', 'bg-white', 'border-primary', 'z-10');
+    listBtn.classList.remove('border-l-0');
+    guidesGrid.classList.remove('hidden');
+    guidesList.classList.add('hidden');
+}
+
+function activateList() {
+    listBtn.classList.add('text-primary', 'bg-white', 'border-primary', 'z-10');
+    listBtn.classList.remove('text-gray-700', 'bg-gray-50', 'border-gray-300');
+    listBtn.classList.add('border-l-0');
+    gridBtn.classList.add('text-gray-700', 'bg-gray-50', 'border-gray-300');
+    gridBtn.classList.remove('text-primary', 'bg-white', 'border-primary', 'z-10');
+    gridBtn.classList.remove('border-r-0');
+    guidesList.classList.remove('hidden');
+    guidesGrid.classList.add('hidden');
+}
+
+// Set initial state (Grid active)
+activateGrid();
+
+gridBtn.addEventListener('click', activateGrid);
+listBtn.addEventListener('click', activateList);
+// ...existing code...
+            // const viewToggle = document.getElementById('view-toggle');
+            // const gridBtn = viewToggle.querySelector('button:first-child');
+            // const listBtn = viewToggle.querySelector('button:last-child');
+            // const guidesGrid = document.getElementById('guides-grid');
+            // const guidesList = document.getElementById('guides-list');
+
+            // gridBtn.addEventListener('click', function () {
+            //     gridBtn.classList.remove('text-gray-700');
+            //     gridBtn.classList.add('text-primary');
+            //     listBtn.classList.remove('text-primary');
+            //     listBtn.classList.add('text-gray-700');
+            //     guidesGrid.classList.remove('hidden');
+            //     guidesList.classList.add('hidden');
+            // });
+
+            // listBtn.addEventListener('click', function () {
+            //     listBtn.classList.remove('text-gray-700');
+            //     listBtn.classList.add('text-primary');
+            //     gridBtn.classList.remove('text-primary');
+            //     gridBtn.classList.add('text-gray-700');
+            //     guidesList.classList.remove('hidden');
+            //     guidesGrid.classList.add('hidden');
+            // });
+
+            // Add Guide Modal
+            const addGuideBtn = document.getElementById('add-guide-btn');
+            const addGuideModal = document.getElementById('add-guide-modal');
+            const closeAddGuideModalBtn = document.getElementById('close-add-guide-modal');
+
+            addGuideBtn.addEventListener('click', function () {
+                addGuideModal.classList.remove('hidden');
+            });
+
+            closeAddGuideModalBtn.addEventListener('click', function () {
+                addGuideModal.classList.add('hidden');
+            });
+
+            // Guide Details Modal
+            const viewDetailsButtons = document.querySelectorAll('.guide-card .text-primary:first-child');
+            const guideDetailsModal = document.getElementById('guide-details-modal');
+            const closeGuideDetailsModalBtn = document.getElementById('close-guide-details-modal');
+
+            viewDetailsButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    guideDetailsModal.classList.remove('hidden');
+                });
+            });
+
+            closeGuideDetailsModalBtn.addEventListener('click', function () {
+                guideDetailsModal.classList.add('hidden');
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function (event) {
+                if (event.target === addGuideModal) {
+                    addGuideModal.classList.add('hidden');
+                }
+                if (event.target === guideDetailsModal) {
+                    guideDetailsModal.classList.add('hidden');
+                }
+            });
+
+            // Make the Employees submenu visible by default
+            const employeesButton = document.querySelector('button.sidebar-link:nth-of-type(5)');
+            const employeesSubmenu = employeesButton.nextElementSibling;
+            employeesSubmenu.classList.remove('hidden');
+            employeesButton.setAttribute('data-expanded', 'true');
+            const arrowIcon = employeesButton.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+            arrowIcon.style.transform = 'rotate(180deg)';
+        });
+    </script>
+
+</body>
+
+</html>

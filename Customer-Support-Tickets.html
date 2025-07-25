@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Tickets</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-open {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-in-progress {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-resolved {
+            background-color: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .status-closed {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .priority-high {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .priority-medium {
+            background-color: #ffedd5;
+            color: #c2410c;
+        }
+
+        .priority-low {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 10;
+            min-width: 12rem;
+            padding: 0.5rem 0;
+            margin-top: 0.25rem;
+            background-color: white;
+            border-radius: 0.375rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+   <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search tickets, customers, agents...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Support Tickets</h1>
+                        <p class="text-sm text-gray-500 mt-1">Manage and respond to customer support requests</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <!-- <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                            data-readdy="true"
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-arrow-left-line"></i>
+                            </div>
+                            Back to Dashboard
+                        </a> -->
+                        <button
+                            class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-add-line"></i>
+                            </div>
+                            Create Ticket
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ticket Metrics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Open Tickets</h3>
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                    <i class="ri-ticket-2-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">42</span>
+                            <span class="ml-2 text-sm font-medium text-red-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                12.5%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous period</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Avg. Response Time</h3>
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">3.2h</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-down-line"></i>
+                                </div>
+                                8.3%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous period</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Resolution Rate</h3>
+                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                    <i class="ri-check-double-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">87%</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                4.2%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous period</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Customer Satisfaction</h3>
+                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                    <i class="ri-star-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">4.7/5</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                0.3
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous period</p>
+                    </div>
+                </div>
+
+                <!-- Ticket Management Section -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+                    <!-- Filters and Actions -->
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div class="flex flex-wrap gap-3">
+                                <div class="relative" id="status-filter-container">
+                                    <button id="status-filter-button"
+                                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-filter-line"></i>
+                                        </div>
+                                        Status
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="status-filter-dropdown" class="filter-dropdown hidden">
+                                        <div class="px-4 py-2 border-b border-gray-100">
+                                            <p class="text-xs font-medium text-gray-500">FILTER BY STATUS</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                                                    checked>
+                                                <span class="ml-2 text-sm text-gray-700">All</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">Open</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">In Progress</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">Pending</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">Resolved</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">Closed</span>
+                                            </label>
+                                        </div>
+                                        <div class="px-4 py-2 border-t border-gray-100 flex justify-end">
+                                            <button
+                                                class="px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 !rounded-button">Apply
+                                                Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="relative" id="priority-filter-container">
+                                    <button id="priority-filter-button"
+                                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-alarm-warning-line"></i>
+                                        </div>
+                                        Priority
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="priority-filter-dropdown" class="filter-dropdown hidden">
+                                        <div class="px-4 py-2 border-b border-gray-100">
+                                            <p class="text-xs font-medium text-gray-500">FILTER BY PRIORITY</p>
+                                        </div>
+                                        <div class="p-2">
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary"
+                                                    checked>
+                                                <span class="ml-2 text-sm text-gray-700">All</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">High</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">Medium</span>
+                                            </label>
+                                            <label
+                                                class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                                <input type="checkbox"
+                                                    class="form-checkbox h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-700">Low</span>
+                                            </label>
+                                        </div>
+                                        <div class="px-4 py-2 border-t border-gray-100 flex justify-end">
+                                            <button
+                                                class="px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 !rounded-button">Apply
+                                                Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="relative" id="date-filter-container">
+                                    <button id="date-filter-button"
+                                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-calendar-line"></i>
+                                        </div>
+                                        Date Range
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="date-filter-dropdown" class="filter-dropdown hidden">
+                                        <div class="px-4 py-2 border-b border-gray-100">
+                                            <p class="text-xs font-medium text-gray-500">SELECT DATE RANGE</p>
+                                        </div>
+                                        <div class="p-4 space-y-4">
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700 mb-1">Start
+                                                    Date</label>
+                                                <input type="date"
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700 mb-1">End
+                                                    Date</label>
+                                                <input type="date"
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                            </div>
+                                        </div>
+                                        <div class="px-4 py-2 border-t border-gray-100 flex justify-end">
+                                            <button
+                                                class="px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 !rounded-button">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="relative" id="sort-filter-container">
+                                    <button id="sort-filter-button"
+                                        class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-sort-desc"></i>
+                                        </div>
+                                        Sort By
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="sort-filter-dropdown" class="filter-dropdown hidden">
+                                        <div class="p-2">
+                                            <button
+                                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Newest
+                                                First</button>
+                                            <button
+                                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Oldest
+                                                First</button>
+                                            <button
+                                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Priority
+                                                (High-Low)</button>
+                                            <button
+                                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Priority
+                                                (Low-High)</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <button
+                                    class="ctaz px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-user-add-line"></i>
+                                    </div>
+                                    Assign
+                                </button>
+                                <button
+                                    class="ctaz px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-download-line"></i>
+                                    </div>
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tickets Table -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Ticket ID</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Customer</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Subject</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Priority</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Assigned To</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-primary">#TK-7829</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-purple-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Jennifer Lawrence</div>
+                                                <div class="text-xs text-gray-500">jennifer.l@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Booking confirmation not received</div>
+                                        <div class="text-xs text-gray-500 truncate max-w-xs">I made a booking for the
+                                            sunset cruise but haven't received any confirmation email yet.</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-open">Open</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge priority-high">High</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 6, 2025</div>
+                                        <div class="text-xs text-gray-500">09:42 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-7 w-7 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <div class="w-3.5 h-3.5 flex items-center justify-center text-blue-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 text-sm text-gray-900">Michael Chen</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-reply-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-primary">#TK-7828</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-green-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Robert Anderson</div>
+                                                <div class="text-xs text-gray-500">robert.a@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Refund request for canceled tour</div>
+                                        <div class="text-xs text-gray-500 truncate max-w-xs">I had to cancel my hiking
+                                            tour due to illness and would like to request a refund as per your policy.
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-in-progress">In Progress</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge priority-medium">Medium</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 5, 2025</div>
+                                        <div class="text-xs text-gray-500">02:15 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-7 w-7 rounded-full bg-pink-100 flex items-center justify-center">
+                                                <div class="w-3.5 h-3.5 flex items-center justify-center text-pink-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 text-sm text-gray-900">Sarah Johnson</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-reply-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-primary">#TK-7827</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-yellow-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Emily Rodriguez</div>
+                                                <div class="text-xs text-gray-500">emily.r@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Special dietary requirements</div>
+                                        <div class="text-xs text-gray-500 truncate max-w-xs">I need to know if the food
+                                            tour can accommodate gluten-free and dairy-free options.</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-pending">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge priority-low">Low</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 4, 2025</div>
+                                        <div class="text-xs text-gray-500">11:30 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-7 w-7 rounded-full bg-green-100 flex items-center justify-center">
+                                                <div
+                                                    class="w-3.5 h-3.5 flex items-center justify-center text-green-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 text-sm text-gray-900">David Wilson</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-reply-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-primary">#TK-7826</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-red-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Alexander Thompson</div>
+                                                <div class="text-xs text-gray-500">alex.t@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Guide didn't show up for tour</div>
+                                        <div class="text-xs text-gray-500 truncate max-w-xs">Our scheduled guide for the
+                                            historical city tour never arrived at the meeting point.</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-resolved">Resolved</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge priority-high">High</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 3, 2025</div>
+                                        <div class="text-xs text-gray-500">04:22 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-7 w-7 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <div class="w-3.5 h-3.5 flex items-center justify-center text-blue-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 text-sm text-gray-900">Michael Chen</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-reply-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-primary">#TK-7825</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-blue-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Sophia Martinez</div>
+                                                <div class="text-xs text-gray-500">sophia.m@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Billing discrepancy</div>
+                                        <div class="text-xs text-gray-500 truncate max-w-xs">I was charged twice for the
+                                            same mountain biking adventure booking.</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-closed">Closed</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge priority-medium">Medium</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 2, 2025</div>
+                                        <div class="text-xs text-gray-500">10:18 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-7 w-7 rounded-full bg-pink-100 flex items-center justify-center">
+                                                <div class="w-3.5 h-3.5 flex items-center justify-center text-pink-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 text-sm text-gray-900">Sarah Johnson</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-reply-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <input type="checkbox"
+                                                class="h-4 w-4 text-primary rounded border-gray-300 focus:ring-primary">
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-primary">#TK-7824</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-indigo-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">William Parker</div>
+                                                <div class="text-xs text-gray-500">william.p@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Accessibility concerns</div>
+                                        <div class="text-xs text-gray-500 truncate max-w-xs">Need information about
+                                            wheelchair accessibility for the harbor cruise tour.</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-open">Open</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge priority-low">Low</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 1, 2025</div>
+                                        <div class="text-xs text-gray-500">03:45 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-7 w-7 rounded-full bg-green-100 flex items-center justify-center">
+                                                <div
+                                                    class="w-3.5 h-3.5 flex items-center justify-center text-green-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 text-sm text-gray-900">David Wilson</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-reply-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-more-2-fill"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span
+                                class="font-medium">42</span> tickets
+                        </div>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">Previous</button>
+                            <button
+                                class="px-3 py-1 bg-primary border border-primary rounded-button text-sm font-medium text-white whitespace-nowrap !rounded-button">1</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">2</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">3</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Analytics -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Ticket Volume Trends</h3>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Weekly</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium text-white bg-primary rounded-full whitespace-nowrap">Monthly</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Yearly</button>
+                            </div>
+                        </div>
+                        <div id="ticket-volume-chart" class="h-64"></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Tickets by Category</h3>
+                            <button class="text-sm text-primary font-medium flex items-center whitespace-nowrap">
+                                View Details
+                                <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div id="ticket-category-chart" class="h-64"></div>
+                    </div>
+                </div>
+
+                <!-- Agent Performance -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-base font-medium text-gray-900">Agent Performance</h3>
+                        <button class="text-sm text-primary font-medium flex items-center whitespace-nowrap">
+                            View All Agents
+                            <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                <i class="ri-arrow-right-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Agent</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Assigned Tickets</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Resolved</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Avg. Response Time</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Customer Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-blue-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Michael Chen</div>
+                                                <div class="text-xs text-gray-500">Support Specialist</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">24</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">21 (87.5%)</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">2.4 hours</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900 mr-2">4.8</div>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-half-fill"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-pink-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-pink-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">Sarah Johnson</div>
+                                                <div class="text-xs text-gray-500">Customer Support Lead</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">32</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">29 (90.6%)</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">1.8 hours</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900 mr-2">4.9</div>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                                                <div class="w-4 h-4 flex items-center justify-center text-green-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3">
+                                                <div class="text-sm font-medium text-gray-900">David Wilson</div>
+                                                <div class="text-xs text-gray-500">Support Agent</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">18</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">15 (83.3%)</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">3.1 hours</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="text-sm font-medium text-gray-900 mr-2">4.6</div>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-half-fill"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script id="filter-dropdowns-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterContainers = [
+                { button: 'status-filter-button', dropdown: 'status-filter-dropdown' },
+                { button: 'priority-filter-button', dropdown: 'priority-filter-dropdown' },
+                { button: 'date-filter-button', dropdown: 'date-filter-dropdown' },
+                { button: 'sort-filter-button', dropdown: 'sort-filter-dropdown' }
+            ];
+
+            filterContainers.forEach(filter => {
+                const button = document.getElementById(filter.button);
+                const dropdown = document.getElementById(filter.dropdown);
+
+                if (button && dropdown) {
+                    button.addEventListener('click', function (e) {
+                        e.stopPropagation();
+
+                        // Close all other dropdowns
+                        filterContainers.forEach(otherFilter => {
+                            if (otherFilter.dropdown !== filter.dropdown) {
+                                document.getElementById(otherFilter.dropdown).classList.add('hidden');
+                            }
+                        });
+
+                        dropdown.classList.toggle('hidden');
+                    });
+                }
+            });
+
+            // Close all dropdowns when clicking outside
+            document.addEventListener('click', function (event) {
+                filterContainers.forEach(filter => {
+                    const button = document.getElementById(filter.button);
+                    const dropdown = document.getElementById(filter.dropdown);
+
+                    if (button && dropdown && !button.contains(event.target) && !dropdown.contains(event.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script id="charts-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ticket Volume Chart
+            const ticketVolumeChart = echarts.init(document.getElementById('ticket-volume-chart'));
+            const ticketVolumeOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#f0f0f0',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 0,
+                    top: 10,
+                    bottom: 0,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                series: [
+                    {
+                        name: 'New Tickets',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(87, 181, 231, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(87, 181, 231, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [45, 52, 38, 41, 58, 63, 42, 39, 47, 53, 48, 61]
+                    },
+                    {
+                        name: 'Resolved Tickets',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(141, 211, 199, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(141, 211, 199, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [38, 45, 32, 37, 50, 58, 35, 32, 41, 48, 42, 55]
+                    }
+                ]
+            };
+            ticketVolumeChart.setOption(ticketVolumeOption);
+
+            // Ticket Category Chart
+            const ticketCategoryChart = echarts.init(document.getElementById('ticket-category-chart'));
+            const ticketCategoryOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#f0f0f0',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    itemWidth: 14,
+                    itemHeight: 14,
+                    textStyle: {
+                        color: '#4b5563'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Ticket Categories',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['40%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false
+                        },
+                        emphasis: {
+                            label: {
+                                show: false
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 32, name: 'Booking Issues' },
+                            { value: 24, name: 'Refund Requests' },
+                            { value: 18, name: 'Technical Problems' },
+                            { value: 14, name: 'Billing Questions' },
+                            { value: 12, name: 'General Inquiries' }
+                        ],
+                        color: [
+                            'rgba(87, 181, 231, 1)',
+                            'rgba(141, 211, 199, 1)',
+                            'rgba(251, 191, 114, 1)',
+                            'rgba(252, 141, 98, 1)',
+                            'rgba(179, 179, 179, 1)'
+                        ]
+                    }
+                ]
+            };
+            ticketCategoryChart.setOption(ticketCategoryOption);
+
+            // Resize charts when window resizes
+            window.addEventListener('resize', function () {
+                ticketVolumeChart.resize();
+                ticketCategoryChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

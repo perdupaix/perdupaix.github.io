@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Schedules</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+            grid-auto-rows: minmax(60px, auto);
+        }
+
+        .calendar-header {
+            display: grid;
+            grid-template-columns: 100px repeat(7, 1fr);
+        }
+
+        .time-slot {
+            border-right: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 8px;
+        }
+
+        .calendar-day {
+            border-right: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 8px;
+        }
+
+        .calendar-event {
+            position: absolute;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .event-regular {
+            background-color: rgba(79, 70, 229, 0.2);
+            border-left: 3px solid #4f46e5;
+            color: #4f46e5;
+        }
+
+        .event-training {
+            background-color: rgba(139, 92, 246, 0.2);
+            border-left: 3px solid #8b5cf6;
+            color: #8b5cf6;
+        }
+
+        .event-timeoff {
+            background-color: rgba(156, 163, 175, 0.2);
+            border-left: 3px solid #9ca3af;
+            color: #6b7280;
+        }
+
+        .event-conflict {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-left: 3px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .event-available {
+            background-color: rgba(16, 185, 129, 0.05);
+            border: 1px dashed #10b981;
+            color: #10b981;
+        }
+
+        .view-toggle-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                                Listings</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                                Providers</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Pending
+                                Approval</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+
+                    </ul>
+                </li>
+
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+
+
+                    </ul>
+                </li>
+
+
+                <!-- Support -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+
+
+                    </ul>
+                </li>
+
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search employees, shifts, locations...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-hidden bg-gray-50 flex">
+            <!-- Main Schedule Content -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Page Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Staff Schedules</h1>
+                            <p class="text-sm text-gray-500 mt-1">Manage and view employee work schedules across all
+                                Listings</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <!-- <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                                data-readdy="true"
+                                class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-arrow-left-line"></i>
+                                </div>
+                                Back to Dashboard
+                            </a> -->
+                            <button
+                                class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                Export Schedule
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter and Controls -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <!-- Employee Filter -->
+                                <div class="relative">
+                                    <button id="employee-filter"
+                                        class="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-user-line"></i>
+                                        </div>
+                                        All Employees
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="employee-dropdown"
+                                        class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                        <div class="px-3 py-2">
+                                            <input type="search"
+                                                class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-button"
+                                                placeholder="Search employees...">
+                                        </div>
+                                        <div class="">
+                                            <div class="px-3 py-2 text-xs font-semibold text-gray-500 bg-gray-50">Tour
+                                                Guides</div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Michael Rodriguez</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Sarah Johnson</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>David Chen</span>
+                                            </div>
+                                            <div class="px-3 py-2 text-xs font-semibold text-gray-500 bg-gray-50">
+                                                Activity Instructors</div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Jessica Williams</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Robert Martinez</span>
+                                            </div>
+                                        </div>
+                                        <div class="border-t px-3 py-2 flex justify-between">
+                                            <button class="text-xs text-gray-600">Clear All</button>
+                                            <button class="text-xs text-primary font-medium">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Location Filter -->
+                                <div class="relative">
+                                    <button id="location-filter"
+                                        class="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-map-pin-line"></i>
+                                        </div>
+                                        All Locations
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="location-dropdown"
+                                        class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                        <div class="px-3 py-2">
+                                            <input type="search"
+                                                class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-button"
+                                                placeholder="Search locations...">
+                                        </div>
+                                        <div class="">
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Golden Gate Bridge</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Alcatraz Island</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Fisherman's Wharf</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Muir Woods</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Napa Valley</span>
+                                            </div>
+                                        </div>
+                                        <div class="border-t px-3 py-2 flex justify-between">
+                                            <button class="text-xs text-gray-600">Clear All</button>
+                                            <button class="text-xs text-primary font-medium">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Department Filter -->
+                                <div class="relative">
+                                    <button id="department-filter"
+                                        class="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-building-line"></i>
+                                        </div>
+                                        All Departments
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="department-dropdown"
+                                        class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                        <div class="">
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Tour Guides</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Activity Instructors</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Customer Service</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Operations</span>
+                                            </div>
+                                            <div
+                                                class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                                <input type="checkbox" class="mr-2" checked>
+                                                <span>Management</span>
+                                            </div>
+                                        </div>
+                                        <div class="border-t px-3 py-2 flex justify-between">
+                                            <button class="text-xs text-gray-600">Clear All</button>
+                                            <button class="text-xs text-primary font-medium">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Status Filter -->
+                                <div class="relative">
+                                    <button id="status-filter"
+                                        class="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                            <i class="ri-filter-3-line"></i>
+                                        </div>
+                                        All Statuses
+                                        <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="status-dropdown"
+                                        class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                                        <div
+                                            class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                            <input type="checkbox" class="mr-2" checked>
+                                            <span>Active</span>
+                                        </div>
+                                        <div
+                                            class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                            <input type="checkbox" class="mr-2" checked>
+                                            <span>Time-off</span>
+                                        </div>
+                                        <div
+                                            class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                            <input type="checkbox" class="mr-2" checked>
+                                            <span>Training</span>
+                                        </div>
+                                        <div
+                                            class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
+                                            <input type="checkbox" class="mr-2" checked>
+                                            <span>Conflicts</span>
+                                        </div>
+                                        <div class="border-t px-3 py-2 flex justify-between">
+                                            <button class="text-xs text-gray-600">Clear All</button>
+                                            <button class="text-xs text-primary font-medium">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-3">
+                                <!-- Quick Actions -->
+                                <button id="add-shift-btn"
+                                    class="ctaz px-3 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-add-line"></i>
+                                    </div>
+                                    Add New Shift
+                                </button>
+                                <button id="time-off-btn"
+                                    class="px-3 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-calendar-event-line"></i>
+                                    </div>
+                                    Time-off Requests
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Navigation -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <button id="prev-period"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                    <i class="ri-arrow-left-s-line"></i>
+                                </button>
+                                <button id="next-period"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                    <i class="ri-arrow-right-s-line"></i>
+                                </button>
+                                <button id="today-btn"
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                    Today
+                                </button>
+                                <h2 class="text-lg font-semibold text-gray-900">July 6 - 12, 2025</h2>
+                            </div>
+                            <div class="flex items-center bg-gray-100 rounded-full p-1">
+                                <button
+                                    class="view-toggle-btn px-4 py-1.5 rounded-full text-sm font-medium active">Week</button>
+                                <button
+                                    class="view-toggle-btn px-4 py-1.5 rounded-full text-sm font-medium text-gray-700">Month</button>
+                                <button
+                                    class="view-toggle-btn px-4 py-1.5 rounded-full text-sm font-medium text-gray-700">Day</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <style>
+                        /* Ensure the main container for the calendar can scroll vertically if content overflows */
+                        .calendar-wrapper {
+                            min-height: 600px;
+                            /* Adjust this value as needed for vertical scroll */
+                            /* overflow-y: auto; */
+                            -webkit-overflow-scrolling: touch;
+                            /* For smooth scrolling on iOS */
+                        }
+
+                        /* Styles for the main calendar grid layout (now a single grid) */
+                        .calendar-grid-main {
+                            display: grid;
+                            /* Fixed width for the employee column, flexible for days, but with a minimum to force horizontal scroll */
+                            grid-template-columns: 200px repeat(7, minmax(120px, 1fr));
+                            min-width: 900px;
+                            /* Ensures the grid content extends beyond viewport, enabling horizontal scroll */
+                        }
+
+                        /* General cell styling applied to all direct children of the main grid */
+                        .calendar-grid-main>div {
+                            border-bottom: 1px solid #e5e7eb;
+                            border-right: 1px solid #e5e7eb;
+                        }
+
+                        /* Remove right border for the last column in each row */
+                        .calendar-grid-main>div:nth-child(8n) {
+                            border-right: none;
+                        }
+
+                        /* Sticky header cell for 'Employees' */
+                        .calendar-header-cell.sticky-column {
+                            position: sticky;
+                            top: 0;
+                            /* Stick to the top of its scroll container */
+                            left: 0;
+                            z-index: 30;
+                            /* Highest z-index to be above scrolling content and employee sticky cells */
+                            background-color: #f9fafb;
+                            /* Match time-slot background */
+                            border-bottom: 1px solid #e5e7eb;
+                            /* Ensure border is visible when sticky */
+                        }
+
+                        /* Sticky employee column for horizontal scrolling */
+                        .time-slot {
+                            position: sticky;
+                            left: 0;
+                            z-index: 20;
+                            /* Lower than header cell, higher than scrolling content */
+                            background-color: #f9fafb;
+                            border-right: 1px solid #e5e7eb;
+                        }
+
+                        /* Calendar day cell styling */
+                        .calendar-day {
+                            background-color: #ffffff;
+                            padding: 0.5rem;
+                            position: relative;
+                            /* Needed for absolute positioning of events */
+                        }
+
+                        /* Event block styling */
+                        .calendar-event {
+                            border-radius: 0.375rem;
+                            /* Tailwind rounded-md */
+                            padding: 0.25rem 0.5rem;
+                            cursor: pointer;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                            /* Tailwind shadow-sm */
+                            transition: transform 0.1s ease-in-out;
+                            position: absolute;
+                            /* Position events within the day cell */
+                        }
+
+                        .calendar-event:hover {
+                            transform: translateY(-1px);
+                        }
+
+                        /* Event Type Colors (from your original code) */
+                        .event-regular {
+                            background-color: #dbeafe;
+                            color: #1e40af;
+                        }
+
+                        .event-training {
+                            background-color: #dcfce7;
+                            color: #166534;
+                        }
+
+                        .event-timeoff {
+                            background-color: #fee2e2;
+                            color: #991b1b;
+                        }
+
+                        .event-conflict {
+                            background-color: #fef2f2;
+                            color: #b91c1c;
+                            border: 1px solid #ef4444;
+                        }
+
+                        .event-available {
+                            background-color: #ecfdf5;
+                            color: #065f46;
+                            border: 1px solid #34d399;
+                        }
+                    </style>
+
+                    <!-- Wrap your existing calendar content in a new div with the 'calendar-wrapper' class -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-x-auto mb-6 calendar-wrapper">
+                        <!-- Consolidated Calendar Grid -->
+                        <div class="calendar-grid-main" id="calendarGridMain">
+                            <!-- Calendar Header Row (first row of the grid) -->
+                            <div
+                                class="calendar-header-cell sticky-column p-4 font-medium text-gray-500 text-sm border-r border-gray-200 bg-gray-50">
+                                Employees
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Sunday<br><span class="text-gray-500">Jul 6</span>
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Monday<br><span class="text-gray-500">Jul 7</span>
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Tuesday<br><span class="text-gray-500">Jul 8</span>
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Wednesday<br><span class="text-gray-500">Jul 9</span>
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Thursday<br><span class="text-gray-500">Jul 10</span>
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Friday<br><span class="text-gray-500">Jul 11</span>
+                            </div>
+                            <div
+                                class="calendar-grid-cell p-4 font-medium text-center text-gray-900 text-sm bg-gray-50">
+                                Saturday<br><span class="text-gray-500">Jul 12</span>
+                            </div>
+
+                            <!-- Employee 1 -->
+                            <div
+                                class="time-slot p-4 bg-gray-50 font-medium text-sm flex items-center calendar-grid-cell">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+                                        <span class="text-blue-600 text-xs">MR</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-500"><br><br></div>
+                                        <div class="text-gray-900">Michael Rodriguez</div>
+                                        <div class="text-xs text-gray-500">Tour Guide</div>
+                                        <div class="text-xs text-gray-500"><br><br></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="1">
+                                    <div class="text-xs font-medium">Golden Gate Tour</div>
+                                    <div class="text-xs">9:00 AM - 12:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="2">
+                                    <div class="text-xs font-medium">Alcatraz Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-training absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="4">
+                                    <div class="text-xs font-medium">Safety Training</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="5">
+                                    <div class="text-xs font-medium">Chinatown Walking Tour</div>
+                                    <div class="text-xs">1:00 PM - 3:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="6">
+                                    <div class="text-xs font-medium">Golden Gate Tour</div>
+                                    <div class="text-xs">9:00 AM - 12:00 PM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="7">
+                                    <div class="text-xs font-medium">Sunset Tour</div>
+                                    <div class="text-xs">5:00 PM - 8:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-timeoff absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="8">
+                                    <div class="text-xs font-medium">Time Off</div>
+                                    <div class="text-xs">All Day</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-timeoff absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="9">
+                                    <div class="text-xs font-medium">Time Off</div>
+                                    <div class="text-xs">All Day</div>
+                                </div>
+                            </div>
+
+                            <!-- Employee 2 -->
+                            <div
+                                class="time-slot p-4 bg-gray-50 font-medium text-sm flex items-center calendar-grid-cell">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+                                        <span class="text-purple-600 text-xs">SJ</span>
+                                    </div>
+                                    <div>
+
+                                        <div class="text-gray-900">Sarah Johnson</div>
+                                        <div class="text-xs text-gray-500">Tour Guide</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-timeoff absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="10">
+                                    <div class="text-xs font-medium">Time Off</div>
+                                    <div class="text-xs">All Day</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="11">
+                                    <div class="text-xs font-medium">Muir Woods Tour</div>
+                                    <div class="text-xs">8:00 AM - 12:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="12">
+                                    <div class="text-xs font-medium">Napa Valley Tour</div>
+                                    <div class="text-xs">9:00 AM - 5:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="13">
+                                    <div class="text-xs font-medium">Sausalito Tour</div>
+                                    <div class="text-xs">1:00 PM - 5:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-conflict absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="14">
+                                    <div class="text-xs font-medium">Double Booking!</div>
+                                    <div class="text-xs">9:00 AM - 12:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="15">
+                                    <div class="text-xs font-medium">Alcatraz Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="16">
+                                    <div class="text-xs font-medium">Golden Gate Tour</div>
+                                    <div class="text-xs">9:00 AM - 12:00 PM</div>
+                                </div>
+                            </div>
+
+                            <!-- Employee 3 -->
+                            <div
+                                class="time-slot p-4 bg-gray-50 font-medium text-sm flex items-center calendar-grid-cell">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+                                        <span class="text-green-600 text-xs">DC</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-500"><br><br></div>
+                                        <div class="text-gray-900">David Chen</div>
+                                        <div class="text-xs text-gray-500">Tour Guide</div>
+                                        <div class="text-xs text-gray-500"><br><br></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="17">
+                                    <div class="text-xs font-medium">Chinatown Walking Tour</div>
+                                    <div class="text-xs">10:00 AM - 12:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="18">
+                                    <div class="text-xs font-medium">Financial District Tour</div>
+                                    <div class="text-xs">2:00 PM - 4:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-available absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="19">
+                                    <div class="text-xs font-medium">Available</div>
+                                    <div class="text-xs">9:00 AM - 5:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="20">
+                                    <div class="text-xs font-medium">Alcatraz Tour</div>
+                                    <div class="text-xs">9:00 AM - 12:00 PM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="21">
+                                    <div class="text-xs font-medium">Fisherman's Wharf Tour</div>
+                                    <div class="text-xs">2:00 PM - 4:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-training absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="22">
+                                    <div class="text-xs font-medium">New Tour Training</div>
+                                    <div class="text-xs">10:00 AM - 3:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="23">
+                                    <div class="text-xs font-medium">Chinatown Walking Tour</div>
+                                    <div class="text-xs">10:00 AM - 12:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="24">
+                                    <div class="text-xs font-medium">Golden Gate Tour</div>
+                                    <div class="text-xs">9:00 AM - 12:00 PM</div>
+                                </div>
+                            </div>
+
+                            <!-- Employee 4 -->
+                            <div
+                                class="time-slot p-4 bg-gray-50 font-medium text-sm flex items-center calendar-grid-cell">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-2">
+                                        <span class="text-yellow-600 text-xs">JW</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-500"><br><br></div>
+                                        <div class="text-gray-900">Jessica Williams</div>
+                                        <div class="text-xs text-gray-500">Activity Instructor</div>
+                                        <div class="text-xs text-gray-500"><br><br></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="25">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="26">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">1:00 PM - 3:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="27">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="28">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">1:00 PM - 3:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="29">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="30">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">1:00 PM - 3:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="31">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="32">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">1:00 PM - 3:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="33">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                                <div class="calendar-event event-regular absolute top-16 left-2 right-2 h-12"
+                                    data-event-id="34">
+                                    <div class="text-xs font-medium">Kayaking Activity</div>
+                                    <div class="text-xs">1:00 PM - 3:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-timeoff absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="35">
+                                    <div class="text-xs font-medium">Time Off</div>
+                                    <div class="text-xs">All Day</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-timeoff absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="36">
+                                    <div class="text-xs font-medium">Time Off</div>
+                                    <div class="text-xs">All Day</div>
+                                </div>
+                            </div>
+
+                            <!-- Employee 5 -->
+                            <div
+                                class="time-slot p-4 bg-gray-50 font-medium text-sm flex items-center calendar-grid-cell">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-2">
+                                        <span class="text-red-600 text-xs">RM</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-900">Robert Martinez</div>
+                                        <div class="text-xs text-gray-500">Activity Instructor</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="37">
+                                    <div class="text-xs font-medium">Bike Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="38">
+                                    <div class="text-xs font-medium">Bike Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="39">
+                                    <div class="text-xs font-medium">Bike Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-training absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="40">
+                                    <div class="text-xs font-medium">Safety Training</div>
+                                    <div class="text-xs">9:00 AM - 11:00 AM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="41">
+                                    <div class="text-xs font-medium">Bike Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="42">
+                                    <div class="text-xs font-medium">Bike Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="calendar-day calendar-grid-cell">
+                                <div class="calendar-event event-regular absolute top-2 left-2 right-2 h-12"
+                                    data-event-id="43">
+                                    <div class="text-xs font-medium">Bike Tour</div>
+                                    <div class="text-xs">10:00 AM - 1:00 PM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                        <h3 class="text-sm font-medium text-gray-700 mb-3">Schedule Legend</h3>
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-primary/20 border-l-2 border-primary mr-2"></div>
+                                <span class="text-xs text-gray-600">Regular Shift</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-purple-200 border-l-2 border-purple-500 mr-2"></div>
+                                <span class="text-xs text-gray-600">Training</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-gray-200 border-l-2 border-gray-500 mr-2"></div>
+                                <span class="text-xs text-gray-600">Time Off</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-red-200 border-l-2 border-red-500 mr-2"></div>
+                                <span class="text-xs text-gray-600">Scheduling Conflict</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-4 h-4 bg-green-50 border border-dashed border-green-500 mr-2"></div>
+                                <span class="text-xs text-gray-600">Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time-off Requests Sidebar -->
+            <div id="time-off-sidebar" class="w-80 bg-white border-l border-gray-200 overflow-y-auto hidden">
+                <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                    <h3 class="text-lg font-medium text-gray-900">Time-off Requests</h3>
+                    <button id="close-time-off-sidebar"
+                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-sm font-medium text-gray-700">Pending Requests</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">3
+                            Pending</span>
+                    </div>
+
+                    <!-- Pending Request 1 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 mb-3">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+                                <span class="text-blue-600 text-xs">MR</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Michael Rodriguez</div>
+                                <div class="text-xs text-gray-500">Tour Guide</div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Jul 11 - Jul 12, 2025
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                                2 days
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                Personal Leave
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Requested on Jul 1</span>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded hover:bg-red-200">Deny</button>
+                                <button
+                                    class="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded hover:bg-green-200">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Request 2 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 mb-3">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-2">
+                                <span class="text-yellow-600 text-xs">JW</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Jessica Williams</div>
+                                <div class="text-xs text-gray-500">Activity Instructor</div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Jul 11 - Jul 12, 2025
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                                2 days
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                Vacation
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Requested on Jul 2</span>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded hover:bg-red-200">Deny</button>
+                                <button
+                                    class="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded hover:bg-green-200">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Request 3 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 mb-5">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+                                <span class="text-purple-600 text-xs">SJ</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Sarah Johnson</div>
+                                <div class="text-xs text-gray-500">Tour Guide</div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Jul 6, 2025
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                                1 day
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                Sick Leave
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Requested on Jul 5</span>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded hover:bg-red-200">Deny</button>
+                                <button
+                                    class="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded hover:bg-green-200">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mb-4">
+                        <h4 class="text-sm font-medium text-gray-700 mb-3">Recent Approvals</h4>
+                    </div>
+
+                    <!-- Approved Request 1 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 mb-3">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
+                                <span class="text-green-600 text-xs">DC</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">David Chen</div>
+                                <div class="text-xs text-gray-500">Tour Guide</div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Jul 8, 2025
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                                1 day
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                Personal Leave
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Approved on Jul 3</span>
+                            <span
+                                class="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">Approved</span>
+                        </div>
+                    </div>
+
+                    <!-- Approved Request 2 -->
+                    <div class="bg-white border border-gray-200 rounded-lg p-3">
+                        <div class="flex items-center mb-2">
+                            <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-2">
+                                <span class="text-red-600 text-xs">RM</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Robert Martinez</div>
+                                <div class="text-xs text-gray-500">Activity Instructor</div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                Jul 9, 2025
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500 mb-1">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                                1 day
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-file-list-line"></i>
+                                </div>
+                                Training
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Approved on Jul 4</span>
+                            <span
+                                class="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">Approved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add New Shift Modal -->
+    <div id="add-shift-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Add New Shift</h3>
+                <button id="close-add-shift-modal"
+                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <form>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Employee</label>
+                        <div class="relative">
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm pr-8">
+                                <option value="">Select an employee</option>
+                                <option value="1">Michael Rodriguez</option>
+                                <option value="2">Sarah Johnson</option>
+                                <option value="3">David Chen</option>
+                                <option value="4">Jessica Williams</option>
+                                <option value="5">Robert Martinez</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <i class="ri-arrow-down-s-line text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Shift Type</label>
+                        <div class="relative">
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm pr-8">
+                                <option value="">Select shift type</option>
+                                <option value="regular">Regular Shift</option>
+                                <option value="training">Training</option>
+                                <option value="timeoff">Time Off</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <i class="ri-arrow-down-s-line text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Location/Activity</label>
+                        <div class="relative">
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm pr-8">
+                                <option value="">Select location/activity</option>
+                                <option value="golden_gate">Golden Gate Tour</option>
+                                <option value="alcatraz">Alcatraz Tour</option>
+                                <option value="chinatown">Chinatown Walking Tour</option>
+                                <option value="kayaking">Kayaking Activity</option>
+                                <option value="bike_tour">Bike Tour</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <i class="ri-arrow-down-s-line text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Repeat</label>
+                            <div class="relative">
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm pr-8">
+                                    <option value="none">Does not repeat</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                    <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+                            <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+                            <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                        <textarea class="w-full px-3 py-2 border border-gray-300 rounded-button text-sm" rows="3"
+                            placeholder="Add any additional notes here..."></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" id="cancel-add-shift"
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                        <button type="button"
+                            class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap">Save
+                            Shift</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div id="event-details-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Shift Details</h3>
+                <button id="close-event-details-modal"
+                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                        <span class="text-blue-600 text-sm">MR</span>
+                    </div>
+                    <div>
+                        <div class="text-base font-medium text-gray-900">Michael Rodriguez</div>
+                        <div class="text-sm text-gray-500">Tour Guide</div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                    <div class="flex items-center mb-2">
+                        <div class="w-5 h-5 flex items-center justify-center mr-2 text-gray-500">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+                        <div class="text-sm font-medium text-gray-900">Golden Gate Tour</div>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <div class="w-5 h-5 flex items-center justify-center mr-2 text-gray-500">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                        <div class="text-sm text-gray-700">Sunday, July 6, 2025</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-5 flex items-center justify-center mr-2 text-gray-500">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <div class="text-sm text-gray-700">9:00 AM - 12:00 PM (3 hours)</div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">Break Times</h4>
+                    <div class="text-sm text-gray-600 pl-2 border-l-2 border-gray-300">
+                        <p>10:30 AM - 10:45 AM (15 minutes)</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">Notes</h4>
+                    <p class="text-sm text-gray-600">Please arrive 15 minutes early to prepare for the tour. Group size:
+                        12 people. Meeting point: Visitor Center.</p>
+                </div>
+                <div class="flex justify-between mt-6">
+                    <div class="flex space-x-2">
+                        <button
+                            class="px-3 py-1.5 bg-white border border-red-300 text-red-600 rounded-button text-sm font-medium hover:bg-red-50 whitespace-nowrap flex items-center">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                <i class="ri-delete-bin-line"></i>
+                            </div>
+                            Delete
+                        </button>
+                    </div>
+                    <div class="flex space-x-2">
+                        <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                            data-readdy="true"
+                            class="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-50 whitespace-nowrap">
+                            View Original
+                        </a>
+                        <button
+                            class="px-3 py-1.5 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap flex items-center">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                <i class="ri-edit-line"></i>
+                            </div>
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script id="filter-dropdowns-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Filter dropdowns
+            const filterButtons = [
+                { button: 'employee-filter', dropdown: 'employee-dropdown' },
+                { button: 'location-filter', dropdown: 'location-dropdown' },
+                { button: 'department-filter', dropdown: 'department-dropdown' },
+                { button: 'status-filter', dropdown: 'status-dropdown' }
+            ];
+
+            filterButtons.forEach(({ button, dropdown }) => {
+                const btnElement = document.getElementById(button);
+                const dropdownElement = document.getElementById(dropdown);
+
+                btnElement.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdownElement.classList.toggle('hidden');
+
+                    // Close other dropdowns
+                    filterButtons.forEach(({ dropdown: otherDropdown }) => {
+                        if (otherDropdown !== dropdown) {
+                            document.getElementById(otherDropdown).classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (event) {
+                filterButtons.forEach(({ button, dropdown }) => {
+                    const btnElement = document.getElementById(button);
+                    const dropdownElement = document.getElementById(dropdown);
+
+                    if (!btnElement.contains(event.target) && !dropdownElement.contains(event.target)) {
+                        dropdownElement.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script id="calendar-events-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Calendar event click handlers
+            const calendarEvents = document.querySelectorAll('.calendar-event');
+            const eventDetailsModal = document.getElementById('event-details-modal');
+            const closeEventDetailsModal = document.getElementById('close-event-details-modal');
+
+            calendarEvents.forEach(event => {
+                event.addEventListener('click', function () {
+                    eventDetailsModal.classList.remove('hidden');
+                });
+            });
+
+            closeEventDetailsModal.addEventListener('click', function () {
+                eventDetailsModal.classList.add('hidden');
+            });
+
+            // Close modal when clicking outside
+            eventDetailsModal.addEventListener('click', function (event) {
+                if (event.target === eventDetailsModal) {
+                    eventDetailsModal.classList.add('hidden');
+                }
+            });
+
+            // View toggle buttons
+            const viewToggleButtons = document.querySelectorAll('.view-toggle-btn');
+            viewToggleButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    viewToggleButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    <script id="time-off-sidebar-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const timeOffBtn = document.getElementById('time-off-btn');
+            const timeOffSidebar = document.getElementById('time-off-sidebar');
+            const closeTimeOffSidebar = document.getElementById('close-time-off-sidebar');
+
+            timeOffBtn.addEventListener('click', function () {
+                timeOffSidebar.classList.toggle('hidden');
+            });
+
+            closeTimeOffSidebar.addEventListener('click', function () {
+                timeOffSidebar.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="add-shift-modal-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const addShiftBtn = document.getElementById('add-shift-btn');
+            const addShiftModal = document.getElementById('add-shift-modal');
+            const closeAddShiftModal = document.getElementById('close-add-shift-modal');
+            const cancelAddShift = document.getElementById('cancel-add-shift');
+
+            addShiftBtn.addEventListener('click', function () {
+                addShiftModal.classList.remove('hidden');
+            });
+
+            closeAddShiftModal.addEventListener('click', function () {
+                addShiftModal.classList.add('hidden');
+            });
+
+            cancelAddShift.addEventListener('click', function () {
+                addShiftModal.classList.add('hidden');
+            });
+
+            // Close modal when clicking outside
+            addShiftModal.addEventListener('click', function (event) {
+                if (event.target === addShiftModal) {
+                    addShiftModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

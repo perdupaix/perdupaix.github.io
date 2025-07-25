@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .radio-button {
+            position: relative;
+            display: inline-block;
+        }
+
+        .radio-button input {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .radio-button label {
+            display: inline-flex;
+            align-items: center;
+            padding-left: 28px;
+            cursor: pointer;
+        }
+
+        .radio-button label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .radio-button input:checked+label:before {
+            border-color: #4f46e5;
+        }
+
+        .radio-button label:after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4f46e5;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .radio-button input:checked+label:after {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/f3fa83d0-d719-459c-8d9d-361307ff9629"
+                        data-readdy="true"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+                        Attractions
+                    </a>
+                </li>
+                <li>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/5432f362-a020-451f-be6b-f489512ed805"
+                        data-readdy="true"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-run-line"></i>
+                        </div>
+                        Activities
+                    </a>
+                </li>
+                <li>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/e7e51646-3ba9-4a6c-9960-ad3803d6fbc3"
+                        data-readdy="true"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-calendar-check-line"></i>
+                        </div>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/1ba404ba-a806-46d3-b297-966b181345a6"
+                        data-readdy="true"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-team-line"></i>
+                        </div>
+                        Employees
+                    </a>
+                </li>
+                <li>
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/e9009a2f-190d-42e0-80ef-3d82df758d72"
+                        data-readdy="true"
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-bar-chart-line"></i>
+                        </div>
+                        Reports
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside> -->
+    
+      <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+    
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search settings...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 3, 2025 • Thursday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                    <div>
+                        <!-- <div class="flex items-center text-sm text-gray-500 mb-1">
+                            <a href="#" class="hover:text-primary">Dashboard</a>
+                            <div class="w-4 h-4 flex items-center justify-center mx-1">
+                                <i class="ri-arrow-right-s-line"></i>
+                            </div>
+                            <span class="text-gray-700">Settings</span>
+                        </div> -->
+                        
+                        <h1 class="text-2xl font-bold text-gray-900">Settings</h1>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-lg font-medium text-gray-900 mb-6">General Settings</h2>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                                    <div class="relative">
+                                        <button
+                                            class="w-full flex items-center justify-between px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20">
+                                            <span>English (US)</span>
+                                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+                                    <div class="relative">
+                                        <button
+                                            class="w-full flex items-center justify-between px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20">
+                                            <span>Pacific Time (UTC-8)</span>
+                                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-4">Notifications</label>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">Email notifications</span>
+                                            <label class="custom-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">Push notifications</span>
+                                            <label class="custom-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">SMS notifications</span>
+                                            <label class="custom-switch">
+                                                <input type="checkbox">
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="ctaz w-full px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap !rounded-button">Save
+                                    General Settings</button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-lg font-medium text-gray-900 mb-6">Security Settings</h2>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-4">Two-Factor
+                                        Authentication</label>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <div class="text-sm text-gray-600">Protect your account with 2FA</div>
+                                            <div class="text-xs text-gray-500 mt-1">Require a verification code when
+                                                logging in</div>
+                                        </div>
+                                        <label class="custom-switch">
+                                            <input type="checkbox">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-4">API Keys</label>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Production API Key</div>
+                                                <div class="text-xs text-gray-500 mt-1">Last used: 2 hours ago</div>
+                                            </div>
+                                            <button
+                                                class="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-full hover:bg-primary/20 whitespace-nowrap">Regenerate</button>
+                                        </div>
+                                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Development API Key</div>
+                                                <div class="text-xs text-gray-500 mt-1">Last used: 5 days ago</div>
+                                            </div>
+                                            <button
+                                                class="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-full hover:bg-primary/20 whitespace-nowrap">Regenerate</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="ctaz w-full px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap !rounded-button">Save
+                                    Security Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-lg font-medium text-gray-900 mb-6">Account Settings</h2>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                    <input type="text" value="Emma Thompson"
+                                        class="w-full px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <input type="email" value="emma.thompson@example.com"
+                                        class="w-full px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-4">Email
+                                        Preferences</label>
+                                    <div class="space-y-3">
+                                        <div class="radio-button">
+                                            <input type="radio" id="all-emails" name="email-pref" checked>
+                                            <label for="all-emails" class="text-sm text-gray-600">All emails</label>
+                                        </div>
+                                        <div class="radio-button">
+                                            <input type="radio" id="important-only" name="email-pref">
+                                            <label for="important-only" class="text-sm text-gray-600">Important emails
+                                                only</label>
+                                        </div>
+                                        <div class="radio-button">
+                                            <input type="radio" id="no-emails" name="email-pref">
+                                            <label for="no-emails" class="text-sm text-gray-600">No emails</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="ctaz w-full px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap !rounded-button">Save
+                                    Account Settings</button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-lg font-medium text-gray-900 mb-6">Display Settings</h2>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                                    <div class="flex space-x-2">
+                                        <button
+                                            class="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary rounded-full whitespace-nowrap">Light</button>
+                                        <button
+                                            class="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Dark</button>
+                                        <button
+                                            class="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">System</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-4">Sidebar Behavior</label>
+                                    <div class="space-y-3">
+                                        <div class="radio-button">
+                                            <input type="radio" id="expanded" name="sidebar-behavior" checked>
+                                            <label for="expanded" class="text-sm text-gray-600">Always expanded</label>
+                                        </div>
+                                        <div class="radio-button">
+                                            <input type="radio" id="collapsed" name="sidebar-behavior">
+                                            <label for="collapsed" class="text-sm text-gray-600">Collapsed by
+                                                default</label>
+                                        </div>
+                                        <div class="radio-button">
+                                            <input type="radio" id="responsive" name="sidebar-behavior">
+                                            <label for="responsive" class="text-sm text-gray-600">Responsive
+                                                (auto-collapse)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-4">Data
+                                        Visualization</label>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">Animations</span>
+                                            <label class="custom-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">Real-time updates</span>
+                                            <label class="custom-switch">
+                                                <input type="checkbox" checked>
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="ctaz w-full px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap !rounded-button">Save
+                                    Display Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="dropdown-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

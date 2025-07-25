@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Listings - Attractions, Activities, Events, Tours & More</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Providers</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search listings, attractions, activities...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- Breadcrumb and Page Title -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                    <div>
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                                data-readdy="true" class="hover:text-primary">Business</a>
+                            <div class="w-4 h-4 flex items-center justify-center mx-1">
+                                <i class="ri-arrow-right-s-line"></i>
+                            </div>
+                            <span class="font-medium text-gray-700">Manage Listings</span>
+                        </div>
+                        <h1 class="text-2xl font-bold text-gray-900">Manage Listings</h1>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button
+                            class="ctaz px-4 py-2.5 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 shadow-sm whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-add-line"></i>
+                            </div>
+                            Add New Listing
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Total Activities</h3>
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                    <i class="ri-run-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">2,847</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                24.8%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Active Activities</h3>
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">2,456</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                18.5%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Total Bookings</h3>
+                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                    <i class="ri-calendar-check-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">156,847</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                32.4%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Monthly Revenue</h3>
+                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                    <i class="ri-money-dollar-circle-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">$4,872,635</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                28.6%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                </div>
+                <!-- Filter and View Controls -->
+                <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
+                            <!-- Category Filter -->
+                            <div class="relative">
+                                <button
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-filter-line"></i>
+                                    </div>
+                                    Category
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div class="dropdown-content mt-1 left-0">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All
+                                            Categories</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Attractions</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Activities</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tours</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Events</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Location Filter -->
+                            <div class="relative">
+                                <button
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-map-pin-line"></i>
+                                    </div>
+                                    Location
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div class="dropdown-content mt-1 left-0">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All
+                                            Locations</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">San
+                                            Francisco</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New
+                                            York</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Los
+                                            Angeles</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Chicago</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status Filter -->
+                            <div class="relative">
+                                <button
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-checkbox-circle-line"></i>
+                                    </div>
+                                    Status
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div class="dropdown-content mt-1 left-0">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All
+                                            Statuses</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Active</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pending</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Inactive</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <!-- Sort Options -->
+                            <div class="relative">
+                                <button
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-sort-desc"></i>
+                                    </div>
+                                    Sort by
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div class="dropdown-content mt-1 right-0">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Name
+                                            (A-Z)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Name
+                                            (Z-A)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Date
+                                            Added (Newest)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Date
+                                            Added (Oldest)</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Most
+                                            Bookings</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- View Toggle -->
+                            <div class="flex items-center bg-gray-100 rounded-button p-1">
+                                <button class="p-1.5 rounded-button bg-white shadow-sm">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                        <i class="ri-table-line"></i>
+                                    </div>
+                                </button>
+                                <button class="p-1.5 rounded-button text-gray-500 hover:text-gray-700">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-layout-grid-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Listings Table -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="w-72 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Listing</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Category</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="relative">
+                                            <button class="flex items-center space-x-1 group">
+                                                <span>Type</span>
+                                                <div
+                                                    class="w-4 h-4 flex items-center justify-center text-gray-400 group-hover:text-gray-600">
+                                                    <i class="ri-arrow-down-s-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="dropdown-content mt-1 left-0">
+                                                <div class="py-1">
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">All
+                                                        Types</a>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
+                                                        Activity
+                                                    </a>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+                                                        Attraction
+                                                    </a>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                                                        Tour
+                                                    </a>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-purple-500 mr-2"></span>
+                                                        Event
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Location</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Bookings</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Listing 1 -->
+                                <tr class="table-row">
+                                    <td class=" w-72 px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=beautiful%20sunset%20harbor%20cruise%20with%20sailboats%20in%20san%20francisco%20bay%2C%20golden%20gate%20bridge%20in%20background%2C%20professional%20photography%2C%20high%20quality&width=60&height=60&seq=1&orientation=squarish"
+                                                    alt="Sunset Harbor Cruise"
+                                                    class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Sunset Harbor Cruise
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">Experience breathtaking views of
+                                                    the Golden Gate Bridge at sunset</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-blue-600 bg-blue-100 rounded-full mr-2">
+                                                <i class="ri-ship-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Water Tours</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Attraction
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">San Francisco Bay</div>
+                                        <div class="text-xs text-gray-500">California, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        128
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Listing 2 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=rainforest%20hiking%20tour%20in%20Olympic%20National%20Park%2C%20lush%20green%20forest%20with%20tall%20trees%2C%20mossy%20ground%2C%20professional%20photography%2C%20high%20quality&width=60&height=60&seq=2&orientation=squarish"
+                                                    alt="Rainforest Hiking Tour"
+                                                    class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Rainforest Hiking Tour
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">Explore the ancient temperate
+                                                    rainforest with expert guides</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-green-600 bg-green-100 rounded-full mr-2">
+                                                <i class="ri-footprint-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Hiking</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Attraction
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Olympic National Park</div>
+                                        <div class="text-xs text-gray-500">Washington, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        86
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Listing 3 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=new%20orleans%20food%20tour%2C%20colorful%20plates%20of%20cajun%20and%20creole%20cuisine%2C%20french%20quarter%20background%2C%20professional%20food%20photography%2C%20high%20quality&width=60&height=60&seq=3&orientation=squarish"
+                                                    alt="Local Food Tour" class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">New Orleans Food Tour
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">Taste authentic Cajun and Creole
+                                                    cuisine in the French Quarter</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-yellow-600 bg-yellow-100 rounded-full mr-2">
+                                                <i class="ri-restaurant-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Food Tours</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Attraction
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">New Orleans</div>
+                                        <div class="text-xs text-gray-500">Louisiana, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        42
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Listing 4 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=boston%20historical%20city%20tour%2C%20freedom%20trail%2C%20old%20architecture%2C%20cobblestone%20streets%2C%20professional%20photography%2C%20high%20quality&width=60&height=60&seq=4&orientation=squarish"
+                                                    alt="Historical City Tour"
+                                                    class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Boston Freedom Trail Tour
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">Walk through American history on
+                                                    this guided tour of historic sites</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-purple-600 bg-purple-100 rounded-full mr-2">
+                                                <i class="ri-building-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Historical</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Attraction
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Boston</div>
+                                        <div class="text-xs text-gray-500">Massachusetts, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        0
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Listing 5 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=mountain%20biking%20in%20Moab%20Utah%2C%20red%20rock%20landscape%2C%20action%20shot%20of%20mountain%20biker%20on%20trail%2C%20professional%20photography%2C%20high%20quality&width=60&height=60&seq=5&orientation=squarish"
+                                                    alt="Mountain Biking Adventure"
+                                                    class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Moab Mountain Biking
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">Experience world-class trails
+                                                    through stunning red rock landscapes</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-red-600 bg-red-100 rounded-full mr-2">
+                                                <i class="ri-bike-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Adventure</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Attraction
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Moab</div>
+                                        <div class="text-xs text-gray-500">Utah, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        74
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Listing 6 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=wine%20tasting%20tour%20in%20Napa%20Valley%2C%20beautiful%20vineyard%20with%20rows%20of%20grapes%2C%20wine%20glasses%2C%20sunset%20lighting%2C%20professional%20photography%2C%20high%20quality&width=60&height=60&seq=6&orientation=squarish"
+                                                    alt="Wine Tasting Tour"
+                                                    class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Napa Valley Wine Tour
+                                                </div>
+                                                <div class="text-xs text-gray-500 mt-1">Visit premium wineries and enjoy
+                                                    tastings with expert sommeliers</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-purple-600 bg-purple-100 rounded-full mr-2">
+                                                <i class="ri-goblet-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Food & Drink</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                            Event
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Napa Valley</div>
+                                        <div class="text-xs text-gray-500">California, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        156
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Listing 7 -->
+                                <tr class="table-row">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-14 w-14 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=helicopter%20tour%20over%20grand%20canyon%2C%20aerial%20view%20of%20dramatic%20canyon%20landscape%2C%20professional%20photography%2C%20high%20quality&width=60&height=60&seq=7&orientation=squarish"
+                                                    alt="Grand Canyon Helicopter Tour"
+                                                    class="h-full w-full object-cover object-top">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Grand Canyon Helicopter
+                                                    Tour</div>
+                                                <div class="text-xs text-gray-500 mt-1">Breathtaking aerial views of one
+                                                    of the world's natural wonders</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="w-6 h-6 flex items-center justify-center text-blue-600 bg-blue-100 rounded-full mr-2">
+                                                <i class="ri-flight-takeoff-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Air Tours</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Attraction
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Grand Canyon</div>
+                                        <div class="text-xs text-gray-500">Arizona, USA</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        28
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80 tooltip" title="View">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="relative">
+                                                <button class="text-gray-600 hover:text-gray-900 tooltip"
+                                                    title="More Actions">
+                                                    <div
+                                                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+                                                        <i class="ri-more-2-fill"></i>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-content mt-1 right-0 w-48">
+                                                    <div class="py-1">
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-edit-line mr-2"></i> Edit Details
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-toggle-line mr-2"></i> Change Status
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-check-double-line mr-2"></i> Review Updates
+                                                        </button>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                                            <i class="ri-store-2-line mr-2"></i> View Business
+                                                        </button>
+                                                        <div class="border-t border-gray-200 my-1"></div>
+                                                        <button
+                                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
+                                                            <i class="ri-delete-bin-line mr-2"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div
+                        class="px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div class="text-sm text-gray-700 mb-4 sm:mb-0">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">7</span> of <span
+                                class="font-medium">42</span> results
+                        </div>
+                        <div class="flex items-center">
+                            <div class="mr-4">
+                                <label for="per-page" class="text-sm text-gray-600 mr-2">Per page:</label>
+                                <select id="per-page"
+                                    class="border border-gray-300 rounded-button text-sm py-1 px-2 pr-8 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20">
+                                    <option>10</option>
+                                    <option>25</option>
+                                    <option>50</option>
+                                    <option>100</option>
+                                </select>
+                            </div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                                aria-label="Pagination">
+                                <a href="#"
+                                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">Previous</span>
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-arrow-left-s-line"></i>
+                                    </div>
+                                </a>
+                                <a href="#" aria-current="page"
+                                    class="z-10 bg-primary bg-opacity-10 border-primary text-primary relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                    1
+                                </a>
+                                <a href="#"
+                                    class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                    2
+                                </a>
+                                <a href="#"
+                                    class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                    3
+                                </a>
+                                <span
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                    ...
+                                </span>
+                                <a href="#"
+                                    class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                    5
+                                </a>
+                                <a href="#"
+                                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">Next</span>
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-arrow-right-s-line"></i>
+                                    </div>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Total Listings</h3>
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                    <i class="ri-store-2-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">42</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                12.5%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Active Listings</h3>
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">36</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                8.3%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Total Bookings</h3>
+                            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                    <i class="ri-calendar-check-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">1,248</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                16.8%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <div class="text-center mb-4">
+                <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center text-red-600">
+                        <i class="ri-delete-bin-line"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Delete Listing</h3>
+                <p class="text-sm text-gray-500 mt-2">Are you sure you want to delete this listing? This action cannot
+                    be undone.</p>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-delete"
+                    class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 whitespace-nowrap !rounded-button">Cancel</button>
+                <button id="confirm-delete"
+                    class="px-4 py-2 bg-red-600 text-white rounded-button text-sm font-medium hover:bg-red-700 whitespace-nowrap !rounded-button">Delete
+                    Listing</button>
+            </div>
+        </div>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                if (button.classList.contains('active')) {
+                    submenu.classList.remove('hidden');
+                    button.setAttribute('data-expanded', 'true');
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (arrowIcon) {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                }
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (arrowIcon) {
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script id="delete-modal-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('button:has(.ri-delete-bin-line)');
+            const deleteModal = document.getElementById('delete-modal');
+            const cancelDelete = document.getElementById('cancel-delete');
+            const confirmDelete = document.getElementById('confirm-delete');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    deleteModal.classList.remove('hidden');
+                });
+            });
+            cancelDelete.addEventListener('click', function () {
+                deleteModal.classList.add('hidden');
+            });
+            confirmDelete.addEventListener('click', function () {
+                // Here you would typically handle the actual deletion
+                deleteModal.classList.add('hidden');
+                // Show a success notification or refresh the table
+            });
+            // Close modal when clicking outside
+            deleteModal.addEventListener('click', function (event) {
+                if (event.target === deleteModal) {
+                    deleteModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Analytics</title>
+     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gray-50 flex h-screen">
+        <!-- Side Navigation -->
+        <!-- <nav class="w-64 bg-white border-r border-gray-200 flex-shrink-0">
+            <div class="h-16 flex items-center px-6 border-b border-gray-200">
+                <a href="#" class="text-xl font-['Pacifico'] text-gray-900">logo</a>
+            </div>
+            <div class="flex flex-col flex-grow">
+                <div class="space-y-1 px-3 py-2">
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium rounded-lg bg-primary bg-opacity-10 text-primary">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-home-line"></i>
+                        </div>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-bar-chart-2-line"></i>
+                        </div>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                        <span>Bookings</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <span>Customers</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-store-2-line"></i>
+                        </div>
+                        <span>Products</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-message-2-line"></i>
+                        </div>
+                        <span>Messages</span>
+                        <div
+                            class="ml-auto bg-primary bg-opacity-10 text-primary text-xs font-medium px-2 py-0.5 rounded-full">
+                            3
+                        </div>
+                    </a>
+                    <a href="#"
+                        class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        <span>Settings</span>
+                    </a>
+                </div>
+                <div class="mt-auto p-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                            <i class="ri-user-line text-gray-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-700">John Smith</p>
+                            <p class="text-xs text-gray-500">Administrator</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav> -->
+
+
+        <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+                    
+                    <!-- Dashboard -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                            class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <!-- Listings -->
+                    <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-compass-line"></i>
+                                </div>
+                                Listings
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                            
+                            
+                            <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                                Listings</a></li>
+
+                                <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Listings</a></li>
+
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                            
+                                                
+                            <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Providers -->
+                    <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-store-2-line"></i>
+                                </div>
+                                Providers
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                            
+                            
+                            <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                                Providers</a></li>
+
+                                <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Provider</a></li>
+
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                            Approval</a></li>
+                            
+                                                
+                            <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                            </li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                            class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </li>
+
+                    <!-- Staff -->
+                    <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-team-line"></i>
+                                </div>
+                                Staff
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                            <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Manage Staff</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                    Staff & Role</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                    Guides</a></li>
+
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                    data-readdy="true"
+                                    class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                    data-readdy="true"
+                                    class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                    data-readdy="true"
+                                    class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Users -->
+                    <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                                Users
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                            
+                            <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Manage Users</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Add User</a></li>
+                            
+                            
+                            <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Elite Club</a></li>
+
+
+                            <!-- <li><a href="#" 
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Membership Tiers</a></li> -->
+
+
+                            
+                        </ul>
+                    </li>
+                    
+                    <!-- Messages -->
+                    <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-message-3-line"></i>
+                                </div>
+                                Messages
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Inbox</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    New Message</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                    data-readdy="true"
+                                    class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                        </ul>
+                    </li>
+
+                    <!-- Reports -->
+
+                        <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-bar-chart-line"></i>
+                                </div>
+                                Reports
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Revenue Reports</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    User Analytics</a></li>
+
+                            
+
+                        </ul>
+                    </li>
+                    
+
+                    <!-- Support -->
+                        <li>
+                        <button
+                            class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                    <i class="ri-lifebuoy-line"></i>
+                                </div>
+                                Support
+                            </div>
+                            <div
+                                class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                            <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    Tickets</a></li>
+
+                            <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                    data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                    FAQs</a></li>
+
+                            
+
+                        </ul>
+                    </li>
+                    
+                    <!-- Settings -->
+                    <li>
+                        <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-line"></i>
+                            </div>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+
+
+
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            
+            <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </header>
+            <!-- Main Content -->
+            <!-- <main class="flex-1 container mx-auto px-4 py-6"> -->
+            <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+
+
+
+
+            <div class="container mx-auto mb-6 flex items-center justify-between">
+            <!-- <div class="container mx-auto px-4 py-4 flex items-center justify-between"> -->
+
+                <div class="flex items-center">
+
+                    <!-- <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                        data-readdy="true"
+                        class="flex items-center text-gray-700 hover:text-primary transition-colors">
+                        <div class="w-8 h-8 flex items-center justify-center mr-1">
+                            <i class="ri-arrow-left-line ri-lg"></i>
+                        </div>
+                        <span class="font-medium">Back</span>
+                    </a> -->
+
+                    <h1 class="text-2xl font-semibold text-gray-900">Revenue Analytics</h1>
+                </div>
+
+
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="dateRangeBtn"
+                            class="flex items-center px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-calendar-line"></i>
+                            </div>
+                            <span id="dateRangeText">Last 30 days</span>
+                            <div class="w-5 h-5 flex items-center justify-center ml-2">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="dateRangeDropdown"
+                            class="hidden absolute right-0 mt-2 w-56 bg-white rounded shadow-lg z-10 border border-gray-200">
+                            <div class="py-1">
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-range="30">Last 30 days</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-range="90">Last 90 days</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-range="180">Last 6 months</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-range="365">Last year</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-range="custom">Custom range</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button id="exportBtn"
+                            class="ctaz bg-primary text-white flex items-center px-4 py-2 border border-gray-300 rounded-button text-sm font-medium hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-download-line"></i>
+                            </div>
+                            <span>Export</span>
+                            <div class="w-5 h-5 flex items-center justify-center ml-2">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="exportDropdown"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 border border-gray-200">
+                            <div class="py-1">
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-format="pdf">
+                                    <div class="flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-file-pdf-line"></i>
+                                        </div>
+                                        <span>PDF</span>
+                                    </div>
+                                </a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-format="csv">
+                                    <div class="flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-file-excel-line"></i>
+                                        </div>
+                                        <span>CSV</span>
+                                    </div>
+                                </a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary"
+                                    data-format="excel">
+                                    <div class="flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-file-excel-line"></i>
+                                        </div>
+                                        <span>Excel</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="border-t border-gray-200">
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
+                                    <div class="flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-time-line"></i>
+                                        </div>
+                                        <span>Schedule reports</span>
+                                    </div>
+                                </a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary">
+                                    <div class="flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                            <i class="ri-save-line"></i>
+                                        </div>
+                                        <span>Save template</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+
+
+
+
+
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Total Revenue -->
+                    <div class="bg-white rounded shadow p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-medium text-gray-500">Total Revenue</h3>
+                            <div class="w-8 h-8 flex items-top justify-center text-gray-400 hover:text-gray-600">
+                                <i class="ri-information-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <p class="text-2xl font-bold text-gray-900">$487,392</p>
+                            <div class="flex items-center ml-3 text-sm font-medium text-green-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                <span>18.2%</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">vs. previous period</p>
+                    </div>
+                    <!-- Average Transaction Value -->
+                    <div class="bg-white rounded shadow p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-medium text-gray-500">Avg. Transaction Value</h3>
+                            <div class="w-8 h-8 flex items-top justify-center text-gray-400 hover:text-gray-600">
+                                <i class="ri-information-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <p class="text-2xl font-bold text-gray-900">$78.45</p>
+                            <div class="flex items-center ml-3 text-sm font-medium text-green-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                <span>5.3%</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">vs. previous period</p>
+                    </div>
+                    <!-- Number of Transactions -->
+                    <div class="bg-white rounded shadow p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-medium text-gray-500">Number of Transactions</h3>
+                            <div class="w-8 h-8 flex items-top justify-center text-gray-400 hover:text-gray-600">
+                                <i class="ri-information-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <p class="text-2xl font-bold text-gray-900">6,213</p>
+                            <div class="flex items-center ml-3 text-sm font-medium text-green-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                <span>12.1%</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">vs. previous period</p>
+                    </div>
+                    <!-- Revenue per Customer -->
+                    <div class="bg-white rounded shadow p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-medium text-gray-500">Revenue per Customer</h3>
+                            <div class="w-8 h-8 flex items-top justify-center text-gray-400 hover:text-gray-600">
+                                <i class="ri-information-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <p class="text-2xl font-bold text-gray-900">$142.87</p>
+                            <div class="flex items-center ml-3 text-sm font-medium text-red-600">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-down-line"></i>
+                                </div>
+                                <span>2.4%</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">vs. previous period</p>
+                    </div>
+                </div>
+                <!-- Revenue Trend Chart -->
+                <div class="bg-white rounded shadow mb-8">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-semibold text-gray-900">Revenue Trend</h2>
+                            <div class="flex items-center space-x-2">
+                                <div class="bg-gray-100 rounded-full p-1 flex">
+                                    <button class="px-3 py-1 text-sm font-medium rounded-full bg-primary text-white"
+                                        data-view="daily">Daily</button>
+                                    <button
+                                        class="px-3 py-1 text-sm font-medium rounded-full text-gray-700 hover:bg-gray-200"
+                                        data-view="weekly">Weekly</button>
+                                    <button
+                                        class="px-3 py-1 text-sm font-medium rounded-full text-gray-700 hover:bg-gray-200"
+                                        data-view="monthly">Monthly</button>
+                                </div>
+                                <div class="relative">
+                                    <button id="revenueTrendOptions"
+                                        class="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        <i class="ri-more-2-fill"></i>
+                                    </button>
+                                    <div id="revenueTrendDropdown"
+                                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 border border-gray-200">
+                                        <div class="py-1">
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View
+                                                full report</a>
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Export
+                                                chart</a>
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Set
+                                                alerts</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="revenueTrendChart" class="h-80"></div>
+                    </div>
+                </div>
+                <!-- Revenue Breakdown Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- Revenue by Category -->
+                    <div class="bg-white rounded shadow">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-semibold text-gray-900">Revenue by Category</h2>
+                                <div class="relative">
+                                    <button id="categoryOptions"
+                                        class="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        <i class="ri-more-2-fill"></i>
+                                    </button>
+                                    <div id="categoryDropdown"
+                                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 border border-gray-200">
+                                        <div class="py-1">
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View
+                                                details</a>
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Export
+                                                chart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="categoryChart" class="h-72"></div>
+                        </div>
+                    </div>
+                    <!-- Top Revenue Sources by Location -->
+                    <div class="bg-white rounded shadow">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-semibold text-gray-900">Top Revenue Sources by Location</h2>
+                                <div class="relative">
+                                    <button id="locationOptions"
+                                        class="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        <i class="ri-more-2-fill"></i>
+                                    </button>
+                                    <div id="locationDropdown"
+                                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 border border-gray-200">
+                                        <div class="py-1">
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View
+                                                details</a>
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Export
+                                                chart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="locationChart" class="h-72"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Detailed Analytics Section -->
+                <div class="bg-white rounded shadow mb-8">
+                    <div class="p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4 sm:mb-0">Detailed Analytics</h2>
+                            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
+                                <div class="relative flex-grow sm:flex-grow-0">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-search-line"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text"
+                                        class="pl-10 pr-4 py-2 border border-gray-300 rounded focus:ring-primary focus:border-primary block w-full text-sm"
+                                        placeholder="Search products...">
+                                </div>
+                                <button id="filterBtn"
+                                    class="flex items-center px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none whitespace-nowrap">
+                                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                        <i class="ri-filter-3-line"></i>
+                                    </div>
+                                    <span>Filters</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Advanced Filters Panel (Collapsible) -->
+                        <div id="filtersPanel" class="hidden bg-gray-50 rounded p-4 mb-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                                    <div class="relative">
+                                        <select
+                                            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded sm:text-sm">
+                                            <option value="">All Locations</option>
+                                            <option value="new-york">New York</option>
+                                            <option value="los-angeles">Los Angeles</option>
+                                            <option value="chicago">Chicago</option>
+                                            <option value="miami">Miami</option>
+                                            <option value="san-francisco">San Francisco</option>
+                                        </select>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                    <div class="relative">
+                                        <select
+                                            class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded sm:text-sm">
+                                            <option value="">All Categories</option>
+                                            <option value="attractions">Attractions</option>
+                                            <option value="activities">Activities</option>
+                                            <option value="tours">Tours</option>
+                                            <option value="experiences">Experiences</option>
+                                            <option value="events">Events</option>
+                                        </select>
+                                        <div
+                                            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Price Range</label>
+                                    <div class="px-2">
+                                        <input type="range" class="custom-range" min="0" max="500" value="250">
+                                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                            <span>$0</span>
+                                            <span>$250</span>
+                                            <span>$500+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Customer Segment</label>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center">
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <span class="ml-2 text-sm text-gray-700">Individuals</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <span class="ml-2 text-sm text-gray-700">Families</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <span class="ml-2 text-sm text-gray-700">Groups</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4 space-x-3">
+                                <button
+                                    class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none whitespace-nowrap">Reset</button>
+                                <button
+                                    class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-blue-600 focus:outline-none whitespace-nowrap">Apply
+                                    Filters</button>
+                            </div>
+                        </div>
+                        <!-- Table -->
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Product/Service</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Category</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Total Revenue</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Sales</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Avg. Price</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Growth</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded">
+                                                    <i class="ri-building-line"></i>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Empire State
+                                                        Experience</div>
+                                                    <div class="text-xs text-gray-500">New York</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Attractions</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$78,452</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,245</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$63.01</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center text-sm font-medium text-green-600">
+                                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-up-line"></i>
+                                                </div>
+                                                <span>24.8%</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button class="text-primary hover:text-blue-700">Details</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center bg-green-100 text-green-600 rounded">
+                                                    <i class="ri-ship-line"></i>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Harbor Cruise Deluxe
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">San Francisco</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tours</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$64,128</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">892</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$71.89</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center text-sm font-medium text-green-600">
+                                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-up-line"></i>
+                                                </div>
+                                                <span>18.3%</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button class="text-primary hover:text-blue-700">Details</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center bg-purple-100 text-purple-600 rounded">
+                                                    <i class="ri-restaurant-line"></i>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Culinary Workshop
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">Chicago</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Activities</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$52,836</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">643</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$82.17</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center text-sm font-medium text-red-600">
+                                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-down-line"></i>
+                                                </div>
+                                                <span>3.2%</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button class="text-primary hover:text-blue-700">Details</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center bg-yellow-100 text-yellow-600 rounded">
+                                                    <i class="ri-sun-line"></i>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Beach Adventure
+                                                        Package</div>
+                                                    <div class="text-xs text-gray-500">Miami</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Experiences</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$48,752</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">578</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$84.35</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center text-sm font-medium text-green-600">
+                                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-up-line"></i>
+                                                </div>
+                                                <span>15.7%</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button class="text-primary hover:text-blue-700">Details</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-600 rounded">
+                                                    <i class="ri-movie-line"></i>
+                                                </div>
+                                                <div class="ml-3">
+                                                    <div class="text-sm font-medium text-gray-900">Hollywood Studio Tour
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">Los Angeles</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tours</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$42,318</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">512</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$82.65</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center text-sm font-medium text-green-600">
+                                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-up-line"></i>
+                                                </div>
+                                                <span>9.4%</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button class="text-primary hover:text-blue-700">Details</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6 mt-4">
+                            <div class="flex-1 flex justify-between sm:hidden">
+                                <a href="#"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Previous</a>
+                                <a href="#"
+                                    class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Next</a>
+                            </div>
+                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-700">
+                                        Showing <span class="font-medium">1</span> to <span class="font-medium">5</span>
+                                        of <span class="font-medium">42</span> results
+                                    </p>
+                                </div>
+                                <div>
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                                        aria-label="Pagination">
+                                        <a href="#"
+                                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <span class="sr-only">Previous</span>
+                                            <div class="w-5 h-5 flex items-center justify-center">
+                                                <i class="ri-arrow-left-s-line"></i>
+                                            </div>
+                                        </a>
+                                        <a href="#" aria-current="page"
+                                            class="z-10 bg-primary border-primary text-white relative inline-flex items-center px-4 py-2 border text-sm font-medium">1</a>
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">2</a>
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">3</a>
+                                        <span
+                                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">8</a>
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">9</a>
+                                        <a href="#"
+                                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <span class="sr-only">Next</span>
+                                            <div class="w-5 h-5 flex items-center justify-center">
+                                                <i class="ri-arrow-right-s-line"></i>
+                                            </div>
+                                        </a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Performance Insights -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <!-- Best Performing Products -->
+                    <div class="bg-white rounded shadow">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-semibold text-gray-900">Best Performing Products</h2>
+                                <button class="text-sm text-primary font-medium hover:text-blue-700">View all</button>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded">
+                                        <i class="ri-building-line"></i>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex justify-between">
+                                            <p class="text-sm font-medium text-gray-900">Empire State Experience</p>
+                                            <p class="text-sm font-semibold text-gray-900">$78,452</p>
+                                        </div>
+                                        <div class="mt-1 flex justify-between items-center">
+                                            <p class="text-xs text-gray-500">New York</p>
+                                            <div class="flex items-center text-xs font-medium text-green-600">
+                                                <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-up-line"></i>
+                                                </div>
+                                                <span>24.8%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded">
+                                        <i class="ri-ship-line"></i>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex justify-between">
+                                            <p class="text-sm font-medium text-gray-900">Harbor Cruise Deluxe</p>
+                                            <p class="text-sm font-semibold text-gray-900">$64,128</p>
+                                        </div>
+                                        <div class="mt-1 flex justify-between items-center">
+                                            <p class="text-xs text-gray-500">San Francisco</p>
+                                            <div class="flex items-center text-xs font-medium text-green-600">
+                                                <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-up-line"></i>
+                                                </div>
+                                                <span>18.3%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-purple-100 text-purple-600 rounded">
+                                        <i class="ri-restaurant-line"></i>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="flex justify-between">
+                                            <p class="text-sm font-medium text-gray-900">Culinary Workshop</p>
+                                            <p class="text-sm font-semibold text-gray-900">$52,836</p>
+                                        </div>
+                                        <div class="mt-1 flex justify-between items-center">
+                                            <p class="text-xs text-gray-500">Chicago</p>
+                                            <div class="flex items-center text-xs font-medium text-red-600">
+                                                <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                    <i class="ri-arrow-down-line"></i>
+                                                </div>
+                                                <span>3.2%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <p class="text-sm text-gray-700 font-medium">Recommendation</p>
+                                <p class="text-sm text-gray-600 mt-1">Consider creating bundled packages with your
+                                    top-performing products to increase average transaction value.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Peak Revenue Times -->
+                    <div class="bg-white rounded shadow">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-semibold text-gray-900">Peak Revenue Times</h2>
+                                <div class="relative">
+                                    <button id="peakTimeOptions"
+                                        class="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                        <i class="ri-more-2-fill"></i>
+                                    </button>
+                                    <div id="peakTimeDropdown"
+                                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10 border border-gray-200">
+                                        <div class="py-1">
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View
+                                                details</a>
+                                            <a href="#"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Export
+                                                chart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="peakTimeChart" class="h-48 mb-4"></div>
+                            <div class="mt-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Peak Day</p>
+                                        <p class="text-lg font-semibold text-gray-900">Saturday</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Peak Time</p>
+                                        <p class="text-lg font-semibold text-gray-900">2:00 PM - 4:00 PM</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Slowest Day</p>
+                                        <p class="text-lg font-semibold text-gray-900">Tuesday</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Slowest Time</p>
+                                        <p class="text-lg font-semibold text-gray-900">9:00 AM - 11:00 AM</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <p class="text-sm text-gray-700 font-medium">Recommendation</p>
+                                <p class="text-sm text-gray-600 mt-1">Consider offering special promotions during slow
+                                    periods to increase traffic and revenue during off-peak times.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script id="dropdownHandlers">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Date Range Dropdown
+            const dateRangeBtn = document.getElementById('dateRangeBtn');
+            const dateRangeDropdown = document.getElementById('dateRangeDropdown');
+            const dateRangeText = document.getElementById('dateRangeText');
+            dateRangeBtn.addEventListener('click', function () {
+                dateRangeDropdown.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#dateRangeDropdown a').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const range = this.getAttribute('data-range');
+                    if (range === 'custom') {
+                        // Handle custom date range (could open a modal)
+                        dateRangeText.textContent = 'Custom Range';
+                    } else {
+                        dateRangeText.textContent = this.textContent;
+                    }
+                    dateRangeDropdown.classList.add('hidden');
+                });
+            });
+            // Export Dropdown
+            const exportBtn = document.getElementById('exportBtn');
+            const exportDropdown = document.getElementById('exportDropdown');
+            exportBtn.addEventListener('click', function () {
+                exportDropdown.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#exportDropdown a').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const format = this.getAttribute('data-format');
+                    if (format) {
+                        // Handle export functionality
+                        alert(`Exporting data as ${format.toUpperCase()}`);
+                    }
+                    exportDropdown.classList.add('hidden');
+                });
+            });
+            // Filter Panel Toggle
+            const filterBtn = document.getElementById('filterBtn');
+            const filtersPanel = document.getElementById('filtersPanel');
+            filterBtn.addEventListener('click', function () {
+                filtersPanel.classList.toggle('hidden');
+            });
+            // Other Dropdowns
+            const dropdownTriggers = [
+                { trigger: 'revenueTrendOptions', dropdown: 'revenueTrendDropdown' },
+                { trigger: 'categoryOptions', dropdown: 'categoryDropdown' },
+                { trigger: 'locationOptions', dropdown: 'locationDropdown' },
+                { trigger: 'peakTimeOptions', dropdown: 'peakTimeDropdown' }
+            ];
+            dropdownTriggers.forEach(item => {
+                const trigger = document.getElementById(item.trigger);
+                const dropdown = document.getElementById(item.dropdown);
+                if (trigger && dropdown) {
+                    trigger.addEventListener('click', function () {
+                        dropdown.classList.toggle('hidden');
+                    });
+                }
+            });
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (event) {
+                const dropdowns = document.querySelectorAll('.absolute:not(.hidden)');
+                dropdowns.forEach(dropdown => {
+                    const isClickInside = dropdown.contains(event.target) ||
+                        dropdown.previousElementSibling &&
+                        dropdown.previousElementSibling.contains(event.target);
+                    if (!isClickInside) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+    <script id="chartHandlers">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Revenue Trend Chart
+            const revenueTrendChart = echarts.init(document.getElementById('revenueTrendChart'));
+            const revenueTrendOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: '#e5e7eb',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    data: ['Total Revenue', 'Attractions', 'Activities', 'Tours'],
+                    bottom: 0,
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['Jun 1', 'Jun 5', 'Jun 10', 'Jun 15', 'Jun 20', 'Jun 25', 'Jun 30', 'Jul 1', 'Jul 5'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#1f2937'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        color: '#1f2937',
+                        formatter: '${value}'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Total Revenue',
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        symbol: 'none',
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(87, 181, 231, 0.3)' },
+                                { offset: 1, color: 'rgba(87, 181, 231, 0.1)' }
+                            ])
+                        },
+                        data: [18500, 22430, 19820, 26540, 28350, 24860, 27480, 30120, 32450]
+                    },
+                    {
+                        name: 'Attractions',
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 2,
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        symbol: 'none',
+                        data: [8200, 10450, 8750, 12340, 13650, 11280, 12540, 14250, 15680]
+                    },
+                    {
+                        name: 'Activities',
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 2,
+                            color: 'rgba(251, 191, 114, 1)'
+                        },
+                        symbol: 'none',
+                        data: [5400, 6580, 5920, 7850, 8240, 7350, 8120, 8950, 9540]
+                    },
+                    {
+                        name: 'Tours',
+                        type: 'line',
+                        smooth: true,
+                        lineStyle: {
+                            width: 2,
+                            color: 'rgba(252, 141, 98, 1)'
+                        },
+                        symbol: 'none',
+                        data: [4900, 5400, 5150, 6350, 6460, 6230, 6820, 6920, 7230]
+                    }
+                ]
+            };
+            revenueTrendChart.setOption(revenueTrendOption);
+            // Category Chart (Pie)
+            const categoryChart = echarts.init(document.getElementById('categoryChart'));
+            const categoryOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: '#e5e7eb',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Revenue by Category',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['40%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false
+                        },
+                        emphasis: {
+                            label: {
+                                show: false
+                            }
+                        },
+                        data: [
+                            { value: 178450, name: 'Attractions', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+                            { value: 132680, name: 'Tours', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+                            { value: 98540, name: 'Activities', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+                            { value: 77722, name: 'Experiences', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+                        ]
+                    }
+                ]
+            };
+            categoryChart.setOption(categoryOption);
+            // Location Chart (Bar)
+            const locationChart = echarts.init(document.getElementById('locationChart'));
+            const locationOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: '#e5e7eb',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    top: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#1f2937',
+                        formatter: '${value}k'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['New York', 'San Francisco', 'Chicago', 'Miami', 'Los Angeles'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#1f2937'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Revenue',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: [
+                            { value: 120, itemStyle: { color: 'rgba(87, 181, 231, 1)', borderRadius: [0, 4, 4, 0] } },
+                            { value: 95, itemStyle: { color: 'rgba(141, 211, 199, 1)', borderRadius: [0, 4, 4, 0] } },
+                            { value: 82, itemStyle: { color: 'rgba(251, 191, 114, 1)', borderRadius: [0, 4, 4, 0] } },
+                            { value: 78, itemStyle: { color: 'rgba(252, 141, 98, 1)', borderRadius: [0, 4, 4, 0] } },
+                            { value: 68, itemStyle: { color: 'rgba(87, 181, 231, 0.7)', borderRadius: [0, 4, 4, 0] } }
+                        ],
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '${c}k',
+                            color: '#1f2937'
+                        }
+                    }
+                ]
+            };
+            locationChart.setOption(locationOption);
+            // Peak Time Chart
+            const peakTimeChart = echarts.init(document.getElementById('peakTimeChart'));
+            const peakTimeOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: '#e5e7eb',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    top: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#1f2937'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        color: '#1f2937',
+                        formatter: '${value}k'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        data: [18, 14, 22, 25, 35, 48, 42],
+                        type: 'bar',
+                        barWidth: '60%',
+                        itemStyle: {
+                            color: function (params) {
+                                const colorList = [
+                                    'rgba(141, 211, 199, 1)',
+                                    'rgba(141, 211, 199, 1)',
+                                    'rgba(141, 211, 199, 1)',
+                                    'rgba(141, 211, 199, 1)',
+                                    'rgba(251, 191, 114, 1)',
+                                    'rgba(87, 181, 231, 1)',
+                                    'rgba(87, 181, 231, 0.8)'
+                                ];
+                                return colorList[params.dataIndex];
+                            },
+                            borderRadius: 4
+                        }
+                    }
+                ]
+            };
+            peakTimeChart.setOption(peakTimeOption);
+            // Handle window resize
+            window.addEventListener('resize', function () {
+                revenueTrendChart.resize();
+                categoryChart.resize();
+                locationChart.resize();
+                peakTimeChart.resize();
+            });
+        });
+    </script>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

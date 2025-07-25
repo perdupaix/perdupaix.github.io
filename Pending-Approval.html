@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Approval Management</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+     <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search business name, type, location...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 8, 2025 • Tuesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- Purpose Banner -->
+                <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-6 mb-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Business Approval Management</h1>
+                            <p class="text-gray-600 mt-1">Review and manage new business registrations and profile
+                                updates</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <div class="text-sm font-medium text-gray-500">Today's Pending</div>
+                                <div class="text-2xl font-bold text-primary">12</div>
+                            </div>
+                            <div class="relative group">
+                                <button
+                                    class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm text-gray-500 hover:text-primary">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-question-line"></i>
+                                    </div>
+                                </button>
+                                <div
+                                    class="absolute right-0 w-64 p-4 bg-white rounded-lg shadow-lg mt-2 text-sm text-gray-600 hidden group-hover:block z-10">
+                                    <p class="font-medium text-gray-900 mb-2">Approval Process:</p>
+                                    <ol class="list-decimal pl-4 space-y-1">
+                                        <li>Review business details</li>
+                                        <li>Verify submitted documents</li>
+                                        <li>Check compliance with platform policies</li>
+                                        <li>Approve or reject with feedback</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header with Back Button -->
+                <div class="flex items-center mb-6">
+                    <!-- <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                        data-readdy="true" class="flex items-center text-gray-600 hover:text-primary mr-4">
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-left-line"></i>
+                        </div>
+                        <span class="ml-1 text-sm">Back</span>
+                    </a> -->
+                    <h2 class="text-xl font-semibold text-gray-900">Pending Approvals</h2>
+                </div>
+                <!-- Summary Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-medium text-gray-500">Total Pending</h3>
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-time-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">36</span>
+                            <span class="ml-2 text-sm font-medium text-red-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                14.2%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous week</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-medium text-gray-500">Average Wait Time</h3>
+                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                    <i class="ri-hourglass-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">1.8 days</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-down-line"></i>
+                                </div>
+                                8.5%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous week</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-medium text-gray-500">Approved Today</h3>
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">8</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                33.3%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From yesterday</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-medium text-gray-500">Rejected Today</h3>
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">3</span>
+                            <span class="ml-2 text-sm font-medium text-red-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                50%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From yesterday</p>
+                    </div>
+                </div>
+                <!-- Filtering Options -->
+                <div class="bg-white rounded-lg shadow-sm p-5 mb-6">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="w-full md:w-auto">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Date Range</label>
+                            <div class="relative">
+                                <input type="text"
+                                    class="w-full md:w-48 pl-3 pr-10 py-2 border border-gray-300 rounded-button text-sm"
+                                    placeholder="Jul 1 - Jul 8, 2025">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                        <i class="ri-calendar-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Category</label>
+                            <div class="relative">
+                                <select
+                                    class="w-full md:w-40 appearance-none pl-3 pr-10 py-2 border border-gray-300 rounded-button text-sm bg-white">
+                                    <option value="">All Categories</option>
+                                    <option value="activity">Activity</option>
+                                    <option value="attraction">Attraction</option>
+                                    <option value="event">Event</option>
+                                    <option value="tour">Tour</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Location</label>
+                            <div class="relative">
+                                <select
+                                    class="w-full md:w-40 appearance-none pl-3 pr-10 py-2 border border-gray-300 rounded-button text-sm bg-white">
+                                    <option value="">All Locations</option>
+                                    <option value="new-york">New York</option>
+                                    <option value="los-angeles">Los Angeles</option>
+                                    <option value="chicago">Chicago</option>
+                                    <option value="miami">Miami</option>
+                                    <option value="seattle">Seattle</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Status</label>
+                            <div class="relative">
+                                <select
+                                    class="w-full md:w-40 appearance-none pl-3 pr-10 py-2 border border-gray-300 rounded-button text-sm bg-white">
+                                    <option value="">All Status</option>
+                                    <option value="pending" selected>Pending</option>
+                                    <option value="under-review">Under Review</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Request Type</label>
+                            <div class="relative">
+                                <select
+                                    class="w-full md:w-44 appearance-none pl-3 pr-10 py-2 border border-gray-300 rounded-button text-sm bg-white">
+                                    <option value="">All Types</option>
+                                    <option value="new">New Registration</option>
+                                    <option value="update">Profile Update</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-auto mt-auto">
+                            <button
+                                class="flex px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1 inline-block">
+                                    <i class="ri-refresh-line"></i>
+                                </div>
+                                Clear Filters
+                            </button>
+                        </div>
+                        <div class="w-full md:w-auto mt-auto ml-auto">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-500">Sort by:</span>
+                                <div class="relative">
+                                    <select
+                                        class="appearance-none pl-3 pr-10 py-2 border border-gray-300 rounded-button text-sm bg-white">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="wait-time">Longest Wait</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                        <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Business Listings Table -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-base font-medium text-gray-900">Business Listings (36)</h3>
+                        <div class="flex items-center space-x-2">
+                            <button
+                                class="ctaz px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                Export
+                            </button>
+                            <button
+                                class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-check-double-line"></i>
+                                </div>
+                                Bulk Approve
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                        </div>
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Business</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Type</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Location</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Submitted</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Wait Time</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Documents</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Verification Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=A%20thrilling%20zip%20line%20adventure%20course%20in%20a%20lush%20forest%20canopy%2C%20with%20professional%20safety%20equipment%2C%20multiple%20platforms%2C%20scenic%20mountain%20views%2C%20and%20adventurous%20participants%20enjoying%20the%20outdoor%20experience&width=80&height=80&seq=1&orientation=squarish"
+                                                    alt="Skyline Adventures" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Skyline Adventures</div>
+                                                <div class="text-xs text-gray-500">New Registration</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Activity</div>
+                                        <div class="text-xs text-gray-500">Zip Line</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">San Francisco</div>
+                                        <div class="text-xs text-gray-500">California</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 8, 2025</div>
+                                        <div class="text-xs text-gray-500">09:45 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        0 days
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">Identity Verified</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1 mt-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">License Valid</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="text-primary hover:text-primary/80 bg-primary/10 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button
+                                                class="text-green-600 hover:text-green-700 bg-green-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-700 bg-red-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=A%20majestic%20natural%20waterfall%20in%20a%20scenic%20park%20setting%20with%20hiking%20trails%2C%20viewing%20platforms%2C%20lush%20vegetation%2C%20crystal%20clear%20water%20cascading%20down%20rocks%2C%20and%20visitors%20enjoying%20the%20natural%20attraction&width=80&height=80&seq=2&orientation=squarish"
+                                                    alt="Crystal Falls Park" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Crystal Falls Park</div>
+                                                <div class="text-xs text-gray-500">Profile Update</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Attraction</div>
+                                        <div class="text-xs text-gray-500">Natural Landmark</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Aspen</div>
+                                        <div class="text-xs text-gray-500">Colorado</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 7, 2025</div>
+                                        <div class="text-xs text-gray-500">03:22 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Under
+                                            Review</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        1 day
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">Identity Verified</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1 mt-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">License Valid</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="text-primary hover:text-primary/80 bg-primary/10 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button
+                                                class="text-green-600 hover:text-green-700 bg-green-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-700 bg-red-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=A%20group%20of%20cyclists%20exploring%20urban%20streets%2C%20modern%20city%20backdrop%20with%20iconic%20landmarks%2C%20professional%20tour%20guides%20leading%20the%20way%2C%20high-end%20bikes%2C%20safety%20equipment%2C%20and%20engaging%20city%20atmosphere%20perfect%20for%20urban%20adventure&width=80&height=80&seq=3&orientation=squarish"
+                                                    alt="Urban Explorer Tours" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Urban Explorer Tours
+                                                </div>
+                                                <div class="text-xs text-gray-500">New Registration</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Tour</div>
+                                        <div class="text-xs text-gray-500">Cycling</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Portland</div>
+                                        <div class="text-xs text-gray-500">Oregon</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 6, 2025</div>
+                                        <div class="text-xs text-gray-500">11:15 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        2 days
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Incomplete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                            <span class="text-xs text-gray-600">Identity Pending</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1 mt-1">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <span class="text-xs text-gray-600">License Missing</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="text-primary hover:text-primary/80 bg-primary/10 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button
+                                                class="text-green-600 hover:text-green-700 bg-green-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-700 bg-red-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=A%20vibrant%20outdoor%20music%20festival%20setup%20with%20multiple%20stages%2C%20colorful%20lighting%20installations%2C%20food%20vendors%2C%20art%20displays%2C%20enthusiastic%20crowd%2C%20and%20professional%20sound%20equipment%20creating%20an%20exciting%20entertainment%20atmosphere&width=80&height=80&seq=4&orientation=squarish"
+                                                    alt="Summer Sound Festival" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Summer Sound Festival
+                                                </div>
+                                                <div class="text-xs text-gray-500">New Registration</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Event</div>
+                                        <div class="text-xs text-gray-500">Music Festival</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Santa Fe</div>
+                                        <div class="text-xs text-gray-500">New Mexico</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 5, 2025</div>
+                                        <div class="text-xs text-gray-500">02:38 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Under
+                                            Review</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        3 days
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">Identity Verified</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1 mt-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">License Valid</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="text-primary hover:text-primary/80 bg-primary/10 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button
+                                                class="text-green-600 hover:text-green-700 bg-green-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-700 bg-red-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=A%20guided%20historical%20walking%20tour%20in%20progress%20through%20cobblestone%20streets%2C%20with%20professional%20tour%20guide%2C%20historic%20architecture%2C%20landmarks%2C%20tourists%20with%20cameras%2C%20and%20informative%20plaques%20creating%20an%20educational%20cultural%20experience&width=80&height=80&seq=5&orientation=squarish"
+                                                    alt="Heritage Walking Tours" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Heritage Walking Tours
+                                                </div>
+                                                <div class="text-xs text-gray-500">New Registration</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Tour</div>
+                                        <div class="text-xs text-gray-500">Historical</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Miami</div>
+                                        <div class="text-xs text-gray-500">Florida</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 4, 2025</div>
+                                        <div class="text-xs text-gray-500">10:05 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        4 days
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Complete</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">Identity Verified</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1 mt-1">
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                            <span class="text-xs text-gray-600">License Valid</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="text-primary hover:text-primary/80 bg-primary/10 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button
+                                                class="text-green-600 hover:text-green-700 bg-green-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-700 bg-red-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                                <img src="https://readdy.ai/api/search-image?query=An%20exciting%20wildlife%20safari%20experience%20with%20open-air%20vehicles%2C%20professional%20guides%2C%20diverse%20animals%20in%20natural%20habitat%2C%20photography%20opportunities%2C%20and%20educational%20presentations%20creating%20an%20immersive%20nature%20adventure&width=80&height=80&seq=6&orientation=squarish"
+                                                    alt="Wildlife Safari Adventures" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Wildlife Safari
+                                                    Adventures</div>
+                                                <div class="text-xs text-gray-500">Profile Update</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Tour</div>
+                                        <div class="text-xs text-gray-500">Wildlife</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Napa Valley</div>
+                                        <div class="text-xs text-gray-500">California</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 3, 2025</div>
+                                        <div class="text-xs text-gray-500">04:17 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        5 days
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Missing</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <span class="text-xs text-gray-600">Identity Not Verified</span>
+                                        </div>
+                                        <div class="flex items-center space-x-1 mt-1">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <span class="text-xs text-gray-600">License Expired</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button
+                                                class="text-primary hover:text-primary/80 bg-primary/10 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                            <button
+                                                class="text-green-600 hover:text-green-700 bg-green-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-700 bg-red-100 p-1.5 rounded">
+                                                <div class="w-4 h-4 flex items-center justify-center">
+                                                    <i class="ri-close-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span
+                                class="font-medium">36</span> results
+                        </div>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap">Previous</button>
+                            <button
+                                class="px-3 py-1 border border-primary bg-primary rounded-button text-sm font-medium text-white whitespace-nowrap">1</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">2</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">3</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Business Details View (Hidden by default) -->
+                <div id="business-details-modal"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div class="flex items-center justify-between border-b px-6 py-4">
+                            <h3 class="text-lg font-medium text-gray-900">Business Details</h3>
+                            <button id="close-details-modal" class="text-gray-400 hover:text-gray-500">
+                                <div class="w-6 h-6 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-col md:flex-row gap-6 mb-6">
+                                <div class="md:w-1/3">
+                                    <div class="bg-gray-100 rounded-lg p-4 flex flex-col items-center">
+                                        <div
+                                            class="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                                            <div class="w-12 h-12 flex items-center justify-center text-blue-600">
+                                                <i class="ri-restaurant-line"></i>
+                                            </div>
+                                        </div>
+                                        <h4 class="text-lg font-medium text-gray-900 mb-1">Coastal Breeze Bistro</h4>
+                                        <p class="text-sm text-gray-500 mb-4">Seafood Restaurant</p>
+                                        <div class="flex space-x-2">
+                                            <span
+                                                class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">New
+                                                Registration</span>
+                                            <span
+                                                class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">Pending</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:w-2/3">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Business Owner</h5>
+                                            <p class="text-sm text-gray-900">Michael Anderson</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Contact Email</h5>
+                                            <p class="text-sm text-gray-900">michael@coastalbreeze.com</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Phone Number</h5>
+                                            <p class="text-sm text-gray-900">(415) 555-7890</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Business Type</h5>
+                                            <p class="text-sm text-gray-900">Restaurant - Seafood</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Location</h5>
+                                            <p class="text-sm text-gray-900">123 Harbor Drive, San Francisco, CA 94158
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Submission Date</h5>
+                                            <p class="text-sm text-gray-900">Jul 8, 2025 at 09:45 AM</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Business Hours</h5>
+                                            <p class="text-sm text-gray-900">Mon-Fri: 11AM-10PM, Sat-Sun: 10AM-11PM</p>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-500 mb-1">Website</h5>
+                                            <p class="text-sm text-primary">www.coastalbreezebistro.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <h4 class="text-base font-medium text-gray-900 mb-3">Business Description</h4>
+                                <p class="text-sm text-gray-700">
+                                    Coastal Breeze Bistro offers fresh, locally-sourced seafood in a relaxed waterfront
+                                    setting. Our menu changes seasonally to showcase the best catches from local
+                                    fishermen, and our chefs prepare each dish with innovative techniques that highlight
+                                    the natural flavors of the sea. We pride ourselves on sustainability practices and
+                                    supporting the local fishing community.
+                                </p>
+                            </div>
+                            <div class="mb-6">
+                                <h4 class="text-base font-medium text-gray-900 mb-3">Documentation Review</h4>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div class="flex items-center p-3 bg-white rounded border border-gray-200">
+                                            <div class="w-8 h-8 flex items-center justify-center mr-3 text-blue-600">
+                                                <i class="ri-file-text-line"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-gray-900">Business License</p>
+                                                <p class="text-xs text-gray-500">PDF, 2.3 MB</p>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-eye-line"></i>
+                                                    </div>
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-download-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center p-3 bg-white rounded border border-gray-200">
+                                            <div class="w-8 h-8 flex items-center justify-center mr-3 text-green-600">
+                                                <i class="ri-file-text-line"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-gray-900">Health Department
+                                                    Certificate</p>
+                                                <p class="text-xs text-gray-500">PDF, 1.8 MB</p>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-eye-line"></i>
+                                                    </div>
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-download-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center p-3 bg-white rounded border border-gray-200">
+                                            <div class="w-8 h-8 flex items-center justify-center mr-3 text-yellow-600">
+                                                <i class="ri-file-text-line"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-gray-900">Proof of Insurance</p>
+                                                <p class="text-xs text-gray-500">PDF, 1.1 MB</p>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-eye-line"></i>
+                                                    </div>
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-download-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center p-3 bg-white rounded border border-gray-200">
+                                            <div class="w-8 h-8 flex items-center justify-center mr-3 text-purple-600">
+                                                <i class="ri-file-text-line"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-gray-900">Menu Samples</p>
+                                                <p class="text-xs text-gray-500">PDF, 3.5 MB</p>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-eye-line"></i>
+                                                    </div>
+                                                </button>
+                                                <button class="text-gray-500 hover:text-gray-700">
+                                                    <div class="w-5 h-5 flex items-center justify-center">
+                                                        <i class="ri-download-line"></i>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-5 h-5 flex items-center justify-center mr-2 text-green-600">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                        <span class="text-sm text-gray-700">All required documents have been
+                                            submitted</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t pt-6">
+                                <h4 class="text-base font-medium text-gray-900 mb-3">Review Decision</h4>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Admin Notes</label>
+                                    <textarea class="w-full border border-gray-300 rounded-button p-3 text-sm" rows="3"
+                                        placeholder="Add notes about this business..."></textarea>
+                                </div>
+                                <div class="flex justify-end space-x-3">
+                                    <button
+                                        class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                        Request More Info
+                                    </button>
+                                    <button
+                                        class="px-4 py-2 border border-red-500 bg-white text-red-500 rounded-button text-sm font-medium hover:bg-red-50 whitespace-nowrap !rounded-button">
+                                        Reject
+                                    </button>
+                                    <button
+                                        class="px-4 py-2 bg-green-600 text-white rounded-button text-sm font-medium hover:bg-green-700 whitespace-nowrap !rounded-button">
+                                        Approve
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Confirmation Modals -->
+                <div id="approve-modal"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                        <div class="text-center mb-5">
+                            <div
+                                class="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                                <div class="w-6 h-6 flex items-center justify-center text-green-600">
+                                    <i class="ri-check-line"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Approve Business</h3>
+                            <p class="text-sm text-gray-600">Are you sure you want to approve "Coastal Breeze Bistro"?
+                                This will make the business listing visible to all users.</p>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button id="cancel-approve"
+                                class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                Cancel
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-green-600 text-white rounded-button text-sm font-medium hover:bg-green-700 whitespace-nowrap !rounded-button">
+                                Confirm Approval
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="reject-modal"
+                    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                        <div class="text-center mb-5">
+                            <div
+                                class="mx-auto w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
+                                <div class="w-6 h-6 flex items-center justify-center text-red-600">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Reject Business</h3>
+                            <p class="text-sm text-gray-600">Please provide a reason for rejecting "Coastal Breeze
+                                Bistro". This feedback will be sent to the business owner.</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Rejection Reason</label>
+                            <textarea class="w-full border border-gray-300 rounded-button p-3 text-sm" rows="3"
+                                placeholder="Explain why this business is being rejected..."></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button id="cancel-reject"
+                                class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                Cancel
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-red-600 text-white rounded-button text-sm font-medium hover:bg-red-700 whitespace-nowrap !rounded-button">
+                                Confirm Rejection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Audit Trail Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-medium text-gray-900">Recent Approval Activity</h3>
+                        <button class="text-sm text-primary font-medium whitespace-nowrap">View Full Log</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Business</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Action</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Reviewer</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date & Time</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">Lakeside Retreat Spa</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Emma Thompson</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 8, 2025</div>
+                                        <div class="text-xs text-gray-500">08:15 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">All documentation verified and complete</div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">Mountain Gear Outfitters</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Rejected</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Emma Thompson</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 8, 2025</div>
+                                        <div class="text-xs text-gray-500">07:42 AM</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Business license expired, requested updated
+                                            documentation</div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">Urban Cycling Tours</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Info
+                                            Requested</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">David Wilson</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Jul 7, 2025</div>
+                                        <div class="text-xs text-gray-500">04:28 PM</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900">Requested additional safety certification
+                                            information</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script id="modal-handlers-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Business details modal
+            const viewButtons = document.querySelectorAll('.text-primary.hover\\:text-primary\\/80');
+            const businessDetailsModal = document.getElementById('business-details-modal');
+            const closeDetailsModal = document.getElementById('close-details-modal');
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    businessDetailsModal.classList.remove('hidden');
+                });
+            });
+            closeDetailsModal.addEventListener('click', function () {
+                businessDetailsModal.classList.add('hidden');
+            });
+            // Approve modal
+            const approveButtons = document.querySelectorAll('.text-green-600.hover\\:text-green-700');
+            const approveModal = document.getElementById('approve-modal');
+            const cancelApprove = document.getElementById('cancel-approve');
+            approveButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    approveModal.classList.remove('hidden');
+                });
+            });
+            cancelApprove.addEventListener('click', function () {
+                approveModal.classList.add('hidden');
+            });
+            // Reject modal
+            const rejectButtons = document.querySelectorAll('.text-red-600.hover\\:text-red-700');
+            const rejectModal = document.getElementById('reject-modal');
+            const cancelReject = document.getElementById('cancel-reject');
+            rejectButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    rejectModal.classList.remove('hidden');
+                });
+            });
+            cancelReject.addEventListener('click', function () {
+                rejectModal.classList.add('hidden');
+            });
+            // Close modals when clicking outside
+            window.addEventListener('click', function (event) {
+                if (event.target === businessDetailsModal) {
+                    businessDetailsModal.classList.add('hidden');
+                }
+                if (event.target === approveModal) {
+                    approveModal.classList.add('hidden');
+                }
+                if (event.target === rejectModal) {
+                    rejectModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

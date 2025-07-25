@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Club Management</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .tier-card {
+            transition: all 0.3s ease;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search members, tiers, benefits...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 6, 2025 • Sunday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div class="flex items-center">
+                        <!-- <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                            data-readdy="true" class="mr-4 p-2 bg-white rounded-full shadow-sm hover:bg-gray-50">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-left-s-line"></i>
+                            </div>
+                        </a> -->
+                        <h1 class="text-2xl font-bold text-gray-900">Elite Club Management</h1>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button
+                            class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-filter-3-line"></i>
+                            </div>
+                            Filter Members
+                        </button>
+                        <button
+                            class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-download-line"></i>
+                            </div>
+                            Export Data
+                        </button>
+                    </div>
+                </div>
+                <!-- Key Metrics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Total Elite Members</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-primary/10 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-vip-crown-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">1,248</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                12.5%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">From previous month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Active Members</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-green-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                    <i class="ri-user-follow-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">987</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                8.3%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">This month</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Avg. Member Spending</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-blue-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                    <i class="ri-money-dollar-circle-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">$2,845</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                15.2%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Per quarter</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-top justify-between mb-4">
+                            <h3 class="text-sm font-medium text-gray-500">Member Satisfaction</h3>
+                            <div class="w-10 h-10 rounded-full flex-shrink-0 bg-yellow-100 flex items-center justify-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                    <i class="ri-star-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <span class="text-2xl font-bold text-gray-900">4.8/5</span>
+                            <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-arrow-up-line"></i>
+                                </div>
+                                0.3
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Based on 842 reviews</p>
+                    </div>
+                </div>
+                <!-- Membership Tiers Section -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-gray-900">Membership Tiers</h2>
+                        <button class="text-sm text-primary font-medium flex items-center whitespace-nowrap">
+                            Manage Tiers
+                            <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                <i class="ri-arrow-right-line"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="tier-card bg-white rounded-lg shadow-sm overflow-hidden border-t-4 border-gray-400">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-base font-semibold text-gray-800">Bronze</h3>
+                                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                        <div class="w-4 h-4 flex items-center justify-center text-gray-600">
+                                            <i class="ri-medal-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Members</div>
+                                    <div class="text-xl font-bold text-gray-900">684</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Minimum Spend</div>
+                                    <div class="text-xl font-bold text-gray-900">$500</div>
+                                </div>
+                                <div class="mb-6">
+                                    <div class="text-sm text-gray-500 mb-2">Key Benefits</div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">5% Discount on bookings</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">Early access to new activities</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button
+                                    class="w-full py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                                    Edit Tier
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tier-card bg-white rounded-lg shadow-sm overflow-hidden border-t-4 border-gray-500">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-base font-semibold text-gray-800">Silver</h3>
+                                    <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                                        <div class="w-4 h-4 flex items-center justify-center text-gray-700">
+                                            <i class="ri-medal-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Members</div>
+                                    <div class="text-xl font-bold text-gray-900">347</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Minimum Spend</div>
+                                    <div class="text-xl font-bold text-gray-900">$1,500</div>
+                                </div>
+                                <div class="mb-6">
+                                    <div class="text-sm text-gray-500 mb-2">Key Benefits</div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">10% Discount on bookings</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">Priority customer support</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button
+                                    class="w-full py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                                    Edit Tier
+                                </button>
+                            </div>
+                        </div>
+                        <div
+                            class="tier-card bg-white rounded-lg shadow-sm overflow-hidden border-t-4 border-yellow-500">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-base font-semibold text-gray-800">Gold</h3>
+                                    <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                        <div class="w-4 h-4 flex items-center justify-center text-yellow-600">
+                                            <i class="ri-medal-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Members</div>
+                                    <div class="text-xl font-bold text-gray-900">156</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Minimum Spend</div>
+                                    <div class="text-xl font-bold text-gray-900">$5,000</div>
+                                </div>
+                                <div class="mb-6">
+                                    <div class="text-sm text-gray-500 mb-2">Key Benefits</div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">15% Discount on bookings</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">Exclusive event invitations</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button
+                                    class="w-full py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                                    Edit Tier
+                                </button>
+                            </div>
+                        </div>
+                        <div
+                            class="tier-card bg-white rounded-lg shadow-sm overflow-hidden border-t-4 border-purple-500">
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-base font-semibold text-gray-800">Platinum</h3>
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                        <div class="w-4 h-4 flex items-center justify-center text-purple-600">
+                                            <i class="ri-vip-crown-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Members</div>
+                                    <div class="text-xl font-bold text-gray-900">61</div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="text-sm text-gray-500 mb-1">Minimum Spend</div>
+                                    <div class="text-xl font-bold text-gray-900">$10,000</div>
+                                </div>
+                                <div class="mb-6">
+                                    <div class="text-sm text-gray-500 mb-2">Key Benefits</div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">25% Discount on bookings</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-green-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-700">Personal concierge service</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button
+                                    class="w-full py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                                    Edit Tier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Exclusive Benefits Sections -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Exclusive Discounts -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Exclusive Discounts</h3>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                    <i class="ri-percent-line"></i>
+                                </div>
+                                <span class="text-sm font-medium text-primary">Elite Savings</span>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center p-4 bg-purple-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-purple-600">
+                                        <i class="ri-vip-crown-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Platinum Discount</h4>
+                                        <span class="text-lg font-bold text-purple-600">25% OFF</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Automatic discount on all bookings</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-yellow-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-yellow-600">
+                                        <i class="ri-medal-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Gold Discount</h4>
+                                        <span class="text-lg font-bold text-yellow-600">15% OFF</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Applies to all eligible services</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-medal-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Silver Discount</h4>
+                                        <span class="text-lg font-bold text-gray-600">10% OFF</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Valid on standard bookings</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-orange-50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-orange-600">
+                                        <i class="ri-medal-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Bronze Discount</h4>
+                                        <span class="text-lg font-bold text-orange-600">5% OFF</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Basic member savings</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Priority Booking & Early Access -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Priority Booking & Early Access</h3>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                    <i class="ri-calendar-check-line"></i>
+                                </div>
+                                <span class="text-sm font-medium text-primary">VIP Access</span>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="relative">
+                                <div class="absolute -left-2 top-0 bottom-0 w-0.5 bg-purple-200"></div>
+                                <div class="pl-6">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-5 h-5 flex items-center justify-center text-purple-600 mr-2">
+                                            <i class="ri-vip-crown-line"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900">Platinum Priority</h4>
+                                    </div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">30-day advance booking window</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Guaranteed spots for exclusive
+                                                events</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-2 top-0 bottom-0 w-0.5 bg-yellow-200"></div>
+                                <div class="pl-6">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-5 h-5 flex items-center justify-center text-yellow-600 mr-2">
+                                            <i class="ri-medal-line"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900">Gold Early Access</h4>
+                                    </div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">20-day advance booking window</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Priority queue for popular events</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-2 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                                <div class="pl-6">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-600 mr-2">
+                                            <i class="ri-medal-line"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900">Silver Booking</h4>
+                                    </div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-gray-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">10-day advance booking window</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-gray-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Early notification for seasonal
+                                                events</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-2 top-0 bottom-0 w-0.5 bg-orange-200"></div>
+                                <div class="pl-6">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-5 h-5 flex items-center justify-center text-orange-600 mr-2">
+                                            <i class="ri-medal-line"></i>
+                                        </div>
+                                        <h4 class="text-sm font-medium text-gray-900">Bronze Access</h4>
+                                    </div>
+                                    <ul class="space-y-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-orange-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">5-day advance booking window</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-orange-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Standard booking privileges</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Unique Experiences & Invitations -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-base font-medium text-gray-900">Unique Experiences & Invitations</h3>
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                <i class="ri-ticket-2-line"></i>
+                            </div>
+                            <span class="text-sm font-medium text-primary">Invitation Only</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Upcoming Private Event -->
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                            </div>
+                            <div
+                                class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-5 border border-purple-100">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span
+                                        class="px-3 py-1 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full">Secret
+                                        Event</span>
+                                    <div class="w-8 h-8 flex items-center justify-center text-purple-600">
+                                        <i class="ri-door-lock-box-line"></i>
+                                    </div>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Private Museum Tour</h4>
+                                <p class="text-sm text-gray-600 mb-4">Exclusive after-hours access to the new Modern Art
+                                    Exhibition</p>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-500">Jul 15, 2025</span>
+                                    <span class="text-purple-600 font-medium">Platinum Only</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Desert Dining Experience -->
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                            </div>
+                            <div
+                                class="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg p-5 border border-amber-100">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span
+                                        class="px-3 py-1 text-xs font-semibold text-amber-700 bg-amber-100 rounded-full">Limited
+                                        Seats</span>
+                                    <div class="w-8 h-8 flex items-center justify-center text-amber-600">
+                                        <i class="ri-star-line"></i>
+                                    </div>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Desert Dining Experience</h4>
+                                <p class="text-sm text-gray-600 mb-4">Gourmet dinner under the stars with celebrity chef
+                                </p>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-500">Jul 20, 2025</span>
+                                    <span class="text-amber-600 font-medium">Gold & Above</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Dessert Tasting Event -->
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                            </div>
+                            <div class="bg-gradient-to-r from-rose-50 to-pink-50 rounded-lg p-5 border border-rose-100">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span
+                                        class="px-3 py-1 text-xs font-semibold text-rose-700 bg-rose-100 rounded-full">New
+                                        Event</span>
+                                    <div class="w-8 h-8 flex items-center justify-center text-rose-600">
+                                        <i class="ri-cake-line"></i>
+                                    </div>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Exclusive Dessert Tasting</h4>
+                                <p class="text-sm text-gray-600 mb-4">Premium Dessert tasting event</p>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-500">Jul 25, 2025</span>
+                                    <span class="text-rose-600 font-medium">All Elite Members</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-gray-100 pt-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-purple-600">
+                                        <i class="ri-vip-crown-line"></i>
+                                    </div>
+                                </div>
+                                <h5 class="text-sm font-medium text-gray-900 mb-1">Platinum Access</h5>
+                                <p class="text-xs text-gray-500">First access to all exclusive events</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                                        <i class="ri-calendar-check-line"></i>
+                                    </div>
+                                </div>
+                                <h5 class="text-sm font-medium text-gray-900 mb-1">Priority RSVP</h5>
+                                <p class="text-xs text-gray-500">Guaranteed spots for premium events</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-green-600">
+                                        <i class="ri-gift-2-line"></i>
+                                    </div>
+                                </div>
+                                <h5 class="text-sm font-medium text-gray-900 mb-1">Special Gifts</h5>
+                                <p class="text-xs text-gray-500">Exclusive event memorabilia</p>
+                            </div>
+                            <div class="text-center">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3">
+                                    <div class="w-6 h-6 flex items-center justify-center text-amber-600">
+                                        <i class="ri-group-line"></i>
+                                    </div>
+                                </div>
+                                <h5 class="text-sm font-medium text-gray-900 mb-1">Guest Privileges</h5>
+                                <p class="text-xs text-gray-500">Bring guests to select events</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Complimentary Upgrades & Perks -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Complimentary Upgrades & Perks</h3>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                    <i class="ri-gift-2-line"></i>
+                                </div>
+                                <span class="text-sm font-medium text-primary">Free Upgrades</span>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div
+                                class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-purple-100/50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-purple-600">
+                                        <i class="ri-vip-crown-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Platinum Experience</h4>
+                                        <span
+                                            class="px-3 py-1 text-xs font-medium text-purple-700 bg-purple-100 rounded-full">Premium</span>
+                                    </div>
+                                    <ul class="space-y-2 mt-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Complimentary VIP seating
+                                                upgrades</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Exclusive welcome gift at partner
+                                                venues</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Extended activity duration (+30
+                                                mins)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center p-4 bg-gradient-to-r from-yellow-50 to-yellow-100/50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-yellow-600">
+                                        <i class="ri-medal-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Gold Benefits</h4>
+                                        <span
+                                            class="px-3 py-1 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-full">Enhanced</span>
+                                    </div>
+                                    <ul class="space-y-2 mt-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Complimentary welcome drinks</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Free souvenir on special
+                                                occasions</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-gradient-to-r from-gray-50 to-gray-100/50 rounded-lg">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mr-4">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-medal-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900">Silver & Bronze Perks</h4>
+                                        <span
+                                            class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-full">Basic</span>
+                                    </div>
+                                    <ul class="space-y-2 mt-2">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-gray-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Seasonal complimentary upgrades</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-gray-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Birthday special treatment</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dedicated Concierge Support -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Dedicated Concierge Support</h3>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                    <i class="ri-customer-service-2-line"></i>
+                                </div>
+                                <span class="text-sm font-medium text-primary">24/7 Support</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <div class="absolute -left-2 top-0 bottom-0 w-0.5 bg-purple-200"></div>
+                                <div class="pl-6">
+                                    <div class="flex items-top mb-4">
+                                        <div
+                                            class="w-10 h-10 rounded-full flex-shrink-0 bg-purple-100 flex items-center justify-center mr-3">
+                                            <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                <i class="ri-vip-crown-line"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-900">Platinum Concierge</h4>
+                                            <p class="text-xs text-gray-500 mt-0.5">Personal Dedicated Agent</p>
+                                        </div>
+                                    </div>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Direct line to personal concierge</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Priority issue resolution</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-purple-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Personalized travel planning</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-2 top-0 bottom-0 w-0.5 bg-yellow-200"></div>
+                                <div class="pl-6">
+                                    <div class="flex items-top mb-4">
+                                        <div
+                                            class="w-10 h-10 rounded-full flex-shrink-0 bg-yellow-100 flex items-center justify-center mr-3">
+                                            <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                                <i class="ri-medal-line"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-900">Gold Support</h4>
+                                            <p class="text-xs text-gray-500 mt-0.5">Priority Service</p>
+                                        </div>
+                                    </div>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Priority support queue</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">24/7 chat support</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div
+                                                class="w-4 h-4 flex items-center justify-center text-yellow-500 mt-0.5 mr-2">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-600">Expedited response time</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                                        <div class="w-4 h-4 flex items-center justify-center text-green-600">
+                                            <i class="ri-customer-service-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">
+                                        <span class="font-medium text-gray-900">Support Status:</span>
+                                        <span class="text-green-600 ml-1">Available Now</span>
+                                    </div>
+                                </div>
+                                <button
+                                    class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-message-3-line"></i>
+                                    </div>
+                                    Contact Support
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Milestone Rewards & Badges -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Milestone Rewards & Badges</h3>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                    <i class="ri-medal-2-line"></i>
+                                </div>
+                                <span class="text-sm font-medium text-primary">Achievement System</span>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="flex items-center p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg">
+                                <div class="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mr-4">
+                                    <div class="w-8 h-8 flex items-center justify-center text-amber-600">
+                                        <i class="ri-footprint-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="text-sm font-medium text-gray-900">Desert Wanderer</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-amber-700 bg-amber-100 rounded-full">Elite
+                                            Badge</span>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mb-2">Complete 5 desert safari adventures</p>
+                                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-amber-500 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">4/5 completed</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+                                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                    <div class="w-8 h-8 flex items-center justify-center text-blue-600">
+                                        <i class="ri-ancient-pavilion-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="text-sm font-medium text-gray-900">Cultural Connoisseur</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">Rare
+                                            Badge</span>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mb-2">Visit 10 historical landmarks</p>
+                                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-500 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">6/10 completed</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+                                <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                                    <div class="w-8 h-8 flex items-center justify-center text-purple-600">
+                                        <i class="ri-compass-3-line"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="text-sm font-medium text-gray-900">Ultimate Explorer</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium text-purple-700 bg-purple-100 rounded-full">Legendary</span>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mb-2">Book adventures in 5 different categories</p>
+                                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-purple-500 rounded-full" style="width: 40%"></div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">2/5 completed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2">
+                                        <div class="w-6 h-6 flex items-center justify-center text-green-600">
+                                            <i class="ri-money-dollar-circle-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">$500</p>
+                                    <p class="text-xs text-gray-500">Reward Points</p>
+                                </div>
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+                                        <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                                            <i class="ri-medal-2-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">12</p>
+                                    <p class="text-xs text-gray-500">Badges Earned</p>
+                                </div>
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-2">
+                                        <div class="w-6 h-6 flex items-center justify-center text-purple-600">
+                                            <i class="ri-trophy-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">Level 8</p>
+                                    <p class="text-xs text-gray-500">Explorer Rank</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Birthday & Anniversary Bonuses -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Birthday & Anniversary Bonuses</h3>
+                            <div class="flex items-center">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary mr-2">
+                                    <i class="ri-cake-3-line"></i>
+                                </div>
+                                <span class="text-sm font-medium text-primary">Special Rewards</span>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="relative">
+                                <div
+                                    class="flex items-center p-4 bg-gradient-to-r from-pink-50 to-red-50 rounded-lg border border-pink-100">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mr-4">
+                                        <div class="w-8 h-8 flex items-center justify-center text-pink-600">
+                                            <i class="ri-cake-3-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-base font-medium text-gray-900 mb-1">Birthday Special</h4>
+                                        <p class="text-sm text-gray-600 mb-3">Exclusive offers and surprises on your
+                                            special day!</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span
+                                                class="px-3 py-1 text-xs font-medium text-pink-700 bg-pink-100 rounded-full">Free
+                                                Activity Upgrade</span>
+                                            <span
+                                                class="px-3 py-1 text-xs font-medium text-pink-700 bg-pink-100 rounded-full">Double
+                                                Points</span>
+                                            <span
+                                                class="px-3 py-1 text-xs font-medium text-pink-700 bg-pink-100 rounded-full">Birthday
+                                                Gift</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absolute -right-2 -top-2">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-white text-xs font-bold shadow-lg">
+                                        15
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1 text-center">Days</p>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="flex items-center p-4 bg-gradient-to-r from-violet-50 to-purple-50 rounded-lg border border-violet-100">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-violet-100 flex items-center justify-center mr-4">
+                                        <div class="w-8 h-8 flex items-center justify-center text-violet-600">
+                                            <i class="ri-calendar-event-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-base font-medium text-gray-900 mb-1">Membership Anniversary</h4>
+                                        <p class="text-sm text-gray-600 mb-3">Celebrate your journey with us!</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span
+                                                class="px-3 py-1 text-xs font-medium text-violet-700 bg-violet-100 rounded-full">Bonus
+                                                Points</span>
+                                            <span
+                                                class="px-3 py-1 text-xs font-medium text-violet-700 bg-violet-100 rounded-full">Special
+                                                Discount</span>
+                                            <span
+                                                class="px-3 py-1 text-xs font-medium text-violet-700 bg-violet-100 rounded-full">Elite
+                                                Access</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absolute -right-2 -top-2">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white text-xs font-bold shadow-lg">
+                                        89
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1 text-center">Days</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-gray-100">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
+                                        <div class="w-6 h-6 flex items-center justify-center text-green-600">
+                                            <i class="ri-gift-2-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">Next Reward</p>
+                                    <p class="text-xs text-gray-500 mt-1">Free Desert Safari Upgrade</p>
+                                </div>
+                                <div class="text-center p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
+                                    <div
+                                        class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-3">
+                                        <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                                            <i class="ri-timer-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-900">Reward History</p>
+                                    <p class="text-xs text-gray-500 mt-1">View Past Celebrations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Actions Panel -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <style>
+                        .ctaz{
+                            font-size: small;
+                        }
+                    </style>
+                    <h3 class="text-base font-medium text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <button
+                            class="ctaz flex items-center justify-center px-4 py-3 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-user-add-line"></i>
+                            </div>
+                            Add New Elite Member
+                        </button>
+                        <button
+                            class="ctaz flex items-center justify-center px-4 py-3 bg-purple-100 text-purple-700 rounded-button hover:bg-purple-200 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-gift-line"></i>
+                            </div>
+                            Create Exclusive Offer
+                        </button>
+                        <button
+                            class="ctaz flex inline-flex items-center justify-center px-4 py-3 bg-blue-100 text-blue-700 rounded-button hover:bg-blue-200 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-mail-send-line"></i>
+                            </div>
+                            Send Tier Announcements
+                        </button>
+                        <button
+                            class="ctaz flex items-center justify-center px-4 py-3 bg-green-100 text-green-700 rounded-button hover:bg-green-200 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-file-chart-line"></i>
+                            </div>
+                            Generate Reports
+                        </button>
+                    </div>
+                </div>
+
+                
+                <!-- Member Management Table -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+                    <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-base font-medium text-gray-900">Elite Members</h3>
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <button
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-filter-line"></i>
+                                    </div>
+                                    Filter
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <button
+                                    class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-sort-desc"></i>
+                                    </div>
+                                    Sort
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Member</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tier Level</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Join Date</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Total Spend</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Activity Score</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Alexandra Reynolds</div>
+                                                <div class="text-xs text-gray-500">alex.reynolds@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center text-purple-600 mr-2">
+                                                <i class="ri-vip-crown-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Platinum</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Mar 15, 2023
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        $15,842
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                <div class="h-full bg-green-500 rounded-full" style="width: 92%"></div>
+                                            </div>
+                                            <span class="ml-2 text-xs text-gray-500">92</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-arrow-up-down-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-mail-send-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Michael Thornton</div>
+                                                <div class="text-xs text-gray-500">michael.t@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center text-yellow-600 mr-2">
+                                                <i class="ri-medal-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Gold</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Jun 28, 2023
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        $8,475
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                <div class="h-full bg-green-500 rounded-full" style="width: 78%"></div>
+                                            </div>
+                                            <span class="ml-2 text-xs text-gray-500">78</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-arrow-up-down-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-mail-send-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Samantha Wilson</div>
+                                                <div class="text-xs text-gray-500">sam.wilson@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center text-gray-500 mr-2">
+                                                <i class="ri-medal-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Silver</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Nov 12, 2023
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        $3,254
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                <div class="h-full bg-yellow-500 rounded-full" style="width: 65%"></div>
+                                            </div>
+                                            <span class="ml-2 text-xs text-gray-500">65</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-arrow-up-down-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-mail-send-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">David Nguyen</div>
+                                                <div class="text-xs text-gray-500">david.n@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center text-gray-400 mr-2">
+                                                <i class="ri-medal-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Bronze</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Jan 05, 2024
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        $1,128
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                <div class="h-full bg-yellow-500 rounded-full" style="width: 45%"></div>
+                                            </div>
+                                            <span class="ml-2 text-xs text-gray-500">45</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-arrow-up-down-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-mail-send-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="table-row">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div
+                                                class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
+                                                <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                                    <i class="ri-user-line"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Jessica Martinez</div>
+                                                <div class="text-xs text-gray-500">jess.m@example.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-4 h-4 flex items-center justify-center text-yellow-600 mr-2">
+                                                <i class="ri-medal-line"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900">Gold</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        Aug 17, 2023
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                                        $7,650
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                                <div class="h-full bg-red-500 rounded-full" style="width: 20%"></div>
+                                            </div>
+                                            <span class="ml-2 text-xs text-gray-500">20</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <div class="flex space-x-2">
+                                            <button class="text-primary hover:text-primary/80">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-arrow-up-down-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-blue-600 hover:text-blue-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-mail-send-line"></i>
+                                                </div>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-900">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-eye-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span
+                                class="font-medium">1,248</span> members
+                        </div>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap">Previous</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Analytics Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Member Activity Trends</h3>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Weekly</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium text-white bg-primary rounded-full whitespace-nowrap">Monthly</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full hover:bg-gray-200 whitespace-nowrap">Yearly</button>
+                            </div>
+                        </div>
+                        <div id="member-activity-chart" class="h-64"></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-medium text-gray-900">Benefits Usage by Tier</h3>
+                            <button class="text-sm text-primary font-medium flex items-center whitespace-nowrap">
+                                View Details
+                                <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                    <i class="ri-arrow-right-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div id="benefits-usage-chart" class="h-64"></div>
+                    </div>
+                </div>
+                <!-- Recent Activities Feed -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-base font-medium text-gray-900">Recent Activities</h3>
+                        <button class="text-sm text-primary font-medium whitespace-nowrap">View All Activities</button>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                                    <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                        <i class="ri-arrow-up-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">
+                                    <span class="font-semibold">Michael Thornton</span> was upgraded to <span
+                                        class="font-semibold">Gold tier</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">Automatic upgrade based on spending threshold</p>
+                                <p class="text-xs text-gray-400 mt-1">Today at 10:45 AM</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                    <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                        <i class="ri-mail-send-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">
+                                    <span class="font-semibold">Summer Exclusive Offer</span> sent to <span
+                                        class="font-semibold">61 Platinum members</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">Email campaign: "Exclusive Summer Getaway Package"
+                                </p>
+                                <p class="text-xs text-gray-400 mt-1">Yesterday at 3:30 PM</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                                    <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                        <i class="ri-user-add-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">
+                                    <span class="font-semibold">Alexandra Reynolds</span> joined the Elite Club as <span
+                                        class="font-semibold">Platinum member</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">Manually added by Emma Thompson</p>
+                                <p class="text-xs text-gray-400 mt-1">Jul 5, 2025 at 9:15 AM</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
+                                    <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                        <i class="ri-gift-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">
+                                    <span class="font-semibold">Samantha Wilson</span> redeemed <span
+                                        class="font-semibold">Silver tier benefit</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">Benefit: "Priority Customer Support" for booking
+                                    #BK-78542</p>
+                                <p class="text-xs text-gray-400 mt-1">Jul 4, 2025 at 2:45 PM</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                                    <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                        <i class="ri-user-unfollow-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">
+                                    <span class="font-semibold">Jessica Martinez</span> status changed to <span
+                                        class="font-semibold">Inactive</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">No activity for 90 days</p>
+                                <p class="text-xs text-gray-400 mt-1">Jul 3, 2025 at 11:20 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                if (button.classList.contains('bg-primary/10')) {
+                    submenu.classList.remove('hidden');
+                    button.setAttribute('data-expanded', 'true');
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (arrowIcon) {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                }
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script id="charts-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Member Activity Trends Chart
+            const memberActivityChart = echarts.init(document.getElementById('member-activity-chart'));
+            const memberActivityOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#f0f0f0',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    data: ['Platinum', 'Gold', 'Silver', 'Bronze'],
+                    textStyle: {
+                        color: '#4b5563'
+                    },
+                    bottom: 0
+                },
+                grid: {
+                    left: 0,
+                    right: 0,
+                    top: 10,
+                    bottom: 30,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#6b7280'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Platinum',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(87, 181, 231, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(87, 181, 231, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [42, 45, 48, 53, 58, 62, 68, 72, 65, 60, 56, 61]
+                    },
+                    {
+                        name: 'Gold',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(251, 191, 114, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(251, 191, 114, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(251, 191, 114, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [110, 120, 135, 142, 156, 168, 172, 175, 165, 158, 150, 162]
+                    },
+                    {
+                        name: 'Silver',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(141, 211, 199, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(141, 211, 199, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [220, 232, 245, 260, 278, 290, 310, 325, 315, 305, 295, 308]
+                    },
+                    {
+                        name: 'Bronze',
+                        type: 'line',
+                        smooth: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            width: 3,
+                            color: 'rgba(252, 141, 98, 1)'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(252, 141, 98, 0.2)'
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(252, 141, 98, 0.01)'
+                                }
+                            ])
+                        },
+                        data: [520, 532, 548, 560, 578, 595, 615, 635, 620, 605, 590, 610]
+                    }
+                ]
+            };
+            memberActivityChart.setOption(memberActivityOption);
+            // Benefits Usage Chart
+            const benefitsUsageChart = echarts.init(document.getElementById('benefits-usage-chart'));
+            const benefitsUsageOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    borderColor: '#f0f0f0',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    itemWidth: 14,
+                    itemHeight: 14,
+                    textStyle: {
+                        color: '#4b5563'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Benefits Usage',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['40%', '50%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 8,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false
+                        },
+                        emphasis: {
+                            label: {
+                                show: false
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 35, name: 'Discounts' },
+                            { value: 25, name: 'Priority Support' },
+                            { value: 20, name: 'Exclusive Events' },
+                            { value: 15, name: 'Early Access' },
+                            { value: 5, name: 'Concierge Service' }
+                        ],
+                        color: [
+                            'rgba(87, 181, 231, 1)',
+                            'rgba(141, 211, 199, 1)',
+                            'rgba(251, 191, 114, 1)',
+                            'rgba(252, 141, 98, 1)',
+                            'rgba(179, 179, 179, 1)'
+                        ]
+                    }
+                ]
+            };
+            benefitsUsageChart.setOption(benefitsUsageOption);
+            // Resize charts when window resizes
+            window.addEventListener('resize', function () {
+                memberActivityChart.resize();
+                benefitsUsageChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

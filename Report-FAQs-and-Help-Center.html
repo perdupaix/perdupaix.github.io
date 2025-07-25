@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Management</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .faq-item {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .faq-item:hover {
+            background-color: rgba(79, 70, 229, 0.02);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-published {
+            background-color: #10b981;
+        }
+
+        .status-draft {
+            background-color: #f59e0b;
+        }
+
+        .status-archived {
+            background-color: #6b7280;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+  <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search attractions, activities, bookings...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- <div class="flex items-center mb-6">
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                        data-readdy="true" class="flex items-center text-sm text-gray-500 hover:text-primary mr-4">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-arrow-left-line"></i>
+                        </div>
+                        Back to Reports
+                    </a>
+                    <nav class="text-sm text-gray-500">
+                        <span>Reports</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900 font-medium">FAQ Management</span>
+                    </nav>
+                </div> -->
+
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">FAQ Management</h1>
+                        <p class="text-gray-600 mt-1">Manage frequently asked questions for users and partners across
+                            your platform</p>
+                    </div>
+                    <button id="add-faq-btn"
+                        class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                        <div class="w-4 h-4 flex items-center justify-center mr-2">
+                            <i class="ri-add-line"></i>
+                        </div>
+                        Add New FAQ
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex flex-col lg:flex-row gap-4">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                        <i class="ri-search-line"></i>
+                                    </div>
+                                </div>
+                                <input type="search" id="search-faqs"
+                                    class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="Search FAQs...">
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="relative">
+                                <button id="category-filter"
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-folder-line"></i>
+                                    </div>
+                                    All Categories
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div id="category-dropdown"
+                                    class="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg py-1 hidden z-10">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-category="all">All Categories</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-category="general">General</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-category="booking">Booking</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-category="payments">Payments</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-category="technical">Technical</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-category="reports">Reports</a>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <button id="status-filter"
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-eye-line"></i>
+                                    </div>
+                                    All Status
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div id="status-dropdown"
+                                    class="absolute top-full left-0 mt-1 w-40 bg-white rounded-md shadow-lg py-1 hidden z-10">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-status="all">All Status</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-status="published">Published</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-status="draft">Draft</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-status="archived">Archived</a>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <button id="audience-filter"
+                                    class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap">
+                                    <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                        <i class="ri-group-line"></i>
+                                    </div>
+                                    All Audiences
+                                    <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div id="audience-dropdown"
+                                    class="absolute top-full left-0 mt-1 w-40 bg-white rounded-md shadow-lg py-1 hidden z-10">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-audience="all">All Audiences</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-audience="users">Users</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        data-audience="providers">Providers</a>
+                                </div>
+                            </div>
+                            <button id="clear-filters"
+                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 whitespace-nowrap">
+                                Clear Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Question</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Answer Preview</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Category</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Last Updated</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faq-table-body" class="bg-white divide-y divide-gray-200">
+                                <tr class="faq-item table-row" data-category="reports" data-status="published"
+                                    data-audience="users">
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">How do I generate a monthly
+                                            revenue report?</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-600">To generate a monthly revenue report,
+                                            navigate to Reports > Revenue Analytics and select the desired month...
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">Reports</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <span class="status-dot status-published"></span>
+                                            <span class="text-sm text-gray-900">Published</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">2 hours ago</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-2">
+                                            <button class="edit-faq-btn text-gray-600 hover:text-primary" data-id="1">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="custom-switch">
+                                                <input type="checkbox" checked data-id="1">
+                                                <span class="switch-slider"></span>
+                                            </div>
+                                            <button class="delete-faq-btn text-red-600 hover:text-red-900" data-id="1">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="faq-item table-row" data-category="reports" data-status="published"
+                                    data-audience="users">
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">Why is my booking report showing
+                                            incorrect data?</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-600">If your booking report shows incorrect data,
+                                            please check the date range filters and ensure...</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">Reports</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <span class="status-dot status-published"></span>
+                                            <span class="text-sm text-gray-900">Published</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">1 day ago</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-2">
+                                            <button class="edit-faq-btn text-gray-600 hover:text-primary" data-id="2">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="custom-switch">
+                                                <input type="checkbox" checked data-id="2">
+                                                <span class="switch-slider"></span>
+                                            </div>
+                                            <button class="delete-faq-btn text-red-600 hover:text-red-900" data-id="2">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="faq-item table-row" data-category="reports" data-status="draft"
+                                    data-audience="providers">
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">How can I schedule automated
+                                            weekly reports?</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-600">To schedule automated weekly reports, go to
+                                            Reports settings and configure the automation...</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">Reports</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <span class="status-dot status-draft"></span>
+                                            <span class="text-sm text-gray-900">Draft</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">3 days ago</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-2">
+                                            <button class="edit-faq-btn text-gray-600 hover:text-primary" data-id="3">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="custom-switch">
+                                                <input type="checkbox" data-id="3">
+                                                <span class="switch-slider"></span>
+                                            </div>
+                                            <button class="delete-faq-btn text-red-600 hover:text-red-900" data-id="3">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="faq-item table-row" data-category="booking" data-status="published"
+                                    data-audience="users">
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">How do I cancel a booking and
+                                            process refunds?</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-600">To cancel a booking and process refunds,
+                                            navigate to the booking details page and click...</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Booking</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <span class="status-dot status-published"></span>
+                                            <span class="text-sm text-gray-900">Published</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">1 week ago</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-2">
+                                            <button class="edit-faq-btn text-gray-600 hover:text-primary" data-id="4">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="custom-switch">
+                                                <input type="checkbox" checked data-id="4">
+                                                <span class="switch-slider"></span>
+                                            </div>
+                                            <button class="delete-faq-btn text-red-600 hover:text-red-900" data-id="4">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="faq-item table-row" data-category="payments" data-status="published"
+                                    data-audience="providers">
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">What payment methods are
+                                            supported for customers?</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-600">We support major credit cards, PayPal, Apple
+                                            Pay, Google Pay, and bank transfers...</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Payments</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <span class="status-dot status-published"></span>
+                                            <span class="text-sm text-gray-900">Published</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">2 weeks ago</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-2">
+                                            <button class="edit-faq-btn text-gray-600 hover:text-primary" data-id="5">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="custom-switch">
+                                                <input type="checkbox" checked data-id="5">
+                                                <span class="switch-slider"></span>
+                                            </div>
+                                            <button class="delete-faq-btn text-red-600 hover:text-red-900" data-id="5">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="faq-item table-row" data-category="technical" data-status="archived"
+                                    data-audience="users">
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm font-medium text-gray-900">How do I troubleshoot login
+                                            issues?</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-600">If you're experiencing login issues, first
+                                            try clearing your browser cache and cookies...</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">Technical</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <span class="status-dot status-archived"></span>
+                                            <span class="text-sm text-gray-900">Archived</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">1 month ago</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-2">
+                                            <button class="edit-faq-btn text-gray-600 hover:text-primary" data-id="6">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-edit-line"></i>
+                                                </div>
+                                            </button>
+                                            <div class="custom-switch">
+                                                <input type="checkbox" data-id="6">
+                                                <span class="switch-slider"></span>
+                                            </div>
+                                            <button class="delete-faq-btn text-red-600 hover:text-red-900" data-id="6">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-700">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span
+                                class="font-medium">24</span> results
+                        </div>
+                        <div class="flex space-x-2">
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap">Previous</button>
+                            <button
+                                class="px-3 py-1 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="faq-modal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 id="modal-title" class="text-lg font-medium text-gray-900">Add New FAQ</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </button>
+            </div>
+            <form id="faq-form" class="p-6 space-y-6">
+                <div>
+                    <label for="faq-question" class="block text-sm font-medium text-gray-700 mb-2">Question</label>
+                    <input type="text" id="faq-question"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                        placeholder="Enter the FAQ question" required>
+                </div>
+                <div>
+                    <label for="faq-answer" class="block text-sm font-medium text-gray-700 mb-2">Answer</label>
+                    <textarea id="faq-answer" rows="6"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm resize-none"
+                        placeholder="Enter the detailed answer" required></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="faq-category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <div class="relative">
+                            <button type="button" id="modal-category-btn"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-button text-left text-sm focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary flex items-center justify-between">
+                                <span id="modal-category-text">Select Category</span>
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </button>
+                            <div id="modal-category-dropdown"
+                                class="absolute top-full left-0 mt-1 w-full bg-white rounded-md shadow-lg py-1 hidden z-10 border">
+                                <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    data-value="general">General</a>
+                                <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    data-value="booking">Booking</a>
+                                <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    data-value="payments">Payments</a>
+                                <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    data-value="technical">Technical</a>
+                                <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    data-value="reports">Reports</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="faq-status" value="published" class="sr-only">
+                                <div
+                                    class="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center mr-2 cursor-pointer status-radio">
+                                    <div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+                                </div>
+                                <span class="text-sm text-gray-700">Published</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="faq-status" value="draft" class="sr-only" checked>
+                                <div
+                                    class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center mr-2 cursor-pointer status-radio">
+                                    <div class="w-2 h-2 rounded-full bg-primary"></div>
+                                </div>
+                                <span class="text-sm text-gray-700">Draft</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="faq-status" value="archived" class="sr-only">
+                                <div
+                                    class="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center mr-2 cursor-pointer status-radio">
+                                    <div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+                                </div>
+                                <span class="text-sm text-gray-700">Archived</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Audience</label>
+                    <div class="flex space-x-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="faq-audience" value="users" class="sr-only">
+                            <div
+                                class="w-4 h-4 rounded border-2 border-gray-300 flex items-center justify-center mr-2 cursor-pointer audience-checkbox">
+                                <div class="w-2 h-2 bg-primary hidden"></div>
+                            </div>
+                            <span class="text-sm text-gray-700">Users</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="faq-audience" value="providers" class="sr-only">
+                            <div
+                                class="w-4 h-4 rounded border-2 border-gray-300 flex items-center justify-center mr-2 cursor-pointer audience-checkbox">
+                                <div class="w-2 h-2 bg-primary hidden"></div>
+                            </div>
+                            <span class="text-sm text-gray-700">Providers</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4 border-t">
+                    <button type="button" id="cancel-btn"
+                        class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">Cancel</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap !rounded-button">Save
+                        FAQ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="fixed inset-0 modal-overlay flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                        <div class="w-6 h-6 flex items-center justify-center text-red-600">
+                            <i class="ri-alert-line"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">Delete FAQ</h3>
+                        <p class="text-sm text-gray-500 mt-1">Are you sure you want to delete this FAQ? This action
+                            cannot be undone.</p>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-delete"
+                        class="px-4 py-2 border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">Cancel</button>
+                    <button id="confirm-delete"
+                        class="px-4 py-2 bg-red-600 text-white rounded-button text-sm font-medium hover:bg-red-700 whitespace-nowrap !rounded-button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                if (submenu && submenu.tagName === 'UL') {
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (arrowIcon) {
+                            if (submenu.classList.contains('hidden')) {
+                                arrowIcon.style.transform = 'rotate(0deg)';
+                            } else {
+                                arrowIcon.style.transform = 'rotate(180deg)';
+                            }
+                        }
+                    });
+                }
+            });
+
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <script id="filter-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('category-filter');
+            const categoryDropdown = document.getElementById('category-dropdown');
+            const statusFilter = document.getElementById('status-filter');
+            const statusDropdown = document.getElementById('status-dropdown');
+            const audienceFilter = document.getElementById('audience-filter');
+            const audienceDropdown = document.getElementById('audience-dropdown');
+            function setupDropdown(button, dropdown, textElement) {
+                button.addEventListener('click', function () {
+                    dropdown.classList.toggle('hidden');
+                });
+
+                dropdown.addEventListener('click', function (e) {
+                    if (e.target.tagName === 'A') {
+                        e.preventDefault();
+                        const value = e.target.getAttribute('data-category') || e.target.getAttribute('data-status') || e.target.getAttribute('data-audience');
+                        textElement.textContent = e.target.textContent;
+                        dropdown.classList.add('hidden');
+                        filterFAQs();
+                    }
+                });
+            }
+
+            setupDropdown(categoryFilter, categoryDropdown, categoryFilter.querySelector('span'));
+            setupDropdown(statusFilter, statusDropdown, statusFilter.querySelector('span'));
+            setupDropdown(audienceFilter, audienceDropdown, audienceFilter.querySelector('span'));
+            document.addEventListener('click', function (event) {
+                if (!categoryFilter.contains(event.target) && !categoryDropdown.contains(event.target)) {
+                    categoryDropdown.classList.add('hidden');
+                }
+                if (!statusFilter.contains(event.target) && !statusDropdown.contains(event.target)) {
+                    statusDropdown.classList.add('hidden');
+                }
+                if (!audienceFilter.contains(event.target) && !audienceDropdown.contains(event.target)) {
+                    audienceDropdown.classList.add('hidden');
+                }
+            });
+
+            document.getElementById('clear-filters').addEventListener('click', function () {
+                categoryFilter.querySelector('span').textContent = 'All Categories';
+                statusFilter.querySelector('span').textContent = 'All Status';
+                audienceFilter.querySelector('span').textContent = 'All Audiences';
+                document.getElementById('search-faqs').value = '';
+                filterFAQs();
+            });
+        });
+    </script>
+
+    <script id="faq-management-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('faq-modal');
+            const deleteModal = document.getElementById('delete-modal');
+            const addFaqBtn = document.getElementById('add-faq-btn');
+            const closeModal = document.getElementById('close-modal');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const faqForm = document.getElementById('faq-form');
+            const searchInput = document.getElementById('search-faqs');
+            let currentEditId = null;
+            let currentDeleteId = null;
+
+            addFaqBtn.addEventListener('click', function () {
+                document.getElementById('modal-title').textContent = 'Add New FAQ';
+                faqForm.reset();
+                document.getElementById('modal-category-text').textContent = 'Select Category';
+                currentEditId = null;
+                modal.classList.remove('hidden');
+            });
+
+            document.querySelectorAll('.edit-faq-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    currentEditId = this.getAttribute('data-id');
+                    document.getElementById('modal-title').textContent = 'Edit FAQ';
+                    modal.classList.remove('hidden');
+                });
+            });
+
+            document.querySelectorAll('.delete-faq-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    currentDeleteId = this.getAttribute('data-id');
+                    deleteModal.classList.remove('hidden');
+                });
+            });
+
+            closeModal.addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+
+            cancelBtn.addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+
+            document.getElementById('cancel-delete').addEventListener('click', function () {
+                deleteModal.classList.add('hidden');
+            });
+
+            document.getElementById('confirm-delete').addEventListener('click', function () {
+                deleteModal.classList.add('hidden');
+            });
+
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+
+            deleteModal.addEventListener('click', function (e) {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.add('hidden');
+                }
+            });
+
+            const modalCategoryBtn = document.getElementById('modal-category-btn');
+            const modalCategoryDropdown = document.getElementById('modal-category-dropdown');
+            const modalCategoryText = document.getElementById('modal-category-text');
+
+            modalCategoryBtn.addEventListener('click', function () {
+                modalCategoryDropdown.classList.toggle('hidden');
+            });
+
+            modalCategoryDropdown.addEventListener('click', function (e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    modalCategoryText.textContent = e.target.textContent;
+                    modalCategoryDropdown.classList.add('hidden');
+                }
+            });
+
+            document.querySelectorAll('.status-radio').forEach(radio => {
+                radio.addEventListener('click', function () {
+                    document.querySelectorAll('.status-radio').forEach(r => {
+                        r.classList.remove('border-primary');
+                        r.classList.add('border-gray-300');
+                        r.querySelector('div').classList.add('hidden');
+                    });
+                    this.classList.add('border-primary');
+                    this.classList.remove('border-gray-300');
+                    this.querySelector('div').classList.remove('hidden');
+                });
+            });
+
+            document.querySelectorAll('.audience-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('click', function () {
+                    const inner = this.querySelector('div');
+                    if (inner.classList.contains('hidden')) {
+                        this.classList.add('border-primary', 'bg-primary/10');
+                        this.classList.remove('border-gray-300');
+                        inner.classList.remove('hidden');
+                    } else {
+                        this.classList.remove('border-primary', 'bg-primary/10');
+                        this.classList.add('border-gray-300');
+                        inner.classList.add('hidden');
+                    }
+                });
+            });
+
+            searchInput.addEventListener('input', filterFAQs);
+
+            document.querySelectorAll('.custom-switch input').forEach(toggle => {
+                toggle.addEventListener('change', function () {
+                    const id = this.getAttribute('data-id');
+                    console.log('Toggle status for FAQ', id, this.checked ? 'Published' : 'Draft');
+                });
+            });
+        });
+
+        function filterFAQs() {
+            const searchTerm = document.getElementById('search-faqs').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').querySelector('span').textContent;
+            const statusFilter = document.getElementById('status-filter').querySelector('span').textContent;
+            const audienceFilter = document.getElementById('audience-filter').querySelector('span').textContent;
+            const rows = document.querySelectorAll('.faq-item');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const question = row.querySelector('.text-sm.font-medium').textContent.toLowerCase();
+                const answer = row.querySelector('.text-sm.text-gray-600').textContent.toLowerCase();
+                const category = row.getAttribute('data-category');
+                const status = row.getAttribute('data-status');
+                const audience = row.getAttribute('data-audience');
+
+                const matchesSearch = question.includes(searchTerm) || answer.includes(searchTerm);
+                const matchesCategory = categoryFilter === 'All Categories' || category === categoryFilter.toLowerCase();
+                const matchesStatus = statusFilter === 'All Status' || status === statusFilter.toLowerCase();
+                const matchesAudience = audienceFilter === 'All Audiences' || audience === audienceFilter.toLowerCase();
+
+                if (matchesSearch && matchesCategory && matchesStatus && matchesAudience) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

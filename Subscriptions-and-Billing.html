@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriptions & Billing</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .tab-button.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .payment-method-card.selected {
+            border-color: #4f46e5;
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+     <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search business partners, subscriptions...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 8, 2025 • Tuesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- Breadcrumb Navigation -->
+                <!-- <nav class="flex items-center space-x-2 text-sm mb-6" aria-label="Breadcrumb">
+                    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/6b9be92e-66e4-4e09-96fb-f4023c38c320"
+                        data-readdy="true" class="text-gray-500 hover:text-gray-700 flex items-center">
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-home-line"></i>
+                        </div>
+                        <span class="ml-1">Dashboard</span>
+                    </a>
+                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Business</a>
+                    <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </div>
+                    <span class="text-gray-900 font-medium">Subscriptions & Billing</span>
+                </nav> -->
+                <!-- Page Header with Purpose Banner -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Subscriptions & Billing</h1>
+                            <p class="text-gray-600 mt-1">Manage your business partners' subscription plans and billing
+                                details</p>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-4 md:mt-0">
+                            <button
+                                class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-add-line"></i>
+                                </div>
+                                Add Business Partner
+                            </button>
+                            <button
+                                class="ctaz px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-download-line"></i>
+                                </div>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Business Partner Search & Filter -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                        <h2 class="text-lg font-medium text-gray-900">Business Partner Search</h2>
+                        <div class="flex space-x-3 mt-3 md:mt-0">
+                            <button
+                                class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-filter-line"></i>
+                                </div>
+                                Filters
+                            </button>
+                            <button
+                                class="px-3 py-1.5 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 flex items-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-sort-desc"></i>
+                                </div>
+                                Sort
+                            </button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-building-line"></i>
+                                </div>
+                            </div>
+                            <input type="text"
+                                class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                placeholder="Business name">
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-hashtag"></i>
+                                </div>
+                            </div>
+                            <input type="text"
+                                class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                placeholder="Business ID">
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-price-tag-3-line"></i>
+                                </div>
+                            </div>
+                            <select
+                                class="block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm appearance-none bg-white">
+                                <option value="">All Plan Types</option>
+                                <option value="basic">Basic</option>
+                                <option value="standard">Standard</option>
+                                <option value="premium">Premium</option>
+                                <option value="enterprise">Enterprise</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-bill-line"></i>
+                                </div>
+                            </div>
+                            <select
+                                class="block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm appearance-none bg-white">
+                                <option value="">All Billing Status</option>
+                                <option value="active">Active</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="pending">Pending</option>
+                                <option value="canceled">Canceled</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                    <i class="ri-arrow-down-s-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            Overdue
+                            <button class="ml-1 text-gray-500 hover:text-gray-700">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </span>
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            Pending Renewal
+                            <button class="ml-1 text-gray-500 hover:text-gray-700">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </span>
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            Premium Plan
+                            <button class="ml-1 text-gray-500 hover:text-gray-700">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-close-line"></i>
+                                </div>
+                            </button>
+                        </span>
+                        <button class="text-primary text-xs font-medium hover:underline">
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Business Partner List -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden h-full">
+                            <div
+                                class="px-4 py-3 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                                <h3 class="text-sm font-medium text-gray-900">Business Partners</h3>
+                                <div class="text-xs text-gray-500">Showing 12 of 48</div>
+                            </div>
+                            <div class="overflow-y-auto" style="">
+                            <!-- <div class="overflow-y-auto" style="max-height: 600px;"> -->
+                                <div class="partner-list">
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                    <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                                        <i class="ri-ship-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Coastal Adventures
+                                                        Inc.</h4>
+                                                    <p class="text-xs text-gray-500">ID: CA-78945</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Premium Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Next billing: Jul 15, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer bg-primary/5 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                        <i class="ri-mountain-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Mountain Explorers LLC
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: ME-23567</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Overdue
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Standard Plan</div>
+                                            <div class="text-xs font-medium text-red-600">Payment due: Jun 30, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-green-600">
+                                                        <i class="ri-bus-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Urban Tours Group</h4>
+                                                    <p class="text-xs text-gray-500">ID: UT-45678</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Enterprise Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Next billing: Aug 05, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                                        <i class="ri-compass-3-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Wilderness Expeditions
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: WE-12389</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Basic Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Trial ends: Jul 20, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-3">
+                                                    <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                                        <i class="ri-ancient-pavilion-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Heritage Sites Tours
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: HS-34521</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                Canceled
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Standard Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Ended: Jun 15, 2025</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                    <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                                        <i class="ri-water-flash-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Oceanic Diving Co.
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: OD-56789</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Premium Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Next billing: Jul 22, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                        <i class="ri-road-map-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">City Sightseeing Tours
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: CS-90123</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Basic Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Approval pending</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                    <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                                        <i class="ri-ship-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Coastal Adventures
+                                                        Inc.</h4>
+                                                    <p class="text-xs text-gray-500">ID: CA-78945</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Premium Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Next billing: Jul 15, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer bg-primary/5 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                        <i class="ri-mountain-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Mountain Explorers LLC
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: ME-23567</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Overdue
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Standard Plan</div>
+                                            <div class="text-xs font-medium text-red-600">Payment due: Jun 30, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-green-600">
+                                                        <i class="ri-bus-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Urban Tours Group</h4>
+                                                    <p class="text-xs text-gray-500">ID: UT-45678</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Enterprise Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Next billing: Aug 05, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                                        <i class="ri-compass-3-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Wilderness Expeditions
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: WE-12389</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Basic Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Trial ends: Jul 20, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-3">
+                                                    <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                                        <i class="ri-ancient-pavilion-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Heritage Sites Tours
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: HS-34521</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                Canceled
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Standard Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Ended: Jun 15, 2025</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                    <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                                        <i class="ri-water-flash-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">Oceanic Diving Co.
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: OD-56789</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Premium Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Next billing: Jul 22, 2025
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="partner-item border-b border-gray-200 p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                                    <div
+                                                        class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                                        <i class="ri-road-map-line"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">City Sightseeing Tours
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">ID: CS-90123</p>
+                                                </div>
+                                            </div>
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                            <div class="text-xs text-gray-500">Basic Plan</div>
+                                            <div class="text-xs font-medium text-gray-700">Approval pending</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="px-4 py-3 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+                                <button
+                                    class="px-3 py-1 border border-gray-300 rounded-button text-xs font-medium text-gray-500 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">Previous</button>
+                                <div class="text-xs text-gray-500">Page 1 of 6</div>
+                                <button
+                                    class="px-3 py-1 border border-gray-300 rounded-button text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 whitespace-nowrap !rounded-button">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Business Partner Details & Subscription Management -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                        <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                            <i class="ri-mountain-line"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-medium text-gray-900">Mountain Explorers LLC</h3>
+                                        <p class="text-sm text-gray-500">ID: ME-23567 • Joined: March 12, 2024</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button
+                                        class="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-mail-line"></i>
+                                        </div>
+                                    </button>
+                                    <button
+                                        class="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-phone-line"></i>
+                                        </div>
+                                    </button>
+                                    <button
+                                        class="p-2 text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-more-2-fill"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Tabs Navigation -->
+                            <div class="px-6 py-3 border-b border-gray-200 bg-gray-50">
+                                <div class="flex space-x-4 overflow-x-auto">
+                                    <button
+                                        class="tab-button active px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap">Subscription</button>
+                                    <button
+                                        class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-full whitespace-nowrap">Billing
+                                        History</button>
+                                    <button
+                                        class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-full whitespace-nowrap">Payment
+                                        Methods</button>
+                                    <button
+                                        class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-full whitespace-nowrap">Support
+                                        History</button>
+                                </div>
+                            </div>
+                            <!-- Subscription Tab Content -->
+                            <div class="p-6">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                                    <div>
+                                        <h4 class="text-base font-medium text-gray-900">Current Plan</h4>
+                                        <p class="text-sm text-gray-500 mt-1">Manage subscription details and plan
+                                            options</p>
+                                    </div>
+                                    <div class="mt-3 md:mt-0">
+                                        <span
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            Payment Overdue
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- Current Plan Details -->
+                                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200 mb-6">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                        <div>
+                                            <div class="flex items-center">
+                                                <h5 class="text-lg font-semibold text-gray-900">Standard Plan</h5>
+                                                <span
+                                                    class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded">Monthly</span>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mt-1">$99.00 per month</p>
+                                            <div class="mt-3">
+                                                <p class="text-sm text-gray-700"><span class="font-medium">Next
+                                                        billing:</span> July 30, 2025</p>
+                                                <p class="text-sm text-red-600 mt-1"><span class="font-medium">Overdue
+                                                        amount:</span> $99.00 (due on June 30, 2025)</p>
+                                            </div>
+                                        </div>
+                                        <div class="ctaz mt-4 md:mt-0 flex flex-col space-y-2">
+                                            <button
+                                                class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap !rounded-button">Collect
+                                                Payment</button>
+                                            <button
+                                                class="px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">Change
+                                                Plan</button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-5 pt-5 border-t border-gray-200">
+                                        <h6 class="text-sm font-medium text-gray-900 mb-3">Plan Features</h6>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Up to 25 listings</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Priority support</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Advanced analytics</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Custom branding</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Plan Upgrade Options -->
+                                <h4 class="text-base font-medium text-gray-900 mb-4">Available Plans</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                    <div
+                                        class="border border-gray-200 rounded-lg p-4 hover:border-gray-300 hover:shadow-sm transition-all">
+                                        <h5 class="text-base font-medium text-gray-900">Basic</h5>
+                                        <p class="text-2xl font-bold text-gray-900 mt-2">$49<span
+                                                class="text-sm font-normal text-gray-500">/month</span></p>
+                                        <p class="text-xs text-gray-500 mt-1">Billed monthly</p>
+                                        <div class="mt-4 space-y-2">
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Up to 10 listings</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Standard support</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Basic analytics</span>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="w-full mt-4 px-4 py-2 bg-white border border-gray-300 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 whitespace-nowrap !rounded-button">Downgrade</button>
+                                    </div>
+                                    <div class="border-2 border-primary rounded-lg p-4 relative bg-primary/5">
+                                        <div class="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+                                            <span
+                                                class="bg-primary text-white text-xs font-bold px-2 py-1 rounded">CURRENT</span>
+                                        </div>
+                                        <h5 class="text-base font-medium text-gray-900">Standard</h5>
+                                        <p class="text-2xl font-bold text-gray-900 mt-2">$99<span
+                                                class="text-sm font-normal text-gray-500">/month</span></p>
+                                        <p class="text-xs text-gray-500 mt-1">Billed monthly</p>
+                                        <div class="mt-4 space-y-2">
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Up to 25 listings</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Priority support</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Advanced analytics</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Custom branding</span>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="w-full mt-4 px-4 py-2 bg-primary/10 text-primary rounded-button text-sm font-medium hover:bg-primary/20 whitespace-nowrap !rounded-button"
+                                            disabled>Current Plan</button>
+                                    </div>
+                                    <div
+                                        class="border border-gray-200 rounded-lg p-4 hover:border-gray-300 hover:shadow-sm transition-all">
+                                        <h5 class="text-base font-medium text-gray-900">Premium</h5>
+                                        <p class="text-2xl font-bold text-gray-900 mt-2">$199<span
+                                                class="text-sm font-normal text-gray-500">/month</span></p>
+                                        <p class="text-xs text-gray-500 mt-1">Billed monthly</p>
+                                        <div class="mt-4 space-y-2">
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Unlimited listings</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">24/7 premium support</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Advanced analytics</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">Custom branding</span>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-500 mt-0.5">
+                                                    <i class="ri-check-line"></i>
+                                                </div>
+                                                <span class="ml-2 text-sm text-gray-600">API access</span>
+                                            </div>
+                                        </div>
+                                        <button
+                                            class="ctaz w-full mt-4 px-4 py-2 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 whitespace-nowrap !rounded-button">Upgrade</button>
+                                    </div>
+                                </div>
+                                <!-- Billing Cycle Options -->
+                                <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                                    <h4 class="text-base font-medium text-gray-900 mb-3">Billing Cycle</h4>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex items-center">
+                                            <input type="radio" id="monthly" name="billing-cycle"
+                                                class="w-4 h-4 text-primary focus:ring-primary" checked>
+                                            <label for="monthly" class="ml-2 text-sm text-gray-700">Monthly</label>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input type="radio" id="annual" name="billing-cycle"
+                                                class="w-4 h-4 text-primary focus:ring-primary">
+                                            <label for="annual" class="ml-2 text-sm text-gray-700">Annual (Save
+                                                15%)</label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 flex items-center">
+                                        <label class="custom-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                        <span class="ml-2 text-sm text-gray-700">Auto-renew subscription</span>
+                                    </div>
+                                    <div class="mt-4 text-sm text-gray-500">
+                                        Next billing cycle will begin on July 30, 2025. You can cancel or change your
+                                        plan at any time.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Recent Transactions -->
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden mt-6">
+                            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                                <h3 class="text-base font-medium text-gray-900">Recent Transactions</h3>
+                                <button class="text-sm text-primary font-medium flex items-center whitespace-nowrap">
+                                    View All
+                                    <div class="w-4 h-4 flex items-center justify-center ml-1">
+                                        <i class="ri-arrow-right-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Invoice ID</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Date</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Amount</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Status</th>
+                                            <th scope="col"
+                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr class="table-row">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">
+                                                INV-78945</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jun 30, 2025
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">$99.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Unpaid</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-gray-600 hover:text-gray-900">
+                                                        <div class="w-5 h-5 flex items-center justify-center">
+                                                            <i class="ri-eye-line"></i>
+                                                        </div>
+                                                    </button>
+                                                    <button class="text-gray-600 hover:text-gray-900">
+                                                        <div class="w-5 h-5 flex items-center justify-center">
+                                                            <i class="ri-download-line"></i>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-row">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">
+                                                INV-78765</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">May 30, 2025
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">$99.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-gray-600 hover:text-gray-900">
+                                                        <div class="w-5 h-5 flex items-center justify-center">
+                                                            <i class="ri-eye-line"></i>
+                                                        </div>
+                                                    </button>
+                                                    <button class="text-gray-600 hover:text-gray-900">
+                                                        <div class="w-5 h-5 flex items-center justify-center">
+                                                            <i class="ri-download-line"></i>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="table-row">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary">
+                                                INV-78321</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Apr 30, 2025
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">$99.00</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex space-x-2">
+                                                    <button class="text-gray-600 hover:text-gray-900">
+                                                        <div class="w-5 h-5 flex items-center justify-center">
+                                                            <i class="ri-eye-line"></i>
+                                                        </div>
+                                                    </button>
+                                                    <button class="text-gray-600 hover:text-gray-900">
+                                                        <div class="w-5 h-5 flex items-center justify-center">
+                                                            <i class="ri-download-line"></i>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Support Actions Panel -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                    <h3 class="text-base font-medium text-gray-900 mb-4">Support Actions</h3>
+                    <div class="ctaz grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button
+                            class="flex items-center justify-center px-4 py-3 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-refund-line"></i>
+                            </div>
+                            Issue Refund
+                        </button>
+                        <button
+                            class="flex items-center justify-center px-4 py-3 bg-purple-100 text-purple-700 rounded-button hover:bg-purple-200 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-customer-service-line"></i>
+                            </div>
+                            Create Support Ticket
+                        </button>
+                        <button
+                            class="flex items-center justify-center px-4 py-3 bg-green-100 text-green-700 rounded-button hover:bg-green-200 transition-colors whitespace-nowrap !rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                <i class="ri-file-list-3-line"></i>
+                            </div>
+                            View Activity Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script id="tabs-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('bg-primary');
+                        btn.classList.remove('text-white');
+                        btn.classList.add('text-gray-600');
+                        btn.classList.add('hover:bg-gray-200');
+                    });
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    this.classList.add('bg-primary');
+                    this.classList.add('text-white');
+                    this.classList.remove('text-gray-600');
+                    this.classList.remove('hover:bg-gray-200');
+                });
+            });
+        });
+    </script>
+    <script id="payment-methods-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const paymentMethodCards = document.querySelectorAll('.payment-method-card');
+            paymentMethodCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    // Remove selected class from all cards
+                    paymentMethodCards.forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    // Add selected class to clicked card
+                    this.classList.add('selected');
+                });
+            });
+        });
+    </script>
+    <script id="partner-list-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const partnerItems = document.querySelectorAll('.partner-item');
+            partnerItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    // Remove bg-primary/5 class from all items
+                    partnerItems.forEach(i => {
+                        i.classList.remove('bg-primary/5');
+                        i.classList.add('hover:bg-gray-50');
+                    });
+                    // Add bg-primary/5 class to clicked item
+                    this.classList.add('bg-primary/5');
+                    this.classList.remove('hover:bg-gray-50');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

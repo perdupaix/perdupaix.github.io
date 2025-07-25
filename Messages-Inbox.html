@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages Inbox</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+         /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label, aside, .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .message-item:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .message-item.unread {
+            background-color: rgba(79, 70, 229, 0.02);
+            border-left: 3px solid #4f46e5;
+        }
+
+        .message-item.selected {
+            background-color: rgba(79, 70, 229, 0.1);
+            border-left: 3px solid #4f46e5;
+        }
+
+        .category-tab.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .category-tab:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .priority-high {
+            border-left: 3px solid #ef4444;
+        }
+
+        .priority-medium {
+            border-left: 3px solid #f59e0b;
+        }
+
+        .priority-low {
+            border-left: 3px solid #10b981;
+        }
+
+        .typing-indicator {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+                
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Listings</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                         Providers</a></li>
+
+                         <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                         Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Pending 
+                        Approval</a></li>
+                        
+                                           
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html" class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"  data-readdy="true"
+                        class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+  
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+                        
+                        
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+                        
+                    </ul>
+                </li>
+                
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+
+                <!-- Support -->
+                 <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+                        
+
+                    </ul>
+                </li>
+                
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search" id="global-search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search messages, contacts, keywords...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 9, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Messages Content -->
+        <div class="flex-1 flex overflow-hidden">
+            <!-- Messages List Panel -->
+            <div class="w-96 bg-white border-r border-gray-200 flex flex-col">
+                <!-- Messages Header -->
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h1 class="text-xl font-bold text-gray-900">Messages</h1>
+                        <button id="compose-btn"
+                            class="ctaz px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-add-line"></i>
+                            </div>
+                            New Message
+                        </button>
+                    </div>
+
+                    <!-- Category Tabs -->
+                    <div class="flex space-x-1 mb-4">
+                        <button
+                            class="category-tab active px-3 py-1.5 text-xs font-medium rounded-full transition-colors whitespace-nowrap">
+                            All Conversations
+                            <span class="ml-1 px-1.5 py-0.5 bg-white/20 rounded-full text-xs">24</span>
+                        </button>
+                        <button
+                            class="category-tab px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors whitespace-nowrap">
+                            Users
+                            <span class="ml-1 px-1.5 py-0.5 bg-gray-200 rounded-full text-xs">12</span>
+                        </button>
+                        <button
+                            class="category-tab px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors whitespace-nowrap">
+                            Partners
+                            <span class="ml-1 px-1.5 py-0.5 bg-gray-200 rounded-full text-xs">8</span>
+                        </button>
+                        <button
+                            class="category-tab px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors whitespace-nowrap">
+                            Internal
+                            <span class="ml-1 px-1.5 py-0.5 bg-gray-200 rounded-full text-xs">4</span>
+                        </button>
+                    </div>
+
+                    <!-- Filters and Controls -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex space-x-2">
+                            <button id="filter-btn"
+                                class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-button text-sm font-medium flex items-center hover:bg-gray-200 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-filter-line"></i>
+                                </div>
+                                Filter
+                            </button>
+                            <button id="sort-btn"
+                                class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-button text-sm font-medium flex items-center hover:bg-gray-200 whitespace-nowrap">
+                                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                                    <i class="ri-sort-desc"></i>
+                                </div>
+                                Sort
+                            </button>
+                        </div>
+                        <div class="flex space-x-1">
+                            <button
+                                class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-refresh-line"></i>
+                                </div>
+                            </button>
+                            <button
+                                class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-more-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search Messages -->
+                    <div class="relative mb-4">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search" id="message-search"
+                            class="block w-full pl-10 pr-4 py-2 border border-gray-200 rounded-button bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search conversations...">
+                    </div>
+                </div>
+
+                <!-- Messages List -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar">
+                    <div class="space-y-1 p-2">
+                        <!-- Unread Message -->
+                        <div class="message-item unread p-4 rounded-lg cursor-pointer transition-colors"
+                            data-message-id="1">
+                            <div class="flex items-start space-x-3">
+                                <div class="relative">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                                        <div class="w-5 h-5 flex items-center justify-center text-blue-600">
+                                            <i class="ri-user-line"></i>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white">
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-semibold text-gray-900 truncate">Sarah Johnson</h4>
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                            <span class="text-xs text-gray-500">2m</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                <i class="ri-user-line"></i>
+                                            </div>
+                                            User
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            High Priority
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate mb-1">Booking Issue - Grand Canyon Tour</p>
+                                    <p class="text-xs text-gray-500 line-clamp-2">Hi, I'm having trouble with my booking
+                                        confirmation for the Grand Canyon tour scheduled for next week. Could you please
+                                        help me resolve this issue?</p>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="text-xs text-primary hover:text-primary/80 font-medium">Reply</button>
+                                            <button class="text-xs text-gray-500 hover:text-gray-700">Pin</button>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Read Message -->
+                        <div class="message-item p-4 rounded-lg cursor-pointer transition-colors" data-message-id="2">
+                            <div class="flex items-start space-x-3">
+                                <div class="relative">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center overflow-hidden">
+                                        <div class="w-5 h-5 flex items-center justify-center text-green-600">
+                                            <i class="ri-building-line"></i>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full border-2 border-white">
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900 truncate">Adventure Tours Co.</h4>
+                                        <span class="text-xs text-gray-500">1h</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                <i class="ri-building-line"></i>
+                                            </div>
+                                            Partner
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            Medium Priority
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate mb-1">Monthly Partnership Report</p>
+                                    <p class="text-xs text-gray-500 line-clamp-2">Please find attached our monthly
+                                        partnership report with booking statistics and revenue breakdown for July 2025.
+                                    </p>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="text-xs text-primary hover:text-primary/80 font-medium">Reply</button>
+                                            <button class="text-xs text-gray-500 hover:text-gray-700">Pin</button>
+                                        </div>
+                                        <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                            <i class="ri-attachment-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Internal Message -->
+                        <div class="message-item p-4 rounded-lg cursor-pointer transition-colors" data-message-id="3">
+                            <div class="flex items-start space-x-3">
+                                <div class="relative">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center overflow-hidden">
+                                        <div class="w-5 h-5 flex items-center justify-center text-purple-600">
+                                            <i class="ri-team-line"></i>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white">
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900 truncate">Marketing Team</h4>
+                                        <span class="text-xs text-gray-500">3h</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                <i class="ri-team-line"></i>
+                                            </div>
+                                            Internal
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Low Priority
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate mb-1">Summer Campaign Performance</p>
+                                    <p class="text-xs text-gray-500 line-clamp-2">The summer campaign has exceeded
+                                        expectations with a 25% increase in bookings. Let's schedule a meeting to
+                                        discuss scaling strategies.</p>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="text-xs text-primary hover:text-primary/80 font-medium">Reply</button>
+                                            <button class="text-xs text-gray-500 hover:text-gray-700">Pin</button>
+                                        </div>
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More Messages -->
+                        <div class="message-item p-4 rounded-lg cursor-pointer transition-colors" data-message-id="4">
+                            <div class="flex items-start space-x-3">
+                                <div class="relative">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center overflow-hidden">
+                                        <div class="w-5 h-5 flex items-center justify-center text-yellow-600">
+                                            <i class="ri-user-line"></i>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full border-2 border-white">
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900 truncate">Michael Chen</h4>
+                                        <span class="text-xs text-gray-500">5h</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                            <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                <i class="ri-user-line"></i>
+                                            </div>
+                                            User
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate mb-1">Tour Guide Feedback</p>
+                                    <p class="text-xs text-gray-500 line-clamp-2">Thank you for the amazing Yellowstone
+                                        tour! Our guide was incredibly knowledgeable and made the experience
+                                        unforgettable.</p>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="text-xs text-primary hover:text-primary/80 font-medium">Reply</button>
+                                            <button class="text-xs text-gray-500 hover:text-gray-700">Pin</button>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <div class="w-4 h-4 flex items-center justify-center text-yellow-500">
+                                                <i class="ri-star-fill"></i>
+                                            </div>
+                                            <span class="text-xs text-gray-500">5.0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-item p-4 rounded-lg cursor-pointer transition-colors" data-message-id="5">
+                            <div class="flex items-start space-x-3">
+                                <div class="relative">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center overflow-hidden">
+                                        <div class="w-5 h-5 flex items-center justify-center text-red-600">
+                                            <i class="ri-building-line"></i>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full border-2 border-white">
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900 truncate">Ocean View Hotels</h4>
+                                        <span class="text-xs text-gray-500">1d</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                <i class="ri-building-line"></i>
+                                            </div>
+                                            Partner
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate mb-1">Package Deal Proposal</p>
+                                    <p class="text-xs text-gray-500 line-clamp-2">We'd like to propose a new package
+                                        deal combining our luxury accommodations with your adventure tours for the fall
+                                        season.</p>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="text-xs text-primary hover:text-primary/80 font-medium">Reply</button>
+                                            <button class="text-xs text-gray-500 hover:text-gray-700">Pin</button>
+                                        </div>
+                                        <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                            <i class="ri-file-text-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-item p-4 rounded-lg cursor-pointer transition-colors" data-message-id="6">
+                            <div class="flex items-start space-x-3">
+                                <div class="relative">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden">
+                                        <div class="w-5 h-5 flex items-center justify-center text-indigo-600">
+                                            <i class="ri-team-line"></i>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full border-2 border-white">
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-medium text-gray-900 truncate">Customer Support</h4>
+                                        <span class="text-xs text-gray-500">2d</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            <div class="w-3 h-3 flex items-center justify-center mr-1">
+                                                <i class="ri-team-line"></i>
+                                            </div>
+                                            Internal
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 truncate mb-1">Weekly Support Summary</p>
+                                    <p class="text-xs text-gray-500 line-clamp-2">This week we handled 127 support
+                                        tickets with an average response time of 2.3 hours. Customer satisfaction
+                                        remains at 4.8/5.</p>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="flex items-center space-x-2">
+                                            <button
+                                                class="text-xs text-primary hover:text-primary/80 font-medium">Reply</button>
+                                            <button class="text-xs text-gray-500 hover:text-gray-700">Pin</button>
+                                        </div>
+                                        <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                            <i class="ri-bar-chart-line"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Preview Panel -->
+            <div class="flex-1 flex flex-col bg-white">
+                <!-- Conversation Header -->
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-blue-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div>
+                                <div
+                                    class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-semibold text-gray-900">Sarah Johnson</h2>
+                                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                    <span>Customer</span>
+                                    <span>•</span>
+                                    <span>Online now</span>
+                                    <span>•</span>
+                                    <span>Last seen 2 minutes ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button
+                                class="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-phone-line"></i>
+                                </div>
+                            </button>
+                            <button
+                                class="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-video-line"></i>
+                                </div>
+                            </button>
+                            <button
+                                class="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-information-line"></i>
+                                </div>
+                            </button>
+                            <button
+                                class="w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center">
+                                    <i class="ri-more-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conversation Thread -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4">
+                    <!-- Customer Message -->
+                    <div class="flex items-start space-x-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <div class="w-4 h-4 flex items-center justify-center text-blue-600">
+                                <i class="ri-user-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-gray-100 rounded-lg p-4 max-w-md">
+                                <p class="text-sm text-gray-900">Hi, I'm having trouble with my booking confirmation for
+                                    the Grand Canyon tour scheduled for next week. Could you please help me resolve this
+                                    issue?</p>
+                            </div>
+                            <div class="flex items-center space-x-2 mt-2 text-xs text-gray-500">
+                                <span>Sarah Johnson</span>
+                                <span>•</span>
+                                <span>Today, 2:45 PM</span>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <div class="w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-reply-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Reply -->
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="flex-1 flex justify-end">
+                            <div class="bg-primary text-white rounded-lg p-4 max-w-md">
+                                <p class="text-sm">Hello Sarah! I'd be happy to help you with your booking confirmation.
+                                    Let me check your reservation details right away.</p>
+                            </div>
+                        </div>
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-600">
+                                <i class="ri-user-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <div class="flex items-center space-x-2 mt-2 text-xs text-gray-500">
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-reply-line"></i>
+                                </div>
+                            </button>
+                            <span>Today, 2:46 PM</span>
+                            <span>•</span>
+                            <span>Emma Thompson</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer Follow-up -->
+                    <div class="flex items-start space-x-3">
+                        <div
+                            class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <div class="w-4 h-4 flex items-center justify-center text-blue-600">
+                                <i class="ri-user-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-gray-100 rounded-lg p-4 max-w-md">
+                                <p class="text-sm text-gray-900">Thank you! My booking reference is #GC2025-0789. I
+                                    received the initial confirmation but haven't gotten the detailed itinerary yet.</p>
+                            </div>
+                            <div class="flex items-center space-x-2 mt-2 text-xs text-gray-500">
+                                <span>Sarah Johnson</span>
+                                <span>•</span>
+                                <span>Today, 2:47 PM</span>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <div class="w-4 h-4 flex items-center justify-center">
+                                        <i class="ri-reply-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="flex-1 flex justify-end">
+                            <div class="bg-gray-100 rounded-lg p-4 max-w-md">
+                                <div class="flex items-center space-x-1">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full typing-indicator"></div>
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full typing-indicator"
+                                        style="animation-delay: 0.2s;"></div>
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full typing-indicator"
+                                        style="animation-delay: 0.4s;"></div>
+                                    <span class="text-xs text-gray-500 ml-2">Emma is typing...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-600">
+                                <i class="ri-user-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Composition Area -->
+                <div class="p-6 border-t border-gray-200">
+                    <div class="flex items-start space-x-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-600">
+                                <i class="ri-user-line"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div
+                                class="border border-gray-200 rounded-lg focus-within:ring-2 focus-within:ring-primary focus-within:ring-opacity-20">
+                                <textarea id="message-input" rows="1"
+                                    class="block w-full px-4 py-3 border-none rounded-lg resize-none focus:outline-none text-sm"
+                                    placeholder="Type your message..."></textarea>
+                                <div class="flex items-center justify-between px-4 py-1.5 border-t border-gray-200">
+                                    <div class="flex items-center space-x-2">
+                                        <button
+                                            class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                            <div class="w-5 h-5 flex items-center justify-center">
+                                                <i class="ri-attachment-line"></i>
+                                            </div>
+                                        </button>
+                                        <button
+                                            class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                            <div class="w-5 h-5 flex items-center justify-center">
+                                                <i class="ri-emotion-line"></i>
+                                            </div>
+                                        </button>
+                                        <button
+                                            class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-button">
+                                            <div class="w-5 h-5 flex items-center justify-center">
+                                                <i class="ri-image-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button
+                                            class="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-button whitespace-nowrap">Templates</button>
+                                        <button id="send-message"
+                                            class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                                            <span>Send</span>
+                                            <div class="w-4 h-4 flex items-center justify-center ml-2">
+                                                <i class="ri-send-plane-line"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info Sidebar -->
+            <!-- <div class="w-80 bg-gray-50 border-l border-gray-200 flex flex-col">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <div
+                                class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-3">
+                                <div class="w-8 h-8 flex items-center justify-center text-blue-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <h4 class="text-base font-medium text-gray-900">Sarah Johnson</h4>
+                            <p class="text-sm text-gray-500">Premium Customer</p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 flex items-center justify-center text-gray-500">
+                                    <i class="ri-mail-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">sarah.johnson@email.com</p>
+                                    <p class="text-xs text-gray-500">Primary email</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 flex items-center justify-center text-gray-500">
+                                    <i class="ri-phone-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">+1 (555) 123-4567</p>
+                                    <p class="text-xs text-gray-500">Mobile</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 flex items-center justify-center text-gray-500">
+                                    <i class="ri-map-pin-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">San Francisco, CA</p>
+                                    <p class="text-xs text-gray-500">Location</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 flex items-center justify-center text-gray-500">
+                                    <i class="ri-calendar-line"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Member since 2023</p>
+                                    <p class="text-xs text-gray-500">Join date</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-200">
+                            <h5 class="text-sm font-medium text-gray-900 mb-2">Quick Stats</h5>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <p class="text-lg font-semibold text-gray-900">12</p>
+                                    <p class="text-xs text-gray-500">Total Bookings</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-lg font-semibold text-gray-900">4.9</p>
+                                    <p class="text-xs text-gray-500">Avg Rating</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-200">
+                            <h5 class="text-sm font-medium text-gray-900 mb-3">Recent Activity</h5>
+                            <div class="space-y-3">
+                                <div class="flex items-start space-x-2">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                        <div class="w-3 h-3 flex items-center justify-center text-green-600">
+                                            <i class="ri-check-line"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-gray-900">Completed Yellowstone Tour</p>
+                                        <p class="text-xs text-gray-500">2 days ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-2">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                        <div class="w-3 h-3 flex items-center justify-center text-blue-600">
+                                            <i class="ri-calendar-line"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-gray-900">Booked Grand Canyon Tour</p>
+                                        <p class="text-xs text-gray-500">1 week ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-2">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                                        <div class="w-3 h-3 flex items-center justify-center text-yellow-600">
+                                            <i class="ri-star-line"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-gray-900">Left 5-star review</p>
+                                        <p class="text-xs text-gray-500">1 week ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-200">
+                            <h5 class="text-sm font-medium text-gray-900 mb-3">Tags</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">VIP
+                                    Customer</span>
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Frequent
+                                    Traveler</span>
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Adventure
+                                    Seeker</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-auto p-6 border-t border-gray-200">
+                    <div class="space-y-3">
+                        <button
+                            class="w-full px-4 py-2 bg-primary text-white rounded-button text-sm font-medium flex items-center justify-center hover:bg-primary/90 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-user-add-line"></i>
+                            </div>
+                            Add to Contacts
+                        </button>
+                        <button
+                            class="w-full px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-button text-sm font-medium flex items-center justify-center hover:bg-gray-50 whitespace-nowrap !rounded-button">
+                            <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                <i class="ri-archive-line"></i>
+                            </div>
+                            Archive Conversation
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                if (submenu && submenu.tagName === 'UL') {
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (arrowIcon) {
+                            if (submenu.classList.contains('hidden')) {
+                                arrowIcon.style.transform = 'rotate(0deg)';
+                            } else {
+                                arrowIcon.style.transform = 'rotate(180deg)';
+                            }
+                        }
+                    });
+                }
+            });
+
+            if (collapseBtn) {
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    if (expandBtn) expandBtn.classList.remove('hidden');
+                });
+            }
+
+            if (expandBtn) {
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    if (collapseBtn) collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            }
+        });
+    </script>
+
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+
+            if (profileMenuButton && profileDropdown) {
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script id="messages-functionality-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const messageItems = document.querySelectorAll('.message-item');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const messageSearch = document.getElementById('message-search');
+            const globalSearch = document.getElementById('global-search');
+            const sendButton = document.getElementById('send-message');
+            const messageInput = document.getElementById('message-input');
+            const composeBtn = document.getElementById('compose-btn');
+
+            messageItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    messageItems.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.classList.remove('unread');
+                });
+            });
+
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            if (messageSearch) {
+                messageSearch.addEventListener('input', function () {
+                    const searchTerm = this.value.toLowerCase();
+                    messageItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            if (sendButton && messageInput) {
+                sendButton.addEventListener('click', function () {
+                    const message = messageInput.value.trim();
+                    if (message) {
+                        messageInput.value = '';
+                    }
+                });
+
+                messageInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendButton.click();
+                    }
+                });
+            }
+
+            if (composeBtn) {
+                composeBtn.addEventListener('click', function () {
+                    console.log('Compose new message');
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>

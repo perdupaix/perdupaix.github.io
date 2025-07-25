@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Listing - Create Attraction, Activity, Event or Tour</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            overflow-x: hidden;
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-radio {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-radio input {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .custom-radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .custom-radio input:checked+.custom-radio-circle {
+            border-color: #4f46e5;
+            background-color: #4f46e5;
+        }
+
+        .custom-radio input:checked+.custom-radio-circle::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+        }
+
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-checkbox input {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .custom-checkbox-square {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .custom-checkbox input:checked+.custom-checkbox-square {
+            border-color: #4f46e5;
+            background-color: #4f46e5;
+        }
+
+        .custom-checkbox input:checked+.custom-checkbox-square::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.switch-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .image-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .image-upload-area:hover {
+            border-color: #4f46e5;
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .image-upload-area.dragover {
+            border-color: #4f46e5;
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #4f46e5;
+            transition: width 0.3s ease;
+        }
+
+        .form-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .required-field::after {
+            content: '*';
+            color: #ef4444;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex h-screen">
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+        <div class="p-6 flex items-center border-b">
+            <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 px-3">
+
+                <!-- Dashboard -->
+                <li>
+                    <a href="C:\Users\user\Downloads\App-owner\Admin-Dashboard.html"
+                        class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-dashboard-line"></i>
+                        </div>
+                        Dashboard
+                    </a>
+                </li>
+
+                <!-- Listings -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-compass-line"></i>
+                            </div>
+                            Listings
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+
+                        <li><a href="C:/Users/user/Downloads/App-owner/Manage-Listings.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                                Listings</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Listing.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Listings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Bookings.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Bookings</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Promotions.html"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Promotions</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Providers -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            Providers
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Providers.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Manage
+                                Providers</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Provider.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Provider</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Pending-Approval.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Pending
+                                Approval</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Partner-Program.html"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Partner Program</a>
+                        </li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Subscriptions-and-Billing.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Subscriptions & Billing</a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+                <!-- Staff -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            Staff
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Staff.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Staff</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-Staff.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Add
+                                Staff & Role</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Tour-Guides.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Tour
+                                Guides</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Schedule.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Schedules</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Staff-Performance.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Performance</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Training.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Training</a></li>
+                    </ul>
+                </li>
+
+                <!-- Users -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line"></i>
+                            </div>
+                            Users
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Manage-Users.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Manage Users</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Add-User.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Add User</a></li>
+
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Elite-Club.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Elite Club</a></li>
+
+
+                        <!-- <li><a href="#" 
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Membership Tiers</a></li> -->
+
+
+
+                    </ul>
+                </li>
+
+                <!-- Messages -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Messages-Inbox.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Inbox</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\New-Message.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                New Message</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Archived-Support-Messages.html"
+                                data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">Archived</a></li>
+
+                    </ul>
+                </li>
+
+                <!-- Reports -->
+
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Reports
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Revenue-Analytics-Dashboard.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Revenue Reports</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\User-Analytics.html" data-readdy="true"
+                                class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                User Analytics</a></li>
+
+
+
+                    </ul>
+                </li>
+
+
+                <!-- Support -->
+                <li>
+                    <button
+                        class="sidebar-link w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-button group">
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </div>
+                        <div
+                            class="w-5 h-5 flex items-center justify-center transition-transform duration-200 group-data-[expanded=true]:rotate-180">
+                            <i class="ri-arrow-down-s-line"></i>
+                        </div>
+                    </button>
+                    <ul class="pl-12 mt-1 space-y-1 hidden bg-gray-50/50">
+
+                        <li><a href=file:///C:/Users/user/Downloads/App-owner/Customer-Support-Tickets.html
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                Tickets</a></li>
+
+                        <li><a href="C:\Users\user\Downloads\App-owner\Report-FAQs-and-Help-Center.html"
+                                data-readdy="true" class="block py-2 text-sm text-gray-600 hover:text-primary">
+                                FAQs</a></li>
+
+
+
+                    </ul>
+                </li>
+
+                <!-- Settings -->
+                <li>
+                    <a href=file:///C:/Users/user/Downloads/App-owner/Settings-Management-Page.html
+                        class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                        <div class="w-5 h-5 flex items-center justify-center mr-3">
+                            <i class="ri-settings-line"></i>
+                        </div>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+        <div class="p-4 border-t">
+            <button id="collapse-sidebar"
+                class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                    <i class="ri-arrow-left-line"></i>
+                </div>
+                Collapse Sidebar
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search attractions, activities, bookings...">
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <div
+                                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                    <i class="ri-user-line"></i>
+                                </div>
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <div class="text-sm font-medium">Emma Thompson</div>
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-4xl mx-auto">
+            <!-- <div class="max-w-4xl mx-auto py-8 px-6"> -->
+                <div class="mb-8">
+                    <!-- <div class="flex items-center mb-4">
+                <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/f0385423-cd15-4692-9e3a-0de649905c8b"
+                    data-readdy="true" class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Back to Manage Listings
+                </a>
+            </div> -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900 mb-2">Add New Listing</h1>
+                            <p class="text-gray-600">Create a new attraction, activity, tour, or event listing for your
+                                business
+                                catalog</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm text-gray-500">
+                                <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                                    <div class="w-4 h-4 flex items-center justify-center text-primary">
+                                        <i class="ri-save-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-600">Auto-save enabled</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">Form Progress</h3>
+                            <span class="text-sm text-gray-600">0% Complete</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%" id="progress-fill"></div>
+                        </div>
+                        <div class="flex justify-between mt-3 text-xs text-gray-500">
+                            <span>Basic Info</span>
+                            <span>Location</span>
+                            <span>Pricing</span>
+                            <span>Media</span>
+                            <span>Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="listing-form" class="space-y-8">
+                    <div class="form-section bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-information-line"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Basic Information</h2>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Listing
+                                    Name</label>
+                                <input type="text" id="listing-name"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="Enter the name of your listing" required>
+                                <p class="text-xs text-gray-500 mt-1">This will be the main title visitors see</p>
+                            </div>
+
+                            <div class="lg:col-span-2">
+                                <label
+                                    class="block text-sm font-medium text-gray-700 mb-2 required-field">Description</label>
+                                <textarea id="listing-description" rows="4"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm resize-none"
+                                    placeholder="Provide a detailed description of your listing..." required></textarea>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-xs text-gray-500">Describe what makes your listing unique and
+                                        appealing
+                                    </p>
+                                    <span class="text-xs text-gray-400" id="description-count">0/500</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 mb-2 required-field">Category</label>
+                                <div class="relative">
+                                    <button type="button" id="category-dropdown"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm text-left flex items-center justify-between bg-white">
+                                        <span id="selected-category" class="text-gray-500">Select a category</span>
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="category-options"
+                                        class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-button shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                                                data-value="attractions">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-blue-600 mr-3">
+                                                    <i class="ri-map-pin-line"></i>
+                                                </div>
+                                                Attractions
+                                            </button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                                                data-value="activities">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-green-600 mr-3">
+                                                    <i class="ri-run-line"></i>
+                                                </div>
+                                                Activities
+                                            </button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                                                data-value="tours">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-purple-600 mr-3">
+                                                    <i class="ri-route-line"></i>
+                                                </div>
+                                                Tours
+                                            </button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                                                data-value="events">
+                                                <div
+                                                    class="w-5 h-5 flex items-center justify-center text-orange-600 mr-3">
+                                                    <i class="ri-calendar-event-line"></i>
+                                                </div>
+                                                Events
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3 required-field">Type</label>
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <div class="custom-radio mr-3">
+                                            <input type="radio" id="type-attraction" name="listing-type"
+                                                value="attraction">
+                                            <div class="custom-radio-circle"></div>
+                                        </div>
+                                        <label for="type-attraction"
+                                            class="text-sm text-gray-700 cursor-pointer">Attraction</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-radio mr-3">
+                                            <input type="radio" id="type-activity" name="listing-type" value="activity">
+                                            <div class="custom-radio-circle"></div>
+                                        </div>
+                                        <label for="type-activity"
+                                            class="text-sm text-gray-700 cursor-pointer">Activity</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-radio mr-3">
+                                            <input type="radio" id="type-tour" name="listing-type" value="tour">
+                                            <div class="custom-radio-circle"></div>
+                                        </div>
+                                        <label for="type-tour" class="text-sm text-gray-700 cursor-pointer">Tour</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-radio mr-3">
+                                            <input type="radio" id="type-event" name="listing-type" value="event">
+                                            <div class="custom-radio-circle"></div>
+                                        </div>
+                                        <label for="type-event"
+                                            class="text-sm text-gray-700 cursor-pointer">Event</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tags / Keywords</label>
+                                <input type="text" id="listing-tags"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="adventure, outdoor, family-friendly, guided tour">
+                                <p class="text-xs text-gray-500 mt-1">Separate tags with commas to help visitors find
+                                    your
+                                    listing</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-map-pin-line"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Location Details</h2>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Street
+                                    Address</label>
+                                <input type="text" id="street-address"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="123 Main Street" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">City</label>
+                                <input type="text" id="city"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="San Francisco" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">State /
+                                    Province</label>
+                                <input type="text" id="state"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="California" required>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-sm font-medium text-gray-700 mb-2 required-field">Country</label>
+                                <div class="relative">
+                                    <button type="button" id="country-dropdown"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm text-left flex items-center justify-between bg-white">
+                                        <span id="selected-country" class="text-gray-500">Select country</span>
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="country-options"
+                                        class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-button shadow-lg z-10 hidden max-h-48 overflow-y-auto">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="us">United States</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="ca">Canada</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="uk">United Kingdom</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="au">Australia</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="de">Germany</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="fr">France</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
+                                <input type="text" id="postal-code"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="94102">
+                            </div>
+
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Map Location</label>
+                                <div class="w-full h-64 rounded-button overflow-hidden bg-gray-200 relative"
+                                    style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-size: cover; background-position: center;">
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+                                        <div class="bg-white rounded-button px-4 py-2 shadow-lg">
+                                            <p class="text-sm text-gray-600">Click to set location pin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Click on the map to set the exact location of your
+                                    listing
+                                </p>
+                            </div>
+
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Neighborhood / Area
+                                    Description</label>
+                                <textarea id="area-description" rows="3"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm resize-none"
+                                    placeholder="Describe the surrounding area, nearby landmarks, or neighborhood characteristics..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-money-dollar-circle-line"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Pricing & Availability</h2>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Base
+                                    Price</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 text-sm">$</span>
+                                    </div>
+                                    <input type="number" id="base-price"
+                                        class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                        placeholder="0.00" min="0" step="0.01" required>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">Starting price per person</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+                                <div class="relative">
+                                    <button type="button" id="currency-dropdown"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm text-left flex items-center justify-between bg-white">
+                                        <span id="selected-currency">USD ($)</span>
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="currency-options"
+                                        class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-button shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="usd">USD ($)</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="eur">EUR (€)</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="gbp">GBP (£)</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="cad">CAD ($)</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-3 required-field">Operating
+                                    Hours</label>
+                                <div class="space-y-3">
+                                    <div class="grid grid-cols-7 gap-2 text-xs text-gray-600 font-medium">
+                                        <div>Mon</div>
+                                        <div>Tue</div>
+                                        <div>Wed</div>
+                                        <div>Thu</div>
+                                        <div>Fri</div>
+                                        <div>Sat</div>
+                                        <div>Sun</div>
+                                    </div>
+                                    <div class="grid grid-cols-7 gap-2">
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="mon-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="tue-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="wed-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="thu-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="fri-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="sat-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" id="sun-open">
+                                                <div class="custom-checkbox-square"></div>
+                                            </div>
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="09:00">
+                                            <input type="time"
+                                                class="w-full text-xs px-2 py-1 border border-gray-300 rounded text-center"
+                                                value="17:00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                                <div class="flex space-x-2">
+                                    <input type="number" id="duration-hours"
+                                        class="w-full px-3 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                        placeholder="2" min="0">
+                                    <span class="flex items-center text-sm text-gray-500">hours</span>
+                                    <input type="number" id="duration-minutes"
+                                        class="w-full px-3 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                        placeholder="30" min="0" max="59">
+                                    <span class="flex items-center text-sm text-gray-500">minutes</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Capacity per Time
+                                    Slot</label>
+                                <input type="number" id="capacity"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="20" min="1">
+                                <p class="text-xs text-gray-500 mt-1">Maximum number of participants</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-image-line"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Media & Images</h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Featured
+                                    Image</label>
+                                <div class="image-upload-area p-8 text-center cursor-pointer"
+                                    id="featured-image-upload">
+                                    <div
+                                        class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-gray-400">
+                                            <i class="ri-image-add-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Click to upload or drag and drop</p>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                    <input type="file" id="featured-image-input" class="hidden" accept="image/*">
+                                </div>
+                                <div id="featured-image-preview" class="hidden">
+                                    <div class="relative inline-block">
+                                        <img id="featured-image-img" class="w-32 h-32 object-cover rounded-button">
+                                        <button type="button" id="remove-featured-image"
+                                            class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600">
+                                            <i class="ri-close-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Gallery Images</label>
+                                <p class="text-xs text-gray-500 mb-3">Upload at least 3 additional images to showcase
+                                    your
+                                    listing</p>
+                                <div class="image-upload-area p-8 text-center cursor-pointer" id="gallery-upload">
+                                    <div
+                                        class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-gray-400">
+                                            <i class="ri-gallery-line"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-2">Upload multiple images</p>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
+                                    <input type="file" id="gallery-input" class="hidden" accept="image/*" multiple>
+                                </div>
+                                <div id="gallery-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 hidden">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Video URL (Optional)</label>
+                                <input type="url" id="video-url"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="https://youtube.com/watch?v=...">
+                                <p class="text-xs text-gray-500 mt-1">YouTube, Vimeo, or other video platform links</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-settings-line"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Additional Details</h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Amenities & Features</label>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="parking">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="parking" class="text-sm text-gray-700 cursor-pointer">Parking
+                                            Available</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="wheelchair">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="wheelchair" class="text-sm text-gray-700 cursor-pointer">Wheelchair
+                                            Accessible</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="wifi">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="wifi" class="text-sm text-gray-700 cursor-pointer">Free WiFi</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="restrooms">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="restrooms"
+                                            class="text-sm text-gray-700 cursor-pointer">Restrooms</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="food">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="food" class="text-sm text-gray-700 cursor-pointer">Food &
+                                            Beverages</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="gift-shop">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="gift-shop" class="text-sm text-gray-700 cursor-pointer">Gift
+                                            Shop</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Age</label>
+                                    <input type="number" id="min-age"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                        placeholder="0" min="0">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Maximum Group
+                                        Size</label>
+                                    <input type="number" id="max-group"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                        placeholder="50" min="1">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Cancellation
+                                    Policy</label>
+                                <div class="relative">
+                                    <button type="button" id="cancellation-dropdown"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm text-left flex items-center justify-between bg-white">
+                                        <span id="selected-cancellation" class="text-gray-500">Select cancellation
+                                            policy</span>
+                                        <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                    </button>
+                                    <div id="cancellation-options"
+                                        class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-button shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="flexible">Flexible - Full refund 24 hours before</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="moderate">Moderate - Full refund 5 days before</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="strict">Strict - 50% refund 7 days before</button>
+                                            <button type="button"
+                                                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                                                data-value="no-refund">No Refund</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Safety Guidelines</label>
+                                <textarea id="safety-guidelines" rows="3"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm resize-none"
+                                    placeholder="List any safety requirements, restrictions, or guidelines participants should know..."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Languages Offered</label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="lang-english" checked>
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="lang-english"
+                                            class="text-sm text-gray-700 cursor-pointer">English</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="lang-spanish">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="lang-spanish"
+                                            class="text-sm text-gray-700 cursor-pointer">Spanish</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="lang-french">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="lang-french"
+                                            class="text-sm text-gray-700 cursor-pointer">French</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="custom-checkbox mr-3">
+                                            <input type="checkbox" id="lang-german">
+                                            <div class="custom-checkbox-square"></div>
+                                        </div>
+                                        <label for="lang-german"
+                                            class="text-sm text-gray-700 cursor-pointer">German</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <div class="w-5 h-5 flex items-center justify-center text-primary">
+                                    <i class="ri-search-line"></i>
+                                </div>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">SEO & Marketing</h2>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Meta
+                                    Title</label>
+                                <input type="text" id="meta-title"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm"
+                                    placeholder="SEO-friendly title for search engines" required>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-xs text-gray-500">This appears in search engine results</p>
+                                    <span class="text-xs text-gray-400" id="meta-title-count">0/60</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 required-field">Meta
+                                    Description</label>
+                                <textarea id="meta-description" rows="3"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm resize-none"
+                                    placeholder="Brief description that appears in search results..."
+                                    required></textarea>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-xs text-gray-500">Compelling description to attract visitors</p>
+                                    <span class="text-xs text-gray-400" id="meta-description-count">0/160</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-button">
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Featured Listing</h4>
+                                    <p class="text-xs text-gray-500">Highlight this listing for better visibility</p>
+                                </div>
+                                <div class="custom-switch">
+                                    <input type="checkbox" id="featured-listing">
+                                    <div class="switch-slider"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Special Offers</label>
+                                <textarea id="special-offers" rows="2"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary text-sm resize-none"
+                                    placeholder="Early bird discount, group rates, seasonal promotions..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900">Preview & Publish</h2>
+                            <button type="button" id="preview-btn"
+                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 flex items-center whitespace-nowrap !rounded-button">
+                                <div class="w-4 h-4 flex items-center justify-center mr-2">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                                Preview Listing
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button type="button" id="save-draft-btn"
+                                class="ctaz flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-button text-sm font-medium hover:bg-gray-200 flex items-center justify-center whitespace-nowrap !rounded-button">
+                                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                    <i class="ri-draft-line"></i>
+                                </div>
+                                Save as Draft
+                            </button>
+                            <button type="submit" id="publish-btn"
+                                class="ctaz flex-1 px-6 py-3 bg-primary text-white rounded-button text-sm font-medium hover:bg-primary/90 flex items-center justify-center whitespace-nowrap !rounded-button"
+                                disabled>
+                                <div class="w-5 h-5 flex items-center justify-center mr-2">
+                                    <i class="ri-send-plane-line"></i>
+                                </div>
+                                Publish Listing
+                            </button>
+                        </div>
+                        <div class="mt-4 p-4 bg-blue-50 rounded-button">
+                            <div class="flex items-start">
+                                <div class="w-5 h-5 flex items-center justify-center text-blue-600 mt-0.5 mr-3">
+                                    <i class="ri-information-line"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-blue-900 mb-1">Publishing Guidelines</h4>
+                                    <ul class="text-xs text-blue-800 space-y-1">
+                                        <li>• All required fields must be completed before publishing</li>
+                                        <li>• Your listing will be reviewed within 24-48 hours</li>
+                                        <li>• You'll receive an email notification once approved</li>
+                                        <li>• Draft listings are automatically saved every 30 seconds</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="form-interactions-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('listing-form');
+            const progressFill = document.getElementById('progress-fill');
+            const publishBtn = document.getElementById('publish-btn');
+            const requiredFields = form.querySelectorAll('[required]');
+            let formProgress = 0;
+
+            function updateProgress() {
+                let completedFields = 0;
+                requiredFields.forEach(field => {
+                    if (field.value.trim() !== '') {
+                        completedFields++;
+                    }
+                });
+                formProgress = Math.round((completedFields / requiredFields.length) * 100);
+                progressFill.style.width = formProgress + '%';
+
+                publishBtn.disabled = formProgress < 100;
+                if (formProgress === 100) {
+                    publishBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    publishBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            requiredFields.forEach(field => {
+                field.addEventListener('input', updateProgress);
+                field.addEventListener('change', updateProgress);
+            });
+
+            updateProgress();
+        });
+    </script>
+
+    <script id="dropdown-interactions-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            function setupDropdown(buttonId, optionsId, selectedId) {
+                const button = document.getElementById(buttonId);
+                const options = document.getElementById(optionsId);
+                const selected = document.getElementById(selectedId);
+
+                button.addEventListener('click', function () {
+                    options.classList.toggle('hidden');
+                });
+
+                options.addEventListener('click', function (e) {
+                    if (e.target.tagName === 'BUTTON') {
+                        selected.textContent = e.target.textContent;
+                        selected.classList.remove('text-gray-500');
+                        selected.classList.add('text-gray-900');
+                        options.classList.add('hidden');
+                    }
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!button.contains(e.target) && !options.contains(e.target)) {
+                        options.classList.add('hidden');
+                    }
+                });
+            }
+
+            setupDropdown('category-dropdown', 'category-options', 'selected-category');
+            setupDropdown('country-dropdown', 'country-options', 'selected-country');
+            setupDropdown('currency-dropdown', 'currency-options', 'selected-currency');
+            setupDropdown('cancellation-dropdown', 'cancellation-options', 'selected-cancellation');
+        });
+    </script>
+
+    <script id="image-upload-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const featuredUpload = document.getElementById('featured-image-upload');
+            const featuredInput = document.getElementById('featured-image-input');
+            const featuredPreview = document.getElementById('featured-image-preview');
+            const featuredImg = document.getElementById('featured-image-img');
+            const removeFeatured = document.getElementById('remove-featured-image');
+            const galleryUpload = document.getElementById('gallery-upload');
+            const galleryInput = document.getElementById('gallery-input');
+            const galleryPreview = document.getElementById('gallery-preview');
+
+            featuredUpload.addEventListener('click', () => featuredInput.click());
+            featuredInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        featuredImg.src = e.target.result;
+                        featuredUpload.classList.add('hidden');
+                        featuredPreview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            removeFeatured.addEventListener('click', function () {
+                featuredInput.value = '';
+                featuredUpload.classList.remove('hidden');
+                featuredPreview.classList.add('hidden');
+            });
+
+            galleryUpload.addEventListener('click', () => galleryInput.click());
+            galleryInput.addEventListener('change', function (e) {
+                const files = Array.from(e.target.files);
+                if (files.length > 0) {
+                    galleryPreview.innerHTML = '';
+                    galleryPreview.classList.remove('hidden');
+                    files.forEach((file, index) => {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const div = document.createElement('div');
+                            div.className = 'relative';
+                            div.innerHTML = `
+<img src="${e.target.result}" class="w-full h-24 object-cover rounded-button">
+<button type="button" class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600" onclick="this.parentElement.remove()">
+<i class="ri-close-line"></i>
+</button>
+`;
+                            galleryPreview.appendChild(div);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            });
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                featuredUpload.addEventListener(eventName, preventDefaults, false);
+                galleryUpload.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                featuredUpload.addEventListener(eventName, highlight, false);
+                galleryUpload.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                featuredUpload.addEventListener(eventName, unhighlight, false);
+                galleryUpload.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                e.currentTarget.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                e.currentTarget.classList.remove('dragover');
+            }
+        });
+    </script>
+
+    <script id="character-counters-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const descriptionField = document.getElementById('listing-description');
+            const descriptionCounter = document.getElementById('description-count');
+            const metaTitleField = document.getElementById('meta-title');
+            const metaTitleCounter = document.getElementById('meta-title-count');
+            const metaDescField = document.getElementById('meta-description');
+            const metaDescCounter = document.getElementById('meta-description-count');
+
+            function updateCounter(field, counter, maxLength) {
+                field.addEventListener('input', function () {
+                    const currentLength = field.value.length;
+                    counter.textContent = `${currentLength}/${maxLength}`;
+                    if (currentLength > maxLength * 0.9) {
+                        counter.classList.add('text-red-500');
+                    } else {
+                        counter.classList.remove('text-red-500');
+                    }
+                });
+            }
+
+            updateCounter(descriptionField, descriptionCounter, 500);
+            updateCounter(metaTitleField, metaTitleCounter, 60);
+            updateCounter(metaDescField, metaDescCounter, 160);
+        });
+    </script>
+
+    <script id="form-submission-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('listing-form');
+            const saveDraftBtn = document.getElementById('save-draft-btn');
+            const publishBtn = document.getElementById('publish-btn');
+            const previewBtn = document.getElementById('preview-btn');
+
+            saveDraftBtn.addEventListener('click', function () {
+                const formData = new FormData(form);
+                console.log('Saving draft...', Object.fromEntries(formData));
+
+                saveDraftBtn.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-check-line"></i>
+</div>
+Saved as Draft
+`;
+                saveDraftBtn.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+                saveDraftBtn.classList.add('bg-green-100', 'text-green-700');
+                setTimeout(() => {
+                    saveDraftBtn.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-draft-line"></i>
+</div>
+Save as Draft
+`;
+                    saveDraftBtn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+                    saveDraftBtn.classList.remove('bg-green-100', 'text-green-700');
+                }, 2000);
+            });
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                console.log('Publishing listing...', Object.fromEntries(formData));
+
+                publishBtn.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-loader-4-line animate-spin"></i>
+</div>
+Publishing...
+`;
+                publishBtn.disabled = true;
+
+                setTimeout(() => {
+                    alert('Listing published successfully! It will be reviewed within 24-48 hours.');
+                    window.location.href = 'https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/f0385423-cd15-4692-9e3a-0de649905c8b';
+                }, 2000);
+            });
+
+            previewBtn.addEventListener('click', function () {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+                modal.innerHTML = `
+<div class="bg-white rounded-lg max-w-2xl w-full max-h-full overflow-y-auto">
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-900">Listing Preview</h3>
+<button type="button" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100" onclick="this.closest('.fixed').remove()">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="space-y-4">
+<div class="aspect-video bg-gray-200 rounded-button flex items-center justify-center">
+<span class="text-gray-500">Featured Image Preview</span>
+</div>
+<h2 class="text-xl font-bold text-gray-900">${document.getElementById('listing-name').value || 'Listing Name'}</h2>
+<p class="text-gray-600">${document.getElementById('listing-description').value || 'Listing description will appear here...'}</p>
+<div class="flex items-center space-x-4 text-sm text-gray-500">
+<span>📍 ${document.getElementById('city').value || 'Location'}</span>
+<span>💰 $${document.getElementById('base-price').value || '0.00'}</span>
+</div>
+</div>
+</div>
+</div>
+`;
+                document.body.appendChild(modal);
+            });
+
+            setInterval(function () {
+                const formData = new FormData(form);
+                console.log('Auto-saving draft...', Object.fromEntries(formData));
+            }, 30000);
+        });
+    </script>
+
+</body>
+
+</html>
