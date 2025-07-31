@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Listings</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4F46E5', secondary: '#10B981' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        /* body {
+            font-family: 'Inter', sans-serif;
+        } */
+
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <div class="h-screen flex">
+        <!-- <nav class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 z-50 overflow-y-auto">
+            <div class="p-6">
+                <h1 class="text-2xl font-['Pacifico'] text-primary mb-8">logo</h1>
+                <div class="space-y-2">
+                    <div class="font-medium text-xs uppercase text-gray-500 mb-4">Main Menu</div>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-dashboard-line mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-map-pin-line mr-3"></i>
+                        <span>Attractions</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-route-line mr-3"></i>
+                        <span>Tours</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-calendar-event-line mr-3"></i>
+                        <span>Events</span>
+                    </a>
+
+                    <div class="font-medium text-xs uppercase text-gray-500 mt-8 mb-4">Management</div>
+                    <a href="#" class="flex items-center px-4 py-3 text-primary bg-indigo-50 rounded-lg">
+                        <i class="ri-list-check mr-3"></i>
+                        <span>My Listings</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-team-line mr-3"></i>
+                        <span>Tour Guides</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-user-star-line mr-3"></i>
+                        <span>Customers</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-message-3-line mr-3"></i>
+                        <span>Reviews</span>
+                    </a>
+
+                    <div class="font-medium text-xs uppercase text-gray-500 mt-8 mb-4">Analytics</div>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-line-chart-line mr-3"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-pie-chart-line mr-3"></i>
+                        <span>Statistics</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div>
+                    <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">My Listings</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">My Listings</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header> -->
+
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="text-gray-700 sidebar-link  flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search Dashboard ...">
+                    </div>
+                </div>
+                <!-- <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span>My Listings</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">Add New Listing</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">Add New Listing</h1> -->
+                <!-- Date, Notification, and User Profile here -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <!-- <div
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div> -->
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+                <!-- <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </header>
+
+
+        <!-- <main class="pt-24 px-6 pb-8 mt-46 flex-1 "> -->
+        <main class="pt-24 px-6 pb-8 mt-46 flex-1 overflow-y-auto">
+
+            <div class="max-w-7xl mx-auto">
+
+
+                <header class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900">My Listings</h1>
+                </header>
+
+
+
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                        <button
+                            class="ctaz bg-primary text-white px-6 py-3 rounded-button hover:bg-indigo-700 flex items-center gap-2 !rounded-button whitespace-nowrap"><a
+                                href="C:\Users\user\Downloads\Business-owner\web\Add-Listing.html">
+                                <i class="ri-add-line"></i>
+                                Add New Listing</a>
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search ..."
+                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <div
+                                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                                <i class="ri-search-line text-gray-400 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <button
+                                class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap"
+                                onclick="toggleSortDropdown()">
+                                <i class="ri-sort-desc text-gray-400"></i>
+                                Sort by
+                                <i class="ri-arrow-down-s-line text-gray-400"></i>
+                            </button>
+                            <div id="sortDropdown"
+                                class="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                <div class="py-1">
+                                    <button
+                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Newest
+                                        First</button>
+                                    <button
+                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Most
+                                        Popular</button>
+                                    <button
+                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Price:
+                                        Low to High</button>
+                                    <button
+                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Price:
+                                        High to Low</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium text-gray-700">Category:</span>
+                            <div class="flex gap-2">
+                                <button
+                                    class="px-3 py-1 text-sm bg-primary text-white rounded-full !rounded-button whitespace-nowrap"
+                                    onclick="filterCategory('all')">All</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterCategory('tours')">Tours</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterCategory('events')">Events</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterCategory('attractions')">Activities</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterCategory('attractions')">Attractions</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium text-gray-700">Status:</span>
+                            <div class="flex gap-2">
+                                <button
+                                    class="px-3 py-1 text-sm bg-primary text-white rounded-full !rounded-button whitespace-nowrap"
+                                    onclick="filterStatus('all')">All</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterStatus('active')">Active</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterStatus('draft')">Draft</button>
+                                <button
+                                    class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 !rounded-button whitespace-nowrap"
+                                    onclick="filterStatus('inactive')">Inactive</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium text-gray-700">Date Range:</span>
+                            <input type="date" class="px-3 py-1 text-sm border border-gray-300 rounded text-gray-700">
+                            <span class="text-gray-400">to</span>
+                            <input type="date" class="px-3 py-1 text-sm border border-gray-300 rounded text-gray-700">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div
+                        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="aspect-video relative">
+                            <img src="https://readdy.ai/api/search-image?query=beautiful%20city%20walking%20tour%20through%20historic%20downtown%20district%2C%20tourists%20exploring%20cobblestone%20streets%2C%20charming%20architecture%2C%20sunny%20day%2C%20vibrant%20atmosphere%2C%20professional%20travel%20photography&width=400&height=225&seq=10&orientation=landscape"
+                                alt="Historic City Walking Tour" class="w-full h-full object-cover object-top">
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Tour</span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Historic City Walking Tour</h3>
+                            <p class="text-sm text-gray-600 mb-4">Explore the charming historic district with expert
+                                local guides</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-4 text-xs text-gray-500">
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-eye-line"></i>
+                                        <span>2,456 views</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-calendar-check-line"></i>
+                                        <span>89 bookings</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-bold text-primary">$45</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-gray-500">Updated 2 days ago</div>
+                                <div class="relative">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                                        onclick="toggleActionMenu('menu1')">
+                                        <i class="ri-more-2-line"></i>
+                                    </button>
+                                    <div id="menu1"
+                                        class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-edit-line text-sm"></i>
+                                                Edit
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-eye-line text-sm"></i>
+                                                Preview
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="aspect-video relative">
+                            <img src="https://s7g10.scene7.com/is/image/rcu/anyah-cooking-class-hero-final?$Responsive$&fit=stretch&fmt=webp&wid=1024"
+                                alt="Traditional Cooking Class" class="w-full h-full object-cover object-top">
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Event</span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Traditional Cooking Class</h3>
+                            <p class="text-sm text-gray-600 mb-4">Learn to prepare authentic dishes with expert local
+                                chefs, followed by a delightful tasting session.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-4 text-sm text-gray-500">
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-eye-line"></i>
+                                        <span>1,832 views</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-calendar-check-line"></i>
+                                        <span>67 bookings</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-bold text-primary">$85</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-gray-500">Updated 1 week ago</div>
+                                <div class="relative">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                                        onclick="toggleActionMenu('menu2')">
+                                        <i class="ri-more-2-line"></i>
+                                    </button>
+                                    <div id="menu2"
+                                        class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-edit-line text-sm"></i>
+                                                Edit
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-eye-line text-sm"></i>
+                                                Preview
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="aspect-video relative">
+                            <img src="https://readdy.ai/api/search-image?query=mountain%20hiking%20adventure%20tour%20with%20scenic%20alpine%20views%2C%20hikers%20on%20mountain%20trail%2C%20dramatic%20peaks%2C%20clear%20blue%20sky%2C%20outdoor%20adventure%20photography&width=400&height=225&seq=12&orientation=landscape"
+                                alt="Mountain Adventure Hike" class="w-full h-full object-cover object-top">
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Tour</span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Draft</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Mountain Adventure Hike</h3>
+                            <p class="text-sm text-gray-600 mb-4">Challenging hike with breathtaking mountain views</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-4 text-sm text-gray-500">
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-eye-line"></i>
+                                        <span>234 views</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-calendar-check-line"></i>
+                                        <span>58 bookings</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-bold text-primary">$75</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-gray-500">Created 3 days ago</div>
+                                <div class="relative">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                                        onclick="toggleActionMenu('menu3')">
+                                        <i class="ri-more-2-line"></i>
+                                    </button>
+                                    <div id="menu3"
+                                        class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-edit-line text-sm"></i>
+                                                Edit
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-eye-line text-sm"></i>
+                                                Preview
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="aspect-video relative">
+                            <img src="https://readdy.ai/api/search-image?query=cultural%20museum%20attraction%20with%20ancient%20artifacts%2C%20visitors%20exploring%20exhibits%2C%20elegant%20museum%20interior%2C%20educational%20atmosphere%2C%20professional%20museum%20photography&width=400&height=225&seq=13&orientation=landscape"
+                                alt="Cultural Heritage Museum" class="w-full h-full object-cover object-top">
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Attraction</span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Cultural Heritage Museum</h3>
+                            <p class="text-sm text-gray-600 mb-4">Discover local history and cultural artifacts</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-4 text-xs text-gray-500">
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-eye-line"></i>
+                                        <span>3,124 views</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-calendar-check-line"></i>
+                                        <span>156 bookings</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-bold text-primary">$25</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-gray-500">Updated 5 days ago</div>
+                                <div class="relative">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                                        onclick="toggleActionMenu('menu4')">
+                                        <i class="ri-more-2-line"></i>
+                                    </button>
+                                    <div id="menu4"
+                                        class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-edit-line text-sm"></i>
+                                                Edit
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-eye-line text-sm"></i>
+                                                Preview
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="aspect-video relative">
+                            <img src="https://readdy.ai/api/search-image?query=gourmet%20food%20tour%20featuring%20local%20cuisine%2C%20delicious%20street%20food%2C%20chef%20preparing%20dishes%2C%20vibrant%20market%20atmosphere%2C%20culinary%20experience%20photography&width=400&height=225&seq=14&orientation=landscape"
+                                alt="Gourmet Food Tour" class="w-full h-full object-cover object-top">
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Tour</span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Inactive</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Gourmet Food Tour</h3>
+                            <p class="text-sm text-gray-600 mb-4">Taste the best local cuisine with expert food guides
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-4 text-xs text-gray-500">
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-eye-line"></i>
+                                        <span>1,567 views</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-calendar-check-line"></i>
+                                        <span>43 bookings</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-bold text-primary">$65</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-gray-500">Updated 2 weeks ago</div>
+                                <div class="relative">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                                        onclick="toggleActionMenu('menu5')">
+                                        <i class="ri-more-2-line"></i>
+                                    </button>
+                                    <div id="menu5"
+                                        class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-edit-line text-sm"></i>
+                                                Edit
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-eye-line text-sm"></i>
+                                                Preview
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="aspect-video relative">
+                            <img src="https://adamchristing.com/wp-content/uploads/2023/06/corporate-family-day-ideas.jpg"
+                                alt="Family Fun" class="w-full h-full object-cover object-top">
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Event</span>
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Annual Community Family Fun Fair</h3>
+                            <p class="text-sm text-gray-600 mb-4">A day filled with games, rides, food stalls, and
+                                entertainment for all ages in the park.
+
+                            </p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-4 text-xs text-gray-500">
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-eye-line"></i>
+                                        <span>4,892 views</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="ri-calendar-check-line"></i>
+                                        <span>234 bookings</span>
+                                    </div>
+                                </div>
+                                <div class="text-lg font-bold text-primary">$125</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-gray-500">Updated yesterday</div>
+                                <div class="relative">
+                                    <button
+                                        class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100"
+                                        onclick="toggleActionMenu('menu6')">
+                                        <i class="ri-more-2-line"></i>
+                                    </button>
+                                    <div id="menu6"
+                                        class="absolute right-0 top-full mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-10 hidden">
+                                        <div class="py-1">
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-edit-line text-sm"></i>
+                                                Edit
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                                <i class="ri-eye-line text-sm"></i>
+                                                Preview
+                                            </button>
+                                            <button
+                                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                                <i class="ri-delete-bin-line text-sm"></i>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-8">
+                    <div class="flex items-center gap-4">
+                        <p class="text-sm text-gray-700">Showing 1 to 6 of 18 results</p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-700">Items per page:</span>
+                            <select class="border border-gray-300 rounded text-sm px-2 py-1">
+                                <option>6</option>
+                                <option>12</option>
+                                <option>24</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            class="px-4 py-2 text-sm border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed !rounded-button whitespace-nowrap">
+                            <i class="ri-arrow-left-line mr-1"></i>
+                            Previous
+                        </button>
+                        <button
+                            class="px-3 py-2 text-sm bg-primary text-white rounded-button hover:bg-indigo-700 !rounded-button whitespace-nowrap">1</button>
+                        <button
+                            class="px-3 py-2 text-sm border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">2</button>
+                        <button
+                            class="px-3 py-2 text-sm border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">3</button>
+                        <button
+                            class="px-4 py-2 text-sm border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">
+                            Next
+                            <i class="ri-arrow-right-line ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script id="dropdown-functionality">
+        document.addEventListener('DOMContentLoaded', function () {
+            function toggleSortDropdown() {
+                const dropdown = document.getElementById('sortDropdown');
+                dropdown.classList.toggle('hidden');
+            }
+
+            function toggleActionMenu(menuId) {
+                const menu = document.getElementById(menuId);
+                const allMenus = document.querySelectorAll('[id^="menu"]');
+                allMenus.forEach(m => {
+                    if (m.id !== menuId) {
+                        m.classList.add('hidden');
+                    }
+                });
+                menu.classList.toggle('hidden');
+            }
+
+            function filterCategory(category) {
+                const buttons = document.querySelectorAll('[onclick^="filterCategory"]');
+                buttons.forEach(btn => {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                });
+                event.target.classList.remove('bg-gray-100', 'text-gray-700');
+                event.target.classList.add('bg-primary', 'text-white');
+            }
+
+            function filterStatus(status) {
+                const buttons = document.querySelectorAll('[onclick^="filterStatus"]');
+                buttons.forEach(btn => {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                });
+                event.target.classList.remove('bg-gray-100', 'text-gray-700');
+                event.target.classList.add('bg-primary', 'text-white');
+            }
+
+            window.toggleSortDropdown = toggleSortDropdown;
+            window.toggleActionMenu = toggleActionMenu;
+            window.filterCategory = filterCategory;
+            window.filterStatus = filterStatus;
+
+            document.addEventListener('click', function (event) {
+                const sortDropdown = document.getElementById('sortDropdown');
+                const sortButton = event.target.closest('[onclick="toggleSortDropdown()"]');
+                if (!sortButton && !sortDropdown.contains(event.target)) {
+                    sortDropdown.classList.add('hidden');
+                }
+
+                const actionMenus = document.querySelectorAll('[id^="menu"]');
+                actionMenus.forEach(menu => {
+                    const menuButton = event.target.closest(`[onclick="toggleActionMenu('${menu.id}')"]`);
+                    if (!menuButton && !menu.contains(event.target)) {
+                        menu.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

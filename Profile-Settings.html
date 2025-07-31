@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#8b5cf6'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            background-color: #f8fafc;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rounded-button {
+            border-radius: 9999px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-pill .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d1d5db;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: #4f46e5;
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e5e7eb;
+        }
+
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex h-screen">
+        <!-- <aside class="w-64 bg-white shadow-md p-4 flex flex-col">
+            <div class="text-2xl font-bold text-blue-600 mb-8">Platform</div>
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-dashboard-line"></i>
+                    </div>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-ticket-line"></i>
+                    </div>
+                    My Listings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-calendar-check-line"></i>
+                    </div>
+                    Bookings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-questionnaire-line"></i>
+                    </div>
+                    Requests
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-star-line"></i>
+                    </div>
+                    Reviews
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-wallet-line"></i>
+                    </div>
+                    Payouts
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-bar-chart-line"></i>
+                    </div>
+                    Analytics
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-settings-3-line"></i>
+                    </div>
+                    Profile Settings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-question-line"></i>
+                    </div>
+                    Support
+                </a>
+            </nav>
+        </aside> -->
+
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="text-gray-700 sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="active sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search ...">
+                    </div>
+                </div>
+                <!-- <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span>My Listings</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">Add New Listing</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">Add New Listing</h1> -->
+                <!-- Date, Notification, and User Profile here -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <!-- <div
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div> -->
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+                <!-- <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </header>
+
+
+        <main class="flex-1 p-4 md:p-8 mt-16 overflow-y-auto">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Profile Settings</h1>
+                <p class="text-gray-600 mt-2">Manage your personal information, account preferences, and security
+                    settings.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div class="lg:col-span-1">
+                    <nav class="text-sm bg-white rounded-lg shadow-md p-4 sticky top-4" style="font-family: poppins;">
+                        <ul class="space-y-2">
+                            <li>
+                                <button data-tab="profile"
+                                    class="tab-button w-full text-left px-3 py-2 rounded-lg text-blue-600 bg-blue-50 font-normal transition-colors">
+                                    <div class="w-4 h-4 inline-flex items-center justify-center mr-2">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                    Profile Information
+                                </button>
+                            </li>
+                            <li>
+                                <button data-tab="account"
+                                    class="tab-button w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                    <div class="w-4 h-4 inline-flex items-center justify-center mr-2">
+                                        <i class="ri-settings-line"></i>
+                                    </div>
+                                    Account Settings
+                                </button>
+                            </li>
+                            <li>
+                                <button data-tab="security"
+                                    class="tab-button w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                    <div class="w-4 h-4 inline-flex items-center justify-center mr-2">
+                                        <i class="ri-shield-line"></i>
+                                    </div>
+                                    Security & Privacy
+                                </button>
+                            </li>
+                            <li>
+                                <button data-tab="notifications"
+                                    class="tab-button w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                    <div class="w-4 h-4 inline-flex items-center justify-center mr-2">
+                                        <i class="ri-notification-line"></i>
+                                    </div>
+                                    Notifications
+                                </button>
+                            </li>
+                            <li>
+                                <button data-tab="business"
+                                    class="tab-button w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                                    <div class="w-4 h-4 inline-flex items-center justify-center mr-2">
+                                        <i class="ri-briefcase-line"></i>
+                                    </div>
+                                    Business Details
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="lg:col-span-3">
+                    <div id="profile-tab" class="tab-content">
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Profile Information</h3>
+
+                            <div class="flex items-center mb-8">
+                                <div class="relative mr-6">
+                                    <img id="profileImage"
+                                        src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                        alt="Profile Picture" class="profile-avatar">
+                                    <label for="avatarUpload"
+                                        class="file-upload absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 cursor-pointer hover:bg-blue-700 transition-colors">
+                                        <div class="w-4 h-4 flex items-center justify-center">
+                                            <i class="ri-camera-line"></i>
+                                        </div>
+                                        <input type="file" id="avatarUpload" accept="image/*">
+                                    </label>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900">Profile Picture</h4>
+                                    <p class="text-sm text-gray-600">Upload a professional photo that represents you or
+                                        your business</p>
+                                    <p class="text-xs text-gray-500 mt-1">JPG, PNG or GIF. Max size 5MB.</p>
+                                </div>
+                            </div>
+
+                            <form id="profileForm" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="firstName"
+                                            class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                        <input type="text" id="firstName" value="John"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last
+                                            Name</label>
+                                        <input type="text" id="lastName" value="Smith"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email
+                                        Address</label>
+                                    <input type="email" id="email" value="john.smith@email.com"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone
+                                            Number</label>
+                                        <input type="tel" id="phone" value="+974 5555 1234"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="language"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Preferred
+                                            Language</label>
+                                        <select id="language"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="en">English</option>
+                                            <option value="ar">Arabic</option>
+                                            <option value="fr">French</option>
+                                            <option value="es">Spanish</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                                    <textarea id="bio" rows="4"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Tell visitors about yourself and your expertise...">Experienced tour guide with over 8 years in Country's tourism industry. Passionate about sharing the rich culture and history of Country with visitors from around the world.</textarea>
+                                </div>
+
+                                <div class="flex justify-end">
+                                    <button type="submit"
+                                        class="ctaz bg-blue-600 text-white px-6 py-2 rounded-lg font-normal text-sm hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="account-tab" class="tab-content hidden">
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Account Settings</h3>
+
+                            <div class="space-y-6">
+                                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                    <div>
+                                        <h4 class="text-lg font-medium text-gray-900">Account Status</h4>
+                                        <p class="text-sm text-gray-600">Your account is currently active and verified
+                                        </p>
+                                    </div>
+                                    <span class="status-pill bg-green-100 text-green-700">
+                                        <span class="dot bg-green-500"></span>
+                                        Active
+                                    </span>
+                                </div>
+
+                                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                    <div>
+                                        <h4 class="text-lg font-medium text-gray-900">Email Verification</h4>
+                                        <p class="text-sm text-gray-600">Your email address has been verified</p>
+                                    </div>
+                                    <span class="status-pill bg-green-100 text-green-700">
+                                        <span class="dot bg-green-500"></span>
+                                        Verified
+                                    </span>
+                                </div>
+
+                                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                    <div>
+                                        <h4 class="text-lg font-medium text-gray-900">Phone Verification</h4>
+                                        <p class="text-sm text-gray-600">Verify your phone number for enhanced security
+                                        </p>
+                                    </div>
+                                    <button
+                                        class="ctaz bg-blue-600 text-white px-4 py-2 rounded-lg font-normal text-small hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap text-sm">
+                                        Verify Phone
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                                    <div>
+                                        <h4 class="text-lg font-medium text-gray-900">Two-Factor Authentication</h4>
+                                        <p class="text-sm text-gray-600">Add an extra layer of security to your account
+                                        </p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="twoFactorAuth">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-between py-4">
+                                    <div>
+                                        <h4 class="text-lg font-medium text-gray-900">Account Deactivation</h4>
+                                        <p class="text-sm text-gray-600">Temporarily deactivate your account</p>
+                                    </div>
+                                    <button
+                                        class="ctaz text-sm bg-red-600 text-white px-4 py-2 rounded-lg font-normal hover:bg-red-700 transition-colors !rounded-button whitespace-nowrap text-sm">
+                                        Deactivate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="security-tab" class="tab-content hidden">
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Security & Privacy</h3>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Change Password</h4>
+                                    <form class="space-y-4">
+                                        <div>
+                                            <label for="currentPassword"
+                                                class="block text-sm font-medium text-gray-700 mb-2">Current
+                                                Password</label>
+                                            <input type="password" id="currentPassword"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="newPassword"
+                                                class="block text-sm font-medium text-gray-700 mb-2">New
+                                                Password</label>
+                                            <input type="password" id="newPassword"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="confirmPassword"
+                                                class="block text-sm font-medium text-gray-700 mb-2">Confirm New
+                                                Password</label>
+                                            <input type="password" id="confirmPassword"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <button type="submit"
+                                            class="ctaz text-sm bg-blue-600 text-white px-4 py-2 rounded-lg font-normal hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                                            Update Password
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Privacy Settings</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Profile Visibility</p>
+                                                <p class="text-sm text-gray-600">Allow others to see your profile
+                                                    information</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="profileVisibility" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Show Contact Information</p>
+                                                <p class="text-sm text-gray-600">Display your contact details on
+                                                    listings</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="showContact" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Data Analytics</p>
+                                                <p class="text-sm text-gray-600">Allow us to use your data for analytics
+                                                </p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="dataAnalytics">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Login Sessions</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Current Session</p>
+                                                <p class="text-sm text-gray-600">Chrome on Windows • Capital, Country</p>
+                                            </div>
+                                            <span class="status-pill bg-green-100 text-green-700">
+                                                <span class="dot bg-green-500"></span>
+                                                Active
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Mobile App</p>
+                                                <p class="text-sm text-gray-600">iPhone • Last active 2 hours ago</p>
+                                            </div>
+                                            <button
+                                                class="text-red-600 hover:text-red-800 text-sm font-medium">Revoke</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="notifications-tab" class="tab-content hidden">
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Notification Preferences</h3>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Email Notifications</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">New Booking Requests</p>
+                                                <p class="text-sm text-gray-600">Get notified when someone requests to
+                                                    book your listing</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="emailBookings" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Payment Updates</p>
+                                                <p class="text-sm text-gray-600">Receive updates about payouts and
+                                                    transactions</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="emailPayments" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Reviews & Ratings</p>
+                                                <p class="text-sm text-gray-600">Get notified when you receive new
+                                                    reviews</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="emailReviews" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Marketing Updates</p>
+                                                <p class="text-sm text-gray-600">Receive tips, promotions, and platform
+                                                    updates</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="emailMarketing">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Push Notifications</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Instant Booking Alerts</p>
+                                                <p class="text-sm text-gray-600">Immediate notifications for new
+                                                    bookings</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="pushBookings" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Messages</p>
+                                                <p class="text-sm text-gray-600">Get notified of new messages from
+                                                    customers</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="pushMessages" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Reminders</p>
+                                                <p class="text-sm text-gray-600">Upcoming tour reminders and important
+                                                    deadlines</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="pushReminders" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">SMS Notifications</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="font-medium text-gray-900">Critical Alerts Only</p>
+                                                <p class="text-sm text-gray-600">Important security and booking updates
+                                                    via SMS</p>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="smsAlerts" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="business-tab" class="tab-content hidden">
+                        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Business Details</h3>
+
+                            <form class="space-y-6">
+                                <div>
+                                    <label for="businessName"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
+                                    <input type="text" id="businessName" value="Country Adventures Tourism"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="businessType"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
+                                        <select id="businessType"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="individual">Individual</option>
+                                            <option value="company" selected>Company</option>
+                                            <option value="partnership">Partnership</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="businessLicense"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Business License
+                                            Number</label>
+                                        <input type="text" id="businessLicense" value="BL-2024-QA-1234"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="businessAddress"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Business Address</label>
+                                    <textarea id="businessAddress" rows="3"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">Building 123, Street 45, Al Sadd District, Capital, Country</textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="taxId" class="block text-sm font-medium text-gray-700 mb-2">Tax
+                                            ID</label>
+                                        <input type="text" id="taxId" value="TAX-QA-987654321"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                    <div>
+                                        <label for="website"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                                        <input type="url" id="website" value="https://Countryadventures.com"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="businessDescription"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Business
+                                        Description</label>
+                                    <textarea id="businessDescription" rows="4"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Describe your business and services...">Country Adventures Tourism is a premier tour operator specializing in authentic Country experiences. We offer cultural tours, desert adventures, and personalized travel services to showcase the best of Country's heritage and modern attractions.</textarea>
+                                </div>
+
+                                <div class="border-t border-gray-200 pt-6">
+                                    <h4 class="text-lg font-medium text-gray-900 mb-4">Banking Information</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="bankName"
+                                                class="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
+                                            <input type="text" id="bankName" value="Country Main Bank"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="accountNumber"
+                                                class="block text-sm font-medium text-gray-700 mb-2">Account
+                                                Number</label>
+                                            <input type="text" id="accountNumber" value="****-****-****-5678"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                                        <div>
+                                            <label for="swiftCode"
+                                                class="block text-sm font-medium text-gray-700 mb-2">SWIFT/BIC
+                                                Code</label>
+                                            <input type="text" id="swiftCode" value="BKIDINBBXXX"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <label for="accountHolder"
+                                                class="block text-sm font-medium text-gray-700 mb-2">Account Holder
+                                                Name</label>
+                                            <input type="text" id="accountHolder" value="Country Adventures Tourism LLC"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end">
+                                    <button type="submit"
+                                        class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                                        Save Business Details
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center text-green-600">
+                        <i class="ri-check-line text-2xl"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Settings Updated</h3>
+                <p class="text-gray-600 mb-6">Your profile settings have been successfully updated.</p>
+                <button id="closeSuccessModal"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script id="tabNavigation">
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function switchTab(targetTab) {
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('text-blue-600', 'bg-blue-50', 'font-medium');
+                    btn.classList.add('text-gray-700');
+                });
+
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                const activeButton = document.querySelector(`[data-tab="${targetTab}"]`);
+                const activeContent = document.getElementById(`${targetTab}-tab`);
+
+                if (activeButton && activeContent) {
+                    activeButton.classList.remove('text-gray-700');
+                    activeButton.classList.add('text-blue-600', 'bg-blue-50', 'font-medium');
+                    activeContent.classList.remove('hidden');
+                }
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    switchTab(targetTab);
+                });
+            });
+        });
+    </script>
+
+    <script id="formHandling">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileForm = document.getElementById('profileForm');
+            const avatarUpload = document.getElementById('avatarUpload');
+            const profileImage = document.getElementById('profileImage');
+            const successModal = document.getElementById('successModal');
+            const closeSuccessModal = document.getElementById('closeSuccessModal');
+
+            function showSuccessModal() {
+                successModal.classList.add('active');
+            }
+
+            function closeModal(modal) {
+                modal.classList.remove('active');
+            }
+
+            avatarUpload.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImage.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            profileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                setTimeout(() => {
+                    showSuccessModal();
+                }, 500);
+            });
+
+            const businessForm = document.querySelector('#business-tab form');
+            if (businessForm) {
+                businessForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    setTimeout(() => {
+                        showSuccessModal();
+                    }, 500);
+                });
+            }
+
+            const passwordForm = document.querySelector('#security-tab form');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+
+                    if (newPassword !== confirmPassword) {
+                        alert('New passwords do not match');
+                        return;
+                    }
+
+                    if (newPassword.length < 8) {
+                        alert('Password must be at least 8 characters long');
+                        return;
+                    }
+
+                    setTimeout(() => {
+                        showSuccessModal();
+                        passwordForm.reset();
+                    }, 500);
+                });
+            }
+
+            closeSuccessModal.addEventListener('click', () => closeModal(successModal));
+
+            successModal.addEventListener('click', (e) => {
+                if (e.target === successModal) {
+                    closeModal(successModal);
+                }
+            });
+        });
+    </script>
+
+    <script id="toggleSwitches">
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input[type="checkbox"]');
+
+            toggleSwitches.forEach(toggle => {
+                toggle.addEventListener('change', function () {
+                    const settingName = this.id;
+                    const isEnabled = this.checked;
+
+                    console.log(`${settingName} ${isEnabled ? 'enabled' : 'disabled'}`);
+
+                    if (settingName === 'twoFactorAuth' && isEnabled) {
+                        setTimeout(() => {
+                            alert('Two-factor authentication setup would be initiated here');
+                        }, 100);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

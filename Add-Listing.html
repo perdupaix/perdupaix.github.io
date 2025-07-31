@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Listing</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <!-- <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script> -->
+
+    <style>
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            background-color: #f8fafc;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rounded-button {
+            border-radius: 9999px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-pill .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .file-drop-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .file-drop-zone:hover {
+            border-color: #4F46E5;
+        }
+
+        .file-drop-zone.dragover {
+            border-color: #4F46E5;
+            background-color: #f0f9ff;
+        }
+
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        .image-preview .delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+    </style>
+
+</head>
+
+<body class="bg-gray-50">
+
+    <div class="h-screen flex">
+
+        <!-- <nav class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 z-50 overflow-y-auto">
+            <div class="p-6">
+                <h1 class="text-2xl font-['Pacifico'] text-primary mb-8">logo</h1>
+                <div class="space-y-2">
+                    <div class="font-medium text-xs uppercase text-gray-500 mb-4">Main Menu</div>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-dashboard-line mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-map-pin-line mr-3"></i>
+                        <span>Attractions</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-route-line mr-3"></i>
+                        <span>Tours</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-calendar-event-line mr-3"></i>
+                        <span>Events</span>
+                    </a>
+
+                    <div class="font-medium text-xs uppercase text-gray-500 mt-8 mb-4">Management</div>
+                    <a href="#" class="flex items-center px-4 py-3 text-primary bg-indigo-50 rounded-lg">
+                        <i class="ri-list-check mr-3"></i>
+                        <span>My Listings</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-team-line mr-3"></i>
+                        <span>Tour Guides</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-user-star-line mr-3"></i>
+                        <span>Customers</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-message-3-line mr-3"></i>
+                        <span>Reviews</span>
+                    </a>
+
+                    <div class="font-medium text-xs uppercase text-gray-500 mt-8 mb-4">Analytics</div>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-line-chart-line mr-3"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                        <i class="ri-pie-chart-line mr-3"></i>
+                        <span>Statistics</span>
+                    </a>
+                </div>
+            </div>
+        </nav> -->
+        <!-- <aside class="w-64 bg-white shadow-md p-4 flex flex-col">
+            <div class="text-2xl font-bold text-blue-600 mb-8">Platform</div>
+            <nav class="space-y-2">
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-dashboard-line"></i>
+                    </div>
+                    Dashboard
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-ticket-line"></i>
+                    </div>
+                    My Listings
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-calendar-check-line"></i>
+                    </div>
+                    Bookings
+                </a>
+                <a href="#" class="sidebar-link active flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                    <i class="ri-questionnaire-line"></i>
+                </div>
+                Requests
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-star-line"></i>
+                    </div>
+                    Reviews
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-wallet-line"></i>
+                    </div>
+                    Payouts
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-bar-chart-line"></i>
+                    </div>
+                    Analytics
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-settings-3-line"></i>
+                    </div>
+                    Profile Settings
+                </a>
+                <a href="#" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-question-line"></i>
+                    </div>
+                    Support
+                </a>
+            </nav>
+        </aside> -->
+
+
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="text-gray-700 sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search ...">
+                    </div>
+                </div>
+                <!-- <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span>My Listings</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">Add New Listing</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">Add New Listing</h1> -->
+                <!-- Date, Notification, and User Profile here -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <!-- <div
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div> -->
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+                <!-- <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </header>
+
+        
+
+
+
+
+
+
+        <main class="pt-24 px-6 pb-8 flex-1 overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+                <header class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900">Add New Listing</h1>
+                    <p class="text-gray-600 mt-2">Create a new listing for your attraction, activity, event, tour,
+                        ..etc.
+                        Fill in all the details to make your offering shine!</p>
+                </header>
+
+                <form id="addListingForm" class="space-y-8">
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">1. Basic Information</h3>
+                        <p class="text-gray-600 mb-6">Provide the core details of your listing.</p>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Listing Name *</label>
+                                <input type="text" id="listingName"
+                                    placeholder="e.g., Downtown City Tour, Desert Safari"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                                    required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Short Description *</label>
+                                <textarea id="shortDescription"
+                                    placeholder="A brief, engaging summary (max 160 characters)" rows="3"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm min-h-[100px]"
+                                    maxlength="160" required></textarea>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    <span id="shortDescCount">0</span>/160 characters
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Detailed Description
+                                    *</label>
+                                <textarea id="detailedDescription"
+                                    placeholder="Provide a comprehensive description of your listing, highlighting unique features and what customers can expect."
+                                    rows="6"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm min-h-[150px]"
+                                    required></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                                    <select id="categorySelect"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                                        required>
+
+                                        <option value="">Select Category</option>
+                                        <option value="attraction">Attraction</option>
+                                        <option value="activity">Activity</option>
+                                        <option value="event">Event</option>
+                                        <option value="tour">Tour</option>
+                                        <option value="workshop">Workshop</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Sub-Category
+                                        (Optional)</label>
+                                    <select id="subCategorySelect"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                        <option value="">Select Sub-Category</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Keywords/Tags</label>
+                                <input type="text" id="keywords"
+                                    placeholder="e.g., adventure, family-friendly, cultural (comma-separated)"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">2. Pricing & Availability</h3>
+                        <p class="text-gray-600 mb-6">Define how your listing is priced and when it's available.</p>
+
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Base Price *</label>
+                                    <div class="relative">
+                                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$
+                                        </div>
+                                        <input type="number" id="basePrice" placeholder="150.00" min="0" step="0.01"
+                                            class="w-full border border-gray-300 rounded-lg p-3 pl-8 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pricing Unit *</label>
+                                    <select id="pricingUnit"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                                        required>
+                                        <option value="per-person">Per Person</option>
+                                        <option value="per-group">Per Group</option>
+                                        <option value="per-hour">Per Hour</option>
+                                        <option value="per-day">Per Day</option>
+                                        <option value="fixed-price">Fixed Price</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Max Participants
+                                        (Optional)</label>
+                                    <input type="number" id="maxParticipants"
+                                        placeholder="Maximum number of participants per booking/session" min="1"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Min Age Requirement
+                                        (Optional)</label>
+                                    <input type="number" id="minAge" placeholder="Minimum age for participants" min="0"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Duration (if
+                                    applicable)</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="number" id="durationValue" placeholder="e.g., 3" min="0"
+                                        class="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm w-24">
+                                    <select id="durationUnit"
+                                        class="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                        <option value="hours">Hours</option>
+                                        <option value="minutes">Minutes</option>
+                                        <option value="days">Days</option>
+                                        <option value="full-day">Full Day</option>
+                                        <option value="multi-day">Multi-day</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Availability Type *</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="availabilityType" value="always" class="mr-2"
+                                            required>
+                                        <span class="text-sm">Always Available (e.g., static attraction)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="availabilityType" value="daily-hours" class="mr-2"
+                                            required>
+                                        <span class="text-sm">Set Daily Hours (e.g., museum opening hours)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="availabilityType" value="specific-dates" class="mr-2"
+                                            required>
+                                        <span class="text-sm">Specific Dates & Times (e.g., events, tours with fixed
+                                            schedules)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="dailyHoursSection" class="hidden">
+                                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                    <h4 class="font-medium text-gray-900 mb-4">Daily Hours</h4>
+                                    <div class="space-y-3">
+                                        <div class="grid grid-cols-7 gap-2 text-sm">
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="monday"> Mon</label>
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="tuesday"> Tue</label>
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="wednesday"> Wed</label>
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="thursday"> Thu</label>
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="friday"> Fri</label>
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="saturday"> Sat</label>
+                                            <label class="flex items-center"><input type="checkbox" class="mr-1"
+                                                    value="sunday"> Sun</label>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Opening
+                                                    Time</label>
+                                                <input type="time"
+                                                    class="w-full border border-gray-300 rounded p-2 text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Closing
+                                                    Time</label>
+                                                <input type="time"
+                                                    class="w-full border border-gray-300 rounded p-2 text-sm">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Custom Hours
+                                                Notes</label>
+                                            <textarea placeholder="e.g., Closed on public holidays" rows="2"
+                                                class="w-full border border-gray-300 rounded-lg p-2 text-sm"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="specificDatesSection" class="hidden">
+                                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="font-medium text-gray-900">Specific Dates & Times</h4>
+                                        <button type="button" id="addDateTimeSlot"
+                                            class="bg-primary text-white px-3 py-2 rounded-button text-sm flex items-center gap-1 !rounded-button whitespace-nowrap">
+                                            <i class="ri-add-line"></i>
+                                            Add Date & Time Slot
+                                        </button>
+                                    </div>
+                                    <div id="dateTimeSlotsContainer" class="space-y-3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Booking Cut-off Time
+                                    (Optional)</label>
+                                <select id="bookingCutoff"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                    <option value="">No Cut-off</option>
+                                    <option value="1-hour">1 Hour Before</option>
+                                    <option value="2-hours">2 Hours Before</option>
+                                    <option value="24-hours">24 Hours Before</option>
+                                    <option value="custom">Custom</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">3. Media & Promotion</h3>
+                        <p class="text-gray-600 mb-6">Showcase your listing with high-quality visuals and choose
+                            promotional options.</p>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Photos (Max 10
+                                    images, JPG/PNG, up to 5MB each)</label>
+                                <div class="file-drop-zone" id="photoDropZone">
+                                    <i class="ri-image-add-line text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">Drag & drop photos here or click to upload</p>
+                                    <input type="file" id="photoInput" multiple accept="image/*" class="hidden">
+                                </div>
+                                <div id="photoPreviewContainer" class="mt-4"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Videos/Reels (Max 3
+                                    videos, MP4/MOV, up to 50MB each)</label>
+                                <div class="file-drop-zone" id="videoDropZone">
+                                    <i class="ri-video-add-line text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">Drag & drop videos here or click to upload</p>
+                                    <input type="file" id="videoInput" multiple accept="video/*" class="hidden">
+                                </div>
+                                <div id="videoPreviewContainer" class="mt-4"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Promotional Options</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3" id="featureHomepage">
+                                        <span class="text-sm">Feature this listing on Platform homepage (additional fees
+                                            apply)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3" id="promoteSearch">
+                                        <span class="text-sm">Promote this listing in search results (additional fees
+                                            apply)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">4. Location & Contact</h3>
+                        <p class="text-gray-600 mb-6">Provide location details and contact information for this specific
+                            listing.</p>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Physical Address *</label>
+                                <input type="text" id="physicalAddress"
+                                    placeholder="Street Address, City, State/Province, Zip/Postal Code"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                                    required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Map Location</label>
+                                <div
+                                    class="bg-gray-200 h-48 rounded-lg flex items-center justify-center text-gray-500 mb-2">
+                                    <i class="ri-map-pin-line text-2xl mr-2"></i>
+                                    <span>Map Placeholder</span>
+                                </div>
+                                <textarea id="directions"
+                                    placeholder="Specific directions or landmarks (e.g., 'Behind the old market', 'Next to the fountain')"
+                                    rows="3"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Listing Contact Phone
+                                        (Optional)</label>
+                                    <input type="tel" id="contactPhone" placeholder="e.g., +974 1234 5678"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Listing Contact Email
+                                        (Optional)</label>
+                                    <input type="email" id="contactEmail" placeholder="e.g., info@yourtour.com"
+                                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Listing Website
+                                    (Optional)</label>
+                                <input type="url" id="listingWebsite" placeholder="e.g., https://yourtour.com"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">5. Important Customer Information</h3>
+                        <p class="text-gray-600 mb-6">Provide essential details customers need to know before, during,
+                            or after their visit.</p>
+
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <label class="block text-sm font-medium text-gray-700">Frequently Asked
+                                        Questions</label>
+                                    <button type="button" id="addFaqBtn"
+                                        class="ctaz bg-primary text-white px-3 py-2 rounded-button text-sm flex items-center gap-1 !rounded-button whitespace-nowrap">
+                                        <i class="ri-add-line"></i>
+                                        Add FAQ
+                                    </button>
+                                </div>
+                                <div id="faqContainer" class="space-y-3">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">"Need to Know Before Visit"
+                                    / Instructions</label>
+                                <textarea id="beforeVisitInfo"
+                                    placeholder="e.g., What to bring, Dress code, Meeting point instructions, Age restrictions, Health requirements."
+                                    rows="4"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Safety Information (if
+                                    any)</label>
+                                <textarea id="safetyInfo"
+                                    placeholder="e.g., Safety guidelines, Emergency procedures, Equipment requirements."
+                                    rows="4"
+                                    class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary text-sm"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">How should customers
+                                    interact with this listing?</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="book-now" class="mr-3" required>
+                                        <i class="ri-calendar-check-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Book Now</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="buy-tickets" class="mr-3" required>
+                                        <i class="ri-ticket-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Buy Tickets</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="learn-more" class="mr-3" required>
+                                        <i class="ri-information-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Learn More</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="contact-us" class="mr-3" required>
+                                        <i class="ri-phone-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Contact Us</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="visit-website" class="mr-3" required>
+                                        <i class="ri-external-link-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Visit Website</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="register" class="mr-3" required>
+                                        <i class="ri-user-add-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Register</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="ctaType" value="Quote" class="mr-3" required>
+                                        <i class="ri-question-line mr-2 text-primary"></i>
+                                        <span class="text-sm">Request Quotation</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="sticky bottom-0 bg-white border-t border-gray-200 p-6 -mx-6">
+                        <div class="flex justify-end gap-4">
+                            <button type="button"
+                                class="ctaz bg-gray-200 text-gray-700 px-6 py-3 rounded-button hover:bg-gray-300 transition-colors font-semibold min-w-max !rounded-button whitespace-nowrap text-sm">
+                                Cancel
+                            </button>
+                            <button type="button" id="saveDraftBtn"
+                                class="ctaz bg-gray-100 text-gray-700 px-6 py-3 rounded-button hover:bg-gray-200 transition-colors font-semibold min-w-max !rounded-button whitespace-nowrap text-sm">
+                                Save Draft
+                            </button>
+                            <button type="submit"
+                                class="ctaz bg-primary text-white px-6 py-3 rounded-button hover:bg-indigo-700 transition-colors font-semibold min-w-max !rounded-button whitespace-nowrap text-sm">
+                                Submit for Review
+                            </button>
+                        </div>
+                    </div> -->
+
+                    <div
+                        class="sticky bottom-0 flex items-center justify-between  bg-white p-6 border-t border-gray-200 -mx-6">
+                        <button type="button"
+                            class="ctaz px-6 py-3 border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">
+                            <i class="ri-save-line mr-2"></i>
+                            Save as Draft
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <button type="button"
+                                class="ctaz px-6 py-3 border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 !rounded-button whitespace-nowrap">
+                                <i class="ri-eye-line mr-2"></i>
+                                Preview
+                            </button>
+                            <button type="submit"
+                                class="ctaz bg-primary text-white px-8 py-3 rounded-button hover:bg-indigo-700 !rounded-button whitespace-nowrap">
+                                <i class="ri-send-plane-line mr-2"></i>
+                                Publish Listing
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-check-line text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Listing Submitted Successfully!</h3>
+                <p class="text-gray-600 mb-6">Your listing has been submitted for review. We'll notify you once it's
+                    approved and live on the platform.</p>
+                <button type="button"
+                    class="bg-primary text-white px-6 py-3 rounded-button hover:bg-indigo-700 !rounded-button whitespace-nowrap"
+                    onclick="closeModal('successModal')">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="errorModal">
+        <div class="modal-content">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-error-warning-line text-2xl text-red-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Submission Error</h3>
+                <p class="text-gray-600 mb-6" id="errorMessage">Please check all required fields and try again.</p>
+                <button type="button"
+                    class="bg-primary text-white px-6 py-3 rounded-button hover:bg-indigo-700 !rounded-button whitespace-nowrap"
+                    onclick="closeModal('errorModal')">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+    <script id="sidebar-toggle-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const collapseBtn = document.getElementById('collapse-sidebar');
+            const expandBtn = document.getElementById('expand-sidebar');
+            // Add submenu toggle functionality
+            const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+            sidebarButtons.forEach(button => {
+                const submenu = button.nextElementSibling;
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    submenu.classList.toggle('hidden');
+                    button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                    // Find and rotate the arrow icon
+                    const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                    if (submenu.classList.contains('hidden')) {
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    } else {
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            collapseBtn.addEventListener('click', function () {
+                sidebar.classList.add('w-20');
+                sidebar.classList.remove('w-64');
+                // Hide text and show only icons
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.add('hidden');
+                });
+                collapseBtn.classList.add('hidden');
+                expandBtn.classList.remove('hidden');
+            });
+            expandBtn.addEventListener('click', function () {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                // Show text again
+                document.querySelectorAll('.sidebar-link span').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+                collapseBtn.classList.remove('hidden');
+                expandBtn.classList.add('hidden');
+            });
+        });
+    </script>
+    <script id="profile-dropdown-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileMenuButton = document.getElementById('profile-menu-button');
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileMenuButton.addEventListener('click', function () {
+                profileDropdown.classList.toggle('hidden');
+            });
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+    <script id="form-functionality">
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('addListingForm');
+            const shortDescTextarea = document.getElementById('shortDescription');
+            const shortDescCount = document.getElementById('shortDescCount');
+            const categorySelect = document.getElementById('categorySelect');
+            const subCategorySelect = document.getElementById('subCategorySelect');
+            const availabilityRadios = document.querySelectorAll('input[name="availabilityType"]');
+            const dailyHoursSection = document.getElementById('dailyHoursSection');
+            const specificDatesSection = document.getElementById('specificDatesSection');
+            const addDateTimeSlotBtn = document.getElementById('addDateTimeSlot');
+            const dateTimeSlotsContainer = document.getElementById('dateTimeSlotsContainer');
+            const addFaqBtn = document.getElementById('addFaqBtn');
+            const faqContainer = document.getElementById('faqContainer');
+            const photoDropZone = document.getElementById('photoDropZone');
+            const photoInput = document.getElementById('photoInput');
+            const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+            const videoDropZone = document.getElementById('videoDropZone');
+            const videoInput = document.getElementById('videoInput');
+            const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+            const saveDraftBtn = document.getElementById('saveDraftBtn');
+
+            let uploadedPhotos = [];
+            let uploadedVideos = [];
+            let faqCount = 0;
+            let dateTimeSlotCount = 0;
+
+            const subCategories = {
+                attraction: ['Museum', 'Historical Site', 'Natural Wonder', 'Theme Park', 'Zoo/Aquarium', 'Observatory'],
+                activity: ['Water Sports', 'Adventure Sports', 'Cultural Activity', 'Wellness', 'Shopping', 'Nightlife'],
+                event: ['Concert', 'Festival', 'Exhibition', 'Conference', 'Sports Event', 'Cultural Event'],
+                tour: ['Walking Tour', 'Bus Tour', 'Boat Tour', 'Bike Tour', 'Food Tour', 'Private Tour'],
+                workshop: ['Art Workshop', 'Cooking Class', 'Craft Workshop', 'Educational Workshop', 'Skill Building'],
+                other: ['Transportation', 'Accommodation', 'Equipment Rental', 'Service', 'Package Deal']
+            };
+
+            shortDescTextarea.addEventListener('input', function () {
+                shortDescCount.textContent = this.value.length;
+            });
+
+            categorySelect.addEventListener('change', function () {
+                const category = this.value;
+                subCategorySelect.innerHTML = '<option value="">Select Sub-Category</option>';
+                if (category && subCategories[category]) {
+                    subCategories[category].forEach(subCat => {
+                        const option = document.createElement('option');
+                        option.value = subCat.toLowerCase().replace(/\s+/g, '-');
+                        option.textContent = subCat;
+                        subCategorySelect.appendChild(option);
+                    });
+                }
+            });
+
+            availabilityRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    dailyHoursSection.classList.add('hidden');
+                    specificDatesSection.classList.add('hidden');
+                    if (this.value === 'daily-hours') {
+                        dailyHoursSection.classList.remove('hidden');
+                    } else if (this.value === 'specific-dates') {
+                        specificDatesSection.classList.remove('hidden');
+                    }
+                });
+            });
+
+            addDateTimeSlotBtn.addEventListener('click', function () {
+                dateTimeSlotCount++;
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'flex gap-2 items-end';
+                slotDiv.innerHTML = `
+<div class="flex-1">
+<label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+<input type="date" class="w-full border border-gray-300 rounded p-2 text-sm">
+</div>
+<div class="flex-1">
+<label class="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+<input type="time" class="w-full border border-gray-300 rounded p-2 text-sm">
+</div>
+<div class="flex-1">
+<label class="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+<input type="time" class="w-full border border-gray-300 rounded p-2 text-sm">
+</div>
+<button type="button" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center justify-center w-10 h-10" onclick="this.parentElement.remove()">
+<i class="ri-delete-bin-line"></i>
+</button>
+`;
+                dateTimeSlotsContainer.appendChild(slotDiv);
+            });
+
+            addFaqBtn.addEventListener('click', function () {
+                faqCount++;
+                const faqDiv = document.createElement('div');
+                faqDiv.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50';
+                faqDiv.innerHTML = `
+<div class="flex justify-between items-center mb-3">
+<h5 class="font-medium text-gray-900">FAQ ${faqCount}</h5>
+<button type="button" class="text-red-500 hover:text-red-700" onclick="this.closest('.border').remove()">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+<div class="space-y-3">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+<input type="text" placeholder="Enter your question" class="w-full border border-gray-300 rounded p-2 text-sm">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Answer</label>
+<textarea placeholder="Enter your answer" rows="2" class="w-full border border-gray-300 rounded p-2 text-sm"></textarea>
+</div>
+</div>
+`;
+                faqContainer.appendChild(faqDiv);
+            });
+
+            function setupFileUpload(dropZone, input, previewContainer, fileType) {
+                dropZone.addEventListener('click', () => input.click());
+                dropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('dragover');
+                });
+                dropZone.addEventListener('dragleave', () => {
+                    dropZone.classList.remove('dragover');
+                });
+                dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('dragover');
+                    handleFiles(e.dataTransfer.files, fileType, previewContainer);
+                });
+                input.addEventListener('change', (e) => {
+                    handleFiles(e.target.files, fileType, previewContainer);
+                });
+            }
+
+            function handleFiles(files, fileType, previewContainer) {
+                const maxFiles = fileType === 'image' ? 10 : 3;
+                const currentCount = fileType === 'image' ? uploadedPhotos.length : uploadedVideos.length;
+                const filesToProcess = Math.min(files.length, maxFiles - currentCount);
+
+                for (let i = 0; i < filesToProcess; i++) {
+                    const file = files[i];
+                    if (fileType === 'image' && file.type.startsWith('image/')) {
+                        uploadedPhotos.push(file);
+                        createImagePreview(file, previewContainer);
+                    } else if (fileType === 'video' && file.type.startsWith('video/')) {
+                        uploadedVideos.push(file);
+                        createVideoPreview(file, previewContainer);
+                    }
+                }
+            }
+
+            function createImagePreview(file, container) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'image-preview';
+                    previewDiv.innerHTML = `
+<img src="${e.target.result}" alt="Preview">
+<div class="delete-btn" onclick="removePreview(this, 'image')">
+<i class="ri-close-line"></i>
+</div>
+`;
+                    container.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function createVideoPreview(file, container) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'image-preview';
+                previewDiv.innerHTML = `
+<div class="w-24 h-24 bg-gray-200 rounded flex items-center justify-center">
+<i class="ri-video-line text-2xl text-gray-500"></i>
+</div>
+<div class="delete-btn" onclick="removePreview(this, 'video')">
+<i class="ri-close-line"></i>
+</div>
+<div class="text-xs text-center mt-1 text-gray-600">${file.name}</div>
+`;
+                container.appendChild(previewDiv);
+            }
+
+            window.removePreview = function (btn, type) {
+                const previewDiv = btn.closest('.image-preview');
+                const index = Array.from(previewDiv.parentNode.children).indexOf(previewDiv);
+                if (type === 'image') {
+                    uploadedPhotos.splice(index, 1);
+                } else {
+                    uploadedVideos.splice(index, 1);
+                }
+                previewDiv.remove();
+            };
+
+            setupFileUpload(photoDropZone, photoInput, photoPreviewContainer, 'image');
+            setupFileUpload(videoDropZone, videoInput, videoPreviewContainer, 'video');
+
+            saveDraftBtn.addEventListener('click', function () {
+                const formData = collectFormData();
+                console.log('Saving draft:', formData);
+                showModal('successModal', 'Draft saved successfully!', 'Your listing has been saved as a draft. You can continue editing it later.');
+            });
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (validateForm()) {
+                    const formData = collectFormData();
+                    console.log('Submitting listing:', formData);
+                    showModal('successModal');
+                } else {
+                    showModal('errorModal');
+                }
+            });
+
+            function validateForm() {
+                const requiredFields = [
+                    'listingName', 'shortDescription', 'detailedDescription',
+                    'categorySelect', 'basePrice', 'pricingUnit', 'physicalAddress'
+                ];
+
+                for (const fieldId of requiredFields) {
+                    const field = document.getElementById(fieldId);
+                    if (!field.value.trim()) {
+                        return false;
+                    }
+                }
+
+                const availabilityType = document.querySelector('input[name="availabilityType"]:checked');
+                const ctaType = document.querySelector('input[name="ctaType"]:checked');
+                return availabilityType && ctaType;
+            }
+
+            function collectFormData() {
+                const formData = {
+                    basicInfo: {
+                        name: document.getElementById('listingName').value,
+                        shortDescription: document.getElementById('shortDescription').value,
+                        detailedDescription: document.getElementById('detailedDescription').value,
+                        category: document.getElementById('categorySelect').value,
+                        subCategory: document.getElementById('subCategorySelect').value,
+                        keywords: document.getElementById('keywords').value
+                    },
+                    pricing: {
+                        basePrice: document.getElementById('basePrice').value,
+                        pricingUnit: document.getElementById('pricingUnit').value,
+                        maxParticipants: document.getElementById('maxParticipants').value,
+                        minAge: document.getElementById('minAge').value,
+                        duration: {
+                            value: document.getElementById('durationValue').value,
+                            unit: document.getElementById('durationUnit').value
+                        },
+                        availabilityType: document.querySelector('input[name="availabilityType"]:checked')?.value,
+                        bookingCutoff: document.getElementById('bookingCutoff').value
+                    },
+                    location: {
+                        address: document.getElementById('physicalAddress').value,
+                        directions: document.getElementById('directions').value,
+                        contactPhone: document.getElementById('contactPhone').value,
+                        contactEmail: document.getElementById('contactEmail').value,
+                        website: document.getElementById('listingWebsite').value
+                    },
+                    customerInfo: {
+                        beforeVisitInfo: document.getElementById('beforeVisitInfo').value,
+                        safetyInfo: document.getElementById('safetyInfo').value,
+                        ctaType: document.querySelector('input[name="ctaType"]:checked')?.value,
+                        faqs: collectFaqs()
+                    },
+                    media: {
+                        photos: uploadedPhotos.length,
+                        videos: uploadedVideos.length
+                    },
+                    promotion: {
+                        featureHomepage: document.getElementById('featureHomepage').checked,
+                        promoteSearch: document.getElementById('promoteSearch').checked
+                    }
+                };
+                return formData;
+            }
+
+            function collectFaqs() {
+                const faqs = [];
+                const faqElements = faqContainer.querySelectorAll('.border');
+                faqElements.forEach(faq => {
+                    const question = faq.querySelector('input').value;
+                    const answer = faq.querySelector('textarea').value;
+                    if (question && answer) {
+                        faqs.push({ question, answer });
+                    }
+                });
+                return faqs;
+            }
+
+            function showModal(modalId, title, message) {
+                const modal = document.getElementById(modalId);
+                if (title && message) {
+                    modal.querySelector('h3').textContent = title;
+                    modal.querySelector('p').textContent = message;
+                }
+                modal.classList.add('active');
+            }
+
+            window.closeModal = function (modalId) {
+                document.getElementById(modalId).classList.remove('active');
+            };
+        });
+    </script>
+
+</body>
+
+</html>

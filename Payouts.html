@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payouts</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#8b5cf6'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            background-color: #f8fafc;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rounded-button {
+            border-radius: 9999px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-pill .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+        }
+
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex h-screen">
+
+        <!-- <aside class="w-64 bg-white shadow-md p-4 flex flex-col">
+            <div class="text-2xl font-bold text-blue-600 mb-8">Platform</div>
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-dashboard-line"></i>
+                    </div>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-ticket-line"></i>
+                    </div>
+                    My Listings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-calendar-check-line"></i>
+                    </div>
+                    Bookings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-questionnaire-line"></i>
+                    </div>
+                    Requests
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-star-line"></i>
+                    </div>
+                    Reviews
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-wallet-line"></i>
+                    </div>
+                    Payouts
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-bar-chart-line"></i>
+                    </div>
+                    Analytics
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-settings-3-line"></i>
+                    </div>
+                    Profile Settings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-question-line"></i>
+                    </div>
+                    Support
+                </a>
+            </nav>
+        </aside> -->
+
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="text-gray-700 sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="active sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search ...">
+                    </div>
+                </div>
+                <!-- <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span>My Listings</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">Add New Listing</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">Add New Listing</h1> -->
+                <!-- Date, Notification, and User Profile here -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <!-- <div
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div> -->
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+                <!-- <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </header>
+
+
+        <main class="flex-1 p-4 md:p-8 mt-16 overflow-y-auto">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Payouts</h1>
+                <p class="text-gray-600 mt-2">Track your earnings, view transaction history, and manage your payout
+                    settings.</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6">
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <button id="exportPayoutsBtn"
+                            class="ctaz bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-normal hover:bg-gray-300 transition-colors flex items-center gap-2 !rounded-button whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-download-2-line"></i>
+                            </div>
+                            Export Payouts Data
+                        </button>
+                        <button id="managePayoutSettingsBtn"
+                            class="ctaz bg-blue-600 text-white px-4 py-2 rounded-lg font-normal hover:bg-blue-700 transition-colors flex items-center gap-2 !rounded-button whitespace-nowrap">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Manage Settings
+                        </button>
+                    </div>
+                    <div class="relative w-full md:w-64">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="text" id="searchInput"
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Search by Payout ID or Method...">
+                    </div>
+                </div>
+            </header>
+            <section class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Payout Performance Overview</h3>
+                <p class="text-gray-600 mb-6">A summary of your earnings and payout status for the selected period.</p>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                    <select id="payoutDateRange"
+                        class="block w-64 px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="month">This Month</option>
+                        <option value="last30days">Last 30 Days</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                        <option value="lifetime">Lifetime</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Total Earnings</div>
+                        <div id="totalEarnings" class="text-3xl font-bold text-gray-900">$0</div>
+                        <div id="totalEarningsChange" class="flex items-center text-sm mt-2"></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Available for Payout</div>
+                        <div id="availableForPayout" class="text-3xl font-bold text-gray-900">$0</div>
+                        <div class="text-gray-500 text-sm mt-2">Ready for withdrawal</div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Last Payout Amount</div>
+                        <div id="lastPayoutAmount" class="text-3xl font-bold text-gray-900">$0</div>
+                        <div id="lastPayoutDate" class="text-gray-500 text-sm mt-2"></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Next Payout Date</div>
+                        <div id="nextPayoutDate" class="text-3xl font-bold text-gray-900">-</div>
+                        <div class="text-gray-500 text-sm mt-2">Scheduled</div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h4 class="text-lg font-medium text-gray-800 mb-4">Earnings Trend Over Time</h4>
+                    <div class="chart-container">
+                        <canvas id="earningsTrendChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h4 class="text-lg font-medium text-gray-800 mb-4">Payout Status Breakdown</h4>
+                    <div class="chart-container h-64">
+                        <canvas id="payoutStatusChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Payout Status</label>
+                    <select id="payoutStatusFilter"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">All Statuses</option>
+                        <option value="Processed">Processed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Failed">Failed</option>
+                        <option value="Refunded">Refunded</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Listing</label>
+                    <select id="payoutListingFilter"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">All Listings</option>
+                    </select>
+                </div>
+                <div class="flex gap-2 col-span-2">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
+                        <input type="date" id="payoutDateFromFilter"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
+                        <input type="date" id="payoutDateToFilter"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+            <section>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Payout Transaction History</h3>
+                <p class="text-gray-600 mb-6">Detailed record of all your processed, pending, and failed payouts.</p>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="table-responsive">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Payout ID</th>
+                                    <th scope="col" class="px-6 py-3">Date</th>
+                                    <th scope="col" class="px-6 py-3">Amount</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Listing/Booking Ref</th>
+                                    <th scope="col" class="px-6 py-3">Method</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payoutsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
+                        <span id="paginationInfo" class="text-sm font-normal text-gray-500"></span>
+                        <ul id="pagination" class="inline-flex items-center -space-x-px"></ul>
+                    </nav>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div id="payoutDetailModal" class="modal-overlay">
+        <div class="modal-content max-w-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Payout Details - <span id="modalPayoutId"></span></h3>
+                <button id="closeDetailModal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line text-xl"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <span class="font-semibold text-gray-800">Date:</span>
+                    <div id="modalPayoutDate" class="text-gray-600 mt-1"></div>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Amount:</span>
+                    <div id="modalPayoutAmount" class="text-gray-600 mt-1"></div>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Status:</span>
+                    <div id="modalPayoutStatus" class="mt-1"></div>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Method:</span>
+                    <div id="modalPayoutMethod" class="text-gray-600 mt-1"></div>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Transaction Fee:</span>
+                    <div id="modalPayoutFee" class="text-gray-600 mt-1"></div>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Net Amount:</span>
+                    <div id="modalPayoutNet" class="text-gray-600 mt-1"></div>
+                </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                <div class="font-semibold text-gray-800 mb-2">Associated Listings/Bookings:</div>
+                <ul id="modalAssociatedItems" class="space-y-2"></ul>
+            </div>
+            <div class="flex gap-3">
+                <button id="modalDownloadReceiptBtn"
+                    class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors !rounded-button whitespace-nowrap">Download
+                    Receipt</button>
+                <button id="modalCloseBtn"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors !rounded-button whitespace-nowrap">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="payoutSettingsModal" class="modal-overlay">
+        <div class="modal-content max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Manage Payout Settings</h3>
+                <button id="closeSettingsModal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line text-xl"></i>
+                    </div>
+                </button>
+            </div>
+            <form id="payoutSettingsForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
+                    <input type="text" id="bankName"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Enter bank name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Account Number</label>
+                    <input type="text" id="accountNumber"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Enter account number">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">SWIFT/BIC Code</label>
+                    <input type="text" id="swiftCode"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Enter SWIFT/BIC code">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Account Holder Name</label>
+                    <input type="text" id="accountHolder"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Enter account holder name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Payout Frequency</label>
+                    <select id="payoutFrequency"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="weekly">Weekly</option>
+                        <option value="bi-weekly">Bi-weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="cancelSettingsBtn"
+                        class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors !rounded-button whitespace-nowrap">Cancel</button>
+                    <button type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">Save
+                        Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script id="mockData">
+        const mockListings = [
+            { id: 1, name: "Doha City Tour" },
+            { id: 2, name: "Desert Safari Adventure" },
+            { id: 3, name: "Souq Waqif Cultural Walk" },
+            { id: 4, name: "Museum of Islamic Art Visit" },
+            { id: 5, name: "Pearl Diving Experience" },
+            { id: 6, name: "Katara Cultural Village Tour" },
+            { id: 7, name: "Al Zubarah Archaeological Site" },
+            { id: 8, name: "Falcon Souq Experience" }
+        ];
+        const payoutAnalyticsData = {
+            month: {
+                totalEarnings: 45750,
+                previousTotalEarnings: 42200,
+                availableForPayout: 28500,
+                lastPayoutAmount: 15200,
+                lastPayoutDate: "2024-07-15",
+                nextPayoutDate: "2024-08-15",
+                earningsTrend: [
+                    { date: "2024-07-01", amount: 850 },
+                    { date: "2024-07-05", amount: 1200 },
+                    { date: "2024-07-10", amount: 950 },
+                    { date: "2024-07-15", amount: 1400 },
+                    { date: "2024-07-20", amount: 1100 },
+                    { date: "2024-07-25", amount: 1350 },
+                    { date: "2024-07-29", amount: 900 }
+                ],
+                payoutStatus: {
+                    Processed: 65,
+                    Pending: 20,
+                    Failed: 10,
+                    Refunded: 5
+                }
+            },
+            last30days: {
+                totalEarnings: 58200,
+                previousTotalEarnings: 54800,
+                availableForPayout: 32200,
+                lastPayoutAmount: 15200,
+                lastPayoutDate: "2024-07-15",
+                nextPayoutDate: "2024-08-15",
+                earningsTrend: [
+                    { date: "2024-06-30", amount: 750 },
+                    { date: "2024-07-05", amount: 1200 },
+                    { date: "2024-07-10", amount: 950 },
+                    { date: "2024-07-15", amount: 1400 },
+                    { date: "2024-07-20", amount: 1100 },
+                    { date: "2024-07-25", amount: 1350 },
+                    { date: "2024-07-29", amount: 900 }
+                ],
+                payoutStatus: {
+                    Processed: 70,
+                    Pending: 15,
+                    Failed: 10,
+                    Refunded: 5
+                }
+            },
+            quarter: {
+                totalEarnings: 152400,
+                previousTotalEarnings: 148600,
+                availableForPayout: 42800,
+                lastPayoutAmount: 15200,
+                lastPayoutDate: "2024-07-15",
+                nextPayoutDate: "2024-08-15",
+                earningsTrend: [
+                    { date: "2024-05-01", amount: 15200 },
+                    { date: "2024-06-01", amount: 18450 },
+                    { date: "2024-07-01", amount: 18750 }
+                ],
+                payoutStatus: {
+                    Processed: 72,
+                    Pending: 18,
+                    Failed: 7,
+                    Refunded: 3
+                }
+            },
+            year: {
+                totalEarnings: 586500,
+                previousTotalEarnings: 565200,
+                availableForPayout: 45200,
+                lastPayoutAmount: 15200,
+                lastPayoutDate: "2024-07-15",
+                nextPayoutDate: "2024-08-15",
+                earningsTrend: [
+                    { date: "2024-01", amount: 12800 },
+                    { date: "2024-02", amount: 14200 },
+                    { date: "2024-03", amount: 16500 },
+                    { date: "2024-04", amount: 18200 },
+                    { date: "2024-05", amount: 15200 },
+                    { date: "2024-06", amount: 18450 },
+                    { date: "2024-07", amount: 18750 }
+                ],
+                payoutStatus: {
+                    Processed: 75,
+                    Pending: 15,
+                    Failed: 7,
+                    Refunded: 3
+                }
+            },
+            lifetime: {
+                totalEarnings: 1425800,
+                previousTotalEarnings: 1398500,
+                availableForPayout: 45200,
+                lastPayoutAmount: 15200,
+                lastPayoutDate: "2024-07-15",
+                nextPayoutDate: "2024-08-15",
+                earningsTrend: [
+                    { date: "2023", amount: 125600 },
+                    { date: "2024", amount: 186500 }
+                ],
+                payoutStatus: {
+                    Processed: 78,
+                    Pending: 12,
+                    Failed: 7,
+                    Refunded: 3
+                }
+            }
+        };
+        const payouts = [
+            {
+                id: "PAY001",
+                date: "2024-07-25",
+                amount: 15000.00,
+                status: "Processed",
+                listingRef: "Doha City Tour (BKG123)",
+                method: "Bank Transfer",
+                fee: 150.00,
+                net: 14850.00,
+                associatedBookings: [
+                    { id: "BKG123", listing: "Doha City Tour", amount: 2500.00 },
+                    { id: "BKG124", listing: "Doha City Tour", amount: 2500.00 }
+                ]
+            },
+            {
+                id: "PAY002",
+                date: "2024-07-20",
+                amount: 12200.00,
+                status: "Pending",
+                listingRef: "Desert Safari Adventure (BKG125)",
+                method: "PayPal",
+                fee: 122.00,
+                net: 12078.00,
+                associatedBookings: [
+                    { id: "BKG125", listing: "Desert Safari Adventure", amount: 3200.00 }
+                ]
+            },
+            {
+                id: "PAY003",
+                date: "2024-07-18",
+                amount: 8800.00,
+                status: "Failed",
+                listingRef: "Souq Waqif Cultural Walk (BKG126)",
+                method: "Bank Transfer",
+                fee: 88.00,
+                net: 8712.00,
+                associatedBookings: [
+                    { id: "BKG126", listing: "Souq Waqif Cultural Walk", amount: 900.00 },
+                    { id: "BKG127", listing: "Souq Waqif Cultural Walk", amount: 900.00 }
+                ]
+            },
+            {
+                id: "PAY004",
+                date: "2024-07-15",
+                amount: 9400.00,
+                status: "Processed",
+                listingRef: "Museum of Islamic Art Visit (BKG128)",
+                method: "Stripe",
+                fee: 94.00,
+                net: 9306.00,
+                associatedBookings: [
+                    { id: "BKG128", listing: "Museum of Islamic Art Visit", amount: 2400.00 }
+                ]
+            },
+            {
+                id: "PAY005",
+                date: "2024-07-12",
+                amount: 14500.00,
+                status: "Refunded",
+                listingRef: "Pearl Diving Experience (BKG129)",
+                method: "Bank Transfer",
+                fee: 145.00,
+                net: 14355.00,
+                associatedBookings: [
+                    { id: "BKG129", listing: "Pearl Diving Experience", amount: 4500.00 }
+                ]
+            },
+            {
+                id: "PAY006",
+                date: "2024-07-10",
+                amount: 2800.00,
+                status: "Processed",
+                listingRef: "Katara Cultural Village Tour (BKG130)",
+                method: "PayPal",
+                fee: 28.00,
+                net: 2772.00,
+                associatedBookings: [
+                    { id: "BKG130", listing: "Katara Cultural Village Tour", amount: 1400.00 },
+                    { id: "BKG131", listing: "Katara Cultural Village Tour", amount: 1400.00 }
+                ]
+            },
+            {
+                id: "PAY007",
+                date: "2024-07-08",
+                amount: 3600.00,
+                status: "Pending",
+                listingRef: "Al Zubarah Archaeological Site (BKG132)",
+                method: "Bank Transfer",
+                fee: 36.00,
+                net: 3564.00,
+                associatedBookings: [
+                    { id: "BKG132", listing: "Al Zubarah Archaeological Site", amount: 3600.00 }
+                ]
+            },
+            {
+                id: "PAY008",
+                date: "2024-07-05",
+                amount: 1500.00,
+                status: "Processed",
+                listingRef: "Falcon Souq Experience (BKG133)",
+                method: "Stripe",
+                fee: 15.00,
+                net: 1485.00,
+                associatedBookings: [
+                    { id: "BKG133", listing: "Falcon Souq Experience", amount: 750.00 },
+                    { id: "BKG134", listing: "Falcon Souq Experience", amount: 750.00 }
+                ]
+            },
+            {
+                id: "PAY009",
+                date: "2024-07-03",
+                amount: 2200.00,
+                status: "Failed",
+                listingRef: "Doha City Tour (BKG135)",
+                method: "Bank Transfer",
+                fee: 22.00,
+                net: 2178.00,
+                associatedBookings: [
+                    { id: "BKG135", listing: "Doha City Tour", amount: 2200.00 }
+                ]
+            },
+            {
+                id: "PAY010",
+                date: "2024-07-01",
+                amount: 3800.00,
+                status: "Processed",
+                listingRef: "Desert Safari Adventure (BKG136)",
+                method: "PayPal",
+                fee: 38.00,
+                net: 3762.00,
+                associatedBookings: [
+                    { id: "BKG136", listing: "Desert Safari Adventure", amount: 1900.00 },
+                    { id: "BKG137", listing: "Desert Safari Adventure", amount: 1900.00 }
+                ]
+            }
+        ];
+    </script>
+    <script id="domReferences">
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const payoutDateRange = document.getElementById('payoutDateRange');
+            const payoutStatusFilter = document.getElementById('payoutStatusFilter');
+            const payoutListingFilter = document.getElementById('payoutListingFilter');
+            const payoutDateFromFilter = document.getElementById('payoutDateFromFilter');
+            const payoutDateToFilter = document.getElementById('payoutDateToFilter');
+            const payoutsTableBody = document.getElementById('payoutsTableBody');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const pagination = document.getElementById('pagination');
+            const exportPayoutsBtn = document.getElementById('exportPayoutsBtn');
+            const managePayoutSettingsBtn = document.getElementById('managePayoutSettingsBtn');
+            const totalEarningsEl = document.getElementById('totalEarnings');
+            const totalEarningsChangeEl = document.getElementById('totalEarningsChange');
+            const availableForPayoutEl = document.getElementById('availableForPayout');
+            const lastPayoutAmountEl = document.getElementById('lastPayoutAmount');
+            const lastPayoutDateEl = document.getElementById('lastPayoutDate');
+            const nextPayoutDateEl = document.getElementById('nextPayoutDate');
+            const payoutDetailModal = document.getElementById('payoutDetailModal');
+            const closeDetailModal = document.getElementById('closeDetailModal');
+            const modalPayoutId = document.getElementById('modalPayoutId');
+            const modalPayoutDate = document.getElementById('modalPayoutDate');
+            const modalPayoutAmount = document.getElementById('modalPayoutAmount');
+            const modalPayoutStatus = document.getElementById('modalPayoutStatus');
+            const modalPayoutMethod = document.getElementById('modalPayoutMethod');
+            const modalPayoutFee = document.getElementById('modalPayoutFee');
+            const modalPayoutNet = document.getElementById('modalPayoutNet');
+            const modalAssociatedItems = document.getElementById('modalAssociatedItems');
+            const modalDownloadReceiptBtn = document.getElementById('modalDownloadReceiptBtn');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const payoutSettingsModal = document.getElementById('payoutSettingsModal');
+            const closeSettingsModal = document.getElementById('closeSettingsModal');
+            const payoutSettingsForm = document.getElementById('payoutSettingsForm');
+            const cancelSettingsBtn = document.getElementById('cancelSettingsBtn');
+            let currentPage = 1;
+            const itemsPerPage = 10;
+            let earningsTrendChartInstance = null;
+            let payoutStatusChartInstance = null;
+            function getStatusPill(status) {
+                const statusConfig = {
+                    'Processed': { bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-500' },
+                    'Pending': { bg: 'bg-yellow-100', text: 'text-yellow-700', dot: 'bg-yellow-500' },
+                    'Failed': { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' },
+                    'Refunded': { bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500' }
+                };
+                const config = statusConfig[status] || statusConfig['Pending'];
+                return `<span class="status-pill ${config.bg} ${config.text}">
+<span class="dot ${config.dot}"></span>
+${status}
+</span>`;
+            }
+            function renderChange(current, previous, element) {
+                const change = current - previous;
+                const percentage = previous > 0 ? ((change / previous) * 100).toFixed(1) : 0;
+                const isPositive = change >= 0;
+                element.innerHTML = `
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-arrow-${isPositive ? 'up' : 'down'}-line"></i>
+</div>
+<span class="${isPositive ? 'text-green-600' : 'text-red-600'}">
+${isPositive ? '+' : ''}${percentage}% from last period
+</span>
+`;
+            }
+            function populateListingFilter() {
+                payoutListingFilter.innerHTML = '<option value="">All Listings</option>';
+                mockListings.forEach(listing => {
+                    const option = document.createElement('option');
+                    option.value = listing.name;
+                    option.textContent = listing.name;
+                    payoutListingFilter.appendChild(option);
+                });
+            }
+            function renderKPIs(data, prevData) {
+                totalEarningsEl.textContent = `$${data.totalEarnings.toLocaleString()}`;
+                availableForPayoutEl.textContent = `$${data.availableForPayout.toLocaleString()}`;
+                lastPayoutAmountEl.textContent = `$${data.lastPayoutAmount.toLocaleString()}`;
+                lastPayoutDateEl.textContent = new Date(data.lastPayoutDate).toLocaleDateString();
+                nextPayoutDateEl.textContent = new Date(data.nextPayoutDate).toLocaleDateString();
+                renderChange(data.totalEarnings, data.previousTotalEarnings, totalEarningsChangeEl);
+            }
+            function updateCharts(data) {
+                const ctx1 = document.getElementById('earningsTrendChart').getContext('2d');
+                const ctx2 = document.getElementById('payoutStatusChart').getContext('2d');
+                if (earningsTrendChartInstance) {
+                    earningsTrendChartInstance.destroy();
+                }
+                if (payoutStatusChartInstance) {
+                    payoutStatusChartInstance.destroy();
+                }
+                earningsTrendChartInstance = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: data.earningsTrend.map(item => item.date),
+                        datasets: [{
+                            label: 'Earnings',
+                            data: data.earningsTrend.map(item => item.amount),
+                            borderColor: 'rgba(87, 181, 231, 1)',
+                            backgroundColor: 'rgba(87, 181, 231, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function (context) {
+                                        return `Earnings: $${context.parsed.y.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#1f2937'
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: '#f3f4f6'
+                                },
+                                ticks: {
+                                    color: '#1f2937',
+                                    callback: function (value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                payoutStatusChartInstance = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data.payoutStatus),
+                        datasets: [{
+                            data: Object.values(data.payoutStatus),
+                            backgroundColor: [
+                                'rgba(87, 181, 231, 1)',
+                                'rgba(141, 211, 199, 1)',
+                                'rgba(251, 191, 114, 1)',
+                                'rgba(252, 141, 98, 1)'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#1f2937',
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.label}: ${context.parsed}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            function getFilteredPayouts() {
+                let filtered = [...payouts];
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm) {
+                    filtered = filtered.filter(payout =>
+                        payout.id.toLowerCase().includes(searchTerm) ||
+                        payout.method.toLowerCase().includes(searchTerm)
+                    );
+                }
+                if (payoutStatusFilter.value) {
+                    filtered = filtered.filter(payout => payout.status === payoutStatusFilter.value);
+                }
+                if (payoutListingFilter.value) {
+                    filtered = filtered.filter(payout => payout.listingRef.includes(payoutListingFilter.value));
+                }
+                if (payoutDateFromFilter.value) {
+                    filtered = filtered.filter(payout => payout.date >= payoutDateFromFilter.value);
+                }
+                if (payoutDateToFilter.value) {
+                    filtered = filtered.filter(payout => payout.date <= payoutDateToFilter.value);
+                }
+                return filtered;
+            }
+            function renderPayouts() {
+                const filtered = getFilteredPayouts();
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const pagePayouts = filtered.slice(startIndex, endIndex);
+                payoutsTableBody.innerHTML = '';
+                pagePayouts.forEach(payout => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+<td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${payout.id}</td>
+<td class="px-6 py-4">${new Date(payout.date).toLocaleDateString()}</td>
+<td class="px-6 py-4">$${payout.amount.toLocaleString()}</td>
+<td class="px-6 py-4">${getStatusPill(payout.status)}</td>
+<td class="px-6 py-4">${payout.listingRef}</td>
+<td class="px-6 py-4">${payout.method}</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center gap-2">
+<button data-id="${payout.id}" class="action-view text-blue-600 hover:text-blue-800 text-lg" title="View Details">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-eye-line"></i>
+</div>
+</button>
+<button data-id="${payout.id}" class="action-download-receipt text-green-600 hover:text-green-800 text-lg" title="Download Receipt">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-file-download-line"></i>
+</div>
+</button>
+</div>
+</td>
+`;
+                    payoutsTableBody.appendChild(row);
+                });
+                updatePagination(filtered.length);
+            }
+            function updatePagination(totalItems) {
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                const startItem = (currentPage - 1) * itemsPerPage + 1;
+                const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+                paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${totalItems} entries`;
+                pagination.innerHTML = '';
+                if (totalPages <= 1) return;
+                const prevBtn = document.createElement('li');
+                prevBtn.innerHTML = `
+<button class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}" ${currentPage === 1 ? 'disabled' : ''}>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-left-s-line"></i>
+</div>
+</button>
+`;
+                pagination.appendChild(prevBtn);
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                        const pageBtn = document.createElement('li');
+                        pageBtn.innerHTML = `
+<button class="px-3 py-2 leading-tight border border-gray-300 ${i === currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'}" data-page="${i}">
+${i}
+</button>
+`;
+                        pagination.appendChild(pageBtn);
+                    } else if (i === currentPage - 2 || i === currentPage + 2) {
+                        const dots = document.createElement('li');
+                        dots.innerHTML = '<span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">...</span>';
+                        pagination.appendChild(dots);
+                    }
+                }
+                const nextBtn = document.createElement('li');
+                nextBtn.innerHTML = `
+<button class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}" ${currentPage === totalPages ? 'disabled' : ''}>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-right-s-line"></i>
+</div>
+</button>
+`;
+                pagination.appendChild(nextBtn);
+            }
+            function openPayoutDetailModal(payout) {
+                modalPayoutId.textContent = payout.id;
+                modalPayoutDate.textContent = new Date(payout.date).toLocaleDateString();
+                modalPayoutAmount.textContent = `$${payout.amount.toLocaleString()}`;
+                modalPayoutStatus.innerHTML = getStatusPill(payout.status);
+                modalPayoutMethod.textContent = payout.method;
+                modalPayoutFee.textContent = `$${payout.fee.toFixed(2)}`;
+                modalPayoutNet.textContent = `$${payout.net.toLocaleString()}`;
+                modalAssociatedItems.innerHTML = '';
+                payout.associatedBookings.forEach(booking => {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center text-sm';
+                    li.innerHTML = `
+<span class="text-gray-700">${booking.id} - ${booking.listing}</span>
+<span class="font-medium text-gray-900">$${booking.amount.toLocaleString()}</span>
+`;
+                    modalAssociatedItems.appendChild(li);
+                });
+                payoutDetailModal.classList.add('active');
+            }
+            function openPayoutSettingsModal() {
+                document.getElementById('bankName').value = 'Qatar National Bank';
+                document.getElementById('accountNumber').value = '****1234';
+                document.getElementById('swiftCode').value = 'QNBAQAQA';
+                document.getElementById('accountHolder').value = 'John Smith';
+                document.getElementById('payoutFrequency').value = 'bi-weekly';
+                payoutSettingsModal.classList.add('active');
+            }
+            function closeModal(modal) {
+                modal.classList.remove('active');
+            }
+            populateListingFilter();
+            payoutDateRange.addEventListener('change', function () {
+                const selectedRange = this.value;
+                const data = payoutAnalyticsData[selectedRange];
+                renderKPIs(data, data);
+                updateCharts(data);
+            });
+            payoutDateRange.dispatchEvent(new Event('change'));
+            renderPayouts();
+            searchInput.addEventListener('input', () => {
+                currentPage = 1;
+                renderPayouts();
+            });
+            [payoutStatusFilter, payoutListingFilter, payoutDateFromFilter, payoutDateToFilter].forEach(filter => {
+                filter.addEventListener('change', () => {
+                    currentPage = 1;
+                    renderPayouts();
+                });
+            });
+            pagination.addEventListener('click', (e) => {
+                if (e.target.dataset.page) {
+                    currentPage = parseInt(e.target.dataset.page);
+                    renderPayouts();
+                } else if (e.target.closest('button')) {
+                    const btn = e.target.closest('button');
+                    if (btn.innerHTML.includes('arrow-left') && currentPage > 1) {
+                        currentPage--;
+                        renderPayouts();
+                    } else if (btn.innerHTML.includes('arrow-right')) {
+                        const totalPages = Math.ceil(getFilteredPayouts().length / itemsPerPage);
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderPayouts();
+                        }
+                    }
+                }
+            });
+            payoutsTableBody.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+                const payoutId = button.dataset.id;
+                const payout = payouts.find(p => p.id === payoutId);
+                if (!payout) return;
+                if (button.classList.contains('action-view')) {
+                    openPayoutDetailModal(payout);
+                } else if (button.classList.contains('action-download-receipt')) {
+                    alert('Downloading receipt for payout ' + payoutId + '...');
+                }
+            });
+            exportPayoutsBtn.addEventListener('click', () => {
+                alert('Exporting payouts data...');
+            });
+            managePayoutSettingsBtn.addEventListener('click', () => {
+                openPayoutSettingsModal();
+            });
+            [closeDetailModal, modalCloseBtn].forEach(btn => {
+                btn.addEventListener('click', () => closeModal(payoutDetailModal));
+            });
+            modalDownloadReceiptBtn.addEventListener('click', () => {
+                alert('Downloading receipt...');
+                closeModal(payoutDetailModal);
+            });
+            [closeSettingsModal, cancelSettingsBtn].forEach(btn => {
+                btn.addEventListener('click', () => closeModal(payoutSettingsModal));
+            });
+            payoutSettingsForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Payout settings saved successfully!');
+                closeModal(payoutSettingsModal);
+            });
+            [payoutDetailModal, payoutSettingsModal].forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

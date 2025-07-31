@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#8b5cf6'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    body {
+      /* font-family: 'Inter', sans-serif; */
+      background-color: #f8fafc;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .rounded-button {
+      border-radius: 9999px;
+    }
+
+    .table-responsive {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .kpi-change-icon {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 0.25rem;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 300px;
+      max-height: 400px;
+    }
+
+    @media (max-width: 768px) {
+      .chart-container {
+        height: 250px;
+      }
+    }
+
+    /* Add custom font faces */
+    @font-face {
+      font-family: 'Poppins';
+      src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Poppins';
+      src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Open Sans';
+      src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    /* Example usage */
+    .poppins-bold {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+    }
+
+    .poppins-medium {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+    }
+
+    .open-sans {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+    }
+
+    .open-sans-semibold {
+      font-family: 'Open Sans';
+      font-weight: 600;
+    }
+
+    .open-sans-bold {
+      font-family: 'Open Sans';
+      font-weight: 700;
+    }
+
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    body {
+      /*font-family: 'Inter', sans-serif;*/
+      overflow: hidden;
+    }
+
+    /* Use Poppins Bold for all headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    label,
+    aside,
+    .ctaz {
+      font-family: 'Poppins';
+      /*font-weight: 700;*/
+    }
+
+    /* Use Open Sans Regular for body */
+    body {
+      font-family: 'Open Sans';
+      /*font-weight: 400;*/
+    }
+
+    .sidebar-link.active {
+      background-color: rgba(79, 70, 229, 0.1);
+      color: #4f46e5;
+      border-left: 3px solid #4f46e5;
+    }
+
+    .sidebar-link:hover:not(.active) {
+      background-color: rgba(79, 70, 229, 0.05);
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      color: #4f46e5;
+      font-weight: 500;
+      transition: background-color 0.2s, color 0.2s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flex h-screen">
+    <!-- <aside class="w-64 bg-white shadow-md p-4 flex flex-col">
+      <div class="text-2xl font-bold text-blue-600 mb-8">Platform</div>
+      <nav class="space-y-2">
+        <a href="#" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-dashboard-line"></i>
+          </div>
+          Dashboard
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-ticket-line"></i>
+          </div>
+          My Listings
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-calendar-check-line"></i>
+          </div>
+          Bookings
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-star-line"></i>
+          </div>
+          Reviews
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-wallet-line"></i>
+          </div>
+          Payouts
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-bar-chart-line"></i>
+          </div>
+          Analytics
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-settings-3-line"></i>
+          </div>
+          Profile Settings
+        </a>
+        <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+          <div class="w-5 h-5 flex items-center justify-center mr-3">
+            <i class="ri-question-line"></i>
+          </div>
+          Support
+        </a>
+      </nav>
+    </aside> -->
+
+    <aside id="sidebar" class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+      <div class="p-6 flex items-center border-b">
+        <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+      </div>
+
+      <nav class="flex-1 overflow-y-auto py-4">
+        <ul class="space-y-1 px-3">
+
+          <!-- Home -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+              class="active sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button text-gray-700 ">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-dashboard-line"></i>
+              </div>
+              Home
+            </a>
+          </li>
+
+          <!-- My Listings -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-ticket-line"></i>
+              </div>
+              My Listings
+            </a>
+          </li>
+
+          <!-- Bookings -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-calendar-check-line"></i>
+              </div>
+              Bookings
+            </a>
+          </li>
+
+          <!-- Requests -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-questionnaire-line"></i>
+              </div>
+              Requests
+            </a>
+          </li>
+
+          <!-- Messages -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-message-3-line"></i>
+              </div>
+              Messages
+            </a>
+          </li>
+
+          <!-- Reviews -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-star-line"></i>
+              </div>
+              Reviews
+            </a>
+          </li>
+
+
+          <!-- payouts -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-wallet-line"></i>
+              </div>
+              Payouts
+            </a>
+          </li>
+
+          <!-- Analytics -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+              class="sidebar-link  flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-bar-chart-line"></i>
+              </div>
+              Analytics
+            </a>
+          </li>
+
+          <!-- Profile Settings -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-settings-3-line"></i>
+              </div>
+              Profile Settings
+            </a>
+          </li>
+
+          <!-- Support -->
+          <li>
+            <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+              class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-lifebuoy-line"></i>
+              </div>
+              Support
+            </a>
+          </li>
+
+
+        </ul>
+      </nav>
+
+
+
+
+      <div class="p-4 border-t">
+        <button id="collapse-sidebar"
+          class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+          <div class="w-5 h-5 flex items-center justify-center mr-2">
+            <i class="ri-arrow-left-line"></i>
+          </div>
+          Collapse Sidebar
+        </button>
+      </div>
+    </aside>
+    <script id="sidebar-toggle-script">
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('sidebar');
+        const collapseBtn = document.getElementById('collapse-sidebar');
+        const expandBtn = document.getElementById('expand-sidebar');
+        // Add submenu toggle functionality
+        const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+        sidebarButtons.forEach(button => {
+          const submenu = button.nextElementSibling;
+          button.addEventListener('click', function (e) {
+            e.preventDefault();
+            submenu.classList.toggle('hidden');
+            button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+            // Find and rotate the arrow icon
+            const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+            if (submenu.classList.contains('hidden')) {
+              arrowIcon.style.transform = 'rotate(0deg)';
+            } else {
+              arrowIcon.style.transform = 'rotate(180deg)';
+            }
+          });
+        });
+        collapseBtn.addEventListener('click', function () {
+          sidebar.classList.add('w-20');
+          sidebar.classList.remove('w-64');
+          // Hide text and show only icons
+          document.querySelectorAll('.sidebar-link span').forEach(el => {
+            el.classList.add('hidden');
+          });
+          collapseBtn.classList.add('hidden');
+          expandBtn.classList.remove('hidden');
+        });
+        expandBtn.addEventListener('click', function () {
+          sidebar.classList.remove('w-20');
+          sidebar.classList.add('w-64');
+          // Show text again
+          document.querySelectorAll('.sidebar-link span').forEach(el => {
+            el.classList.remove('hidden');
+          });
+          collapseBtn.classList.remove('hidden');
+          expandBtn.classList.add('hidden');
+        });
+      });
+    </script>
+    <script id="profile-dropdown-script">
+      document.addEventListener('DOMContentLoaded', function () {
+        const profileMenuButton = document.getElementById('profile-menu-button');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        profileMenuButton.addEventListener('click', function () {
+          profileDropdown.classList.toggle('hidden');
+        });
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+          if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+            profileDropdown.classList.add('hidden');
+          }
+        });
+      });
+    </script>
+
+
+    <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+      <div class="flex items-center justify-between px-6 py-4">
+        <!-- <div> -->
+        <!-- Search here -->
+        <div class="flex items-center flex-1">
+          <button id="expand-sidebar"
+            class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+            <i class="ri-menu-line ri-lg"></i>
+          </button>
+          <div class="relative max-w-md w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                <i class="ri-search-line"></i>
+              </div>
+            </div>
+            <input type="search"
+              class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+              placeholder="Search ...">
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="text-sm text-gray-600 hidden md:block">
+            July 2, 2025 • Wednesday
+          </div>
+          <div class="relative">
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+              <div class="w-6 h-6 flex items-center justify-center relative">
+                <i class="ri-notification-3-line"></i>
+                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+              </div>
+            </button>
+          </div>
+          <div class="relative">
+            <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+
+              <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                  alt="John Smith" class="w-full h-full object-cover">
+              </div>
+              <div class="hidden md:block text-left">
+                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                <div class="text-xs text-gray-500">Admin</div>
+              </div>
+              <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </button>
+            <div id="profile-dropdown"
+              class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                Profile</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <main class="flex-1 p-4 md:p-8 mt-16 overflow-y-auto">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <h2 class="text-2xl font-bold text-gray-900" id="welcomeMessage">Welcome back, John Smith!</h2>
+        <!-- <div class="flex items-center gap-4 w-full sm:w-auto">
+          <div class="relative w-full sm:w-64">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                <i class="ri-search-line"></i>
+              </div>
+            </div>
+            <input type="text"
+              class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+              placeholder="Search my listings...">
+          </div>
+          <button
+            class="relative text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-100">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-notification-3-line"></i>
+            </div>
+            <span class="absolute top-0 right-0 block w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+          <button
+            class="flex items-center text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-100">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-user-line"></i>
+            </div>
+          </button>
+        </div> -->
+      </div>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Your Performance Snapshot</h3>
+        <p class="text-gray-600 mb-6">A quick overview of your key metrics for the selected period. Use the date
+          selector to view performance over different timeframes.</p>
+        <div class="mb-6 flex">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+          <select id="kpiDateRange"
+            class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+            <option value="month">This Month</option>
+            <option value="7days">Last 7 Days</option>
+            <option value="30days">Last 30 Days</option>
+            <option value="year">This Year</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="text-gray-500 text-sm font-medium mb-2">Total Bookings</div>
+            <div class="text-3xl font-bold text-gray-900" id="totalBookings">47</div>
+            <div class="flex items-center text-sm mt-2">
+              <span id="totalBookingsChange" class="font-semibold kpi-change-icon text-green-500">
+                <i class="ri-arrow-up-line"></i>
+                +12.5%
+              </span>
+              <span class="text-gray-500 ml-1">vs. previous period</span>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="text-gray-500 text-sm font-medium mb-2">Total Revenue</div>
+            <div class="text-3xl font-bold text-gray-900" id="totalRevenue">$8,420</div>
+            <div class="flex items-center text-sm mt-2">
+              <span id="totalRevenueChange" class="font-semibold kpi-change-icon text-green-500">
+                <i class="ri-arrow-up-line"></i>
+                +18.3%
+              </span>
+              <span class="text-gray-500 ml-1">vs. previous period</span>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="text-gray-500 text-sm font-medium mb-2">Average Rating</div>
+            <div class="text-3xl font-bold text-gray-900" id="avgRating">4.8</div>
+            <div class="flex items-center text-sm mt-2">
+              <span id="avgRatingChange" class="font-semibold kpi-change-icon text-green-500">
+                <i class="ri-arrow-up-line"></i>
+                +0.2
+              </span>
+              <span class="text-gray-500 ml-1">vs. previous period</span>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="text-gray-500 text-sm font-medium mb-2">Listing Views</div>
+            <div class="text-3xl font-bold text-gray-900" id="listingViews">2,340</div>
+            <div class="flex items-center text-sm mt-2">
+              <span id="listingViewsChange" class="font-semibold kpi-change-icon text-red-500">
+                <i class="ri-arrow-down-line"></i>
+                -5.2%
+              </span>
+              <span class="text-gray-500 ml-1">vs. previous period</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">My Listing Performance Over Time</h3>
+        <p class="text-gray-600 mb-6">Track your listing views and bookings over time to understand seasonal trends and
+          impact of your promotions.</p>
+        <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+          <div class="chart-container flex-grow">
+            <canvas id="myPerformanceChart"></canvas>
+          </div>
+          <button
+            class="mt-4 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 w-full !rounded-button whitespace-nowrap">
+            <i class="ri-line-chart-line"></i>
+            <span>View Detailed Analytics</span>
+          </button>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Your Next Activities</h3>
+        <p class="text-gray-600 mb-6">A chronological list of your upcoming scheduled bookings and events. Prepare for
+          your next great experience!</p>
+        <div class="bg-white rounded-lg shadow-md p-6 table-responsive">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3">Date & Time</th>
+                <th scope="col" class="px-6 py-3">Listing Name</th>
+                <th scope="col" class="px-6 py-3">Participants</th>
+                <th scope="col" class="px-6 py-3">Customer</th>
+                <th scope="col" class="px-6 py-3">Status</th>
+                <th scope="col" class="px-6 py-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="upcomingBookingsTableBody">
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Aug 15, 2024 09:00 AM</td>
+                <td class="px-6 py-4">Doha City Tour</td>
+                <td class="px-6 py-4">4 people</td>
+                <td class="px-6 py-4">Michael Chen</td>
+                <td class="px-6 py-4"><span
+                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Confirmed</span></td>
+                <td class="px-6 py-4 text-center">
+                  <button class="text-blue-600 hover:text-blue-800 text-lg" title="View Details">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                      <i class="ri-eye-line"></i>
+                    </div>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Aug 16, 2024 06:00 PM</td>
+                <td class="px-6 py-4">Desert Safari Adventure</td>
+                <td class="px-6 py-4">6 people</td>
+                <td class="px-6 py-4">Emma Rodriguez</td>
+                <td class="px-6 py-4"><span
+                    class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">Pending</span></td>
+                <td class="px-6 py-4 text-center">
+                  <button class="text-blue-600 hover:text-blue-800 text-lg" title="View Details">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                      <i class="ri-eye-line"></i>
+                    </div>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Aug 18, 2024 10:00 AM</td>
+                <td class="px-6 py-4">Museum of Islamic Art Visit</td>
+                <td class="px-6 py-4">8 people</td>
+                <td class="px-6 py-4">David Thompson</td>
+                <td class="px-6 py-4"><span
+                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Confirmed</span></td>
+                <td class="px-6 py-4 text-center">
+                  <button class="text-blue-600 hover:text-blue-800 text-lg" title="View Details">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                      <i class="ri-eye-line"></i>
+                    </div>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center mt-4">
+          <button
+            class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition-colors !rounded-button whitespace-nowrap">View
+            All Bookings</button>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Latest Customer Reviews</h3>
+        <p class="text-gray-600 mb-6">See what your customers are saying about their recent experiences. Engage with
+          feedback to improve your offerings.</p>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div id="recentReviewsList" class="space-y-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="font-semibold text-gray-900 mr-2">Jennifer Martinez</span>
+                <div class="flex text-yellow-400">
+                  <span>★★★★★</span>
+                </div>
+                <span class="text-xs text-gray-500 ml-auto">2 hours ago</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-3">Absolutely amazing experience! The Doha City Tour was perfectly
+                organized and our guide was incredibly knowledgeable. Highly recommend to anyone visiting Qatar.</p>
+              <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Reply</button>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="font-semibold text-gray-900 mr-2">Robert Kim</span>
+                <div class="flex text-yellow-400">
+                  <span>★★★★☆</span>
+                </div>
+                <span class="text-xs text-gray-500 ml-auto">1 day ago</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-3">Great desert safari experience! The sunset was breathtaking and the
+                traditional dinner was delicious. Only minor issue was the pickup timing.</p>
+              <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Reply</button>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <div class="flex items-center mb-2">
+                <span class="font-semibold text-gray-900 mr-2">Lisa Wang</span>
+                <div class="flex text-yellow-400">
+                  <span>★★★★★</span>
+                </div>
+                <span class="text-xs text-gray-500 ml-auto">3 days ago</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-3">The Pearl Diving Experience was unique and educational. Perfect for
+                families with children. The instructors were patient and made it fun for everyone.</p>
+              <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button
+            class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition-colors !rounded-button whitespace-nowrap">Manage
+            All Reviews</button>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <p class="text-gray-600 mb-6">Jump directly to common tasks to manage your listings and profile efficiently.</p>
+        <div class="ctaz grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <button
+            class="flex items-center justify-center px-4 py-3 bg-blue-100 text-blue-700 rounded-button hover:bg-blue-200 transition-colors whitespace-nowrap min-w-max">
+            <div class="w-5 h-5 flex items-center justify-center mr-2">
+              <i class="ri-add-line"></i>
+            </div>
+            Add New Listing
+          </button>
+          <button
+            class="flex items-center justify-center px-4 py-3 bg-purple-100 text-purple-700 rounded-button hover:bg-purple-200 transition-colors whitespace-nowrap min-w-max">
+            <div class="w-5 h-5 flex items-center justify-center mr-2">
+              <i class="ri-building-line"></i>
+            </div>
+            Update Business Profile
+          </button>
+          <button
+            class="flex items-center justify-center px-4 py-3 bg-green-100 text-green-700 rounded-button hover:bg-green-200 transition-colors whitespace-nowrap min-w-max">
+            <div class="w-5 h-5 flex items-center justify-center mr-2">
+              <i class="ri-question-line"></i>
+            </div>
+            Contact Support
+          </button>
+          <button
+            class="flex items-center justify-center px-4 py-3 bg-yellow-100 text-yellow-700 rounded-button hover:bg-yellow-200 transition-colors whitespace-nowrap min-w-max">
+            <div class="w-5 h-5 flex items-center justify-center mr-2">
+              <i class="ri-wallet-line"></i>
+            </div>
+            View Payouts
+          </button>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">My Listings Overview</h3>
+        <p class="text-gray-600 mb-6">A summary of your listings by their status and categories.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+            <h4 class="text-lg font-medium text-gray-800 mb-4">Listings by Status</h4>
+            <div class="chart-container flex-grow max-w-xs mx-auto h-auto" style="max-height: 250px;">
+              <canvas id="listingsByStatusChart"></canvas>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+            <h4 class="text-lg font-medium text-gray-800 mb-4">Listings by Category</h4>
+            <div class="chart-container flex-grow max-w-xs mx-auto h-auto" style="max-height: 250px;">
+              <canvas id="listingsByCategoryChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Account Activity</h3>
+        <p class="text-gray-600 mb-6">A log of your recent actions and important events on the platform.</p>
+        <div class="bg-white rounded-lg shadow-md p-6 table-responsive">
+          <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3">Activity</th>
+                <th scope="col" class="px-6 py-3">Description</th>
+                <th scope="col" class="px-6 py-3">Date</th>
+              </tr>
+            </thead>
+            <tbody id="recentActivityTableBody">
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Listing Updated</td>
+                <td class="px-6 py-4">Updated photos for "Doha City Tour"</td>
+                <td class="px-6 py-4">July 29, 2024 2:30 PM</td>
+              </tr>
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Booking Confirmed</td>
+                <td class="px-6 py-4">Confirmed booking #BK12345 for Desert Safari</td>
+                <td class="px-6 py-4">July 29, 2024 11:15 AM</td>
+              </tr>
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Review Received</td>
+                <td class="px-6 py-4">5-star review from Jennifer Martinez</td>
+                <td class="px-6 py-4">July 28, 2024 6:45 PM</td>
+              </tr>
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium text-gray-900">Payout Processed</td>
+                <td class="px-6 py-4">Monthly payout of $2,340 processed</td>
+                <td class="px-6 py-4">July 28, 2024 9:00 AM</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Actionable Insights for You</h3>
+        <p class="text-gray-600 mb-6">Tips and recommendations to help you optimize your listings and grow your
+          business.</p>
+        <div class="bg-blue-50 p-6 rounded-lg shadow-sm text-sm">
+          <ul class="list-disc list-inside text-blue-800 space-y-2" id="actionableInsightsList">
+            <li><span class="font-semibold">Boost Bookings:</span> Consider offering a limited-time discount on your
+              "City Tour" for next week to increase bookings during the slower period.</li>
+            <li><span class="font-semibold">Improve Rating:</span> Respond to your latest 4-star review to show customer
+              appreciation and potentially improve future ratings.</li>
+            <li><span class="font-semibold">Expand Reach:</span> Add more photos to your "Desert Safari" listing to
+              attract more views - listings with 8+ photos get 40% more bookings.</li>
+            <li><span class="font-semibold">Optimize Pricing:</span> Your "Pearl Diving Experience" is priced 15% below
+              market average - consider a small price increase to boost revenue.</li>
+            <li><span class="font-semibold">Update Content:</span> Refresh the description of your "Museum Tour" with
+              seasonal highlights to maintain engagement.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script id="mockDataScript">
+    const mockData = {
+      providerName: "Sarah Johnson",
+      kpiData: {
+        month: {
+          totalBookings: 47,
+          totalRevenue: 8420,
+          avgRating: 4.8,
+          listingViews: 2340,
+          prevPeriod: {
+            totalBookings: 42,
+            totalRevenue: 7120,
+            avgRating: 4.6,
+            listingViews: 2470
+          }
+        },
+        "7days": {
+          totalBookings: 12,
+          totalRevenue: 2180,
+          avgRating: 4.9,
+          listingViews: 580,
+          prevPeriod: {
+            totalBookings: 10,
+            totalRevenue: 1950,
+            avgRating: 4.7,
+            listingViews: 620
+          }
+        },
+        "30days": {
+          totalBookings: 38,
+          totalRevenue: 6890,
+          avgRating: 4.7,
+          listingViews: 1890,
+          prevPeriod: {
+            totalBookings: 35,
+            totalRevenue: 6200,
+            avgRating: 4.5,
+            listingViews: 2100
+          }
+        },
+        year: {
+          totalBookings: 285,
+          totalRevenue: 52340,
+          avgRating: 4.6,
+          listingViews: 15680,
+          prevPeriod: {
+            totalBookings: 245,
+            totalRevenue: 44200,
+            avgRating: 4.4,
+            listingViews: 14200
+          }
+        }
+      },
+      myPerformanceData: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        views: [1200, 1350, 1100, 1800, 2100, 2400, 2340],
+        bookings: [25, 28, 22, 35, 42, 48, 47]
+      },
+      listingsOverviewData: {
+        listingsByStatus: { Active: 10, Draft: 2, Pending: 1 },
+        listingsByCategory: { Tours: 8, Activities: 3, Events: 2 }
+      }
+    };
+  </script>
+  <script id="chartInitialization">
+    document.addEventListener('DOMContentLoaded', async function () {
+      if (typeof Chart === 'undefined') {
+        console.error('Chart.js is not loaded');
+        return;
+      }
+      let myPerformanceChart, listingsByStatusChart, listingsByCategoryChart;
+      function initializeCharts() {
+        const ctx1 = document.getElementById('myPerformanceChart').getContext('2d');
+        myPerformanceChart = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: mockData.myPerformanceData.labels,
+            datasets: [{
+              label: 'Views',
+              data: mockData.myPerformanceData.views,
+              borderColor: 'rgba(87, 181, 231, 1)',
+              backgroundColor: 'rgba(87, 181, 231, 0.1)',
+              tension: 0.4,
+              fill: true,
+              pointRadius: 0,
+              pointHoverRadius: 6
+            }, {
+              label: 'Bookings',
+              data: mockData.myPerformanceData.bookings,
+              borderColor: 'rgba(251, 191, 114, 1)',
+              backgroundColor: 'rgba(251, 191, 114, 0.1)',
+              tension: 0.4,
+              fill: true,
+              pointRadius: 0,
+              pointHoverRadius: 6,
+              yAxisID: 'y1'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1
+              },
+              legend: {
+                labels: {
+                  color: '#1f2937'
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  color: '#1f2937'
+                }
+              },
+              y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                grid: {
+                  color: '#f3f4f6'
+                },
+                ticks: {
+                  color: '#1f2937'
+                }
+              },
+              y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: {
+                  drawOnChartArea: false,
+                },
+                ticks: {
+                  color: '#1f2937'
+                }
+              }
+            }
+          }
+        });
+        const ctx2 = document.getElementById('listingsByStatusChart').getContext('2d');
+        listingsByStatusChart = new Chart(ctx2, {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(mockData.listingsOverviewData.listingsByStatus),
+            datasets: [{
+              data: Object.values(mockData.listingsOverviewData.listingsByStatus),
+              backgroundColor: [
+                'rgba(87, 181, 231, 1)',
+                'rgba(141, 211, 199, 1)',
+                'rgba(251, 191, 114, 1)'
+              ],
+              borderWidth: 0,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1
+              },
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: '#1f2937',
+                  padding: 20
+                }
+              }
+            }
+          }
+        });
+        const ctx3 = document.getElementById('listingsByCategoryChart').getContext('2d');
+        listingsByCategoryChart = new Chart(ctx3, {
+          type: 'bar',
+          data: {
+            labels: Object.keys(mockData.listingsOverviewData.listingsByCategory),
+            datasets: [{
+              data: Object.values(mockData.listingsOverviewData.listingsByCategory),
+              backgroundColor: [
+                'rgba(87, 181, 231, 1)',
+                'rgba(141, 211, 199, 1)',
+                'rgba(251, 191, 114, 1)'
+              ],
+              borderWidth: 0,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1
+              },
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  color: '#1f2937'
+                }
+              },
+              y: {
+                grid: {
+                  color: '#f3f4f6'
+                },
+                ticks: {
+                  color: '#1f2937'
+                }
+              }
+            }
+          }
+        });
+      }
+      initializeCharts();
+    });
+  </script>
+  <script id="kpiManagement">
+    document.addEventListener('DOMContentLoaded', function () {
+      const kpiDateRange = document.getElementById('kpiDateRange');
+      const totalBookings = document.getElementById('totalBookings');
+      const totalRevenue = document.getElementById('totalRevenue');
+      const avgRating = document.getElementById('avgRating');
+      const listingViews = document.getElementById('listingViews');
+      const totalBookingsChange = document.getElementById('totalBookingsChange');
+      const totalRevenueChange = document.getElementById('totalRevenueChange');
+      const avgRatingChange = document.getElementById('avgRatingChange');
+      const listingViewsChange = document.getElementById('listingViewsChange');
+      function renderChange(current, previous, element, isRating = false) {
+        let change, icon, colorClass;
+        if (isRating) {
+          change = (current - previous).toFixed(1);
+          if (change > 0) {
+            icon = 'ri-arrow-up-line';
+            colorClass = 'text-green-500';
+            change = '+' + change;
+          } else if (change < 0) {
+            icon = 'ri-arrow-down-line';
+            colorClass = 'text-red-500';
+          } else {
+            icon = 'ri-arrow-right-line';
+            colorClass = 'text-gray-500';
+            change = '0.0';
+          }
+        } else {
+          const percentage = ((current - previous) / previous * 100).toFixed(1);
+          if (percentage > 0) {
+            icon = 'ri-arrow-up-line';
+            colorClass = 'text-green-500';
+            change = '+' + percentage + '%';
+          } else if (percentage < 0) {
+            icon = 'ri-arrow-down-line';
+            colorClass = 'text-red-500';
+            change = percentage + '%';
+          } else {
+            icon = 'ri-arrow-right-line';
+            colorClass = 'text-gray-500';
+            change = '0.0%';
+          }
+        }
+        element.className = `font-semibold kpi-change-icon ${colorClass}`;
+        element.innerHTML = `<i class="${icon}"></i>${change}`;
+      }
+      function renderKPIs(period) {
+        const data = mockData.kpiData[period];
+        const prevData = data.prevPeriod;
+        totalBookings.textContent = data.totalBookings;
+        totalRevenue.textContent = '$' + data.totalRevenue.toLocaleString();
+        avgRating.textContent = data.avgRating.toFixed(1);
+        listingViews.textContent = data.listingViews.toLocaleString();
+        renderChange(data.totalBookings, prevData.totalBookings, totalBookingsChange);
+        renderChange(data.totalRevenue, prevData.totalRevenue, totalRevenueChange);
+        renderChange(data.avgRating, prevData.avgRating, avgRatingChange, true);
+        renderChange(data.listingViews, prevData.listingViews, listingViewsChange);
+      }
+      kpiDateRange.addEventListener('change', function () {
+        renderKPIs(this.value);
+      });
+      renderKPIs('month');
+    });
+  </script>
+</body>
+
+</html>

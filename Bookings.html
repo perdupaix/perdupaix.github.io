@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#8b5cf6'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            background-color: #f8fafc;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rounded-button {
+            border-radius: 9999px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-pill .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        @media (min-width: 640px) {
+            .sm\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex h-screen">
+        <!-- <aside class="w-64 bg-white shadow-md p-4 flex flex-col">
+            <div class="text-2xl font-bold text-blue-600 mb-8">Platform</div>
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-dashboard-line"></i>
+                    </div>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-ticket-line"></i>
+                    </div>
+                    My Listings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-calendar-check-line"></i>
+                    </div>
+                    Bookings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-questionnaire-line"></i>
+                    </div>
+                    Requests
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-message-3-line"></i>
+                    </div>
+                    Messages
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-star-line"></i>
+                    </div>
+                    Reviews
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-wallet-line"></i>
+                    </div>
+                    Payouts
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-bar-chart-line"></i>
+                    </div>
+                    Analytics
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-settings-3-line"></i>
+                    </div>
+                    Profile Settings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-question-line"></i>
+                    </div>
+                    Support
+                </a>
+            </nav>
+        </aside> -->
+
+
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button text-gray-700 ">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link  flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search ...">
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 md:p-8 mt-16 overflow-y-auto">
+            <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Bookings</h1>
+                    <p class="text-gray-600 mt-2">Manage all your confirmed bookings, track schedules, and communicate
+                        with customers.</p>
+                </div>
+                <button id="exportBookingsBtn"
+                    class="ctaz bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors flex items-center gap-2 !rounded-button whitespace-nowrap">
+                    <div class="w-4 h-4 flex items-center justify-center">
+                        <i class="ri-download-2-line"></i>
+                    </div>
+                    Export Bookings
+                </button>
+            </header>
+
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="mb-6">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="text" id="bookingSearchInput"
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Search by customer, listing, or ID...">
+                    </div>
+                </div>
+
+                <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"> -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                        <select id="bookingStatusFilter"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">All Statuses</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Listing Type</label>
+                        <select id="listingTypeFilter"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">All Types</option>
+                            <option value="Profit">Profit</option>
+                            <option value="Non-Profit">Non-Profit</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select id="listingCategoryFilter"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">All Categories</option>
+                            <option value="Tours">Tours</option>
+                            <option value="Workshops">Workshops</option>
+                            <option value="Events">Events</option>
+                            <option value="Attractions">Attractions</option>
+                            <option value="Volunteering">Volunteering</option>
+                            <option value="Classes">Classes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                        <div class="flex gap-2">
+                            <input type="date" id="bookingDateFromFilter"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                            <input type="date" id="bookingDateToFilter"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="table-responsive">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Booking ID</th>
+                                <th scope="col" class="px-6 py-3">Listing Name</th>
+                                <th scope="col" class="px-6 py-3">Date & Time</th>
+                                <th scope="col" class="px-6 py-3">Customer Name</th>
+                                <th scope="col" class="px-6 py-3">Participants</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Total Price</th>
+                                <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
+                    <span id="bookingsPaginationInfo" class="text-sm font-normal text-gray-500"></span>
+                    <ul id="bookingsPagination" class="inline-flex items-center -space-x-px"></ul>
+                </nav>
+            </section>
+        </main>
+    </div>
+
+    <div id="bookingDetailModal" class="modal-overlay">
+        <div class="modal-content max-w-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Booking Details</h3>
+                <button id="closeBookingDetailModal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line text-xl"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-800 mb-3">Booking Summary</h4>
+                    <div class="space-y-2">
+                        <div>
+                            <span class="font-medium text-gray-700">Booking ID:</span>
+                            <span id="modalBookingId" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Listing:</span>
+                            <span id="modalBookingListing" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Date & Time:</span>
+                            <span id="modalBookingDateTime" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Status:</span>
+                            <span id="modalBookingStatus" class="ml-2"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Participants:</span>
+                            <span id="modalBookingParticipants" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span id="modalPriceLabel" class="font-medium text-gray-700">Total Price:</span>
+                            <span id="modalBookingPrice" class="ml-2 text-gray-600"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-3">Customer Information</h4>
+                    <div class="space-y-2">
+                        <div>
+                            <span class="font-medium text-gray-700">Name:</span>
+                            <span id="modalCustomerName" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Email:</span>
+                            <span id="modalCustomerEmail" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Phone:</span>
+                            <span id="modalCustomerPhone" class="ml-2 text-gray-600"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-3">Listing Information</h4>
+                    <div class="space-y-2">
+                        <div>
+                            <span class="font-medium text-gray-700">Category:</span>
+                            <span id="modalListingCategory" class="ml-2 text-gray-600"></span>
+                        </div>
+                        <div>
+                            <span class="font-medium text-gray-700">Type:</span>
+                            <span id="modalListingType" class="ml-2 text-gray-600"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-3">Booking History</h4>
+                    <div id="modalBookingNotes" class="space-y-2 max-h-32 overflow-y-auto">
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button id="modalMarkCompletedBtn"
+                    class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors !rounded-button whitespace-nowrap">Mark
+                    as Completed</button>
+                <button id="modalCancelBookingBtn"
+                    class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors !rounded-button whitespace-nowrap">Cancel
+                    Booking</button>
+                <button id="modalMessageCustomerBtn"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">Message
+                    Customer</button>
+                <button id="modalCloseBookingBtn"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors !rounded-button whitespace-nowrap">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="statusConfirmationModal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Confirm Status Change</h3>
+            <p id="statusConfirmationMessage" class="text-gray-600 mb-6"></p>
+            <div class="flex gap-3">
+                <button id="confirmStatusBtn"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">Confirm</button>
+                <button id="cancelStatusBtn"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors !rounded-button whitespace-nowrap">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script id="bookingMockData">
+        const bookings = [
+            {
+                id: "BKG001",
+                listingName: "Doha City Heritage Tour",
+                listingType: "Profit",
+                listingCategory: "Tours",
+                dateTime: "2024-08-15T09:00:00",
+                customerName: "Sarah Johnson",
+                customerEmail: "sarah.johnson@email.com",
+                customerPhone: "+1-555-0123",
+                participants: 4,
+                status: "Confirmed",
+                totalPrice: 320,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-25T14:30:00", note: "Booking confirmed", by: "System" },
+                    { date: "2024-07-26T10:15:00", note: "Customer requested morning slot", by: "Customer" }
+                ]
+            },
+            {
+                id: "BKG002",
+                listingName: "Desert Conservation Volunteering",
+                listingType: "Non-Profit",
+                listingCategory: "Volunteering",
+                dateTime: "2024-08-20T07:00:00",
+                customerName: "Michael Chen",
+                customerEmail: "michael.chen@email.com",
+                customerPhone: "+1-555-0124",
+                participants: 2,
+                status: "Confirmed",
+                totalPrice: null,
+                donationAmount: 150,
+                bookingNotes: [
+                    { date: "2024-07-28T16:45:00", note: "Volunteer registration completed", by: "System" },
+                    { date: "2024-07-29T09:20:00", note: "Donation received", by: "System" }
+                ]
+            },
+            {
+                id: "BKG003",
+                listingName: "Traditional Cooking Workshop",
+                listingType: "Profit",
+                listingCategory: "Workshops",
+                dateTime: "2024-08-12T15:30:00",
+                customerName: "Emma Rodriguez",
+                customerEmail: "emma.rodriguez@email.com",
+                customerPhone: "+1-555-0125",
+                participants: 1,
+                status: "Pending",
+                totalPrice: 95,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-30T11:30:00", note: "Booking request received", by: "System" }
+                ]
+            },
+            {
+                id: "BKG004",
+                listingName: "Museum of Islamic Art Visit",
+                listingType: "Profit",
+                listingCategory: "Attractions",
+                dateTime: "2024-08-08T14:00:00",
+                customerName: "David Thompson",
+                customerEmail: "david.thompson@email.com",
+                customerPhone: "+1-555-0126",
+                participants: 3,
+                status: "Completed",
+                totalPrice: 180,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-20T13:15:00", note: "Booking confirmed", by: "System" },
+                    { date: "2024-08-08T16:30:00", note: "Tour completed successfully", by: "Provider" }
+                ]
+            },
+            {
+                id: "BKG005",
+                listingName: "Community Garden Project",
+                listingType: "Non-Profit",
+                listingCategory: "Volunteering",
+                dateTime: "2024-08-25T08:00:00",
+                customerName: "Lisa Wang",
+                customerEmail: "lisa.wang@email.com",
+                customerPhone: "+1-555-0127",
+                participants: 6,
+                status: "Confirmed",
+                totalPrice: null,
+                donationAmount: 200,
+                bookingNotes: [
+                    { date: "2024-07-29T14:20:00", note: "Group volunteer registration", by: "System" },
+                    { date: "2024-07-30T09:45:00", note: "Team lead assigned", by: "Provider" }
+                ]
+            },
+            {
+                id: "BKG006",
+                listingName: "Pearl Diving Experience",
+                listingType: "Profit",
+                listingCategory: "Tours",
+                dateTime: "2024-08-18T06:30:00",
+                customerName: "James Anderson",
+                customerEmail: "james.anderson@email.com",
+                customerPhone: "+1-555-0128",
+                participants: 2,
+                status: "Confirmed",
+                totalPrice: 240,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-27T10:30:00", note: "Early morning slot confirmed", by: "System" },
+                    { date: "2024-07-28T15:20:00", note: "Equipment size confirmed", by: "Provider" }
+                ]
+            },
+            {
+                id: "BKG007",
+                listingName: "Arabic Calligraphy Class",
+                listingType: "Profit",
+                listingCategory: "Classes",
+                dateTime: "2024-08-22T16:00:00",
+                customerName: "Maria Garcia",
+                customerEmail: "maria.garcia@email.com",
+                customerPhone: "+1-555-0129",
+                participants: 1,
+                status: "Cancelled",
+                totalPrice: 75,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-25T12:00:00", note: "Booking confirmed", by: "System" },
+                    { date: "2024-07-31T14:30:00", note: "Cancelled by customer - refund processed", by: "Provider" }
+                ]
+            },
+            {
+                id: "BKG008",
+                listingName: "Wildlife Conservation Talk",
+                listingType: "Non-Profit",
+                listingCategory: "Events",
+                dateTime: "2024-08-14T19:00:00",
+                customerName: "Robert Kim",
+                customerEmail: "robert.kim@email.com",
+                customerPhone: "+1-555-0130",
+                participants: 5,
+                status: "Confirmed",
+                totalPrice: null,
+                donationAmount: 100,
+                bookingNotes: [
+                    { date: "2024-07-26T16:45:00", note: "Group registration for conservation event", by: "System" }
+                ]
+            },
+            {
+                id: "BKG009",
+                listingName: "Falcon Souq Experience",
+                listingType: "Profit",
+                listingCategory: "Attractions",
+                dateTime: "2024-08-16T10:00:00",
+                customerName: "Jennifer Lee",
+                customerEmail: "jennifer.lee@email.com",
+                customerPhone: "+1-555-0131",
+                participants: 3,
+                status: "Pending",
+                totalPrice: 150,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-30T13:45:00", note: "Booking request with special requirements", by: "System" }
+                ]
+            },
+            {
+                id: "BKG010",
+                listingName: "Katara Cultural Village Tour",
+                listingType: "Profit",
+                listingCategory: "Tours",
+                dateTime: "2024-08-11T11:00:00",
+                customerName: "Ahmed Al-Rashid",
+                customerEmail: "ahmed.alrashid@email.com",
+                customerPhone: "+974-5555-0132",
+                participants: 8,
+                status: "Completed",
+                totalPrice: 480,
+                donationAmount: null,
+                bookingNotes: [
+                    { date: "2024-07-22T09:30:00", note: "Large group booking confirmed", by: "System" },
+                    { date: "2024-08-11T13:30:00", note: "Tour completed - excellent feedback", by: "Provider" }
+                ]
+            }
+        ];
+    </script>
+
+    <script id="bookingUtilities">
+        document.addEventListener('DOMContentLoaded', function () {
+            const bookingSearchInput = document.getElementById('bookingSearchInput');
+            const bookingStatusFilter = document.getElementById('bookingStatusFilter');
+            const listingTypeFilter = document.getElementById('listingTypeFilter');
+            const listingCategoryFilter = document.getElementById('listingCategoryFilter');
+            const bookingDateFromFilter = document.getElementById('bookingDateFromFilter');
+            const bookingDateToFilter = document.getElementById('bookingDateToFilter');
+            const bookingsTableBody = document.getElementById('bookingsTableBody');
+            const bookingsPaginationInfo = document.getElementById('bookingsPaginationInfo');
+            const bookingsPagination = document.getElementById('bookingsPagination');
+            const exportBookingsBtn = document.getElementById('exportBookingsBtn');
+            const bookingDetailModal = document.getElementById('bookingDetailModal');
+            const closeBookingDetailModal = document.getElementById('closeBookingDetailModal');
+            const modalBookingId = document.getElementById('modalBookingId');
+            const modalBookingListing = document.getElementById('modalBookingListing');
+            const modalBookingDateTime = document.getElementById('modalBookingDateTime');
+            const modalBookingStatus = document.getElementById('modalBookingStatus');
+            const modalBookingParticipants = document.getElementById('modalBookingParticipants');
+            const modalPriceLabel = document.getElementById('modalPriceLabel');
+            const modalBookingPrice = document.getElementById('modalBookingPrice');
+            const modalCustomerName = document.getElementById('modalCustomerName');
+            const modalCustomerEmail = document.getElementById('modalCustomerEmail');
+            const modalCustomerPhone = document.getElementById('modalCustomerPhone');
+            const modalListingCategory = document.getElementById('modalListingCategory');
+            const modalListingType = document.getElementById('modalListingType');
+            const modalBookingNotes = document.getElementById('modalBookingNotes');
+            const modalMarkCompletedBtn = document.getElementById('modalMarkCompletedBtn');
+            const modalCancelBookingBtn = document.getElementById('modalCancelBookingBtn');
+            const modalMessageCustomerBtn = document.getElementById('modalMessageCustomerBtn');
+            const modalCloseBookingBtn = document.getElementById('modalCloseBookingBtn');
+
+            const statusConfirmationModal = document.getElementById('statusConfirmationModal');
+            const statusConfirmationMessage = document.getElementById('statusConfirmationMessage');
+            const confirmStatusBtn = document.getElementById('confirmStatusBtn');
+            const cancelStatusBtn = document.getElementById('cancelStatusBtn');
+
+            let currentPage = 1;
+            const itemsPerPage = 10;
+            let currentStatusAction = '';
+            let currentBookingId = '';
+
+            function getStatusPill(status) {
+                const statusConfig = {
+                    'Confirmed': { bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-500' },
+                    'Pending': { bg: 'bg-yellow-100', text: 'text-yellow-700', dot: 'bg-yellow-500' },
+                    'Completed': { bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500' },
+                    'Cancelled': { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500' }
+                };
+                const config = statusConfig[status] || statusConfig['Confirmed'];
+                return `<span class="status-pill ${config.bg} ${config.text}">
+                    <span class="dot ${config.dot}"></span>
+                    ${status}
+                </span>`;
+            }
+            function formatCurrency(amount) {
+                return amount ? `$${amount.toFixed(2)}` : 'N/A';
+            }
+
+            function formatDate(isoString) {
+                return new Date(isoString).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            function openModal(modalElement) {
+                modalElement.classList.add('active');
+            }
+            function closeModal(modalElement) {
+                modalElement.classList.remove('active');
+            }
+
+            function getFilteredBookings() {
+                let filtered = [...bookings];
+
+                const searchTerm = bookingSearchInput.value.toLowerCase();
+                if (searchTerm) {
+                    filtered = filtered.filter(booking =>
+                        booking.id.toLowerCase().includes(searchTerm) ||
+                        booking.customerName.toLowerCase().includes(searchTerm) ||
+                        booking.listingName.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                if (bookingStatusFilter.value) {
+                    filtered = filtered.filter(booking => booking.status === bookingStatusFilter.value);
+                }
+
+                if (listingTypeFilter.value) {
+                    filtered = filtered.filter(booking => booking.listingType === listingTypeFilter.value);
+                }
+
+                if (listingCategoryFilter.value) {
+                    filtered = filtered.filter(booking => booking.listingCategory === listingCategoryFilter.value);
+                }
+
+                if (bookingDateFromFilter.value) {
+                    filtered = filtered.filter(booking => booking.dateTime >= bookingDateFromFilter.value);
+                }
+
+                if (bookingDateToFilter.value) {
+                    filtered = filtered.filter(booking => booking.dateTime <= bookingDateToFilter.value + 'T23:59');
+                }
+
+                return filtered.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+            }
+
+            function renderBookingsTable() {
+                const filtered = getFilteredBookings();
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const pageBookings = filtered.slice(startIndex, endIndex);
+
+                bookingsTableBody.innerHTML = '';
+
+                pageBookings.forEach(booking => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+
+                    const priceDisplay = booking.listingType === 'Profit'
+                        ? formatCurrency(booking.totalPrice)
+                        : `Donation: ${formatCurrency(booking.donationAmount)}`;
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">#${booking.id}</td>
+                        <td class="px-6 py-4">${booking.listingName}</td>
+                        <td class="px-6 py-4">${formatDate(booking.dateTime)}</td>
+                        <td class="px-6 py-4">${booking.customerName}</td>
+                        <td class="px-6 py-4">${booking.participants}</td>
+                        <td class="px-6 py-4">${getStatusPill(booking.status)}</td>
+                        <td class="px-6 py-4">${priceDisplay}</td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button data-id="${booking.id}" class="action-view text-blue-600 hover:text-blue-800 text-lg" title="View Details">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-eye-line"></i>
+                                    </div>
+                                </button>
+                                <button data-id="${booking.id}" class="action-complete text-green-600 hover:text-green-800 text-lg" title="Mark as Completed">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                </button>
+                                <button data-id="${booking.id}" class="action-cancel text-red-600 hover:text-red-800 text-lg" title="Cancel Booking">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-close-line"></i>
+                                    </div>
+                                </button>
+                                <button data-id="${booking.id}" class="action-message text-purple-600 hover:text-purple-800 text-lg" title="Message Customer">
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <i class="ri-message-3-line"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    bookingsTableBody.appendChild(row);
+                });
+
+                updatePagination(filtered.length);
+            }
+
+            function updatePagination(totalItems) {
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                const startItem = (currentPage - 1) * itemsPerPage + 1;
+                const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+                bookingsPaginationInfo.textContent = `Showing ${startItem}-${endItem} of ${totalItems} entries`;
+
+                bookingsPagination.innerHTML = '';
+                if (totalPages <= 1) return;
+
+                const prevBtn = document.createElement('li');
+                prevBtn.innerHTML = `
+                    <button class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}" ${currentPage === 1 ? 'disabled' : ''}>
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </div>
+                    </button>
+                `;
+                bookingsPagination.appendChild(prevBtn);
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                        const pageBtn = document.createElement('li');
+                        pageBtn.innerHTML = `
+                            <button class="px-3 py-2 leading-tight border border-gray-300 ${i === currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'}" data-page="${i}">
+                                ${i}
+                            </button>
+                        `;
+                        bookingsPagination.appendChild(pageBtn);
+                    } else if (i === currentPage - 2 || i === currentPage + 2) {
+                        const dots = document.createElement('li');
+                        dots.innerHTML = '<span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">...</span>';
+                        bookingsPagination.appendChild(dots);
+                    }
+                }
+
+                const nextBtn = document.createElement('li');
+                nextBtn.innerHTML = `
+                    <button class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}" ${currentPage === totalPages ? 'disabled' : ''}>
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    </button>
+                `;
+                bookingsPagination.appendChild(nextBtn);
+            }
+
+            function loadBookingDetail(bookingId) {
+                const booking = bookings.find(b => b.id === bookingId);
+                if (!booking) return;
+
+                modalBookingId.textContent = `#${booking.id}`;
+                modalBookingListing.textContent = booking.listingName;
+                modalBookingDateTime.textContent = formatDate(booking.dateTime);
+                modalBookingStatus.innerHTML = getStatusPill(booking.status);
+                modalBookingParticipants.textContent = booking.participants;
+                modalCustomerName.textContent = booking.customerName;
+                modalCustomerEmail.textContent = booking.customerEmail;
+                modalCustomerPhone.textContent = booking.customerPhone;
+                modalListingCategory.textContent = booking.listingCategory;
+                modalListingType.textContent = booking.listingType;
+                if (booking.listingType === 'Profit') {
+                    modalPriceLabel.textContent = 'Total Price:';
+                    modalBookingPrice.textContent = formatCurrency(booking.totalPrice);
+                } else {
+                    modalPriceLabel.textContent = 'Donation Amount:';
+                    modalBookingPrice.textContent = formatCurrency(booking.donationAmount);
+                }
+
+                modalBookingNotes.innerHTML = '';
+                booking.bookingNotes.forEach(note => {
+                    const noteDiv = document.createElement('div');
+                    noteDiv.className = 'text-sm bg-gray-50 p-2 rounded';
+                    noteDiv.innerHTML = `
+                        <div class="font-medium text-gray-700">${formatDate(note.date)} - ${note.by}</div>
+                        <div class="text-gray-600">${note.note}</div>
+                    `;
+                    modalBookingNotes.appendChild(noteDiv);
+                });
+
+                openModal(bookingDetailModal);
+            }
+
+            function updateBookingStatus(bookingId, newStatus) {
+                const booking = bookings.find(b => b.id === bookingId);
+                if (!booking) return;
+
+                booking.status = newStatus;
+                booking.bookingNotes.push({
+                    date: new Date().toISOString(),
+                    note: `Status changed to ${newStatus}`,
+                    by: 'Provider'
+                });
+
+                renderBookingsTable();
+                closeModal(bookingDetailModal);
+                closeModal(statusConfirmationModal);
+            }
+
+            bookingSearchInput.addEventListener('input', () => {
+                currentPage = 1;
+                renderBookingsTable();
+            });
+
+            [bookingStatusFilter, listingTypeFilter, listingCategoryFilter, bookingDateFromFilter, bookingDateToFilter].forEach(filter => {
+                filter.addEventListener('change', () => {
+                    currentPage = 1;
+                    renderBookingsTable();
+                });
+            });
+
+            bookingsPagination.addEventListener('click', (e) => {
+                if (e.target.dataset.page) {
+                    currentPage = parseInt(e.target.dataset.page);
+                    renderBookingsTable();
+                } else if (e.target.closest('button')) {
+                    const btn = e.target.closest('button');
+                    if (btn.innerHTML.includes('arrow-left') && currentPage > 1) {
+                        currentPage--;
+                        renderBookingsTable();
+                    } else if (btn.innerHTML.includes('arrow-right')) {
+                        const totalPages = Math.ceil(getFilteredBookings().length / itemsPerPage);
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderBookingsTable();
+                        }
+                    }
+                }
+            });
+
+            bookingsTableBody.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+
+                const bookingId = button.dataset.id;
+                const booking = bookings.find(b => b.id === bookingId);
+                if (!booking) return;
+
+                if (button.classList.contains('action-view')) {
+                    loadBookingDetail(bookingId);
+                } else if (button.classList.contains('action-complete')) {
+                    currentStatusAction = 'completed';
+                    currentBookingId = bookingId;
+                    statusConfirmationMessage.textContent = 'Are you sure you want to mark this booking as completed?';
+                    openModal(statusConfirmationModal);
+                } else if (button.classList.contains('action-cancel')) {
+                    currentStatusAction = 'cancelled';
+                    currentBookingId = bookingId;
+                    statusConfirmationMessage.textContent = 'Are you sure you want to cancel this booking?';
+                    openModal(statusConfirmationModal);
+                } else if (button.classList.contains('action-message')) {
+                    alert(`Simulating message to ${booking.customerName}...`);
+                }
+            });
+
+            exportBookingsBtn.addEventListener('click', () => {
+                alert('Simulating export of bookings data...');
+            });
+
+            [closeBookingDetailModal, modalCloseBookingBtn].forEach(btn => {
+                btn.addEventListener('click', () => closeModal(bookingDetailModal));
+            });
+
+            modalMarkCompletedBtn.addEventListener('click', () => {
+                const bookingId = modalBookingId.textContent.replace('#', '');
+                currentStatusAction = 'completed';
+                currentBookingId = bookingId;
+                statusConfirmationMessage.textContent = 'Are you sure you want to mark this booking as completed?';
+                openModal(statusConfirmationModal);
+            });
+
+            modalCancelBookingBtn.addEventListener('click', () => {
+                const bookingId = modalBookingId.textContent.replace('#', '');
+                currentStatusAction = 'cancelled';
+                currentBookingId = bookingId;
+                statusConfirmationMessage.textContent = 'Are you sure you want to cancel this booking?';
+                openModal(statusConfirmationModal);
+            });
+
+            modalMessageCustomerBtn.addEventListener('click', () => {
+                const booking = bookings.find(b => b.id === modalBookingId.textContent.replace('#', ''));
+                alert(`Simulating message to ${booking.customerName}...`);
+                closeModal(bookingDetailModal);
+            });
+
+            confirmStatusBtn.addEventListener('click', () => {
+                const newStatus = currentStatusAction === 'completed' ? 'Completed' : 'Cancelled';
+                updateBookingStatus(currentBookingId, newStatus);
+            });
+
+            cancelStatusBtn.addEventListener('click', () => closeModal(statusConfirmationModal));
+            [bookingDetailModal, statusConfirmationModal].forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+
+            renderBookingsTable();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#8b5cf6'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            background-color: #f8fafc;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rounded-button {
+            border-radius: 9999px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-pill .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.expanded {
+            max-height: 500px;
+        }
+
+        .faq-question-header {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .faq-question-header.expanded .ri-arrow-down-s-line {
+            transform: rotate(180deg);
+        }
+
+        .attachment-drop-area {
+            border: 2px dashed #cbd5e1;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .attachment-drop-area.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex h-screen">
+        <!-- <aside class="w-64 bg-white shadow-md p-4 flex flex-col">
+            <div class="text-2xl font-bold text-blue-600 mb-8">Platform</div>
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-dashboard-line"></i>
+                    </div>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-ticket-line"></i>
+                    </div>
+                    My Listings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-calendar-check-line"></i>
+                    </div>
+                    Bookings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-questionnaire-line"></i>
+                    </div>
+                    Requests
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-star-line"></i>
+                    </div>
+                    Reviews
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-wallet-line"></i>
+                    </div>
+                    Payouts
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-bar-chart-line"></i>
+                    </div>
+                    Analytics
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-settings-3-line"></i>
+                    </div>
+                    Profile Settings
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                        <i class="ri-question-line"></i>
+                    </div>
+                    Support
+                </a>
+            </nav>
+        </aside> -->
+
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="text-gray-700 sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search ...">
+                    </div>
+                </div>
+                <!-- <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span>My Listings</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">Add New Listing</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">Add New Listing</h1> -->
+                <!-- Date, Notification, and User Profile here -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <!-- <div
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div> -->
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+                <!-- <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </header>
+
+        <main class="flex-1 p-4 md:p-8 mt-16 overflow-y-auto">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Support</h1>
+                <p class="text-gray-600 mt-2">Find answers to common questions, submit a support ticket, or view your
+                    past inquiries.</p>
+            </header>
+
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Quick Help & FAQs</h3>
+                <p class="text-gray-600 mb-6">Search our frequently asked questions or browse by category to find
+                    immediate answers.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <div class="w-4 h-4 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="text" id="faqSearchInput"
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Search FAQs...">
+                    </div>
+                    <select id="faqCategoryFilter"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">All Categories</option>
+                        <option value="Account">Account</option>
+                        <option value="Listings">Listings</option>
+                        <option value="Bookings">Bookings</option>
+                        <option value="Payouts">Payouts</option>
+                        <option value="Technical">Technical</option>
+                    </select>
+                </div>
+
+                <div id="faqContainer" class="space-y-4"></div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Contact Support</h3>
+                <p class="text-gray-600 mb-6">Can't find what you're looking for? Submit a detailed support ticket and
+                    our team will get back to you.</p>
+
+                <form id="supportTicketForm" class="space-y-6">
+                    <div>
+                        <label for="ticketSubject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                        <input type="text" id="ticketSubject" required
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Brief description of your issue">
+                    </div>
+
+                    <div>
+                        <label for="ticketDescription"
+                            class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="ticketDescription" required rows="5"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Please provide detailed information about your issue..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Attachments</label>
+                        <div id="attachmentDropArea"
+                            class="attachment-drop-area border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
+                            <div class="w-12 h-12 flex items-center justify-center mx-auto mb-4 text-gray-400">
+                                <i class="ri-attachment-line text-2xl"></i>
+                            </div>
+                            <p class="text-gray-600 mb-2">Click to upload files or drag and drop</p>
+                            <p class="text-sm text-gray-500">PNG, JPG, PDF up to 10MB each</p>
+                            <input type="file" id="attachmentUpload" multiple accept=".png,.jpg,.jpeg,.pdf"
+                                class="hidden">
+                        </div>
+                        <div id="attachmentPreviews" class="mt-4 space-y-2"></div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-blue-900 mb-2">Expected Response Time</h4>
+                        <p class="text-blue-800 text-sm mb-3">We typically respond within 24 hours during business days.
+                        </p>
+                        <p class="text-blue-800 text-sm"><strong>Urgent issues:</strong> Call +974 4444 5555 or email
+                            urgent@platform.com</p>
+                    </div>
+
+                    <button type="submit"
+                        class="ctaz bg-blue-600 text-white px-6 py-3 rounded-lg font-normal text-sm hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                        Submit Ticket
+                    </button>
+                </form>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">My Support Tickets</h3>
+                <p class="text-gray-600 mb-6">Track the status and history of your past and ongoing support inquiries.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <select id="ticketStatusFilter"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">All Statuses</option>
+                        <option value="Open">Open</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Replied">Replied</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                    <input type="date" id="ticketDateFromFilter"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    <input type="date" id="ticketDateToFilter"
+                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Ticket ID</th>
+                                <th scope="col" class="px-6 py-3">Subject</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Last Update</th>
+                                <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticketsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
+                    <span id="ticketsPaginationSummary" class="text-sm font-normal text-gray-500"></span>
+                    <ul id="ticketsPagination" class="inline-flex items-center -space-x-px"></ul>
+                </nav>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Resources & Guides</h3>
+                <p class="text-gray-600 mb-6">Explore our comprehensive guides and tutorials to help you make the most
+                    of Platform.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="#" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+                        <div class="w-8 h-8 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="ri-book-open-line text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Knowledge Base</h4>
+                        <p class="text-sm text-gray-600">Comprehensive articles and guides</p>
+                    </a>
+                    <a href="#" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+                        <div class="w-8 h-8 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="ri-video-line text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Video Tutorials</h4>
+                        <p class="text-sm text-gray-600">Step-by-step video guides</p>
+                    </a>
+                    <a href="#" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+                        <div class="w-8 h-8 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="ri-community-line text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Community Forum</h4>
+                        <p class="text-sm text-gray-600">Connect with other providers</p>
+                    </a>
+                    <a href="#" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+                        <div class="w-8 h-8 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="ri-lightbulb-line text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Best Practices Guide</h4>
+                        <p class="text-sm text-gray-600">Tips to optimize your listings</p>
+                    </a>
+                    <a href="#" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+                        <div class="w-8 h-8 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="ri-phone-line text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Contact Directory</h4>
+                        <p class="text-sm text-gray-600">Find the right support contact</p>
+                    </a>
+                    <a href="#" class="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group">
+                        <div class="w-8 h-8 flex items-center justify-center text-blue-600 mb-3">
+                            <i class="ri-file-text-line text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Policy Documents</h4>
+                        <p class="text-sm text-gray-600">Terms, privacy, and guidelines</p>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="ticketDetailModal" class="modal-overlay">
+        <div class="modal-content max-w-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="ticketDetailTitle" class="text-xl font-semibold text-gray-900">Ticket Details</h3>
+                <button id="closeTicketDetailModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <i class="ri-close-line text-xl"></i>
+                    </div>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                    <span class="font-semibold text-gray-800">Status:</span>
+                    <div id="modalTicketStatus" class="mt-1"></div>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Submitted By:</span>
+                    <span id="modalTicketSubmittedBy" class="block mt-1 text-gray-600"></span>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Date Submitted:</span>
+                    <span id="modalTicketDateSubmitted" class="block mt-1 text-gray-600"></span>
+                </div>
+                <div>
+                    <span class="font-semibold text-gray-800">Last Updated:</span>
+                    <span id="modalTicketLastUpdated" class="block mt-1 text-gray-600"></span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="font-semibold text-gray-800 mb-2">Original Message</div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p id="modalTicketDescription" class="text-gray-600"></p>
+                    <div id="modalTicketAttachments" class="mt-3"></div>
+                </div>
+            </div>
+
+            <div id="ticketHistoryContainer" class="mb-6"></div>
+
+            <div id="ticketReplyFormContainer" class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Reply to this ticket</label>
+                <textarea id="ticketReplyContent" rows="4"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Type your reply..."></textarea>
+                <button id="sendTicketReplyBtn"
+                    class="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                    Send Reply
+                </button>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="closeTicketDetailModalBtn2"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition-colors !rounded-button whitespace-nowrap">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="statusModal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <h3 id="statusModalTitle" class="text-lg font-semibold text-gray-900 mb-4">Status</h3>
+            <p id="statusModalMessage" class="text-gray-600 mb-6"></p>
+            <button id="closeStatusModalBtn"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors !rounded-button whitespace-nowrap">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script id="mockData">
+        const faqs = [
+            {
+                id: 1,
+                category: "Account",
+                question: "How do I update my profile information?",
+                answer: "You can update your profile information by navigating to Profile Settings in the sidebar menu. From there, you can edit your personal details, contact information, and business details. Make sure to save your changes after updating."
+            },
+            {
+                id: 2,
+                category: "Listings",
+                question: "How do I create a new listing?",
+                answer: "To create a new listing, go to My Listings and click the 'Add New Listing' button. Fill in all required information including title, description, pricing, availability, and photos. Your listing will be reviewed before going live."
+            },
+            {
+                id: 3,
+                category: "Bookings",
+                question: "How do I manage booking requests?",
+                answer: "All booking requests appear in your Bookings section. You can view details, accept or decline requests, and communicate with customers. Accepted bookings will automatically update your availability calendar."
+            },
+            {
+                id: 4,
+                category: "Payouts",
+                question: "When do I receive payments?",
+                answer: "Payments are processed within 24-48 hours after a booking is completed. You can track all your earnings and payout history in the Payouts section. Make sure your payment details are up to date."
+            },
+            {
+                id: 5,
+                category: "Technical",
+                question: "Why can't I upload photos to my listing?",
+                answer: "Photo upload issues are usually related to file size or format. Ensure your photos are in JPG or PNG format and under 5MB each. Clear your browser cache and try again. If the problem persists, contact support."
+            },
+            {
+                id: 6,
+                category: "Account",
+                question: "How do I change my password?",
+                answer: "Go to Profile Settings and click on 'Security'. You can change your password by entering your current password and setting a new one. We recommend using a strong password with at least 8 characters."
+            },
+            {
+                id: 7,
+                category: "Listings",
+                question: "Can I edit my listing after it's published?",
+                answer: "Yes, you can edit your published listings at any time. Go to My Listings, find your listing, and click 'Edit'. Some changes may require re-approval, especially pricing and availability updates."
+            },
+            {
+                id: 8,
+                category: "Bookings",
+                question: "What happens if I need to cancel a booking?",
+                answer: "If you need to cancel a booking, contact the customer immediately and use the cancellation feature in your Bookings section. Cancellation policies apply, and frequent cancellations may affect your listing ranking."
+            }
+        ];
+
+        const supportTickets = [
+            {
+                id: "SUP-2024-001",
+                subject: "Payment not received for completed booking",
+                description: "I completed a booking on July 25th but haven't received payment yet. The booking ID is BK-789456. Customer confirmed completion.",
+                attachments: ["booking_confirmation.pdf", "completion_screenshot.png"],
+                status: "Open",
+                submittedBy: "You",
+                dateSubmitted: "2024-07-29 09:30",
+                lastUpdated: "2024-07-29 09:30",
+                history: [
+                    {
+                        type: "created",
+                        date: "2024-07-29 09:30",
+                        content: "Ticket created",
+                        by: "System"
+                    }
+                ]
+            },
+            {
+                id: "SUP-2024-002",
+                subject: "Unable to update listing photos",
+                description: "I'm trying to update photos for my Desert Safari listing but getting an error message. Tried different browsers and file formats.",
+                attachments: ["error_screenshot.png"],
+                status: "Replied",
+                submittedBy: "You",
+                dateSubmitted: "2024-07-28 14:20",
+                lastUpdated: "2024-07-28 16:45",
+                history: [
+                    {
+                        type: "created",
+                        date: "2024-07-28 14:20",
+                        content: "Ticket created",
+                        by: "System"
+                    },
+                    {
+                        type: "reply",
+                        date: "2024-07-28 16:45",
+                        content: "Thank you for reporting this issue. Our technical team is investigating the photo upload problem. Please try clearing your browser cache and cookies, then attempt the upload again. We'll update you once we have more information.",
+                        by: "Support Team"
+                    }
+                ]
+            },
+            {
+                id: "SUP-2024-003",
+                subject: "Customer dispute resolution",
+                description: "Customer is requesting refund for cancelled tour due to weather. Need guidance on policy application.",
+                attachments: [],
+                status: "Closed",
+                submittedBy: "You",
+                dateSubmitted: "2024-07-26 11:15",
+                lastUpdated: "2024-07-27 10:30",
+                history: [
+                    {
+                        type: "created",
+                        date: "2024-07-26 11:15",
+                        content: "Ticket created",
+                        by: "System"
+                    },
+                    {
+                        type: "reply",
+                        date: "2024-07-26 15:20",
+                        content: "Weather-related cancellations fall under our force majeure policy. Please process a full refund for the customer. We'll adjust your payout accordingly.",
+                        by: "Support Team"
+                    },
+                    {
+                        type: "user_reply",
+                        date: "2024-07-27 09:15",
+                        content: "Refund processed. Thank you for the clarification on the policy.",
+                        by: "You"
+                    },
+                    {
+                        type: "status_change",
+                        date: "2024-07-27 10:30",
+                        content: "Ticket marked as resolved",
+                        by: "Support Team"
+                    }
+                ]
+            },
+            {
+                id: "SUP-2024-004",
+                subject: "Account verification documents",
+                description: "Need to update my business license document. The current one expires next month.",
+                attachments: ["new_business_license.pdf"],
+                status: "Pending",
+                submittedBy: "You",
+                dateSubmitted: "2024-07-25 16:40",
+                lastUpdated: "2024-07-26 09:20",
+                history: [
+                    {
+                        type: "created",
+                        date: "2024-07-25 16:40",
+                        content: "Ticket created",
+                        by: "System"
+                    },
+                    {
+                        type: "status_change",
+                        date: "2024-07-26 09:20",
+                        content: "Document received and under review",
+                        by: "Verification Team"
+                    }
+                ]
+            }
+        ];
+    </script>
+
+    <script id="domReferences">
+        document.addEventListener('DOMContentLoaded', function () {
+            const faqSearchInput = document.getElementById('faqSearchInput');
+            const faqCategoryFilter = document.getElementById('faqCategoryFilter');
+            const faqContainer = document.getElementById('faqContainer');
+
+            const supportTicketForm = document.getElementById('supportTicketForm');
+            const ticketSubject = document.getElementById('ticketSubject');
+            const ticketDescription = document.getElementById('ticketDescription');
+            const attachmentDropArea = document.getElementById('attachmentDropArea');
+            const attachmentUpload = document.getElementById('attachmentUpload');
+            const attachmentPreviews = document.getElementById('attachmentPreviews');
+
+            const ticketStatusFilter = document.getElementById('ticketStatusFilter');
+            const ticketDateFromFilter = document.getElementById('ticketDateFromFilter');
+            const ticketDateToFilter = document.getElementById('ticketDateToFilter');
+            const ticketsTableBody = document.getElementById('ticketsTableBody');
+            const ticketsPaginationSummary = document.getElementById('ticketsPaginationSummary');
+            const ticketsPagination = document.getElementById('ticketsPagination');
+
+            const ticketDetailModal = document.getElementById('ticketDetailModal');
+            const ticketDetailTitle = document.getElementById('ticketDetailTitle');
+            const modalTicketStatus = document.getElementById('modalTicketStatus');
+            const modalTicketSubmittedBy = document.getElementById('modalTicketSubmittedBy');
+            const modalTicketDateSubmitted = document.getElementById('modalTicketDateSubmitted');
+            const modalTicketLastUpdated = document.getElementById('modalTicketLastUpdated');
+            const modalTicketDescription = document.getElementById('modalTicketDescription');
+            const modalTicketAttachments = document.getElementById('modalTicketAttachments');
+            const ticketHistoryContainer = document.getElementById('ticketHistoryContainer');
+            const ticketReplyFormContainer = document.getElementById('ticketReplyFormContainer');
+            const ticketReplyContent = document.getElementById('ticketReplyContent');
+            const sendTicketReplyBtn = document.getElementById('sendTicketReplyBtn');
+            const closeTicketDetailModalBtn = document.getElementById('closeTicketDetailModalBtn');
+            const closeTicketDetailModalBtn2 = document.getElementById('closeTicketDetailModalBtn2');
+
+            const statusModal = document.getElementById('statusModal');
+            const statusModalTitle = document.getElementById('statusModalTitle');
+            const statusModalMessage = document.getElementById('statusModalMessage');
+            const closeStatusModalBtn = document.getElementById('closeStatusModalBtn');
+
+            let currentTicketPage = 1;
+            const ticketsPerPage = 10;
+            let uploadedFiles = [];
+
+            function getStatusPill(status) {
+                const statusConfig = {
+                    'Open': { bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500' },
+                    'Pending': { bg: 'bg-yellow-100', text: 'text-yellow-700', dot: 'bg-yellow-500' },
+                    'Replied': { bg: 'bg-indigo-100', text: 'text-indigo-700', dot: 'bg-indigo-500' },
+                    'Closed': { bg: 'bg-gray-100', text: 'text-gray-700', dot: 'bg-gray-500' }
+                };
+                const config = statusConfig[status] || statusConfig['Open'];
+                return `<span class="status-pill ${config.bg} ${config.text}">
+                    <span class="dot ${config.dot}"></span>
+                    ${status}
+                </span>`;
+            }
+
+            function openModal(modalId) {
+                document.getElementById(modalId).classList.add('active');
+            }
+
+            function closeModal(modalId) {
+                document.getElementById(modalId).classList.remove('active');
+            }
+
+            function renderFAQs() {
+                const searchTerm = faqSearchInput.value.toLowerCase();
+                const selectedCategory = faqCategoryFilter.value;
+
+                let filteredFAQs = faqs.filter(faq => {
+                    const matchesSearch = faq.question.toLowerCase().includes(searchTerm) ||
+                        faq.answer.toLowerCase().includes(searchTerm);
+                    const matchesCategory = !selectedCategory || faq.category === selectedCategory;
+                    return matchesSearch && matchesCategory;
+                });
+
+                faqContainer.innerHTML = '';
+
+                filteredFAQs.forEach(faq => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'border border-gray-200 rounded-lg';
+                    faqItem.innerHTML = `
+                        <div class="faq-question-header p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50" data-faq-id="${faq.id}">
+                            <h4 class="font-medium text-gray-900">${faq.question}</h4>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400 transition-transform">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-4 pb-4">
+                            <p class="text-gray-600">${faq.answer}</p>
+                        </div>
+                    `;
+                    faqContainer.appendChild(faqItem);
+                });
+
+                document.querySelectorAll('.faq-question-header').forEach(header => {
+                    header.addEventListener('click', function () {
+                        const answer = this.nextElementSibling;
+                        const isExpanded = this.classList.contains('expanded');
+
+                        if (isExpanded) {
+                            this.classList.remove('expanded');
+                            answer.classList.remove('expanded');
+                        } else {
+                            this.classList.add('expanded');
+                            answer.classList.add('expanded');
+                        }
+                    });
+                });
+            }
+
+            function handleAttachmentUpload(files) {
+                Array.from(files).forEach(file => {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert(`File ${file.name} is too large. Maximum size is 10MB.`);
+                        return;
+                    }
+
+                    uploadedFiles.push(file);
+
+                    const preview = document.createElement('div');
+                    preview.className = 'flex items-center justify-between bg-gray-50 p-3 rounded-lg';
+                    preview.innerHTML = `
+                        <div class="flex items-center">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500 mr-3">
+                                <i class="ri-file-line"></i>
+                            </div>
+                            <span class="text-sm text-gray-700">${file.name}</span>
+                        </div>
+                        <button type="button" class="text-red-500 hover:text-red-700" onclick="this.parentElement.remove()">
+                            <div class="w-4 h-4 flex items-center justify-center">
+                                <i class="ri-close-line"></i>
+                            </div>
+                        </button>
+                    `;
+                    attachmentPreviews.appendChild(preview);
+                });
+            }
+
+            function renderTickets() {
+                let filteredTickets = [...supportTickets];
+
+                if (ticketStatusFilter.value) {
+                    filteredTickets = filteredTickets.filter(ticket => ticket.status === ticketStatusFilter.value);
+                }
+
+                if (ticketDateFromFilter.value) {
+                    filteredTickets = filteredTickets.filter(ticket => ticket.dateSubmitted >= ticketDateFromFilter.value);
+                }
+
+                if (ticketDateToFilter.value) {
+                    filteredTickets = filteredTickets.filter(ticket => ticket.dateSubmitted <= ticketDateToFilter.value + ' 23:59');
+                }
+
+                const startIndex = (currentTicketPage - 1) * ticketsPerPage;
+                const endIndex = startIndex + ticketsPerPage;
+                const pageTickets = filteredTickets.slice(startIndex, endIndex);
+
+                ticketsTableBody.innerHTML = '';
+
+                pageTickets.forEach(ticket => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">#${ticket.id}</td>
+                        <td class="px-6 py-4">${ticket.subject}</td>
+                        <td class="px-6 py-4">${getStatusPill(ticket.status)}</td>
+                        <td class="px-6 py-4">${new Date(ticket.lastUpdated).toLocaleString()}</td>
+                        <td class="px-6 py-4 text-center">
+                            <button data-ticket-id="${ticket.id}" class="view-ticket-btn text-blue-600 hover:text-blue-800 text-lg" title="View Details">
+                                <div class="w-6 h-6 flex items-center justify-center">
+                                    <i class="ri-eye-line"></i>
+                                </div>
+                            </button>
+                        </td>
+                    `;
+                    ticketsTableBody.appendChild(row);
+                });
+
+                const totalPages = Math.ceil(filteredTickets.length / ticketsPerPage);
+                const startItem = (currentTicketPage - 1) * ticketsPerPage + 1;
+                const endItem = Math.min(currentTicketPage * ticketsPerPage, filteredTickets.length);
+
+                ticketsPaginationSummary.textContent = `Showing ${startItem}-${endItem} of ${filteredTickets.length} entries`;
+
+                renderTicketsPaginationButtons(totalPages);
+            }
+
+            function renderTicketsPaginationButtons(totalPages) {
+                ticketsPagination.innerHTML = '';
+
+                if (totalPages <= 1) return;
+
+                const prevBtn = document.createElement('li');
+                prevBtn.innerHTML = `
+                    <button class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 ${currentTicketPage === 1 ? 'cursor-not-allowed opacity-50' : ''}" ${currentTicketPage === 1 ? 'disabled' : ''} data-page="${currentTicketPage - 1}">
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </div>
+                    </button>
+                `;
+                ticketsPagination.appendChild(prevBtn);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === 1 || i === totalPages || (i >= currentTicketPage - 1 && i <= currentTicketPage + 1)) {
+                        const pageBtn = document.createElement('li');
+                        pageBtn.innerHTML = `
+                            <button class="px-3 py-2 leading-tight border border-gray-300 ${i === currentTicketPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'}" data-page="${i}">
+                                ${i}
+                            </button>
+                        `;
+                        ticketsPagination.appendChild(pageBtn);
+                    } else if (i === currentTicketPage - 2 || i === currentTicketPage + 2) {
+                        const dots = document.createElement('li');
+                        dots.innerHTML = '<span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">...</span>';
+                        ticketsPagination.appendChild(dots);
+                    }
+                }
+
+                const nextBtn = document.createElement('li');
+                nextBtn.innerHTML = `
+                    <button class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ${currentTicketPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}" ${currentTicketPage === totalPages ? 'disabled' : ''} data-page="${currentTicketPage + 1}">
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    </button>
+                `;
+                ticketsPagination.appendChild(nextBtn);
+            }
+
+            function openTicketDetailModal(ticket) {
+                ticketDetailTitle.textContent = `Ticket ${ticket.id}: ${ticket.subject}`;
+                modalTicketStatus.innerHTML = getStatusPill(ticket.status);
+                modalTicketSubmittedBy.textContent = ticket.submittedBy;
+                modalTicketDateSubmitted.textContent = new Date(ticket.dateSubmitted).toLocaleString();
+                modalTicketLastUpdated.textContent = new Date(ticket.lastUpdated).toLocaleString();
+                modalTicketDescription.textContent = ticket.description;
+
+                modalTicketAttachments.innerHTML = '';
+                if (ticket.attachments && ticket.attachments.length > 0) {
+                    ticket.attachments.forEach(attachment => {
+                        const link = document.createElement('a');
+                        link.href = '#';
+                        link.className = 'text-blue-600 hover:text-blue-800 text-sm mr-4';
+                        link.innerHTML = `<i class="ri-attachment-line mr-1"></i>${attachment}`;
+                        modalTicketAttachments.appendChild(link);
+                    });
+                }
+
+                ticketHistoryContainer.innerHTML = '';
+                if (ticket.history && ticket.history.length > 1) {
+                    const historyTitle = document.createElement('div');
+                    historyTitle.className = 'font-semibold text-gray-800 mb-3';
+                    historyTitle.textContent = 'Ticket History';
+                    ticketHistoryContainer.appendChild(historyTitle);
+
+                    ticket.history.slice(1).forEach(entry => {
+                        const historyItem = document.createElement('div');
+                        const bgClass = entry.type === 'user_reply' ? 'bg-blue-50' : 'bg-gray-100';
+                        historyItem.className = `${bgClass} p-3 rounded-lg mb-3`;
+                        historyItem.innerHTML = `
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-sm text-gray-800">${entry.by}</span>
+                                <span class="text-xs text-gray-500">${new Date(entry.date).toLocaleString()}</span>
+                            </div>
+                            <p class="text-sm text-gray-600">${entry.content}</p>
+                        `;
+                        ticketHistoryContainer.appendChild(historyItem);
+                    });
+                }
+
+                if (ticket.status === 'Closed') {
+                    ticketReplyFormContainer.style.display = 'none';
+                } else {
+                    ticketReplyFormContainer.style.display = 'block';
+                }
+
+                openModal('ticketDetailModal');
+            }
+
+            faqSearchInput.addEventListener('input', renderFAQs);
+            faqCategoryFilter.addEventListener('change', renderFAQs);
+
+            attachmentDropArea.addEventListener('click', () => {
+                attachmentUpload.click();
+            });
+
+            attachmentDropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                attachmentDropArea.classList.add('dragover');
+            });
+
+            attachmentDropArea.addEventListener('dragleave', () => {
+                attachmentDropArea.classList.remove('dragover');
+            });
+
+            attachmentDropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                attachmentDropArea.classList.remove('dragover');
+                handleAttachmentUpload(e.dataTransfer.files);
+            });
+
+            attachmentUpload.addEventListener('change', (e) => {
+                handleAttachmentUpload(e.target.files);
+            });
+
+            supportTicketForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (!ticketSubject.value.trim() || !ticketDescription.value.trim()) {
+                    statusModalTitle.textContent = 'Error';
+                    statusModalMessage.textContent = 'Please fill in all required fields.';
+                    openModal('statusModal');
+                    return;
+                }
+
+                const newTicket = {
+                    id: `SUP-2024-${String(supportTickets.length + 1).padStart(3, '0')}`,
+                    subject: ticketSubject.value.trim(),
+                    description: ticketDescription.value.trim(),
+                    attachments: uploadedFiles.map(file => file.name),
+                    status: 'Open',
+                    submittedBy: 'You',
+                    dateSubmitted: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                    lastUpdated: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                    history: [
+                        {
+                            type: 'created',
+                            date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                            content: 'Ticket created',
+                            by: 'System'
+                        }
+                    ]
+                };
+
+                supportTickets.unshift(newTicket);
+                renderTickets();
+
+                supportTicketForm.reset();
+                attachmentPreviews.innerHTML = '';
+                uploadedFiles = [];
+
+                statusModalTitle.textContent = 'Success';
+                statusModalMessage.textContent = 'Your support ticket has been submitted successfully. We will respond within 24 hours.';
+                openModal('statusModal');
+            });
+
+            ticketStatusFilter.addEventListener('change', () => {
+                currentTicketPage = 1;
+                renderTickets();
+            });
+
+            ticketDateFromFilter.addEventListener('change', () => {
+                currentTicketPage = 1;
+                renderTickets();
+            });
+
+            ticketDateToFilter.addEventListener('change', () => {
+                currentTicketPage = 1;
+                renderTickets();
+            });
+
+            ticketsTableBody.addEventListener('click', (e) => {
+                const button = e.target.closest('.view-ticket-btn');
+                if (button) {
+                    const ticketId = button.dataset.ticketId;
+                    const ticket = supportTickets.find(t => t.id === ticketId);
+                    if (ticket) {
+                        openTicketDetailModal(ticket);
+                    }
+                }
+            });
+
+            ticketsPagination.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (button && button.dataset.page) {
+                    currentTicketPage = parseInt(button.dataset.page);
+                    renderTickets();
+                }
+            });
+
+            sendTicketReplyBtn.addEventListener('click', () => {
+                const replyContent = ticketReplyContent.value.trim();
+                if (!replyContent) return;
+
+                const ticketId = ticketDetailTitle.textContent.match(/Ticket (SUP-\d+-\d+):/)[1];
+                const ticket = supportTickets.find(t => t.id === ticketId);
+
+                if (ticket) {
+                    ticket.history.push({
+                        type: 'user_reply',
+                        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                        content: replyContent,
+                        by: 'You'
+                    });
+
+                    if (ticket.status === 'Open') {
+                        ticket.status = 'Replied';
+                    }
+
+                    ticket.lastUpdated = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
+                    renderTickets();
+                    ticketReplyContent.value = '';
+
+                    statusModalTitle.textContent = 'Success';
+                    statusModalMessage.textContent = 'Your reply has been sent successfully.';
+                    openModal('statusModal');
+                    closeModal('ticketDetailModal');
+                }
+            });
+
+            closeTicketDetailModalBtn.addEventListener('click', () => closeModal('ticketDetailModal'));
+            closeTicketDetailModalBtn2.addEventListener('click', () => closeModal('ticketDetailModal'));
+            closeStatusModalBtn.addEventListener('click', () => closeModal('statusModal'));
+
+            ticketDetailModal.addEventListener('click', (e) => {
+                if (e.target === ticketDetailModal) {
+                    closeModal('ticketDetailModal');
+                }
+            });
+
+            statusModal.addEventListener('click', (e) => {
+                if (e.target === statusModal) {
+                    closeModal('statusModal');
+                }
+            });
+
+            renderFAQs();
+            renderTickets();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#8b5cf6'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /*font-family: 'Inter', sans-serif;*/
+            overflow: hidden;
+        }
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+        }
+
+        .sidebar-link.active {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: #4f46e5;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #4f46e5;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            /* font-family: 'Inter', sans-serif; */
+            background-color: #f8fafc;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rounded-button {
+            border-radius: 9999px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-pill .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex h-screen">
+        <aside id="sidebar"
+            class="w-64 bg-white shadow-md h-full flex flex-col transition-all duration-300 ease-in-out">
+            <div class="p-6 flex items-center border-b">
+                <span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-4">
+                <ul class="space-y-1 px-3">
+
+                    <!-- Home -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Home-Dashboard.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-button text-gray-700 ">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+
+                    <!-- My Listings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\My-Listings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-ticket-line"></i>
+                            </div>
+                            My Listings
+                        </a>
+                    </li>
+
+                    <!-- Bookings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Bookings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-check-line"></i>
+                            </div>
+                            Bookings
+                        </a>
+                    </li>
+
+                    <!-- Requests -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Requests.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-questionnaire-line"></i>
+                            </div>
+                            Requests
+                        </a>
+                    </li>
+
+                    <!-- Messages -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Messages.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-message-3-line"></i>
+                            </div>
+                            Messages
+                        </a>
+                    </li>
+
+                    <!-- Reviews -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Reviews.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-star-line"></i>
+                            </div>
+                            Reviews
+                        </a>
+                    </li>
+
+
+                    <!-- payouts -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Payouts.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-wallet-line"></i>
+                            </div>
+                            Payouts
+                        </a>
+                    </li>
+
+                    <!-- Analytics -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Analytics.html"
+                            class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line"></i>
+                            </div>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <!-- Profile Settings -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Profile-Settings.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-3-line"></i>
+                            </div>
+                            Profile Settings
+                        </a>
+                    </li>
+
+                    <!-- Support -->
+                    <li>
+                        <a href="C:\Users\user\Downloads\Business-owner\web\Support.html"
+                            class="sidebar-link flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-button">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-lifebuoy-line"></i>
+                            </div>
+                            Support
+                        </a>
+                    </li>
+
+
+                </ul>
+            </nav>
+
+
+
+
+            <div class="p-4 border-t">
+                <button id="collapse-sidebar"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-button hover:bg-gray-200 transition-colors whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-arrow-left-line"></i>
+                    </div>
+                    Collapse Sidebar
+                </button>
+            </div>
+        </aside>
+        <script id="sidebar-toggle-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const collapseBtn = document.getElementById('collapse-sidebar');
+                const expandBtn = document.getElementById('expand-sidebar');
+                // Add submenu toggle functionality
+                const sidebarButtons = document.querySelectorAll('button.sidebar-link');
+                sidebarButtons.forEach(button => {
+                    const submenu = button.nextElementSibling;
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        submenu.classList.toggle('hidden');
+                        button.setAttribute('data-expanded', submenu.classList.contains('hidden') ? 'false' : 'true');
+                        // Find and rotate the arrow icon
+                        const arrowIcon = button.querySelector('.group-data-\\[expanded\\=true\\]\\:rotate-180');
+                        if (submenu.classList.contains('hidden')) {
+                            arrowIcon.style.transform = 'rotate(0deg)';
+                        } else {
+                            arrowIcon.style.transform = 'rotate(180deg)';
+                        }
+                    });
+                });
+                collapseBtn.addEventListener('click', function () {
+                    sidebar.classList.add('w-20');
+                    sidebar.classList.remove('w-64');
+                    // Hide text and show only icons
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    collapseBtn.classList.add('hidden');
+                    expandBtn.classList.remove('hidden');
+                });
+                expandBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    // Show text again
+                    document.querySelectorAll('.sidebar-link span').forEach(el => {
+                        el.classList.remove('hidden');
+                    });
+                    collapseBtn.classList.remove('hidden');
+                    expandBtn.classList.add('hidden');
+                });
+            });
+        </script>
+        <script id="profile-dropdown-script">
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileMenuButton = document.getElementById('profile-menu-button');
+                const profileDropdown = document.getElementById('profile-dropdown');
+                profileMenuButton.addEventListener('click', function () {
+                    profileDropdown.classList.toggle('hidden');
+                });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (!profileMenuButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                        profileDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        </script>
+
+        <header class="fixed top-0 left-64 right-0 bg-white shadow-sm z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- <div> -->
+                <!-- Search here -->
+                <div class="flex items-center flex-1">
+                    <button id="expand-sidebar"
+                        class="hidden mr-4 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="ri-menu-line ri-lg"></i>
+                    </button>
+                    <div class="relative max-w-md w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400">
+                                <i class="ri-search-line"></i>
+                            </div>
+                        </div>
+                        <input type="search"
+                            class="block w-full pl-10 pr-4 py-2 border-none rounded-button bg-gray-100 focus:bg-white focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm"
+                            placeholder="Search ...">
+                    </div>
+                </div>
+                <!-- <nav class="text-sm text-gray-500 mb-1">
+                        <span>Dashboard</span>
+                        <span class="mx-2">/</span>
+                        <span>My Listings</span>
+                        <span class="mx-2">/</span>
+                        <span class="text-gray-900">Add New Listing</span>
+                    </nav>
+                    <h1 class="text-2xl font-semibold text-gray-900">Add New Listing</h1> -->
+                <!-- Date, Notification, and User Profile here -->
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600 hidden md:block">
+                        July 2, 2025 • Wednesday
+                    </div>
+                    <div class="relative">
+                        <button
+                            class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
+                            <div class="w-6 h-6 flex items-center justify-center relative">
+                                <i class="ri-notification-3-line"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                            <!-- <div
+                                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                                    <div class="w-6 h-6 flex items-center justify-center text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                    </div>
+                                </div> -->
+                            <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                    alt="John Smith" class="w-full h-full object-cover">
+                            </div>
+                            <div class="hidden md:block text-left">
+                                <!-- <div class="text-sm font-medium">Emma Thompson</div> -->
+                                <span class="text-sm font-medium text-gray-900">John Smith</span>
+
+                                <div class="text-xs text-gray-500">Admin</div>
+                            </div>
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                <i class="ri-arrow-down-s-line"></i>
+                            </div>
+                        </button>
+                        <div id="profile-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div> -->
+                <!-- <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+                        <i class="ri-notification-3-line text-gray-600 ri-lg"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 cursor-pointer">
+                        <div class="w-10 h-10 bg-primary rounded-full overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=professional%20business%20headshot%20of%20John%20Smith%2C%20male%20executive%2C%20confident%20smile%2C%20business%20attire%2C%20clean%20background&width=80&height=80&seq=1&orientation=squarish"
+                                alt="John Smith" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">John Smith</span>
+                        <div class="w-5 h-5 flex items-center justify-center">
+                            <i class="ri-arrow-down-s-line text-gray-600"></i>
+                        </div>
+                    </div>
+                    
+                </div> -->
+            </div>
+        </header>
+        <main class="flex-1 px-4 pb-4 md:p-8 mt-16 overflow-y-auto">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Analytics</h1>
+                <p class="text-gray-600 mt-2">Dive deep into your performance data. Understand listing views, booking
+                    trends, customer demographics, and traffic sources to optimize your strategy.</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6">
+                    <button id="exportDataBtn"
+                        class="ctaz bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors flex items-center gap-2 !rounded-button whitespace-nowrap">
+                        <div class="w-4 h-4 flex items-center justify-center">
+                            <i class="ri-download-2-line"></i>
+                        </div>
+                        Export Data
+                    </button>
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <label class="text-sm font-medium text-gray-700">Period:</label>
+                        <select id="analyticsDateRange"
+                            class="block px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="last7days">Last 7 Days</option>
+                            <option value="last30days" selected>Last 30 Days</option>
+                            <option value="thisMonth">This Month</option>
+                            <option value="lastMonth">Last Month</option>
+                            <option value="thisQuarter">This Quarter</option>
+                            <option value="thisYear">This Year</option>
+                            <option value="lifetime">Lifetime</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+            <section class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Overall Performance Snapshot</h3>
+                <p class="text-gray-600 mb-6">Key metrics highlighting your overall platform engagement and revenue
+                    generation.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Total Views</div>
+                        <div id="totalViews" class="text-3xl font-bold text-gray-900">24,567</div>
+                        <div id="totalViewsChange" class="flex items-center text-sm mt-2">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1 text-green-600">
+                                <i class="ri-arrow-up-line"></i>
+                            </div>
+                            <span class="text-green-600">+12.5% from previous period</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Total Bookings</div>
+                        <div id="totalBookings" class="text-3xl font-bold text-gray-900">1,847</div>
+                        <div id="totalBookingsChange" class="flex items-center text-sm mt-2">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1 text-green-600">
+                                <i class="ri-arrow-up-line"></i>
+                            </div>
+                            <span class="text-green-600">+8.3% from previous period</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Conversion Rate</div>
+                        <div id="conversionRate" class="text-3xl font-bold text-gray-900">7.5%</div>
+                        <div id="conversionRateChange" class="flex items-center text-sm mt-2">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1 text-red-600">
+                                <i class="ri-arrow-down-line"></i>
+                            </div>
+                            <span class="text-red-600">-2.1% from previous period</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <div class="text-gray-500 text-sm font-medium mb-2">Average Order Value</div>
+                        <div id="avgOrderValue" class="text-3xl font-bold text-gray-900">$185</div>
+                        <div id="avgOrderValueChange" class="flex items-center text-sm mt-2">
+                            <div class="w-4 h-4 flex items-center justify-center mr-1 text-green-600">
+                                <i class="ri-arrow-up-line"></i>
+                            </div>
+                            <span class="text-green-600">+5.7% from previous period</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Performance Trends</h3>
+                <p class="text-gray-600 mb-6">Visualize your views, bookings, and revenue trends over the selected
+                    period to identify growth patterns or areas needing attention.</p>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="chart-container">
+                        <canvas id="performanceTrendChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Listing Performance</h3>
+                <p class="text-gray-600 mb-6">Understand how individual listings are performing in terms of views,
+                    bookings, and revenue.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h4 class="text-lg font-medium text-gray-800 mb-4">Top 10 Listings by Views</h4>
+                        <div class="chart-container">
+                            <canvas id="topListingsViewsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h4 class="text-lg font-medium text-gray-800 mb-4">Top 10 Listings by Bookings</h4>
+                        <div class="chart-container">
+                            <canvas id="topListingsBookingsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                    <h4 class="text-lg font-medium text-gray-800 mb-4">Detailed Listing Performance Table</h4>
+                    <div class="table-responsive">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Listing Name</th>
+                                    <th scope="col" class="px-6 py-3">Category</th>
+                                    <th scope="col" class="px-6 py-3">Views</th>
+                                    <th scope="col" class="px-6 py-3">Bookings</th>
+                                    <th scope="col" class="px-6 py-3">Revenue</th>
+                                    <th scope="col" class="px-6 py-3">Avg. Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailedListingPerformanceTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Customer Demographics & Behavior</h3>
+                <p class="text-gray-600 mb-6">Understand who your customers are and how they interact with your
+                    listings.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h4 class="text-lg font-medium text-gray-800 mb-4">Customer Age Distribution</h4>
+                        <div class="chart-container">
+                            <canvas id="customerAgeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h4 class="text-lg font-medium text-gray-800 mb-4">Customers by Top Locations</h4>
+                        <div class="chart-container">
+                            <canvas id="customerLocationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Traffic Sources</h3>
+                <p class="text-gray-600 mb-6">See where your listing views are coming from to optimize your marketing
+                    efforts.</p>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="chart-container h-64">
+                        <canvas id="trafficSourcesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script id="mockData">
+        const mockListings = [
+            { id: 1, name: "Doha City Tour", category: "City Tours", views: 4567, bookings: 234, revenue: 28500, rating: 4.8 },
+            { id: 2, name: "Desert Safari Adventure", category: "Adventure", views: 3892, bookings: 189, revenue: 31200, rating: 4.9 },
+            { id: 3, name: "Souq Waqif Cultural Walk", category: "Cultural", views: 3245, bookings: 156, revenue: 18700, rating: 4.6 },
+            { id: 4, name: "Museum of Islamic Art Visit", category: "Museums", views: 2876, bookings: 143, revenue: 14300, rating: 4.7 },
+            { id: 5, name: "Pearl Diving Experience", category: "Adventure", views: 2654, bookings: 98, revenue: 19600, rating: 4.5 },
+            { id: 6, name: "Katara Cultural Village Tour", category: "Cultural", views: 2341, bookings: 87, revenue: 13050, rating: 4.4 },
+            { id: 7, name: "Al Zubarah Archaeological Site", category: "Historical", views: 1987, bookings: 76, revenue: 11400, rating: 4.3 },
+            { id: 8, name: "Falcon Souq Experience", category: "Cultural", views: 1765, bookings: 64, revenue: 9600, rating: 4.2 },
+            { id: 9, name: "Corniche Waterfront Walk", category: "Walking Tours", views: 1543, bookings: 52, revenue: 7800, rating: 4.1 },
+            { id: 10, name: "Traditional Dhow Cruise", category: "Boat Tours", views: 1234, bookings: 41, revenue: 8200, rating: 4.0 }
+        ];
+        const analyticsData = {
+            last7days: {
+                totalViews: 5847, totalBookings: 287, conversionRate: 4.9, avgOrderValue: 165,
+                prevPeriod: { totalViews: 5234, totalBookings: 251, conversionRate: 4.8, avgOrderValue: 158 },
+                performanceTrend: {
+                    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                    views: [756, 892, 934, 823, 1045, 967, 430],
+                    bookings: [38, 45, 47, 41, 52, 48, 16],
+                    revenue: [6270, 7425, 7755, 6765, 8580, 7920, 2640]
+                },
+                customerAge: { '18-24': 15, '25-34': 35, '35-44': 28, '45-54': 15, '55+': 7 },
+                customerLocation: { 'United States': 25, 'United Kingdom': 18, 'Germany': 12, 'France': 10, 'Australia': 8, 'Canada': 7, 'Other': 20 },
+                trafficSources: { 'Direct': 35, 'Google Search': 28, 'Social Media': 15, 'Referrals': 12, 'Email': 10 }
+            },
+            last30days: {
+                totalViews: 24567, totalBookings: 1847, conversionRate: 7.5, avgOrderValue: 185,
+                prevPeriod: { totalViews: 21834, totalBookings: 1704, conversionRate: 7.8, avgOrderValue: 175 },
+                performanceTrend: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    views: [5892, 6234, 6789, 5652],
+                    bookings: [442, 468, 509, 428],
+                    revenue: [81770, 86580, 94165, 79200]
+                },
+                customerAge: { '18-24': 18, '25-34': 32, '35-44': 26, '45-54': 16, '55+': 8 },
+                customerLocation: { 'United States': 28, 'United Kingdom': 16, 'Germany': 14, 'France': 11, 'Australia': 9, 'Canada': 6, 'Other': 16 },
+                trafficSources: { 'Direct': 32, 'Google Search': 31, 'Social Media': 18, 'Referrals': 11, 'Email': 8 }
+            },
+            thisMonth: {
+                totalViews: 18234, totalBookings: 1367, conversionRate: 7.5, avgOrderValue: 192,
+                prevPeriod: { totalViews: 16789, totalBookings: 1245, conversionRate: 7.4, avgOrderValue: 188 },
+                performanceTrend: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    views: [4567, 4892, 4623, 4152],
+                    bookings: [342, 367, 347, 311],
+                    revenue: [65664, 70464, 66624, 59712]
+                },
+                customerAge: { '18-24': 17, '25-34': 33, '35-44': 27, '45-54': 15, '55+': 8 },
+                customerLocation: { 'United States': 30, 'United Kingdom': 15, 'Germany': 13, 'France': 12, 'Australia': 10, 'Canada': 7, 'Other': 13 },
+                trafficSources: { 'Direct': 34, 'Google Search': 29, 'Social Media': 19, 'Referrals': 10, 'Email': 8 }
+            }
+        };
+        let performanceTrendChartInstance = null;
+        let topListingsViewsChartInstance = null;
+        let topListingsBookingsChartInstance = null;
+        let customerAgeChartInstance = null;
+        let customerLocationChartInstance = null;
+        let trafficSourcesChartInstance = null;
+    </script>
+    <script id="analyticsController">
+        document.addEventListener('DOMContentLoaded', function () {
+            const analyticsDateRangeSelect = document.getElementById('analyticsDateRange');
+            const exportDataBtn = document.getElementById('exportDataBtn');
+            const totalViewsEl = document.getElementById('totalViews');
+            const totalBookingsEl = document.getElementById('totalBookings');
+            const conversionRateEl = document.getElementById('conversionRate');
+            const avgOrderValueEl = document.getElementById('avgOrderValue');
+            const totalViewsChangeEl = document.getElementById('totalViewsChange');
+            const totalBookingsChangeEl = document.getElementById('totalBookingsChange');
+            const conversionRateChangeEl = document.getElementById('conversionRateChange');
+            const avgOrderValueChangeEl = document.getElementById('avgOrderValueChange');
+            const detailedListingPerformanceTableBody = document.getElementById('detailedListingPerformanceTableBody');
+            const performanceTrendCanvas = document.getElementById('performanceTrendChart');
+            const topListingsViewsCanvas = document.getElementById('topListingsViewsChart');
+            const topListingsBookingsCanvas = document.getElementById('topListingsBookingsChart');
+            const customerAgeCanvas = document.getElementById('customerAgeChart');
+            const customerLocationCanvas = document.getElementById('customerLocationChart');
+            const trafficSourcesCanvas = document.getElementById('trafficSourcesChart');
+            function renderChange(current, previous, element, isPercentage = false) {
+                const change = ((current - previous) / previous) * 100;
+                const isPositive = change > 0;
+                const changeText = isPercentage ?
+                    `${isPositive ? '+' : ''}${change.toFixed(1)}% from previous period` :
+                    `${isPositive ? '+' : ''}${change.toFixed(1)}% from previous period`;
+                element.innerHTML = `
+<div class="w-4 h-4 flex items-center justify-center mr-1 ${isPositive ? 'text-green-600' : 'text-red-600'}">
+<i class="ri-arrow-${isPositive ? 'up' : 'down'}-line"></i>
+</div>
+<span class="${isPositive ? 'text-green-600' : 'text-red-600'}">${changeText}</span>
+`;
+            }
+            function renderKPIs(data, prevData) {
+                totalViewsEl.textContent = data.totalViews.toLocaleString();
+                totalBookingsEl.textContent = data.totalBookings.toLocaleString();
+                conversionRateEl.textContent = `${data.conversionRate}%`;
+                avgOrderValueEl.textContent = `$${data.avgOrderValue}`;
+                renderChange(data.totalViews, prevData.totalViews, totalViewsChangeEl);
+                renderChange(data.totalBookings, prevData.totalBookings, totalBookingsChangeEl);
+                renderChange(data.conversionRate, prevData.conversionRate, conversionRateChangeEl, true);
+                renderChange(data.avgOrderValue, prevData.avgOrderValue, avgOrderValueChangeEl);
+            }
+            function destroyChart(chartInstance) {
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+                return null;
+            }
+            function updateCharts(data) {
+                performanceTrendChartInstance = destroyChart(performanceTrendChartInstance);
+                topListingsViewsChartInstance = destroyChart(topListingsViewsChartInstance);
+                topListingsBookingsChartInstance = destroyChart(topListingsBookingsChartInstance);
+                customerAgeChartInstance = destroyChart(customerAgeChartInstance);
+                customerLocationChartInstance = destroyChart(customerLocationChartInstance);
+                trafficSourcesChartInstance = destroyChart(trafficSourcesChartInstance);
+                performanceTrendChartInstance = new Chart(performanceTrendCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: data.performanceTrend.labels,
+                        datasets: [
+                            {
+                                label: 'Views',
+                                data: data.performanceTrend.views,
+                                borderColor: 'rgba(87, 181, 231, 1)',
+                                backgroundColor: 'rgba(87, 181, 231, 0.1)',
+                                yAxisID: 'y',
+                                tension: 0.4,
+                                pointRadius: 0,
+                                fill: true
+                            },
+                            {
+                                label: 'Bookings',
+                                data: data.performanceTrend.bookings,
+                                borderColor: 'rgba(141, 211, 199, 1)',
+                                backgroundColor: 'rgba(141, 211, 199, 0.1)',
+                                yAxisID: 'y1',
+                                tension: 0.4,
+                                pointRadius: 0,
+                                fill: true
+                            },
+                            {
+                                label: 'Revenue ($)',
+                                data: data.performanceTrend.revenue,
+                                borderColor: 'rgba(251, 191, 114, 1)',
+                                backgroundColor: 'rgba(251, 191, 114, 0.1)',
+                                yAxisID: 'y2',
+                                tension: 0.4,
+                                pointRadius: 0,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function (context) {
+                                        if (context.datasetIndex === 2) {
+                                            return `${context.dataset.label}: $${context.parsed.y.toLocaleString()}`;
+                                        }
+                                        return `${context.dataset.label}: ${context.parsed.y.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false }
+                            },
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                grid: { color: '#f3f4f6' },
+                                ticks: { color: '#1f2937' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: false,
+                                position: 'right',
+                                grid: { drawOnChartArea: false }
+                            },
+                            y2: {
+                                type: 'linear',
+                                display: false,
+                                position: 'right',
+                                grid: { drawOnChartArea: false }
+                            }
+                        }
+                    }
+                });
+                const topViewsData = mockListings.slice(0, 10).reverse();
+                topListingsViewsChartInstance = new Chart(topListingsViewsCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: topViewsData.map(listing => listing.name.length > 20 ? listing.name.substring(0, 20) + '...' : listing.name),
+                        datasets: [{
+                            label: 'Views',
+                            data: topViewsData.map(listing => listing.views),
+                            backgroundColor: 'rgba(87, 181, 231, 0.8)',
+                            borderColor: 'rgba(87, 181, 231, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: '#f3f4f6' },
+                                ticks: { color: '#1f2937' }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { color: '#1f2937' }
+                            }
+                        }
+                    }
+                });
+                const topBookingsData = mockListings.slice(0, 10).reverse();
+                topListingsBookingsChartInstance = new Chart(topListingsBookingsCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: topBookingsData.map(listing => listing.name.length > 20 ? listing.name.substring(0, 20) + '...' : listing.name),
+                        datasets: [{
+                            label: 'Bookings',
+                            data: topBookingsData.map(listing => listing.bookings),
+                            backgroundColor: 'rgba(141, 211, 199, 0.8)',
+                            borderColor: 'rgba(141, 211, 199, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: '#f3f4f6' },
+                                ticks: { color: '#1f2937' }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { color: '#1f2937' }
+                            }
+                        }
+                    }
+                });
+                customerAgeChartInstance = new Chart(customerAgeCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data.customerAge),
+                        datasets: [{
+                            data: Object.values(data.customerAge),
+                            backgroundColor: [
+                                'rgba(87, 181, 231, 0.8)',
+                                'rgba(141, 211, 199, 0.8)',
+                                'rgba(251, 191, 114, 0.8)',
+                                'rgba(252, 141, 98, 0.8)',
+                                'rgba(87, 181, 231, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(87, 181, 231, 1)',
+                                'rgba(141, 211, 199, 1)',
+                                'rgba(251, 191, 114, 1)',
+                                'rgba(252, 141, 98, 1)',
+                                'rgba(87, 181, 231, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.label}: ${context.parsed}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                customerLocationChartInstance = new Chart(customerLocationCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(data.customerLocation),
+                        datasets: [{
+                            label: 'Percentage',
+                            data: Object.values(data.customerLocation),
+                            backgroundColor: 'rgba(141, 211, 199, 0.8)',
+                            borderColor: 'rgba(141, 211, 199, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.parsed.y}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#1f2937',
+                                    callback: function (value, index) {
+                                        const label = this.getLabelForValue(value);
+                                        return label.length > 10 ? label.substring(0, 10) + '...' : label;
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: { color: '#f3f4f6' },
+                                ticks: {
+                                    color: '#1f2937',
+                                    callback: function (value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                trafficSourcesChartInstance = new Chart(trafficSourcesCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data.trafficSources),
+                        datasets: [{
+                            data: Object.values(data.trafficSources),
+                            backgroundColor: [
+                                'rgba(87, 181, 231, 0.8)',
+                                'rgba(141, 211, 199, 0.8)',
+                                'rgba(251, 191, 114, 0.8)',
+                                'rgba(252, 141, 98, 0.8)',
+                                'rgba(87, 181, 231, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(87, 181, 231, 1)',
+                                'rgba(141, 211, 199, 1)',
+                                'rgba(251, 191, 114, 1)',
+                                'rgba(252, 141, 98, 1)',
+                                'rgba(87, 181, 231, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                                titleColor: '#1f2937',
+                                bodyColor: '#1f2937',
+                                borderColor: '#e5e7eb',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.label}: ${context.parsed}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            function renderDetailedListingPerformanceTable(data) {
+                const sortedListings = [...mockListings].sort((a, b) => b.revenue - a.revenue);
+                detailedListingPerformanceTableBody.innerHTML = '';
+                sortedListings.forEach(listing => {
+                    const row = document.createElement('tr');
+                    row.className = 'bg-white border-b hover:bg-gray-50';
+                    row.innerHTML = `
+<td class="px-6 py-4 font-medium text-gray-900">${listing.name}</td>
+<td class="px-6 py-4 text-gray-500">${listing.category}</td>
+<td class="px-6 py-4 text-gray-900">${listing.views.toLocaleString()}</td>
+<td class="px-6 py-4 text-gray-900">${listing.bookings.toLocaleString()}</td>
+<td class="px-6 py-4 text-gray-900">$${listing.revenue.toLocaleString()}</td>
+<td class="px-6 py-4">
+<div class="flex items-center">
+<div class="w-4 h-4 flex items-center justify-center mr-1 text-yellow-400">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-900">${listing.rating}</span>
+</div>
+</td>
+`;
+                    detailedListingPerformanceTableBody.appendChild(row);
+                });
+            }
+            function getPreviousPeriodKey(currentPeriod) {
+                const periodMap = {
+                    'last7days': 'last7days',
+                    'last30days': 'last30days',
+                    'thisMonth': 'thisMonth',
+                    'lastMonth': 'thisMonth',
+                    'thisQuarter': 'thisMonth',
+                    'thisYear': 'thisMonth',
+                    'lifetime': 'thisMonth'
+                };
+                return periodMap[currentPeriod] || 'last30days';
+            }
+            function renderAnalyticsDashboard(selectedRange) {
+                const data = analyticsData[selectedRange] || analyticsData['last30days'];
+                const prevData = data.prevPeriod;
+                renderKPIs(data, prevData);
+                updateCharts(data);
+                renderDetailedListingPerformanceTable(data);
+            }
+            analyticsDateRangeSelect.addEventListener('change', function () {
+                renderAnalyticsDashboard(this.value);
+            });
+            exportDataBtn.addEventListener('click', function () {
+                alert('Exporting analytics data... This would trigger a download in a real application.');
+            });
+            renderAnalyticsDashboard('last30days');
+        });
+    </script>
+</body>
+
+</html>
