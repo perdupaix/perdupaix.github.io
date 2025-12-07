@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#3B82F6',secondary:'#F59E0B'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+background-color: #FAFAFA;
+}
+.tab-content {
+display: none;
+}
+.tab-content.active {
+display: block;
+}
+.skeleton {
+animation: skeleton-loading 1s linear infinite alternate;
+}
+@keyframes skeleton-loading {
+0% {
+background-color: rgba(200, 200, 200, 0.1);
+}
+100% {
+background-color: rgba(200, 200, 200, 0.3);
+}
+}
+</style>
+</head>
+<body class="bg-white flex justify-center min-h-screen">
+<div class="w-full max-w-[375px] relative mx-auto">
+<!-- Nav Bar -->
+<nav class="fixed top-0 w-full max-w-[375px] bg-white shadow-sm z-50 px-4 py-3 flex items-center justify-between left-1/2 -translate-x-1/2">
+<div class="flex items-center">
+<h1 class="text-xl font-['Pacifico'] text-primary">logo</h1>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-notification-3-line ri-lg"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-settings-3-line ri-lg"></i>
+</div>
+</div>
+</nav>
+<!-- Main Content with proper spacing from fixed elements -->
+<main class="pt-16 pb-16">
+<!-- Profile Header -->
+<section class="px-4 pt-6 pb-4">
+<div class="flex flex-col items-center">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20photo%20of%20a%20middle%20eastern%20man%20in%20his%2030s%20with%20short%20beard%2C%20friendly%20smile%2C%20outdoor%20setting%20with%20natural%20lighting%2C%20high%20quality%20professional%20headshot&width=160&height=160&seq=1&orientation=squarish" alt="Profile Picture" class="w-20 h-20 rounded-full object-cover border-2 border-primary">
+<div class="absolute bottom-0 right-0 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer">
+<i class="ri-camera-line ri-sm"></i>
+</div>
+</div>
+<h2 class="mt-3 text-xl font-semibold">Ahmed Al-Mansoori</h2>
+<p class="text-gray-600 text-sm mt-1">@DohaExplorer</p>
+<p class="text-gray-700 text-center mt-2 max-w-xs">Outdoor enthusiast and adventure seeker exploring Qatar's hidden gems</p>
+<div class="flex items-center justify-center space-x-6 mt-4">
+<button class="flex flex-col items-center">
+<span class="font-semibold">248</span>
+<span class="text-xs text-gray-500">Following</span>
+</button>
+<div class="h-8 w-px bg-gray-200"></div>
+<button class="flex flex-col items-center">
+<span class="font-semibold">1.2K</span>
+<span class="text-xs text-gray-500">Followers</span>
+</button>
+<div class="h-8 w-px bg-gray-200"></div>
+<button class="flex flex-col items-center">
+<span class="font-semibold">86</span>
+<span class="text-xs text-gray-500">Friends</span>
+</button>
+</div>
+<button class="mt-4 px-4 py-1.5 border border-primary text-primary rounded-button text-sm font-medium cursor-pointer hover:bg-primary/5">Edit Profile</button>
+</div>
+<!-- Stats & Level -->
+<div class="space-y-4 mt-6">
+<div class="grid grid-cols-4 gap-2">
+<div class="flex flex-col items-center bg-white rounded-lg py-3 shadow-sm border border-gray-100">
+<span class="text-lg font-semibold text-primary">24</span>
+<span class="text-xs text-gray-600">Reviews</span>
+</div>
+<div class="flex flex-col items-center bg-white rounded-lg py-3 shadow-sm border border-gray-100">
+<span class="text-lg font-semibold text-primary">87</span>
+<span class="text-xs text-gray-600">Photos</span>
+</div>
+<div class="flex flex-col items-center bg-white rounded-lg py-3 shadow-sm border border-gray-100">
+<span class="text-lg font-semibold text-primary">12</span>
+<span class="text-xs text-gray-600">Itineraries</span>
+</div>
+<div class="flex flex-col items-center bg-white rounded-lg py-3 shadow-sm border border-gray-100">
+<span class="text-lg font-semibold text-primary">7</span>
+<span class="text-xs text-gray-600">Level</span>
+</div>
+</div>
+<!-- Level Progress -->
+<div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<i class="ri-vip-crown-line text-primary"></i>
+</div>
+<div class="ml-3">
+<h3 class="font-medium">Desert Explorer</h3>
+<p class="text-xs text-gray-500">Level 7 • 3,450 Points</p>
+</div>
+</div>
+<button class="text-xs text-primary">View Rewards</button>
+</div>
+<div class="relative w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+<div class="absolute left-0 top-0 h-full bg-primary rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-xs text-gray-500 mt-2">550 points until Level 8</p>
+<!-- Badges -->
+<div class="mt-4">
+<div class="flex items-center justify-between mb-3">
+<h4 class="text-sm font-medium">Recent Badges</h4>
+<button class="text-xs text-primary">View All</button>
+</div>
+<div class="flex space-x-4 overflow-x-auto pb-2 no-scrollbar">
+<div class="flex flex-col items-center min-w-[64px]">
+<div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+<i class="ri-medal-line text-yellow-600"></i>
+</div>
+<span class="text-xs text-gray-600 mt-1">Top Reviewer</span>
+</div>
+<div class="flex flex-col items-center min-w-[64px]">
+<div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+<i class="ri-camera-line text-blue-600"></i>
+</div>
+<span class="text-xs text-gray-600 mt-1">Photo Pro</span>
+</div>
+<div class="flex flex-col items-center min-w-[64px]">
+<div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+<i class="ri-map-pin-line text-green-600"></i>
+</div>
+<span class="text-xs text-gray-600 mt-1">Explorer</span>
+</div>
+<div class="flex flex-col items-center min-w-[64px]">
+<div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+<i class="ri-calendar-check-line text-purple-600"></i>
+</div>
+<span class="text-xs text-gray-600 mt-1">Event Pro</span>
+</div>
+<div class="flex flex-col items-center min-w-[64px]">
+<div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+<i class="ri-heart-line text-red-600"></i>
+</div>
+<span class="text-xs text-gray-600 mt-1">Liked 100+</span>
+</div>
+</div>
+</div>
+<!-- Upcoming Rewards -->
+<div class="mt-4">
+<h4 class="text-sm font-medium mb-3">Next Rewards</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+<i class="ri-gift-line text-orange-600"></i>
+</div>
+<div class="ml-3">
+<h5 class="text-sm">Premium Access</h5>
+<div class="flex items-center">
+<div class="w-24 h-1 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 rounded-full" style="width: 60%"></div>
+</div>
+<span class="text-xs text-gray-500 ml-2">60/100</span>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary">Details</button>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center">
+<i class="ri-vip-diamond-line text-teal-600"></i>
+</div>
+<div class="ml-3">
+<h5 class="text-sm">VIP Status</h5>
+<div class="flex items-center">
+<div class="w-24 h-1 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-teal-500 rounded-full" style="width: 40%"></div>
+</div>
+<span class="text-xs text-gray-500 ml-2">40/100</span>
+</div>
+</div>
+</div>
+<button class="text-xs text-primary">Details</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="px-4 py-3 bg-white shadow-sm sticky top-16 z-10">
+<div class="flex overflow-x-auto pb-2 no-scrollbar">
+<div class="flex space-x-4">
+<div class="flex flex-col items-center min-w-[70px] cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+<i class="ri-share-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs mt-1 text-gray-700">Share</span>
+</div>
+<div class="flex flex-col items-center min-w-[70px] cursor-pointer settings-button" onclick="showSettingsContent()">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+<i class="ri-settings-3-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs mt-1 text-gray-700">Settings</span>
+</div>
+<div class="flex flex-col items-center min-w-[70px] cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+<i class="ri-notification-3-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs mt-1 text-gray-700">Alerts</span>
+</div>
+<div class="flex flex-col items-center min-w-[70px] cursor-pointer saved-button" onclick="showSavedContent()">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+<i class="ri-bookmark-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs mt-1 text-gray-700">Saved</span>
+</div>
+<div class="flex flex-col items-center min-w-[70px] cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+<i class="ri-history-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs mt-1 text-gray-700">History</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tabs Navigation -->
+<section class="bg-white px-4 pt-4 sticky top-[calc(4rem+3.5rem)] z-10 shadow-sm w-full max-w-[375px] left-1/2 -translate-x-1/2">
+<div class="flex border-b overflow-x-auto no-scrollbar">
+<button class="tab-button flex-1 pb-3 font-medium text-primary border-b-2 border-primary whitespace-nowrap" data-tab="reviews">Reviews</button>
+<button class="tab-button flex-1 pb-3 font-medium text-gray-500 whitespace-nowrap" data-tab="photos">Photos</button>
+<button class="tab-button flex-1 pb-3 font-medium text-gray-500 whitespace-nowrap" data-tab="qa">Q&A</button>
+<button class="tab-button flex-1 pb-3 font-medium text-gray-500 whitespace-nowrap" data-tab="social">Social</button>
+</div>
+</section>
+<!-- Tab Contents -->
+<section class="px-4 py-4 min-h-[400px]">
+<!-- Reviews Tab -->
+<div id="reviews" class="tab-content">
+<div class="space-y-4">
+<!-- Review Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=luxury%20desert%20resort%20in%20Qatar%2C%20modern%20architecture%20with%20traditional%20elements%2C%20swimming%20pool%20with%20desert%20views%2C%20high%20quality%20travel%20photography&width=80&height=80&seq=2&orientation=squarish" alt="Desert Resort" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Al Wadi Desert Resort</h3>
+<div class="flex items-center mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">June 10, 2025</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-more-2-fill"></i>
+</div>
+</div>
+<p class="mt-3 text-gray-700 text-sm line-clamp-2">An absolute gem in the desert! The private pool villas offer stunning views of the dunes. The staff was incredibly attentive and the desert activities were well organized. Would highly recommend for a luxury getaway.</p>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">24</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">3</span>
+</div>
+</div>
+<div class="flex items-center text-primary text-sm cursor-pointer">
+<span>View Full Review</span>
+<i class="ri-arrow-right-s-line ml-1"></i>
+</div>
+</div>
+</div>
+<!-- Review Item 2 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=modern%20museum%20in%20Doha%20with%20Islamic%20architectural%20elements%2C%20cultural%20exhibition%2C%20artistic%20interior%2C%20high%20quality%20travel%20photography&width=80&height=80&seq=3&orientation=squarish" alt="Museum" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Museum of Islamic Art</h3>
+<div class="flex items-center mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-half-fill text-yellow-400"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">May 28, 2025</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-more-2-fill"></i>
+</div>
+</div>
+<p class="mt-3 text-gray-700 text-sm line-clamp-2">A masterpiece of architecture and curation. I spent hours exploring the extensive collection of Islamic art spanning three continents. The building itself is a work of art with its stunning views of the Doha skyline across the water.</p>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">18</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">5</span>
+</div>
+</div>
+<div class="flex items-center text-primary text-sm cursor-pointer">
+<span>View Full Review</span>
+<i class="ri-arrow-right-s-line ml-1"></i>
+</div>
+</div>
+</div>
+<!-- Review Item 3 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=traditional%20Qatari%20marketplace%20with%20spices%2C%20textiles%20and%20handicrafts%2C%20vibrant%20colors%2C%20bustling%20atmosphere%2C%20high%20quality%20travel%20photography&width=80&height=80&seq=4&orientation=squarish" alt="Souq" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Souq Waqif</h3>
+<div class="flex items-center mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-line text-yellow-400"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">May 15, 2025</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-more-2-fill"></i>
+</div>
+</div>
+<p class="mt-3 text-gray-700 text-sm line-clamp-2">The perfect place to experience authentic Qatari culture. The maze-like alleys are filled with shops selling everything from spices to falcons. I particularly enjoyed the restaurants serving traditional food in the evening when the souq comes alive.</p>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">32</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">7</span>
+</div>
+</div>
+<div class="flex items-center text-primary text-sm cursor-pointer">
+<span>View Full Review</span>
+<i class="ri-arrow-right-s-line ml-1"></i>
+</div>
+</div>
+</div>
+<!-- Review Item 4 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=luxury%20beachfront%20restaurant%20in%20Qatar%2C%20outdoor%20seating%20with%20sea%20views%2C%20elegant%20dining%20setup%2C%20gourmet%20food%20presentation%2C%20high%20quality%20food%20photography&width=80&height=80&seq=5&orientation=squarish" alt="Restaurant" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">La Mer Restaurant</h3>
+<div class="flex items-center mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-half-fill text-yellow-400"></i>
+<i class="ri-star-line text-yellow-400"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">April 30, 2025</span>
+</div>
+</div>
+</div>
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-more-2-fill"></i>
+</div>
+</div>
+<p class="mt-3 text-gray-700 text-sm line-clamp-2">Beautiful beachfront dining with excellent seafood. The service was a bit slow during peak hours, but the food quality made up for it. The sunset views from the terrace are absolutely stunning and worth the visit alone.</p>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">15</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">2</span>
+</div>
+</div>
+<div class="flex items-center text-primary text-sm cursor-pointer">
+<span>View Full Review</span>
+<i class="ri-arrow-right-s-line ml-1"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Photos Tab -->
+<div id="photos" class="tab-content">
+<div class="grid grid-cols-3 gap-2">
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=beautiful%20desert%20landscape%20in%20Qatar%2C%20golden%20sand%20dunes%20at%20sunset%2C%20dramatic%20lighting%2C%20no%20people%2C%20travel%20photography&width=200&height=200&seq=6&orientation=squarish" alt="Desert Landscape" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Desert Safari</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=modern%20skyline%20of%20Doha%20at%20night%2C%20futuristic%20architecture%2C%20colorful%20lights%20reflecting%20on%20water%2C%20cityscape%2C%20travel%20photography&width=200&height=200&seq=7&orientation=squarish" alt="Doha Skyline" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Doha Corniche</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=traditional%20Arabic%20coffee%20and%20dates%20setup%2C%20ornate%20coffee%20pot%20and%20cups%2C%20luxury%20presentation%2C%20cultural%20experience%2C%20food%20photography&width=200&height=200&seq=8&orientation=squarish" alt="Arabic Coffee" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Arabic Coffee</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=luxury%20yacht%20on%20turquoise%20waters%20of%20Qatar%2C%20white%20boat%20against%20blue%20sea%2C%20sunny%20day%2C%20nautical%20lifestyle%2C%20travel%20photography&width=200&height=200&seq=9&orientation=squarish" alt="Yacht Trip" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Pearl Island</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=elaborate%20Arabic%20mezze%20spread%2C%20variety%20of%20traditional%20Middle%20Eastern%20appetizers%2C%20hummus%2C%20tabbouleh%2C%20flatbread%2C%20colorful%20presentation%2C%20food%20photography&width=200&height=200&seq=10&orientation=squarish" alt="Arabic Food" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Local Cuisine</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=camel%20riding%20experience%20in%20Qatar%20desert%2C%20tourist%20activity%2C%20traditional%20desert%20transport%2C%20adventure%20tourism%2C%20travel%20photography&width=200&height=200&seq=11&orientation=squarish" alt="Camel Riding" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Camel Riding</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=falcon%20on%20handlers%20gloved%20hand%20in%20Qatar%2C%20traditional%20falconry%2C%20majestic%20bird%20of%20prey%2C%20cultural%20heritage%2C%20travel%20photography&width=200&height=200&seq=12&orientation=squarish" alt="Falconry" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Falconry Show</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=luxurious%20spa%20treatment%20in%20Qatar%2C%20wellness%20experience%2C%20massage%20setup%2C%20relaxation%20ambiance%2C%20lifestyle%20photography&width=200&height=200&seq=13&orientation=squarish" alt="Spa Treatment" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Spa Day</p>
+</div>
+</div>
+<div class="relative aspect-square cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=traditional%20dhow%20boat%20sailing%20on%20Doha%20Bay%20at%20sunset%2C%20wooden%20vessel%20with%20Qatar%20flag%2C%20cultural%20experience%2C%20travel%20photography&width=200&height=200&seq=14&orientation=squarish" alt="Dhow Cruise" class="w-full h-full object-cover rounded-md">
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 rounded-b-md">
+<p class="text-white text-xs truncate">Dhow Cruise</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-2.5 bg-primary text-white rounded-button font-medium cursor-pointer hover:bg-primary/90">Load More Photos</button>
+</div>
+<!-- Saved Tab -->
+<div id="saved" class="tab-content">
+<div class="space-y-4">
+<!-- Section Tabs -->
+<div class="flex space-x-2 mb-4 overflow-x-auto no-scrollbar">
+<button class="saved-section-btn flex-1 py-1 px-1 text-sm font-medium bg-primary text-white rounded-full whitespace-nowrap" data-section="activities">Activities</button>
+<button class="saved-section-btn flex-1 py-1 px-1 text-sm font-medium text-gray-500 bg-gray-100 rounded-full whitespace-nowrap" data-section="events">Events</button>
+<button class="saved-section-btn flex-1 py-1 px-1 text-sm font-medium text-gray-500 bg-gray-100 rounded-full whitespace-nowrap" data-section="itineraries">Itineraries</button>
+<button class="saved-section-btn flex-1 py-1 px-1 text-sm font-medium text-gray-500 bg-gray-100 rounded-full whitespace-nowrap" data-section="bookings">Bookings</button>
+</div>
+<!-- Saved Activities Section -->
+<div id="saved-activities" class="saved-section active">
+<div class="space-y-3">
+<!-- Activity Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=luxury%20desert%20camping%20in%20Qatar%2C%20glamping%20tent%20with%20modern%20amenities%2C%20desert%20views%2C%20high%20end%20travel%20experience%2C%20professional%20photography&width=80&height=80&seq=15&orientation=squarish" alt="Desert Glamping" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Desert Glamping Experience</h3>
+<div class="flex items-center mt-1">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-half-fill text-xs"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">4.5 (128 reviews)</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">Al Wakrah Desert, 45 km from Doha</span>
+</p>
+</div>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=luxury%20yacht%20charter%20in%20Qatar%2C%20modern%20white%20yacht%20on%20blue%20waters%2C%20deck%20with%20lounging%20area%2C%20professional%20marine%20photography&width=80&height=80&seq=16&orientation=squarish" alt="Yacht Charter" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Private Yacht Charter</h3>
+<div class="flex items-center mt-1">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">5.0 (86 reviews)</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">The Pearl Marina, Doha</span>
+</p>
+</div>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=traditional%20falconry%20experience%20in%20Qatar%2C%20falcon%20perched%20on%20hand%20with%20desert%20background%2C%20cultural%20activity%2C%20professional%20photography&width=80&height=80&seq=17&orientation=squarish" alt="Falconry" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Falconry Experience</h3>
+<div class="flex items-center mt-1">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-line text-xs"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">4.0 (92 reviews)</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">Souq Waqif Falcon Center</span>
+</p>
+</div>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</div>
+<!-- Activity Item 4 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=luxury%20spa%20treatment%20in%20Qatar%2C%20modern%20spa%20interior%20with%20Arabic%20design%20elements%2C%20wellness%20experience%2C%20professional%20spa%20photography&width=80&height=80&seq=18&orientation=squarish" alt="Spa Treatment" class="w-16 h-16 rounded-md object-cover">
+<div>
+<h3 class="font-medium">Royal Spa Treatment</h3>
+<div class="flex items-center mt-1">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-fill text-xs"></i>
+<i class="ri-star-half-fill text-xs"></i>
+</div>
+<span class="text-xs text-gray-500 ml-2">4.5 (156 reviews)</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">Four Seasons Doha</span>
+</p>
+</div>
+</div>
+<button class="text-gray-400 hover:text-gray-600">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-2.5 bg-primary text-white rounded-button font-medium cursor-pointer hover:bg-primary/90">View All Saved Activities</button>
+</div>
+<!-- Saved Events Section -->
+<div id="saved-events" class="saved-section hidden">
+<div class="space-y-3">
+<!-- Event Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=Qatar%20cultural%20festival%20celebration%2C%20traditional%20performances%2C%20colorful%20stage%20setup%2C%20evening%20event%20photography&width=80&height=80&seq=19&orientation=squarish" alt="Cultural Festival" class="w-16 h-16 rounded-md object-cover">
+<div class="flex-1">
+<h3 class="font-medium">Qatar Cultural Festival</h3>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-calendar-line"></i>
+<span class="ml-1">June 25, 2025 • 5:00 PM</span>
+</p>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">Katara Cultural Village</span>
+</p>
+</div>
+</div>
+<button class="text-primary hover:text-primary/80">
+<i class="ri-calendar-check-line"></i>
+</button>
+</div>
+</div>
+<!-- Event Item 2 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=luxury%20food%20festival%20in%20Qatar%2C%20gourmet%20dishes%20display%2C%20chef%20presentation%2C%20culinary%20event%20photography&width=80&height=80&seq=20&orientation=squarish" alt="Food Festival" class="w-16 h-16 rounded-md object-cover">
+<div class="flex-1">
+<h3 class="font-medium">International Food Festival</h3>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-calendar-line"></i>
+<span class="ml-1">July 2-4, 2025 • 12:00 PM</span>
+</p>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">Qatar National Convention Centre</span>
+</p>
+</div>
+</div>
+<button class="text-primary hover:text-primary/80">
+<i class="ri-calendar-check-line"></i>
+</button>
+</div>
+</div>
+<!-- Event Item 3 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=dhow%20festival%20in%20Qatar%2C%20traditional%20boats%20display%2C%20maritime%20celebration%2C%20cultural%20event%20photography&width=80&height=80&seq=21&orientation=squarish" alt="Dhow Festival" class="w-16 h-16 rounded-md object-cover">
+<div class="flex-1">
+<h3 class="font-medium">Traditional Dhow Festival</h3>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-calendar-line"></i>
+<span class="ml-1">July 15, 2025 • 4:00 PM</span>
+</p>
+<p class="text-xs text-gray-500 mt-1">
+<i class="ri-map-pin-line"></i>
+<span class="ml-1">Corniche Waterfront</span>
+</p>
+</div>
+</div>
+<button class="text-primary hover:text-primary/80">
+<i class="ri-calendar-check-line"></i>
+</button>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-2.5 bg-primary text-white rounded-button font-medium cursor-pointer hover:bg-primary/90">View All Saved Events</button>
+</div>
+<!-- Saved Itineraries Section -->
+<div id="saved-itineraries" class="saved-section hidden">
+<div class="space-y-3">
+<!-- Itinerary Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=Al%20Khor%20mangroves%20Qatar%2C%20natural%20landscape%2C%20coastal%20area%2C%20outdoor%20adventure%20photography&width=80&height=80&seq=22&orientation=squarish" alt="Al Khor Trip" class="w-16 h-16 rounded-md object-cover">
+<div class="flex-1">
+<h3 class="font-medium">Weekend Trip to Al Khor</h3>
+<p class="text-xs text-gray-500 mt-1">5 places • 2 days</p>
+<div class="flex space-x-2 mt-2">
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">View</button>
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">Edit</button>
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">Share</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Itinerary Item 2 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=modern%20museum%20architecture%20in%20Qatar%2C%20cultural%20institution%2C%20art%20exhibition%2C%20museum%20photography&width=80&height=80&seq=23&orientation=squarish" alt="Museums Tour" class="w-16 h-16 rounded-md object-cover">
+<div class="flex-1">
+<h3 class="font-medium">Top Doha Museums</h3>
+<p class="text-xs text-gray-500 mt-1">4 places • 1 day</p>
+<div class="flex space-x-2 mt-2">
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">View</button>
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">Edit</button>
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">Share</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Itinerary Item 3 -->
+<div class="bg-white rounded-lg shadow-sm p-3 border border-gray-100">
+<div class="flex justify-between items-start">
+<div class="flex items-start space-x-3">
+<img src="https://readdy.ai/api/search-image?query=adventure%20activities%20in%20Qatar%2C%20desert%20safari%2C%20water%20sports%2C%20extreme%20sports%20collage%2C%20action%20photography&width=80&height=80&seq=24&orientation=squarish" alt="Adventure List" class="w-16 h-16 rounded-md object-cover">
+<div class="flex-1">
+<h3 class="font-medium">Bucket List Adventures</h3>
+<p class="text-xs text-gray-500 mt-1">8 activities • Ongoing</p>
+<div class="flex space-x-2 mt-2">
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">View</button>
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">Edit</button>
+<button class="text-xs px-2 py-1 bg-blue-50 text-primary rounded-full">Share</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-2.5 bg-primary text-white rounded-button font-medium cursor-pointer hover:bg-primary/90">Create New Itinerary</button>
+</div>
+</div>
+<!-- Q&A Tab -->
+<div id="social" class="tab-content">
+<div class="space-y-4">
+<!-- Following Section -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">People I Follow</h3>
+<div class="space-y-3">
+<!-- Following Item 1 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20middle%20eastern%20woman%20with%20hijab%2C%20friendly%20smile%2C%20modern%20office%20background%2C%20high%20quality%20portrait&width=80&height=80&seq=25&orientation=squarish" alt="Fatima" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Fatima Al-Sayed</h4>
+<p class="text-xs text-gray-500">Food & Culture Expert</p>
+</div>
+</div>
+<button class="px-3 py-1 text-xs border border-primary text-primary rounded-full">Following</button>
+</div>
+<!-- Following Item 2 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle%20eastern%20man%20in%20his%2040s%2C%20business%20attire%2C%20confident%20smile%2C%20office%20setting%2C%20high%20quality%20portrait&width=80&height=80&seq=26&orientation=squarish" alt="Hassan" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Hassan Al-Thani</h4>
+<p class="text-xs text-gray-500">Local Guide & Historian</p>
+</div>
+</div>
+<button class="px-3 py-1 text-xs border border-primary text-primary rounded-full">Following</button>
+</div>
+<!-- Following Item 3 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20middle%20eastern%20woman%2C%20modern%20business%20casual%2C%20natural%20makeup%2C%20office%20environment%2C%20high%20quality%20portrait&width=80&height=80&seq=27&orientation=squarish" alt="Noura" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Noura Al-Khalifa</h4>
+<p class="text-xs text-gray-500">Adventure & Travel Blogger</p>
+</div>
+</div>
+<button class="px-3 py-1 text-xs border border-primary text-primary rounded-full">Following</button>
+</div>
+</div>
+<button class="w-full mt-4 text-sm text-primary">View All Following</button>
+</div>
+<!-- Friends Section -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">My Connections</h3>
+<div class="space-y-3">
+<!-- Friend Item 1 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle%20eastern%20man%20in%20his%2030s%2C%20casual%20smart%20attire%2C%20genuine%20smile%2C%20outdoor%20setting%2C%20high%20quality%20portrait&width=80&height=80&seq=28&orientation=squarish" alt="Omar" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Omar Al-Mahmoud</h4>
+<p class="text-xs text-gray-500">12 mutual friends</p>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-more-2-fill"></i>
+</button>
+</div>
+<!-- Friend Item 2 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle%20eastern%20woman%20in%20her%2020s%2C%20modern%20hijab%2C%20professional%20attire%2C%20office%20background%2C%20high%20quality%20portrait&width=80&height=80&seq=29&orientation=squarish" alt="Aisha" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Aisha Al-Kubaisi</h4>
+<p class="text-xs text-gray-500">8 mutual friends</p>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-more-2-fill"></i>
+</button>
+</div>
+<!-- Friend Item 3 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle%20eastern%20man%20in%20his%2020s%2C%20casual%20attire%2C%20friendly%20expression%2C%20urban%20background%2C%20high%20quality%20portrait&width=80&height=80&seq=30&orientation=squarish" alt="Khalid" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Khalid Al-Ansari</h4>
+<p class="text-xs text-gray-500">15 mutual friends</p>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-more-2-fill"></i>
+</button>
+</div>
+</div>
+<button class="w-full mt-4 text-sm text-primary">View All Connections</button>
+</div>
+<!-- Suggested Connections -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">Suggested for You</h3>
+<div class="space-y-3">
+<!-- Suggestion Item 1 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle%20eastern%20woman%20in%20her%2030s%2C%20elegant%20attire%2C%20confident%20pose%2C%20modern%20background%2C%20high%20quality%20portrait&width=80&height=80&seq=31&orientation=squarish" alt="Maha" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Maha Al-Jaber</h4>
+<p class="text-xs text-gray-500">Travel Photographer • 5 mutual friends</p>
+</div>
+</div>
+<button class="px-3 py-1 text-xs bg-primary text-white rounded-full">Follow</button>
+</div>
+<!-- Suggestion Item 2 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20middle%20eastern%20man%20in%20his%2040s%2C%20business%20casual%2C%20warm%20smile%2C%20office%20setting%2C%20high%20quality%20portrait&width=80&height=80&seq=32&orientation=squarish" alt="Youssef" class="w-10 h-10 rounded-full object-cover">
+<div>
+<h4 class="text-sm font-medium">Youssef Al-Darwish</h4>
+<p class="text-xs text-gray-500">Food Critic • 3 mutual friends</p>
+</div>
+</div>
+<button class="px-3 py-1 text-xs bg-primary text-white rounded-full">Follow</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="qa" class="tab-content active">
+<div class="space-y-4">
+<!-- Q&A Header -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="text-lg font-medium">Questions & Answers</h3>
+<p class="text-sm text-gray-600 mt-1">Have a question about this activity, attraction or event?</p>
+<button class="w-full mt-4 py-3 bg-primary text-white rounded-button font-medium cursor-pointer hover:bg-primary/90 flex items-center justify-center text-base">
+<i class="ri-question-answer-line mr-2"></i>
+<span>Ask a Question</span>
+</button>
+</div>
+<!-- Q&A Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between">
+<h3 class="font-medium">Is the Qatar National Museum stroller-friendly? We're visiting with a baby.</h3>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">2 Answers</span>
+</div>
+<p class="mt-2 text-sm text-gray-600">Asked by Sarah M. • 2 days ago</p>
+<div class="space-y-3">
+<div class="bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">DohaFamilyFun</span>
+<span class="text-xs text-gray-500 ml-2">1 day ago</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">Yes, absolutely! The museum is very spacious and has elevators and ramps everywhere. We brought our double stroller and had no issues. There are also changing facilities available.</p>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+<i class="ri-verified-badge-fill text-primary"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">Qatar Museums (Official)</span>
+<span class="text-xs text-primary ml-2">(Verified Business Owner)</span>
+<span class="text-xs text-gray-500 ml-2">1 day ago</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">Definitely stroller-friendly. All levels are accessible, and there are designated areas for families. Enjoy your visit!</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">15</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">2</span>
+</div>
+</div>
+<button class="text-primary text-sm">Reply</button>
+</div>
+</div>
+<!-- Q&A Item 2 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between">
+<h3 class="font-medium">Is the 'Desert Safari & Dune Bashing' tour suitable for someone with a history of motion sickness?</h3>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">1 Answer</span>
+</div>
+<p class="mt-2 text-sm text-gray-600">Asked by Traveler Mike • 5 days ago</p>
+<div class="space-y-3">
+<div class="bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+<i class="ri-verified-badge-fill text-primary"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">Desert Adventures (Official)</span>
+<span class="text-xs text-primary ml-2">(Verified Tour Operator)</span>
+<span class="text-xs text-gray-500 ml-2">4 days ago</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">If you have motion sickness concerns, we recommend our 'Gentle Desert Experience' option instead of dune bashing. This tour focuses on sunset views, camel rides, and cultural activities at our desert camp. For those who still want to try dune bashing, we suggest taking motion sickness medication beforehand and letting your driver know to take a milder route.</p>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">AdventureSeeker_QA</span>
+<span class="text-xs text-gray-500 ml-2">3 days ago</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">The dune bashing part can be quite intense with steep climbs and drops, so it might be challenging if you get severe motion sickness. Many tour operators offer a gentler ride option if requested, or you could opt for a sunset desert camp experience without the extreme dune bashing. I'd recommend checking with the specific tour provider when booking.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">8</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">1</span>
+</div>
+</div>
+<button class="text-primary text-sm">Reply</button>
+</div>
+</div>
+<!-- Q&A Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between">
+<h3 class="font-medium">Is the Qatar National Museum stroller-friendly?</h3>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Answered</span>
+</div>
+<p class="mt-2 text-sm text-gray-600">Asked by Sarah M. • 2 days ago</p>
+<div class="space-y-3">
+<div class="bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">DohaFamilyFun</span>
+<span class="text-xs text-gray-500 ml-2">1 day ago</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">Yes, absolutely! The museum is very spacious and has elevators and ramps everywhere. We brought our double stroller and had no issues. There are also changing facilities available.</p>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+<i class="ri-verified-badge-fill text-primary"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">Qatar Museums (Official)</span>
+<span class="text-xs text-primary ml-2">(Verified Business Owner)</span>
+<span class="text-xs text-gray-500 ml-2">1 day ago</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">Definitely stroller-friendly. All levels are accessible, and there are designated areas for families. Enjoy your visit!</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">15</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">2</span>
+</div>
+</div>
+<button class="text-primary text-sm">Reply</button>
+</div>
+</div>
+<!-- Q&A Item 1 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between">
+<h3 class="font-medium">Best time to visit Khor Al Adaid?</h3>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Answered</span>
+</div>
+<p class="mt-2 text-sm text-gray-700">I'm planning a trip to the Inland Sea (Khor Al Adaid). When is the best time to visit for comfortable temperatures and good visibility?</p>
+<div class="mt-3 bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">Sarah Thompson</span>
+<span class="text-xs text-gray-500 ml-2">Local Guide</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">The best time to visit Khor Al Adaid is between November and early April when temperatures are pleasant (20-25°C). Avoid summer months (May-September) as temperatures can exceed 45°C. For the clearest views, go early morning or late afternoon. Weekdays are less crowded than weekends.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">8</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">1</span>
+</div>
+</div>
+<span class="text-xs text-gray-500">Posted: June 5, 2025</span>
+</div>
+</div>
+<!-- Q&A Item 2 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between">
+<h3 class="font-medium">Transportation options from airport to West Bay?</h3>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Answered</span>
+</div>
+<p class="mt-2 text-sm text-gray-700">What's the most convenient way to get from Hamad International Airport to the West Bay area? Are taxis readily available or is there public transport?</p>
+<div class="mt-3 bg-gray-50 p-3 rounded-md">
+<div class="flex items-start space-x-2">
+<div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<div class="flex items-center">
+<span class="text-sm font-medium">Mohammed Al-Thani</span>
+<span class="text-xs text-gray-500 ml-2">Local Expert</span>
+</div>
+<p class="text-sm text-gray-700 mt-1">You have several options: 1) Taxis are plentiful and cost around 40-50 QAR to West Bay. 2) Uber and Careem are widely available. 3) The Metro (Green Line) connects the airport to West Bay with stops at DECC and Corniche. 4) Many hotels offer airport shuttle services if you're staying there. Taxis are the most convenient if you have luggage.</p>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">12</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">3</span>
+</div>
+</div>
+<span class="text-xs text-gray-500">Posted: May 22, 2025</span>
+</div>
+</div>
+<!-- Q&A Item 3 -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<div class="flex justify-between">
+<h3 class="font-medium">Are there specific timings for the falcon show at Katara Cultural Village?</h3>
+<span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">No Answers Yet</span>
+</div>
+<p class="mt-2 text-sm text-gray-700">Asked by CultureBuff • 1 week ago</p>
+<div class="mt-3 flex justify-center">
+<button class="px-4 py-2 bg-primary text-white rounded-button text-sm font-medium cursor-pointer hover:bg-primary/90">Answer this Question</button>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">0</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">0</span>
+</div>
+</div>
+<span class="text-xs text-gray-500">Be the first to answer!</span>
+</div>
+</div>
+<div class="flex justify-between mt-3">
+<div class="flex items-center space-x-4">
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-thumb-up-line mr-1"></i>
+<span class="text-xs">5</span>
+</div>
+<div class="flex items-center text-gray-500 cursor-pointer">
+<i class="ri-chat-1-line mr-1"></i>
+<span class="text-xs">0</span>
+</div>
+</div>
+<span class="text-xs text-gray-500">Posted: June 12, 2025</span>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 bg-white border border-gray-200 text-gray-700 rounded-button font-medium cursor-pointer hover:bg-gray-50 mb-4 flex items-center justify-center">
+<i class="ri-list-check-2 mr-2"></i>
+See All 12 Questions
+</button>
+<div class="flex items-center justify-between">
+<button class="flex-1 py-2.5 border border-primary text-primary bg-white rounded-button font-medium cursor-pointer hover:bg-primary/5 mr-2">
+<i class="ri-filter-3-line mr-1"></i>
+Filter Questions
+</button>
+<button class="flex-1 py-2.5 bg-primary text-white rounded-button font-medium cursor-pointer hover:bg-primary/90 ml-2">
+<i class="ri-question-answer-line mr-1"></i>
+Ask a Question
+</button>
+</div>
+</div>
+<!-- Settings Tab -->
+<div id="settings" class="tab-content">
+<div class="space-y-4">
+<!-- Account Settings -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">Account Settings</h3>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-lock-line"></i>
+</div>
+<span class="text-sm ml-3">Change Password</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-bank-card-line"></i>
+</div>
+<span class="text-sm ml-3">Manage Payment Methods</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-delete-bin-line"></i>
+</div>
+<span class="text-sm ml-3">Delete Account</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+</div>
+</div>
+<!-- Notifications -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">Notifications</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-notification-4-line"></i>
+</div>
+<span class="text-sm ml-3">Push Notifications</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-mail-line"></i>
+</div>
+<span class="text-sm ml-3">Email Notifications</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-message-2-line"></i>
+</div>
+<span class="text-sm ml-3">SMS Notifications</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer">
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Privacy -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">Privacy</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-profile-line"></i>
+</div>
+<span class="text-sm ml-3">Profile Visibility</span>
+</div>
+<select class="text-sm text-gray-500 pr-8 py-1 rounded-md border-gray-200">
+<option>Public</option>
+<option>Friends Only</option>
+<option>Private</option>
+</select>
+</div>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-map-pin-line"></i>
+</div>
+<span class="text-sm ml-3">Location Sharing</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input type="checkbox" class="sr-only peer" checked>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- App Preferences -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">App Preferences</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-global-line"></i>
+</div>
+<span class="text-sm ml-3">Language</span>
+</div>
+<select class="text-sm text-gray-500 pr-8 py-1 rounded-md border-gray-200">
+<option>English</option>
+<option>العربية</option>
+</select>
+</div>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-ruler-line"></i>
+</div>
+<span class="text-sm ml-3">Distance Unit</span>
+</div>
+<select class="text-sm text-gray-500 pr-8 py-1 rounded-md border-gray-200">
+<option>Kilometers</option>
+<option>Miles</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Help & Support -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">Help & Support</h3>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-questionnaire-line"></i>
+</div>
+<span class="text-sm ml-3">FAQ</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-customer-service-2-line"></i>
+</div>
+<span class="text-sm ml-3">Contact Support</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-bug-line"></i>
+</div>
+<span class="text-sm ml-3">Report a Problem</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+</div>
+</div>
+<!-- About & Legal -->
+<div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+<h3 class="font-medium mb-3">About & Legal</h3>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-information-line"></i>
+</div>
+<span class="text-sm ml-3">About Us</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-file-text-line"></i>
+</div>
+<span class="text-sm ml-3">Terms of Service</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center justify-between py-2 text-left">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-gray-500">
+<i class="ri-shield-line"></i>
+</div>
+<span class="text-sm ml-3">Privacy Policy</span>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+</div>
+</div>
+<!-- Log Out -->
+<button class="w-full mt-6 py-3 bg-red-500 text-white rounded-button font-medium cursor-pointer hover:bg-red-600 flex items-center justify-center">
+<i class="ri-logout-box-line mr-2"></i>
+<span>Log Out</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Tab Bar -->
+<nav class="fixed bottom-0 w-full max-w-[375px] bg-white border-t border-gray-200 px-2 py-2 z-50 left-1/2 -translate-x-1/2">
+<div class="grid grid-cols-5">
+<a href="#" class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-home-5-line"></i>
+</div>
+<span class="text-xs mt-1">Home</span>
+</a>
+<a href="#" class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-compass-3-line"></i>
+</div>
+<span class="text-xs mt-1">Explore</span>
+</a>
+<a href="#" class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-add-circle-line text-xl"></i>
+</div>
+<span class="text-xs mt-1">Add</span>
+</a>
+<a href="#" class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-calendar-line"></i>
+</div>
+<span class="text-xs mt-1">Events</span>
+</a>
+<a href="#" class="flex flex-col items-center justify-center">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-user-fill text-primary"></i>
+</div>
+<span class="text-xs mt-1 text-primary">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+<!-- Scripts -->
+<script id="tabSwitcher">
+document.addEventListener('DOMContentLoaded', function() {
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+tabButtons.forEach(button => {
+button.addEventListener('click', function() {
+const tabName = this.getAttribute('data-tab');
+tabButtons.forEach(btn => {
+btn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+btn.classList.add('text-gray-500');
+});
+tabContents.forEach(content => {
+content.classList.remove('active');
+});
+this.classList.add('text-primary', 'border-b-2', 'border-primary');
+this.classList.remove('text-gray-500');
+document.getElementById(tabName).classList.add('active');
+});
+});
+});
+</script>
+</body>
+</html>

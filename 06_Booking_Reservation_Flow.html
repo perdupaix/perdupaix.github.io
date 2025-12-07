@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Booking Reservation</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#FF385C',secondary:'#00A699'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+width: 100%;
+max-width: 375px;
+margin: 0 auto;
+background-color: #FFFFFF;
+position: relative;
+min-height: 762px;
+overflow-x: hidden;
+}
+.progress-bar {
+height: 4px;
+background-color: #E5E7EB;
+border-radius: 2px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background-color: #4F46E5;
+transition: width 0.3s ease;
+}
+.date-selector .selected {
+background-color: #4F46E5;
+color: white;
+}
+.time-slot.selected {
+background-color: #4F46E5;
+color: white;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+</style>
+</head>
+<body class="relative">
+<!-- Navigation Bar -->
+<nav class="fixed top-0 w-full bg-white shadow-sm z-50">
+<div class="flex items-center justify-between px-4 py-3">
+<button id="back-button" class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-arrow-left-s-line ri-lg"></i>
+</button>
+<h1 class="text-lg font-semibold">Booking</h1>
+<button class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-close-line ri-lg"></i>
+</button>
+</div>
+<div class="px-4 pb-2">
+<div class="progress-bar">
+<div id="progress-fill" class="progress-fill" style="width: 20%"></div>
+</div>
+<div class="flex justify-between text-xs mt-1 text-gray-500">
+<span>Details</span>
+<span>Date</span>
+<span>Tickets</span>
+<span>Info</span>
+<span>Payment</span>
+</div>
+</div>
+</nav>
+<!-- Content Container -->
+<div class="pt-20 pb-20">
+<!-- Screens Container -->
+<div id="screens-container">
+<!-- Screen 1: Activity Details -->
+<div id="screen-1" class="px-4 py-2">
+<div class="rounded-lg overflow-hidden mb-4">
+<img src="https://readdy.ai/api/search-image?query=Beautiful%20beach%20resort%20with%20palm%20trees%2C%20crystal%20clear%20water%2C%20luxury%20beachfront%20villas%2C%20tropical%20paradise%2C%20sunny%20day%2C%20high-quality%20travel%20photography%2C%20vibrant%20colors%2C%20vacation%20destination&width=375&height=250&seq=1&orientation=landscape" alt="Resort View" class="w-full h-52 object-cover object-top">
+</div>
+<h2 class="text-2xl font-bold mb-1">Tropical Paradise Resort</h2>
+<div class="flex items-center mb-3">
+<div class="flex items-center text-yellow-500 mr-2">
+<i class="ri-star-fill ri-sm"></i>
+<span class="ml-1 text-sm font-medium">4.8</span>
+</div>
+<span class="text-sm text-gray-500">(342 reviews)</span>
+<div class="flex items-center ml-auto">
+<i class="ri-map-pin-line ri-sm text-gray-500"></i>
+<span class="ml-1 text-sm text-gray-500">Bali, Indonesia</span>
+</div>
+</div>
+<div class="flex items-center justify-between mb-4 bg-gray-50 p-3 rounded-lg">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-time-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-xs text-gray-500">Duration</p>
+<p class="text-sm font-medium">3 Days, 2 Nights</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-group-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-xs text-gray-500">Group Size</p>
+<p class="text-sm font-medium">Up to 10 people</p>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<h3 class="text-lg font-semibold mb-2">About</h3>
+<p class="text-sm text-gray-600 leading-relaxed">
+Experience the ultimate tropical getaway at our exclusive beachfront resort. Enjoy pristine beaches, luxurious accommodations, and world-class amenities. Perfect for couples, families, or friends looking for an unforgettable vacation.
+</p>
+</div>
+<div class="mb-4">
+<h3 class="text-lg font-semibold mb-2">Highlights</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center">
+<i class="ri-check-line ri-sm text-primary"></i>
+<span class="ml-2 text-sm">Private Beach Access</span>
+</div>
+<div class="flex items-center">
+<i class="ri-check-line ri-sm text-primary"></i>
+<span class="ml-2 text-sm">Infinity Pool</span>
+</div>
+<div class="flex items-center">
+<i class="ri-check-line ri-sm text-primary"></i>
+<span class="ml-2 text-sm">Spa Services</span>
+</div>
+<div class="flex items-center">
+<i class="ri-check-line ri-sm text-primary"></i>
+<span class="ml-2 text-sm">Gourmet Dining</span>
+</div>
+<div class="flex items-center">
+<i class="ri-check-line ri-sm text-primary"></i>
+<span class="ml-2 text-sm">Water Activities</span>
+</div>
+<div class="flex items-center">
+<i class="ri-check-line ri-sm text-primary"></i>
+<span class="ml-2 text-sm">Free Wi-Fi</span>
+</div>
+</div>
+</div>
+<div class="mb-4">
+<h3 class="text-lg font-semibold mb-2">Reviews</h3>
+<div class="space-y-3">
+<div class="p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center mb-1">
+<span class="font-medium text-sm">Emily Johnson</span>
+<div class="flex items-center ml-auto">
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+</div>
+</div>
+<p class="text-xs text-gray-600">Absolutely stunning resort! The staff was incredibly attentive, and the beach was pristine. Can't wait to return!</p>
+</div>
+<div class="p-3 bg-gray-50 rounded-lg">
+<div class="flex items-center mb-1">
+<span class="font-medium text-sm">Michael Rodriguez</span>
+<div class="flex items-center ml-auto">
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-fill ri-sm text-yellow-500"></i>
+<i class="ri-star-line ri-sm text-yellow-500"></i>
+</div>
+</div>
+<p class="text-xs text-gray-600">Great experience overall. The food was amazing and the activities were well organized. Only downside was the Wi-Fi connection.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Screen 2: Date & Time Selection -->
+<div id="screen-2" class="px-4 py-2 hidden">
+<div class="mb-4">
+<h2 class="text-xl font-semibold mb-2">Select Date</h2>
+<p class="text-sm text-gray-600 mb-3">Choose your check-in date</p>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex items-center mb-4">
+<h2 class="text-xl font-semibold flex-1">Select Date</h2>
+<div class="flex items-center space-x-2">
+<button class="w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full">
+<i class="ri-arrow-left-s-line ri-lg"></i>
+</button>
+<span class="font-medium px-2">June 2025</span>
+<button class="w-8 h-8 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full">
+<i class="ri-arrow-right-s-line ri-lg"></i>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-1 text-center mb-3">
+<span class="text-xs font-medium text-gray-500">SUN</span>
+<span class="text-xs font-medium text-gray-500">MON</span>
+<span class="text-xs font-medium text-gray-500">TUE</span>
+<span class="text-xs font-medium text-gray-500">WED</span>
+<span class="text-xs font-medium text-gray-500">THU</span>
+<span class="text-xs font-medium text-gray-500">FRI</span>
+<span class="text-xs font-medium text-gray-500">SAT</span>
+</div>
+<div class="date-selector grid grid-cols-7 gap-1.5 text-center">
+<div class="h-10 flex items-center justify-center text-gray-300 text-sm">26</div>
+<div class="h-10 flex items-center justify-center text-gray-300 text-sm">27</div>
+<div class="h-10 flex items-center justify-center text-gray-300 text-sm">28</div>
+<div class="h-10 flex items-center justify-center text-gray-300 text-sm">29</div>
+<div class="h-10 flex items-center justify-center text-gray-300 text-sm">30</div>
+<div class="h-10 flex items-center justify-center text-gray-300 text-sm">31</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">1</span>
+<div class="w-1 h-1 rounded-full bg-gray-300 mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">2</span>
+<div class="w-1 h-1 rounded-full bg-gray-300 mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">3</span>
+<div class="w-1 h-1 rounded-full bg-primary mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">4</span>
+<div class="flex space-x-0.5 mt-0.5">
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">5</span>
+<div class="w-1 h-1 rounded-full bg-gray-300 mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">6</span>
+<div class="w-1 h-1 rounded-full bg-primary mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">7</span>
+<div class="flex space-x-0.5 mt-0.5">
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">8</span>
+<div class="w-1 h-1 rounded-full bg-gray-300 mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">9</span>
+<div class="w-1 h-1 rounded-full bg-primary mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">10</span>
+<div class="flex space-x-0.5 mt-0.5">
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">11</span>
+<div class="w-1 h-1 rounded-full bg-primary mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full bg-primary text-white">
+<span class="text-sm">12</span>
+<div class="flex space-x-0.5 mt-0.5">
+<div class="w-1 h-1 rounded-full bg-white"></div>
+<div class="w-1 h-1 rounded-full bg-white"></div>
+</div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">13</span>
+<div class="w-1 h-1 rounded-full bg-primary mt-0.5"></div>
+</div>
+</div>
+<div class="relative h-10">
+<div class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer rounded-full hover:bg-gray-50">
+<span class="text-sm">14</span>
+<div class="flex space-x-0.5 mt-0.5">
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+<div class="w-1 h-1 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">15</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">16</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">17</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">18</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">19</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">20</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">21</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">22</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">23</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">24</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">25</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">26</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">27</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">28</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">29</div>
+<div class="h-9 flex items-center justify-center cursor-pointer rounded-full">30</div>
+<div class="h-9 flex items-center justify-center text-gray-300">1</div>
+<div class="h-9 flex items-center justify-center text-gray-300">2</div>
+<div class="h-9 flex items-center justify-center text-gray-300">3</div>
+<div class="h-9 flex items-center justify-center text-gray-300">4</div>
+<div class="h-9 flex items-center justify-center text-gray-300">5</div>
+<div class="h-9 flex items-center justify-center text-gray-300">6</div>
+</div>
+</div>
+</div>
+<div class="mt-6 mb-4">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h2 class="text-xl font-semibold mb-1">Available Times</h2>
+<p class="text-sm text-gray-600">Select your preferred time slot</p>
+</div>
+<div class="flex items-center space-x-2">
+<div class="flex items-center">
+<div class="w-2 h-2 rounded-full bg-primary mr-1"></div>
+<span class="text-xs text-gray-500">Available</span>
+</div>
+<div class="flex items-center">
+<div class="w-2 h-2 rounded-full bg-gray-300 mr-1"></div>
+<span class="text-xs text-gray-500">Limited</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="time-slot relative p-3 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">10:00 AM</span>
+<span class="text-xs text-green-600">8 spots left</span>
+</div>
+<div class="flex items-center mt-1">
+<div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 20%"></div>
+</div>
+</div>
+</div>
+<div class="time-slot relative p-3 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">11:00 AM</span>
+<span class="text-xs text-orange-600">2 spots left</span>
+</div>
+<div class="flex items-center mt-1">
+<div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 rounded-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<div class="time-slot relative p-3 bg-primary text-white rounded-lg shadow-sm cursor-pointer">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">12:00 PM</span>
+<span class="text-xs">Selected</span>
+</div>
+<div class="flex items-center mt-1">
+<div class="flex-1 h-1.5 bg-white/30 rounded-full overflow-hidden">
+<div class="h-full bg-white rounded-full" style="width: 40%"></div>
+</div>
+</div>
+</div>
+<div class="time-slot relative p-3 bg-gray-100 rounded-lg shadow-sm">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium text-gray-500">1:00 PM</span>
+<span class="text-xs text-gray-500">Sold out</span>
+</div>
+<div class="flex items-center mt-1">
+<div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+<div class="h-full bg-gray-400 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+<div class="time-slot relative p-3 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">2:00 PM</span>
+<span class="text-xs text-green-600">12 spots left</span>
+</div>
+<div class="flex items-center mt-1">
+<div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 10%"></div>
+</div>
+</div>
+</div>
+<div class="time-slot relative p-3 bg-white rounded-lg shadow-sm cursor-pointer hover:bg-gray-50">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">3:00 PM</span>
+<span class="text-xs text-green-600">6 spots left</span>
+</div>
+<div class="flex items-center mt-1">
+<div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+<div class="h-full bg-green-500 rounded-full" style="width: 40%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-medium">Selected Date & Time</span>
+</div>
+<div class="flex items-center mb-2">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-calendar-line text-primary"></i>
+</div>
+<span class="ml-2 text-sm">June 12, 2025 at 12:00 PM</span>
+</div>
+<div class="flex items-center text-xs text-gray-500">
+<i class="ri-time-line ri-sm mr-1"></i>
+<span>All times shown in local time (GMT+8)</span>
+</div>
+</div>
+</div>
+<!-- Screen 3: Ticket/Package Selection -->
+<div id="screen-3" class="px-4 py-2 hidden">
+<h2 class="text-xl font-semibold mb-2">Select Package</h2>
+<p class="text-sm text-gray-600 mb-4">Choose the package that suits your needs</p>
+<div class="space-y-4">
+<div class="bg-white rounded-lg shadow-sm p-4">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-semibold">Select Participants</h3>
+<p class="text-sm text-gray-500">Choose number of guests by type</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div>
+<p class="font-medium">Adults</p>
+<p class="text-xs text-gray-500">Age 13+</p>
+<p class="text-sm font-medium text-primary mt-1">$599/person</p>
+</div>
+<div class="flex items-center space-x-3">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="text-lg font-medium min-w-[20px] text-center">2</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div>
+<p class="font-medium">Children</p>
+<p class="text-xs text-gray-500">Age 3-12</p>
+<p class="text-sm font-medium text-primary mt-1">$299/person</p>
+</div>
+<div class="flex items-center space-x-3">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="text-lg font-medium min-w-[20px] text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div>
+<p class="font-medium">Infants</p>
+<p class="text-xs text-gray-500">Age 0-2</p>
+<p class="text-sm font-medium text-green-600 mt-1">Free</p>
+</div>
+<div class="flex items-center space-x-3">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="text-lg font-medium min-w-[20px] text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 border-2 border-primary">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-semibold">Deluxe Package</h3>
+<p class="text-sm text-gray-500">3 Days, 2 Nights</p>
+</div>
+<div class="bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded">Popular</div>
+</div>
+<div class="space-y-2 mb-3">
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Luxury ocean view room</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Daily breakfast & dinner</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">1 complimentary spa treatment</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Access to all resort amenities</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<span class="text-lg font-semibold">$599</span>
+<span class="text-sm text-gray-500">/person</span>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium">2</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-semibold">Standard Package</h3>
+<p class="text-sm text-gray-500">3 Days, 2 Nights</p>
+</div>
+</div>
+<div class="space-y-2 mb-3">
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Garden view room</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Daily breakfast</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Access to pool and beach</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<span class="text-lg font-semibold">$399</span>
+<span class="text-sm text-gray-500">/person</span>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-semibold">Premium Package</h3>
+<p class="text-sm text-gray-500">3 Days, 2 Nights</p>
+</div>
+</div>
+<div class="space-y-2 mb-3">
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Beachfront villa</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">All-inclusive meals & drinks</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Daily spa treatments</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Private beach area</span>
+</div>
+<div class="flex items-start">
+<i class="ri-check-line ri-sm text-primary mt-0.5"></i>
+<span class="ml-2 text-sm">Airport transfers included</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<span class="text-lg font-semibold">$899</span>
+<span class="text-sm text-gray-500">/person</span>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 bg-white rounded-lg shadow-sm p-4">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="font-semibold">Enhance Your Experience</h3>
+<p class="text-sm text-gray-500">Add special services to make your stay memorable</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-start flex-1">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-car-line text-primary"></i>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Private Airport Transfer</p>
+<p class="text-xs text-gray-500">Luxury vehicle, round trip service</p>
+<p class="text-sm font-medium text-primary mt-1">$50/booking</p>
+</div>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium min-w-[20px] text-center">1</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-start flex-1">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-camera-line text-primary"></i>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Professional Photo Package</p>
+<p class="text-xs text-gray-500">1-hour session with digital copies</p>
+<p class="text-sm font-medium text-primary mt-1">$150/session</p>
+</div>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium min-w-[20px] text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-start flex-1">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-restaurant-line text-primary"></i>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Romantic Beachside Dinner</p>
+<p class="text-xs text-gray-500">Private setup, 4-course meal with wine</p>
+<p class="text-sm font-medium text-primary mt-1">$120/couple</p>
+</div>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium min-w-[20px] text-center">1</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-start flex-1">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-ship-line text-primary"></i>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Snorkeling Equipment Rental</p>
+<p class="text-xs text-gray-500">Premium gear set for entire stay</p>
+<p class="text-sm font-medium text-primary mt-1">$25/person</p>
+</div>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium min-w-[20px] text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-start flex-1">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-guide-line text-primary"></i>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Private Island Tour</p>
+<p class="text-xs text-gray-500">Full-day guided experience with lunch</p>
+<p class="text-sm font-medium text-primary mt-1">$75/person</p>
+</div>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium min-w-[20px] text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+<div class="flex items-start flex-1">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-gift-line text-primary"></i>
+</div>
+<div class="ml-3">
+<p class="text-sm font-medium">Welcome Package</p>
+<p class="text-xs text-gray-500">Local treats, souvenirs & spa voucher</p>
+<p class="text-sm font-medium text-primary mt-1">$45/room</p>
+</div>
+</div>
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 rounded-full cursor-pointer hover:bg-gray-50">
+<i class="ri-subtract-line"></i>
+</button>
+<span class="mx-3 font-medium min-w-[20px] text-center">0</span>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90">
+<i class="ri-add-line"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 bg-white rounded-lg shadow-sm p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm">Deluxe Package (2)</span>
+<span class="text-sm font-medium" id="package-total">$1,198.00</span>
+</div>
+<div id="addons-summary" class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-sm">Private Airport Transfer</span>
+<span class="text-sm font-medium">$50.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Romantic Dinner</span>
+<span class="text-sm font-medium">$120.00</span>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-sm">Taxes & Fees (10%)</span>
+<span class="text-sm font-medium" id="taxes">$136.80</span>
+</div>
+<div class="border-t pt-2 mt-2">
+<div class="flex justify-between items-center">
+<span class="font-semibold">Total</span>
+<span class="font-semibold text-lg" id="total-amount">$1,504.80</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">All prices in USD</p>
+</div>
+</div>
+</div>
+<!-- Screen 4: Guest Information -->
+<div id="screen-4" class="px-4 py-2 hidden">
+<h2 class="text-xl font-semibold mb-2">Review Your Booking</h2>
+<p class="text-sm text-gray-600 mb-4">Please review all details before proceeding to payment</p>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex items-start space-x-3 mb-4">
+<img src="https://readdy.ai/api/search-image?query=Beautiful%20beach%20resort%20with%20palm%20trees%2C%20crystal%20clear%20water%2C%20luxury%20beachfront%20villas%2C%20tropical%20paradise%2C%20sunny%20day%2C%20high-quality%20travel%20photography%2C%20vibrant%20colors%2C%20vacation%20destination&width=80&height=80&seq=2&orientation=squarish" alt="Resort" class="w-20 h-20 rounded-lg object-cover">
+<div>
+<h3 class="font-semibold">Tropical Paradise Resort</h3>
+<p class="text-sm text-gray-500">Deluxe Package - 3 Days, 2 Nights</p>
+<div class="flex items-center mt-1">
+<i class="ri-map-pin-line ri-sm text-gray-500"></i>
+<span class="ml-1 text-sm text-gray-500">Bali, Indonesia</span>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-calendar-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm font-medium">June 12 - 14, 2025</p>
+<p class="text-xs text-gray-500">Check-in: 12:00 PM</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-group-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm font-medium">2 Adults</p>
+<p class="text-xs text-gray-500">Deluxe Package ($599/person)</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-add-circle-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm font-medium">Selected Add-ons</p>
+<div class="space-y-1 mt-1">
+<p class="text-xs text-gray-500">• Private Airport Transfer ($50)</p>
+<p class="text-xs text-gray-500">• Romantic Beachside Dinner ($120)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Guest Information</h3>
+<button class="text-sm text-primary font-medium flex items-center">
+<i class="ri-edit-line mr-1"></i>
+Edit
+</button>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-sm text-gray-600 mb-1">Full Name</label>
+<div class="relative">
+<input type="text" class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter your full name" value="Alexander Thompson">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-user-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">Email Address</label>
+<div class="relative">
+<input type="email" class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter your email" value="alex.thompson@example.com">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-mail-line text-gray-400"></i>
+</div>
+</div>
+<p class="text-xs text-gray-500 mt-1">Booking confirmation will be sent to this email</p>
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">Phone Number</label>
+<div class="relative">
+<input type="tel" class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter your phone number" value="+1 (555) 123-4567">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-phone-line text-gray-400"></i>
+</div>
+</div>
+<p class="text-xs text-gray-500 mt-1">For important updates about your booking</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex justify-between items-center mb-3">
+<h3 class="font-medium">Price Summary</h3>
+<span class="text-xs text-gray-500">All prices in USD</span>
+</div>
+<div class="space-y-3">
+<div class="border-b pb-3">
+<p class="text-sm font-medium mb-2">Package Price</p>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Adult × 2</span>
+<span class="text-sm">$599.00 × 2 = $1,198.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Child × 0</span>
+<span class="text-sm">$299.00 × 0 = $0.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Infant × 0</span>
+<span class="text-sm">Free</span>
+</div>
+</div>
+</div>
+<div class="border-b pb-3">
+<p class="text-sm font-medium mb-2">Add-ons</p>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Private Airport Transfer</span>
+<span class="text-sm">$50.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Romantic Beachside Dinner</span>
+<span class="text-sm">$120.00</span>
+</div>
+</div>
+</div>
+<div class="border-b pb-3">
+<p class="text-sm font-medium mb-2">Fees & Taxes</p>
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Service Fee (5%)</span>
+<span class="text-sm">$68.40</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Tax (5%)</span>
+<span class="text-sm">$68.40</span>
+</div>
+</div>
+</div>
+<div class="bg-primary/5 p-3 rounded-lg">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-semibold">Grand Total</p>
+<p class="text-xs text-gray-500 mt-0.5">Total amount to be charged</p>
+</div>
+<span class="text-xl font-semibold text-primary">$1,504.80</span>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="border border-gray-200 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h4 class="text-sm font-medium">Guest 1</h4>
+<button class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-pointer">
+<i class="ri-delete-bin-line ri-sm"></i>
+</button>
+</div>
+<div class="space-y-2">
+<div>
+<label class="block text-xs text-gray-600 mb-1">Full Name</label>
+<input type="text" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Enter full name" value="Olivia Thompson">
+</div>
+<div>
+<label class="block text-xs text-gray-600 mb-1">Age</label>
+<input type="number" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Enter age" value="32">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h3 class="font-medium mb-3">Special Requests</h3>
+<textarea class="w-full px-3 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary" rows="3" placeholder="Any special requests or requirements?">We would prefer a room on a higher floor with a good view if possible. Also, my wife has a shellfish allergy, so please note this for dining.</textarea>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h3 class="font-medium mb-3">Communication Preferences</h3>
+<div class="space-y-3">
+<div class="flex items-start">
+<div class="flex items-center h-5 mt-1">
+<input id="sms-updates" type="checkbox" class="w-4 h-4 text-primary focus:ring-primary rounded cursor-pointer" checked>
+</div>
+<label for="sms-updates" class="ml-2 text-sm text-gray-600">
+Receive SMS updates about my booking (recommended)
+<p class="text-xs text-gray-500 mt-0.5">Get instant updates about your booking status and important notifications</p>
+</label>
+</div>
+<div class="flex items-start">
+<div class="flex items-center h-5 mt-1">
+<input id="email-updates" type="checkbox" class="w-4 h-4 text-primary focus:ring-primary rounded cursor-pointer" checked>
+</div>
+<label for="email-updates" class="ml-2 text-sm text-gray-600">
+Receive email updates and offers
+<p class="text-xs text-gray-500 mt-0.5">Stay informed about special offers and promotions</p>
+</label>
+</div>
+<div class="flex items-start">
+<div class="flex items-center h-5 mt-1">
+<input id="terms" type="checkbox" class="w-4 h-4 text-primary focus:ring-primary rounded cursor-pointer" checked required>
+</div>
+<label for="terms" class="ml-2 text-sm text-gray-600">
+I agree to the <a href="#" class="text-primary">Terms & Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>
+<p class="text-xs text-gray-500 mt-0.5">Required for booking confirmation</p>
+</label>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-medium">Booking Policies</h3>
+<i class="ri-information-line text-gray-400"></i>
+</div>
+<div class="space-y-3">
+<div class="flex items-start">
+<i class="ri-time-line text-primary mt-1"></i>
+<div class="ml-2">
+<p class="text-sm font-medium">Check-in Time</p>
+<p class="text-xs text-gray-500">From 12:00 PM on June 12, 2025</p>
+</div>
+</div>
+<div class="flex items-start">
+<i class="ri-calendar-check-line text-primary mt-1"></i>
+<div class="ml-2">
+<p class="text-sm font-medium">Cancellation Policy</p>
+<div class="space-y-1">
+<p class="text-xs text-gray-500">• Free cancellation up to 48 hours before check-in</p>
+<p class="text-xs text-gray-500">• 50% refund between 48-24 hours before check-in</p>
+<p class="text-xs text-gray-500">• No refund within 24 hours of check-in</p>
+<button class="text-xs text-primary font-medium mt-1 flex items-center hover:text-primary/90">
+View Full Policy
+<i class="ri-arrow-right-s-line ml-0.5"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-start">
+<i class="ri-shield-check-line text-primary mt-1"></i>
+<div class="ml-2">
+<p class="text-sm font-medium">Secure Payment</p>
+<p class="text-xs text-gray-500">Your payment information is encrypted</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Screen 5: Payment & Confirmation -->
+<div id="screen-5" class="px-4 py-2 hidden">
+<h2 class="text-xl font-semibold mb-2">Payment Information</h2>
+<p class="text-sm text-gray-600 mb-4">Choose your preferred payment method to complete the booking</p>
+<div class="bg-primary/5 rounded-lg p-4 mb-4">
+<div class="flex justify-between items-center">
+<div>
+<p class="text-sm text-gray-600">Total Amount Due</p>
+<p class="text-2xl font-semibold text-primary mt-1">$1,449.80</p>
+</div>
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-secure-payment-line text-primary"></i>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h3 class="font-medium mb-3">Booking Summary</h3>
+<div class="space-y-2 mb-3">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-hotel-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm font-medium">Tropical Paradise Resort</p>
+<p class="text-xs text-gray-500">Deluxe Package - 2 guests</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-calendar-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm font-medium">June 12 - 14, 2025</p>
+<p class="text-xs text-gray-500">Check-in: 12:00 PM</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-user-line text-primary"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm font-medium">Alexander Thompson</p>
+<p class="text-xs text-gray-500">Lead Guest</p>
+</div>
+</div>
+</div>
+<div class="border-t pt-2">
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm">Deluxe Package (2)</span>
+<span class="text-sm">$1,198.00</span>
+</div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm">Romantic Dinner</span>
+<span class="text-sm">$120.00</span>
+</div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-sm">Taxes & Fees</span>
+<span class="text-sm">$131.80</span>
+</div>
+<div class="border-t pt-2 mt-2">
+<div class="flex justify-between items-center">
+<span class="font-semibold">Total</span>
+<span class="font-semibold">$1,449.80</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h3 class="font-medium mb-3">Saved Cards</h3>
+<div class="space-y-3">
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="saved-card-1" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer" checked>
+<label for="saved-card-1" class="ml-2 flex-1 cursor-pointer">
+<div class="flex items-center">
+<i class="ri-visa-fill ri-lg text-blue-700"></i>
+<span class="text-sm font-medium ml-2">•••• •••• •••• 4789</span>
+<span class="text-xs text-gray-500 ml-2">Expires 08/25</span>
+</div>
+</label>
+<button class="text-gray-400 hover:text-gray-600">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="saved-card-2" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer">
+<label for="saved-card-2" class="ml-2 flex-1 cursor-pointer">
+<div class="flex items-center">
+<i class="ri-mastercard-fill ri-lg text-red-500"></i>
+<span class="text-sm font-medium ml-2">•••• •••• •••• 1234</span>
+<span class="text-xs text-gray-500 ml-2">Expires 12/24</span>
+</div>
+</label>
+<button class="text-gray-400 hover:text-gray-600">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h3 class="font-medium mb-3">Other Payment Methods</h3>
+<div class="space-y-3">
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="new-card" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer">
+<label for="new-card" class="ml-2 flex items-center cursor-pointer flex-1">
+<span class="text-sm font-medium">Add New Card</span>
+<div class="flex ml-auto">
+<i class="ri-visa-fill ri-lg text-blue-700 mr-1"></i>
+<i class="ri-mastercard-fill ri-lg text-red-500 mr-1"></i>
+<i class="ri-bank-card-fill ri-lg text-gray-700"></i>
+</div>
+</label>
+</div>
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="apple-pay" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer">
+<label for="apple-pay" class="ml-2 flex items-center cursor-pointer flex-1">
+<span class="text-sm font-medium">Apple Pay</span>
+<i class="ri-apple-fill ri-lg text-black ml-auto"></i>
+</label>
+</div>
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="google-pay" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer">
+<label for="google-pay" class="ml-2 flex items-center cursor-pointer flex-1">
+<span class="text-sm font-medium">Google Pay</span>
+<i class="ri-google-fill ri-lg text-blue-500 ml-auto"></i>
+</label>
+</div>
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="paypal" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer">
+<label for="paypal" class="ml-2 flex items-center cursor-pointer flex-1">
+<span class="text-sm font-medium">PayPal</span>
+<i class="ri-paypal-fill ri-lg text-blue-600 ml-auto"></i>
+</label>
+</div>
+<div class="flex items-center p-3 bg-gray-50 rounded-lg">
+<input type="radio" name="payment-method" id="qpay" class="w-4 h-4 text-primary focus:ring-primary cursor-pointer">
+<label for="qpay" class="ml-2 flex items-center cursor-pointer flex-1">
+<span class="text-sm font-medium">QPay</span>
+<div class="w-6 h-6 bg-purple-600 rounded flex items-center justify-center ml-auto">
+<span class="text-white text-xs font-bold">Q</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="mt-4 space-y-4" id="card-details">
+<div class="bg-white rounded-lg shadow-sm p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Card Details</h3>
+<div class="flex items-center">
+<i class="ri-lock-line text-green-600 mr-1"></i>
+<span class="text-xs text-green-600">Secure SSL Encryption</span>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-sm text-gray-600 mb-1">Card Number</label>
+<div class="relative">
+<input type="text" class="w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="1234 5678 9012 3456" value="4111 1111 1111 1111">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+<i class="ri-visa-fill text-blue-700"></i>
+<i class="ri-mastercard-fill text-red-500"></i>
+<i class="ri-bank-card-fill text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-sm text-gray-600 mb-1">Expiry Date</label>
+<div class="relative">
+<input type="text" class="w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="MM/YY" value="06/28">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-calendar-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">CVV/CVC</label>
+<div class="relative group">
+<input type="text" class="w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="123" value="123" maxlength="4">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-help">
+<i class="ri-question-line text-gray-400"></i>
+<div class="hidden group-hover:block absolute right-0 bottom-full mb-2 w-48 p-2 bg-gray-800 text-white text-xs rounded-lg">
+3-4 digit security code found on the back of your card
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">Name on Card</label>
+<div class="relative">
+<input type="text" class="w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter name on card" value="Alexander Thompson">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-user-line text-gray-400"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mt-4">
+<h3 class="font-medium mb-3">Billing Address</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-sm text-gray-600 mb-1">Street Address</label>
+<input type="text" class="w-full px-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter street address" value="123 Ocean View Drive">
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-sm text-gray-600 mb-1">City</label>
+<input type="text" class="w-full px-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter city" value="Miami">
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">State</label>
+<input type="text" class="w-full px-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter state" value="Florida">
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-sm text-gray-600 mb-1">ZIP Code</label>
+<input type="text" class="w-full px-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter ZIP code" value="33139">
+</div>
+<div>
+<label class="block text-sm text-gray-600 mb-1">Country</label>
+<input type="text" class="w-full px-3 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter country" value="United States">
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mt-4">
+<div class="flex items-center justify-between">
+<h3 class="font-medium">Promo Code</h3>
+<button class="text-primary text-sm font-medium">Have a code?</button>
+</div>
+<div class="mt-3 relative hidden">
+<input type="text" class="w-full pl-3 pr-24 py-2.5 border border-gray-300 rounded-button focus:outline-none focus:ring-1 focus:ring-primary text-sm" placeholder="Enter promo code">
+<button class="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-primary text-white text-sm font-medium rounded-button">Apply</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex items-start">
+<div class="flex items-center h-5 mt-1">
+<input id="save-card" type="checkbox" class="w-4 h-4 text-primary focus:ring-primary rounded cursor-pointer" checked>
+</div>
+<label for="save-card" class="ml-2 text-sm text-gray-600">
+Save this card for future bookings
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center mb-3">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-shield-check-line text-primary"></i>
+</div>
+<span class="ml-2 text-sm font-medium">Secure Payment</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center">
+<i class="ri-lock-line text-green-600 mr-2"></i>
+<p class="text-xs text-gray-600">256-bit SSL encryption protects your payment information</p>
+</div>
+<div class="flex items-center">
+<i class="ri-shield-check-line text-green-600 mr-2"></i>
+<p class="text-xs text-gray-600">PCI DSS compliant payment processing</p>
+</div>
+<div class="flex items-center">
+<i class="ri-bank-card-line text-green-600 mr-2"></i>
+<p class="text-xs text-gray-600">We never store your complete card details</p>
+</div>
+</div>
+</div>
+<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+<div class="flex">
+<div class="w-8 h-8 flex items-center justify-center text-yellow-500">
+<i class="ri-information-line"></i>
+</div>
+<div class="ml-2">
+<p class="text-sm text-yellow-700 font-medium">Payment Information</p>
+<ul class="mt-1 space-y-1">
+<li class="text-xs text-yellow-600">• Your card will be charged the full amount of $1,449.80 immediately</li>
+<li class="text-xs text-yellow-600">• Refunds are processed according to our cancellation policy</li>
+<li class="text-xs text-yellow-600">• All prices are in USD</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 w-full bg-white border-t border-gray-200 p-4">
+<div id="action-buttons" class="flex items-center justify-between">
+<!-- Screen 1 Buttons -->
+<div id="screen-1-buttons" class="w-full">
+<button id="book-now-btn" class="w-full bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer">
+Book Now - $599/person
+</button>
+</div>
+<!-- Screen 2 Buttons -->
+<div id="screen-2-buttons" class="w-full hidden">
+<div class="flex space-x-3">
+<button id="back-to-listing-btn" class="w-1/3 bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+Back
+</button>
+<button id="continue-to-tickets-btn" class="w-2/3 bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer">
+Check Availability
+</button>
+</div>
+</div>
+<!-- Screen 3 Buttons -->
+<div id="screen-3-buttons" class="w-full hidden">
+<div class="flex space-x-3">
+<button id="back-to-tickets-btn" class="w-1/3 bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+Back
+</button>
+<button id="skip-addons-btn" class="w-1/3 bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+Skip
+</button>
+<button id="continue-to-guest-info-btn" class="w-1/3 bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer">
+Continue
+</button>
+</div>
+</div>
+<!-- Screen 4 Buttons -->
+<div id="screen-4-buttons" class="w-full hidden">
+<div class="flex flex-col space-y-2">
+<div class="flex items-center justify-between px-2">
+<button class="text-primary font-medium text-sm flex items-center hover:text-primary/90">
+<i class="ri-arrow-left-s-line mr-1"></i>
+Edit Details
+</button>
+<button class="text-primary font-medium text-sm flex items-center hover:text-primary/90">
+<i class="ri-edit-line mr-1"></i>
+Edit Add-ons
+</button>
+</div>
+<div class="flex space-x-3">
+<button id="back-to-tickets-btn" class="w-1/3 bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+Back
+</button>
+<button id="proceed-to-payment-btn" class="w-2/3 bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer flex items-center justify-center">
+<span>Continue to Payment</span>
+<i class="ri-arrow-right-line ml-2"></i>
+</button>
+</div>
+<p class="text-xs text-center text-gray-500 mt-1">By proceeding, you agree to our Terms & Conditions</p>
+</div>
+</div>
+<!-- Screen 5 Buttons -->
+<div id="screen-5-buttons" class="w-full hidden">
+<div class="space-y-3">
+<button id="confirm-pay-btn" class="w-full bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer flex items-center justify-center">
+<i class="ri-lock-line mr-2"></i>
+<span>Pay Securely $1,449.80</span>
+</button>
+<button id="back-to-review-btn" class="w-full bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+Back to Review
+</button>
+<p class="text-xs text-center text-gray-500">By clicking "Pay Securely", you agree to our Terms of Service</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Processing Modal -->
+<div id="processing-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+<div class="text-center">
+<div class="w-16 h-16 mx-auto mb-4 relative">
+<div class="absolute inset-0 border-4 border-primary/30 rounded-full"></div>
+<div class="absolute inset-0 border-4 border-primary rounded-full animate-spin" style="border-top-color: transparent"></div>
+</div>
+<h3 class="text-xl font-bold mb-2">Processing Your Payment</h3>
+<p class="text-gray-600">Please wait while we secure your booking...</p>
+<div class="mt-6 space-y-3">
+<div class="flex items-center text-sm text-gray-600">
+<i class="ri-shield-check-line text-primary mr-2"></i>
+<span>Verifying payment details</span>
+</div>
+<div class="flex items-center text-sm text-gray-600">
+<i class="ri-lock-line text-primary mr-2"></i>
+<span>Securing your reservation</span>
+</div>
+<div class="flex items-center text-sm text-gray-600">
+<i class="ri-calendar-check-line text-primary mr-2"></i>
+<span>Confirming availability</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Failed Modal -->
+<div id="payment-failed-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+<div class="text-center">
+<div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-close-line ri-2x text-red-500"></i>
+</div>
+<h3 class="text-xl font-bold mb-2">Payment Failed</h3>
+<p class="text-gray-600 mb-4">We couldn't process your payment</p>
+<div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+<div class="flex items-start">
+<i class="ri-error-warning-line text-red-500 mt-0.5"></i>
+<div class="ml-3 text-left">
+<p class="text-sm font-medium text-red-700">Error Details</p>
+<p class="text-sm text-red-600 mt-1">Your card was declined. Please check your card details or try a different payment method.</p>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<button id="try-again-btn" class="w-full bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer flex items-center justify-center">
+<i class="ri-refresh-line mr-2"></i>
+Try Again
+</button>
+<button id="contact-support-btn" class="w-full bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer flex items-center justify-center">
+<i class="ri-customer-service-2-line mr-2"></i>
+Contact Support
+</button>
+</div>
+<div class="mt-4 text-center">
+<button id="change-payment-method-btn" class="text-primary text-sm font-medium hover:text-primary/90">
+Change Payment Method
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Success Modal (Hidden by default) -->
+<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div class="bg-white rounded-lg p-6 w-11/12 max-w-md">
+<div class="text-center">
+<div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-check-line ri-2x text-green-500"></i>
+</div>
+<h3 class="text-xl font-bold mb-2">Booking Confirmed!</h3>
+<p class="text-gray-600 mb-4">Your tickets have been sent to alex.thompson@example.com</p>
+<div class="bg-gray-50 rounded-lg p-4 mb-4">
+<div class="space-y-3">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-hotel-line text-primary"></i>
+</div>
+<div class="ml-2 text-left">
+<p class="text-sm font-medium">Tropical Paradise Resort</p>
+<p class="text-xs text-gray-500">Deluxe Package - 2 Adults</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-calendar-line text-primary"></i>
+</div>
+<div class="ml-2 text-left">
+<p class="text-sm font-medium">June 12 - 14, 2025</p>
+<p class="text-xs text-gray-500">Check-in: 12:00 PM</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-ticket-line text-primary"></i>
+</div>
+<div class="ml-2 text-left">
+<p class="text-sm font-medium">Booking Reference</p>
+<p class="text-xs text-gray-500">TPR-25061202</p>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<button id="add-calendar-btn" class="flex items-center justify-center bg-white border border-gray-300 text-gray-700 py-2.5 px-4 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+<i class="ri-calendar-2-line mr-2"></i>
+Add to Calendar
+</button>
+<button id="share-booking-btn" class="flex items-center justify-center bg-white border border-gray-300 text-gray-700 py-2.5 px-4 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer">
+<i class="ri-share-line mr-2"></i>
+Share
+</button>
+</div>
+<button id="view-booking-btn" class="w-full bg-primary text-white py-3 font-medium rounded-button shadow-sm hover:bg-primary/90 transition cursor-pointer mb-2 flex items-center justify-center">
+<i class="ri-ticket-2-line mr-2"></i>
+View My Booking
+</button>
+<button id="explore-more-btn" class="w-full bg-white border border-gray-300 text-gray-700 py-3 font-medium rounded-button shadow-sm hover:bg-gray-50 transition cursor-pointer flex items-center justify-center">
+<i class="ri-compass-3-line mr-2"></i>
+Explore More Activities
+</button>
+<div class="mt-4 text-center">
+<button id="back-to-home-btn" class="text-gray-500 text-sm hover:text-gray-700">
+Back to Home
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Scripts -->
+<script id="navigation-script">
+document.addEventListener('DOMContentLoaded', function() {
+const screens = [
+document.getElementById('screen-1'),
+document.getElementById('screen-2'),
+document.getElementById('screen-3'),
+document.getElementById('screen-4'),
+document.getElementById('screen-5'),
+document.getElementById('success-modal')
+];
+function validateContactForm() {
+const name = document.querySelector('input[placeholder="Enter your full name"]').value;
+const email = document.querySelector('input[placeholder="Enter your email"]').value;
+const phone = document.querySelector('input[placeholder="Enter your phone number"]').value;
+if (!name || !email || !phone) {
+const errorDiv = document.createElement('div');
+errorDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg z-50 flex items-center';
+errorDiv.innerHTML = `
+<i class="ri-error-warning-line mr-2"></i>
+<span class="text-sm">Please fill in all required fields</span>
+`;
+document.body.appendChild(errorDiv);
+setTimeout(() => errorDiv.remove(), 3000);
+return false;
+}
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(email)) {
+const errorDiv = document.createElement('div');
+errorDiv.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg z-50 flex items-center';
+errorDiv.innerHTML = `
+<i class="ri-error-warning-line mr-2"></i>
+<span class="text-sm">Please enter a valid email address</span>
+`;
+document.body.appendChild(errorDiv);
+setTimeout(() => errorDiv.remove(), 3000);
+return false;
+}
+return true;
+}
+document.getElementById('back-to-listing-btn')?.addEventListener('click', () => {
+showScreen(0);
+});
+const actionButtons = [
+document.getElementById('screen-1-buttons'),
+document.getElementById('screen-2-buttons'),
+document.getElementById('screen-3-buttons'),
+document.getElementById('screen-4-buttons'),
+document.getElementById('screen-5-buttons'),
+document.getElementById('success-modal')
+];
+const progressFill = document.getElementById('progress-fill');
+const backButton = document.getElementById('back-button');
+let currentScreen = 0;
+function showScreen(index) {
+screens.forEach((screen, i) => {
+screen.classList.toggle('hidden', i !== index);
+});
+actionButtons.forEach((buttons, i) => {
+buttons.classList.toggle('hidden', i !== index);
+});
+currentScreen = index;
+const progressPercentage = index === 5 ? 100 : (index + 1) * 16.67;
+progressFill.style.width = `${progressPercentage}%`;
+if (index === 0) {
+backButton.classList.add('invisible');
+} else if (index === 5) {
+backButton.classList.add('invisible');
+} else {
+backButton.classList.remove('invisible');
+}
+}
+// Initial setup
+showScreen(0);
+// Navigation buttons
+document.getElementById('book-now-btn').addEventListener('click', () => showScreen(1));
+document.getElementById('continue-to-tickets-btn').addEventListener('click', () => showScreen(2));
+document.getElementById('continue-to-guest-info-btn').addEventListener('click', () => showScreen(3));
+document.getElementById('proceed-to-payment-btn').addEventListener('click', () => {
+// Get form elements by their specific IDs
+const fullName = document.querySelector('input[placeholder="Enter your full name"]');
+const email = document.querySelector('input[placeholder="Enter your email"]');
+const phone = document.querySelector('input[placeholder="Enter your phone number"]');
+const termsConsent = document.querySelector('input[id="terms"]');
+let isValid = true;
+// Remove any existing error states
+[fullName, email, phone].forEach(input => {
+input.classList.remove('border-red-500');
+const errorMessage = input.parentElement.querySelector('.error-message');
+if (errorMessage) errorMessage.remove();
+});
+// Validate full name
+if (!fullName.value.trim()) {
+isValid = false;
+fullName.classList.add('border-red-500');
+showErrorMessage(fullName, 'Please enter your full name');
+}
+// Validate email
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!email.value.trim() || !emailRegex.test(email.value)) {
+isValid = false;
+email.classList.add('border-red-500');
+showErrorMessage(email, 'Please enter a valid email address');
+}
+// Validate phone
+const phoneRegex = /^\+?[\d\s-()]{10,}$/;
+if (!phone.value.trim() || !phoneRegex.test(phone.value)) {
+isValid = false;
+phone.classList.add('border-red-500');
+showErrorMessage(phone, 'Please enter a valid phone number');
+}
+// Validate terms consent
+if (!termsConsent.checked) {
+isValid = false;
+showToast('Please accept the Terms & Conditions');
+}
+if (!isValid) {
+showToast('Please fill in all required fields correctly');
+return;
+}
+// If validation passes, show loading state and transition
+const button = document.getElementById('proceed-to-payment-btn');
+const originalContent = button.innerHTML;
+button.innerHTML = `
+<div class="flex items-center">
+<div class="animate-spin mr-2">
+<i class="ri-loader-4-line"></i>
+</div>
+<span>Processing...</span>
+</div>
+`;
+button.disabled = true;
+// Simulate processing delay for smooth transition
+setTimeout(() => {
+button.innerHTML = originalContent;
+button.disabled = false;
+showScreen(4);
+}, 800);
+});
+// Helper function to show error message below input
+function showErrorMessage(input, message) {
+const errorDiv = document.createElement('div');
+errorDiv.className = 'error-message text-red-500 text-xs mt-1';
+errorDiv.innerHTML = `<i class="ri-error-warning-line mr-1"></i>${message}`;
+input.parentElement.appendChild(errorDiv);
+}
+// Helper function to show toast notification
+function showToast(message) {
+const toast = document.createElement('div');
+toast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg z-50 flex items-center transition-opacity duration-300';
+toast.innerHTML = `
+<i class="ri-error-warning-line mr-2"></i>
+<span class="text-sm">${message}</span>
+`;
+document.body.appendChild(toast);
+// Fade in
+requestAnimationFrame(() => {
+toast.style.opacity = '0';
+requestAnimationFrame(() => {
+toast.style.opacity = '1';
+});
+});
+// Remove after delay
+setTimeout(() => {
+toast.style.opacity = '0';
+setTimeout(() => toast.remove(), 300);
+}, 3000);
+}
+// Back button
+backButton.addEventListener('click', () => {
+if (currentScreen > 0) {
+showScreen(currentScreen - 1);
+}
+});
+// Payment confirmation
+document.getElementById('confirm-pay-btn').addEventListener('click', () => {
+const processingModal = document.getElementById('processing-modal');
+const failedModal = document.getElementById('payment-failed-modal');
+// Show processing modal
+processingModal.classList.remove('hidden');
+// Simulate payment processing with random success/failure
+setTimeout(() => {
+processingModal.classList.add('hidden');
+const isSuccess = Math.random() > 0.5; // 50% chance of success/failure for demo
+if (isSuccess) {
+showScreen(5);
+// Add success animation
+const checkIcon = screens[5].querySelector('.ri-check-line');
+checkIcon.style.transform = 'scale(0)';
+setTimeout(() => {
+checkIcon.style.transition = 'transform 0.5s ease';
+checkIcon.style.transform = 'scale(1)';
+}, 100);
+} else {
+failedModal.classList.remove('hidden');
+// Add failure animation
+const closeIcon = failedModal.querySelector('.ri-close-line');
+closeIcon.style.transform = 'scale(0)';
+setTimeout(() => {
+closeIcon.style.transition = 'transform 0.5s ease';
+closeIcon.style.transform = 'scale(1)';
+}, 100);
+}
+}, 3000);
+});
+// Payment Failed Modal Actions
+document.getElementById('try-again-btn')?.addEventListener('click', () => {
+document.getElementById('payment-failed-modal').classList.add('hidden');
+});
+document.getElementById('contact-support-btn')?.addEventListener('click', () => {
+window.location.href = 'mailto:support@tropicalparadise.com';
+});
+document.getElementById('change-payment-method-btn')?.addEventListener('click', () => {
+document.getElementById('payment-failed-modal').classList.add('hidden');
+});
+// Modal buttons
+document.getElementById('view-booking-btn').addEventListener('click', () => {
+document.getElementById('success-modal').classList.add('hidden');
+showScreen(0);
+});
+document.getElementById('add-calendar-btn').addEventListener('click', () => {
+const startDate = new Date('2025-06-12T12:00:00');
+const endDate = new Date('2025-06-14T12:00:00');
+const calendarEvent = {
+title: 'Tropical Paradise Resort Stay',
+description: 'Deluxe Package - 2 Adults\nBooking Reference: TPR-25061202',
+startDate: startDate.toISOString(),
+endDate: endDate.toISOString(),
+location: 'Bali, Indonesia'
+};
+const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(calendarEvent.title)}&dates=${calendarEvent.startDate.replace(/[-:]/g, '')}/${calendarEvent.endDate.replace(/[-:]/g, '')}&details=${encodeURIComponent(calendarEvent.description)}&location=${encodeURIComponent(calendarEvent.location)}`;
+window.open(googleCalendarUrl, '_blank');
+});
+document.getElementById('share-booking-btn').addEventListener('click', () => {
+const shareData = {
+title: 'My Resort Booking',
+text: 'Check out my upcoming stay at Tropical Paradise Resort!',
+url: window.location.href
+};
+if (navigator.share) {
+navigator.share(shareData)
+.catch((error) => console.log('Error sharing:', error));
+} else {
+const shareModal = document.createElement('div');
+shareModal.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg z-50';
+shareModal.textContent = 'Sharing is not supported on this device';
+document.body.appendChild(shareModal);
+setTimeout(() => shareModal.remove(), 3000);
+}
+});
+document.getElementById('explore-more-btn').addEventListener('click', () => {
+document.getElementById('success-modal').classList.add('hidden');
+showScreen(0);
+});
+document.getElementById('back-to-home-btn').addEventListener('click', () => {
+document.getElementById('success-modal').classList.add('hidden');
+showScreen(0);
+});
+});
+</script>
+<script id="date-selection-script">
+document.addEventListener('DOMContentLoaded', function() {
+const dateSelector = document.querySelector('.date-selector');
+const dateElements = dateSelector.querySelectorAll('div:not(.text-gray-300)');
+dateElements.forEach(element => {
+element.addEventListener('click', function() {
+// Remove selected class from all dates
+dateElements.forEach(el => el.classList.remove('selected'));
+// Add selected class to clicked date
+this.classList.add('selected');
+});
+});
+const timeSlots = document.querySelectorAll('.time-slot');
+timeSlots.forEach(slot => {
+slot.addEventListener('click', function() {
+// Remove selected class from all time slots
+timeSlots.forEach(el => el.classList.remove('selected'));
+// Add selected class to clicked time slot
+this.classList.add('selected');
+});
+});
+});
+</script>
+<script id="package-selection-script">
+document.addEventListener('DOMContentLoaded', function() {
+const prices = {
+'adults': 599,
+'children': 299,
+'infants': 0,
+'addons': {
+'transfer': 50,
+'photo': 150,
+'dinner': 120,
+'snorkel': 25,
+'tour': 75,
+'welcome': 45
+}
+};
+function calculateTotal() {
+let subtotal = 0;
+let addonTotal = 0;
+// Calculate package total
+const adultQuantity = parseInt(document.querySelector('.space-y-4 .flex.items-center.justify-between:first-child span:nth-child(2)').textContent);
+subtotal += prices.adults * adultQuantity;
+// Calculate add-ons total
+document.querySelectorAll('.space-y-4 .flex.items-center.justify-between').forEach(addon => {
+const quantity = parseInt(addon.querySelector('span:nth-child(2)').textContent);
+const type = addon.querySelector('.text-sm.font-medium').textContent.toLowerCase();
+if (prices.addons[type.split(' ')[0].toLowerCase()]) {
+addonTotal += prices.addons[type.split(' ')[0].toLowerCase()] * quantity;
+}
+});
+const total = subtotal + addonTotal;
+const taxes = total * 0.1; // 10% tax rate
+// Update summary
+document.getElementById('package-total').textContent = `$${subtotal.toFixed(2)}`;
+document.getElementById('taxes').textContent = `$${taxes.toFixed(2)}`;
+document.getElementById('total-amount').textContent = `$${(total + taxes).toFixed(2)}`;
+// Update add-ons summary
+const addonsSummary = document.getElementById('addons-summary');
+addonsSummary.innerHTML = '';
+document.querySelectorAll('.space-y-4 .flex.items-center.justify-between').forEach(addon => {
+const quantity = parseInt(addon.querySelector('span:nth-child(2)').textContent);
+if (quantity > 0) {
+const type = addon.querySelector('.text-sm.font-medium').textContent;
+const price = prices.addons[type.split(' ')[0].toLowerCase()] * quantity;
+addonsSummary.innerHTML += `
+<div class="flex justify-between items-center">
+<span class="text-sm">${type} (${quantity})</span>
+<span class="text-sm font-medium">$${price.toFixed(2)}</span>
+</div>`;
+}
+});
+}
+// Add event listeners for add-on quantity changes
+document.querySelectorAll('.space-y-4 button').forEach(button => {
+button.addEventListener('click', calculateTotal);
+});
+// Add event listeners for navigation buttons
+document.getElementById('skip-addons-btn').addEventListener('click', () => {
+document.querySelectorAll('.space-y-4 span:nth-child(2)').forEach(span => {
+span.textContent = '0';
+});
+calculateTotal();
+showScreen(3);
+});
+document.getElementById('back-to-tickets-btn').addEventListener('click', () => {
+showScreen(1);
+});
+function updateTotal() {
+let total = 0;
+document.querySelectorAll('.space-y-4 .flex.items-center.justify-between').forEach(container => {
+const type = container.querySelector('.font-medium').textContent.toLowerCase();
+const quantity = parseInt(container.querySelector('span').textContent);
+total += prices[type] * quantity;
+});
+const totalElement = document.querySelector('#total-amount');
+if (totalElement) {
+totalElement.textContent = `$${total.toFixed(2)}`;
+}
+}
+function updateTimeSlotAvailability(slot) {
+const availableSpots = parseInt(slot.querySelector('.text-xs').textContent);
+if (availableSpots === 0) {
+slot.classList.add('bg-gray-100');
+slot.classList.remove('cursor-pointer', 'hover:bg-gray-50');
+slot.querySelector('.text-sm').classList.add('text-gray-500');
+}
+}
+document.querySelectorAll('.time-slot').forEach(slot => {
+slot.addEventListener('click', function() {
+if (!this.classList.contains('bg-gray-100')) {
+document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('bg-primary', 'text-white'));
+this.classList.add('bg-primary', 'text-white');
+}
+});
+updateTimeSlotAvailability(slot);
+});
+document.querySelectorAll('.space-y-4 button').forEach(button => {
+button.addEventListener('click', function() {
+const container = this.closest('.flex.items-center.justify-between');
+const quantityElement = container.querySelector('span');
+let quantity = parseInt(quantityElement.textContent);
+const isAdd = this.querySelector('.ri-add-line');
+const maxParticipants = 10;
+if (isAdd) {
+const currentTotal = Array.from(document.querySelectorAll('.space-y-4 span')).reduce((sum, el) => sum + parseInt(el.textContent), 0);
+if (currentTotal < maxParticipants) {
+quantity++;
+}
+} else if (quantity > 0) {
+quantity--;
+}
+quantityElement.textContent = quantity;
+const subtractButton = container.querySelector('button:first-child');
+if (quantity === 0) {
+subtractButton.classList.remove('bg-primary', 'text-white');
+subtractButton.classList.add('bg-white', 'border-gray-200');
+} else {
+subtractButton.classList.remove('bg-white', 'border-gray-200');
+subtractButton.classList.add('bg-primary', 'text-white');
+}
+updateTotal();
+});
+});
+});
+</script>
+</body>
+</html>

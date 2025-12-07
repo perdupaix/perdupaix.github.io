@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Information</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#10B981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type=number] {
+-moz-appearance: textfield;
+}
+.card-input {
+transition: all 0.3s ease;
+}
+.success-checkmark {
+animation: scale-up 0.5s ease-in-out;
+}
+@keyframes scale-up {
+0% { transform: scale(0); opacity: 0; }
+70% { transform: scale(1.2); opacity: 1; }
+100% { transform: scale(1); opacity: 1; }
+}
+.delivery-progress {
+transition: width 1.5s ease-in-out;
+}
+.shake-animation {
+animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+</style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+<div id="payment-screen" class="relative min-h-screen pb-20">
+<!-- Nav Bar -->
+<nav class="fixed top-0 w-full bg-white shadow-sm z-10">
+<div class="flex items-center justify-between px-4 py-3">
+<button id="back-button" class="w-10 h-10 flex items-center justify-center text-gray-700">
+<i class="ri-arrow-left-line ri-lg"></i>
+</button>
+<h1 class="text-lg font-semibold">Payment Details</h1>
+<div class="w-10"></div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-16 px-5 pb-24">
+<!-- Order Summary -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<h2 class="text-lg font-medium mb-3">Order Summary</h2>
+<div class="flex justify-between mb-2">
+<span class="text-gray-600">Gift Card Value</span>
+<span class="font-medium">$50.00</span>
+</div>
+<div class="flex justify-between mb-2">
+<span class="text-gray-600">Service Fee</span>
+<span class="font-medium">$1.99</span>
+</div>
+<div class="border-t border-gray-200 my-2"></div>
+<div class="flex justify-between font-medium text-lg">
+<span>Total</span>
+<span class="text-primary">$51.99</span>
+</div>
+</div>
+<!-- Payment Form -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<form id="payment-form">
+<!-- Card Number -->
+<div class="mb-4">
+<label for="card-number" class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+<div class="relative">
+<input type="text" id="card-number" class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm card-input" placeholder="1234 5678 9012 3456" maxlength="19">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex space-x-1">
+<i class="ri-visa-line ri-lg text-gray-400"></i>
+<i class="ri-mastercard-line ri-lg text-gray-400"></i>
+<i class="ri-bank-card-line ri-lg text-gray-400"></i>
+</div>
+</div>
+</div>
+<!-- Expiration Date and CVV -->
+<div class="flex space-x-4 mb-4">
+<div class="w-1/2">
+<label for="expiry-date" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+<input type="text" id="expiry-date" class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm card-input" placeholder="MM / YY" maxlength="7">
+</div>
+<div class="w-1/2">
+<label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+<div class="relative">
+<input type="number" id="cvv" class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm card-input" placeholder="123" maxlength="4">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-question-line ri-lg text-gray-400 cursor-pointer" id="cvv-info"></i>
+</div>
+</div>
+</div>
+</div>
+<!-- Name on Card -->
+<div class="mb-6">
+<label for="card-name" class="block text-sm font-medium text-gray-700 mb-1">Name on Card</label>
+<input type="text" id="card-name" class="w-full px-4 py-3 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-sm card-input" placeholder="John Smith">
+</div>
+<!-- Save Card -->
+<div class="flex items-center mb-6">
+<input type="checkbox" id="save-card" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+<label for="save-card" class="ml-2 block text-sm text-gray-700">Save card for future purchases</label>
+</div>
+</form>
+</div>
+<!-- Security Badges -->
+<div class="flex items-center justify-center space-x-4 mb-6">
+<div class="flex items-center text-gray-500">
+<i class="ri-lock-line ri-lg mr-1"></i>
+<span class="text-xs">Secure Payment</span>
+</div>
+<div class="flex items-center text-gray-500">
+<i class="ri-shield-check-line ri-lg mr-1"></i>
+<span class="text-xs">SSL Encrypted</span>
+</div>
+<div class="flex items-center text-gray-500">
+<i class="ri-verified-badge-line ri-lg mr-1"></i>
+<span class="text-xs">PCI Compliant</span>
+</div>
+</div>
+<!-- Pay Button -->
+<button id="pay-now-button" class="w-full bg-primary text-white font-medium py-3.5 px-4 rounded-button hover:bg-primary/90 transition-colors flex items-center justify-center cursor-pointer !rounded-button">
+Pay $51.99
+</button>
+</main>
+<!-- Tab Bar -->
+<div class="fixed bottom-0 w-full bg-white border-t border-gray-200 px-2 py-1 grid grid-cols-5 z-10">
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-home-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-search-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-gift-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs text-primary mt-0.5">Cards</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-history-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-user-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Profile</span>
+</div>
+</div>
+</div>
+<!-- Confirmation Screen (Hidden by default) -->
+<div id="confirmation-screen" class="hidden relative min-h-screen pb-20">
+<!-- Nav Bar -->
+<nav class="fixed top-0 w-full bg-white shadow-sm z-10">
+<div class="flex items-center justify-between px-4 py-3">
+<div class="w-10"></div>
+<h1 class="text-lg font-semibold">Order Confirmation</h1>
+<button id="close-button" class="w-10 h-10 flex items-center justify-center text-gray-700 cursor-pointer">
+<i class="ri-close-line ri-lg"></i>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-16 px-5 pb-24">
+<!-- Success Animation -->
+<div class="flex flex-col items-center justify-center mb-8">
+<div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 success-checkmark">
+<i class="ri-check-line ri-2x text-green-500"></i>
+</div>
+<h2 class="text-2xl font-bold text-center">Thank You!</h2>
+<p class="text-gray-600 text-center mt-2">Your gift card purchase was successful</p>
+</div>
+<!-- Order Details -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<div class="flex justify-between mb-3">
+<span class="text-gray-600">Order Number</span>
+<span class="font-medium">#GC2506152</span>
+</div>
+<div class="flex justify-between mb-3">
+<span class="text-gray-600">Date</span>
+<span class="font-medium">June 15, 2025</span>
+</div>
+<div class="flex justify-between mb-3">
+<span class="text-gray-600">Payment Method</span>
+<span class="font-medium flex items-center">
+<i class="ri-visa-fill ri-lg mr-1 text-blue-700"></i>
+•••• 3456
+</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-600">Amount</span>
+<span class="font-medium">$51.99</span>
+</div>
+</div>
+<!-- Delivery Status -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<h3 class="text-lg font-medium mb-4">Delivery Status</h3>
+<div class="mb-4">
+<div class="flex justify-between mb-2">
+<span class="text-sm font-medium">Processing</span>
+<span class="text-sm font-medium">Delivered</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-green-500 h-2 rounded-full delivery-progress" style="width: 100%"></div>
+</div>
+</div>
+<div class="flex items-start mb-3">
+<div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full mr-3">
+<i class="ri-mail-check-line text-green-500"></i>
+</div>
+<div>
+<p class="font-medium">Gift card sent</p>
+<p class="text-sm text-gray-600">Delivered to: emily.parker@example.com</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full mr-3">
+<i class="ri-time-line text-green-500"></i>
+</div>
+<div>
+<p class="font-medium">Delivery time</p>
+<p class="text-sm text-gray-600">Delivered at 2:45 PM, June 15, 2025</p>
+</div>
+</div>
+</div>
+<!-- Gift Card Details -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<h3 class="text-lg font-medium mb-3">Gift Card Details</h3>
+<div class="flex justify-between mb-2">
+<span class="text-gray-600">Recipient</span>
+<span class="font-medium">Emily Parker</span>
+</div>
+<div class="flex justify-between mb-2">
+<span class="text-gray-600">Gift Card Value</span>
+<span class="font-medium">$50.00</span>
+</div>
+<div class="border-t border-gray-200 my-3"></div>
+<p class="text-gray-600 text-sm mb-1">Your message:</p>
+<p class="italic text-sm">"Happy birthday, Emily! Hope you enjoy this little gift. Have a wonderful day! - Michael"</p>
+</div>
+<!-- Action Buttons -->
+<div class="flex space-x-4 mb-6">
+<button id="track-button" class="flex-1 border border-primary text-primary font-medium py-3 px-4 rounded-button hover:bg-primary/5 transition-colors flex items-center justify-center cursor-pointer !rounded-button">
+<i class="ri-eye-line mr-2"></i>
+Track Delivery
+</button>
+<button id="share-button" class="flex-1 border border-primary text-primary font-medium py-3 px-4 rounded-button hover:bg-primary/5 transition-colors flex items-center justify-center cursor-pointer !rounded-button">
+<i class="ri-share-line mr-2"></i>
+Share Receipt
+</button>
+</div>
+<button id="send-another-button" class="w-full bg-primary text-white font-medium py-3.5 px-4 rounded-button hover:bg-primary/90 transition-colors flex items-center justify-center cursor-pointer !rounded-button">
+Send Another Gift Card
+</button>
+</main>
+<!-- Tab Bar -->
+<div class="fixed bottom-0 w-full bg-white border-t border-gray-200 px-2 py-1 grid grid-cols-5 z-10">
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-home-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-search-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-gift-line ri-lg text-primary"></i>
+</div>
+<span class="text-xs text-primary mt-0.5">Cards</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-history-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center py-1 cursor-pointer">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-user-line ri-lg text-gray-500"></i>
+</div>
+<span class="text-xs text-gray-500 mt-0.5">Profile</span>
+</div>
+</div>
+</div>
+<!-- CVV Info Modal -->
+<div id="cvv-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20 hidden">
+<div class="bg-white rounded-lg p-5 w-4/5 max-w-sm">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-medium">CVV Information</h3>
+<button id="close-modal" class="text-gray-500 hover:text-gray-700 cursor-pointer">
+<i class="ri-close-line ri-lg"></i>
+</button>
+</div>
+<div class="mb-4">
+<p class="text-sm text-gray-600 mb-2">The CVV is the 3 or 4 digit security code on your card:</p>
+<div class="flex items-center space-x-4">
+<div class="flex-1">
+<img src="https://readdy.ai/api/search-image?query=credit%20card%20back%20with%20CVV%20highlighted%2C%20detailed%20illustration%2C%20educational%20diagram&width=150&height=100&seq=cvv1&orientation=landscape" alt="CVV Location" class="w-full rounded-md">
+<p class="text-xs text-gray-500 text-center mt-1">Back of card (most cards)</p>
+</div>
+<div class="flex-1">
+<img src="https://readdy.ai/api/search-image?query=american%20express%20card%20front%20with%20CVV%20highlighted%2C%20detailed%20illustration%2C%20educational%20diagram&width=150&height=100&seq=cvv2&orientation=landscape" alt="AMEX CVV Location" class="w-full rounded-md">
+<p class="text-xs text-gray-500 text-center mt-1">Front of card (AMEX)</p>
+</div>
+</div>
+</div>
+<p class="text-xs text-gray-500">This code helps verify that you're in possession of the physical card during online transactions.</p>
+</div>
+</div>
+<!-- Payment Processing Modal -->
+<div id="processing-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20 hidden">
+<div class="bg-white rounded-lg p-5 w-4/5 max-w-sm flex flex-col items-center">
+<div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
+<h3 class="text-lg font-medium mb-2">Processing Payment</h3>
+<p class="text-sm text-gray-600 text-center">Please don't close this page while we process your payment...</p>
+</div>
+</div>
+<script id="card-formatting">
+document.addEventListener('DOMContentLoaded', function() {
+const cardNumberInput = document.getElementById('card-number');
+const expiryDateInput = document.getElementById('expiry-date');
+// Format card number with spaces
+cardNumberInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\s+/g, '');
+if (value.length > 0) {
+value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+}
+e.target.value = value;
+});
+// Format expiry date with slash
+expiryDateInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\D/g, '');
+if (value.length > 2) {
+value = value.substring(0, 2) + ' / ' + value.substring(2, 4);
+}
+e.target.value = value;
+});
+});
+</script>
+<script id="payment-validation">
+document.addEventListener('DOMContentLoaded', function() {
+const paymentForm = document.getElementById('payment-form');
+const payButton = document.getElementById('pay-now-button');
+const cardNumberInput = document.getElementById('card-number');
+const expiryDateInput = document.getElementById('expiry-date');
+const cvvInput = document.getElementById('cvv');
+const cardNameInput = document.getElementById('card-name');
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 text-sm';
+  toast.style.minWidth = '250px';
+  toast.style.textAlign = 'center';
+  toast.innerText = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease-out';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+function shakeButton() {
+  payButton.classList.add('shake-animation');
+  setTimeout(() => payButton.classList.remove('shake-animation'), 500);
+}
+
+function validateField(input, errorMessage) {
+  let isValid = true;
+  input.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+  
+  switch(input.id) {
+    case 'card-number':
+      if (!input.value.trim() || input.value.replace(/\s+/g, '').length < 16) {
+        isValid = false;
+      }
+      break;
+    case 'expiry-date':
+      if (!input.value.trim() || input.value.replace(/\D/g, '').length < 4) {
+        isValid = false;
+      }
+      break;
+    case 'cvv':
+      if (!input.value.trim() || input.value.length < 3) {
+        isValid = false;
+      }
+      break;
+    case 'card-name':
+      if (!input.value.trim()) {
+        isValid = false;
+      }
+      break;
+  }
+
+  if (!isValid) {
+    input.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+    showToast(errorMessage);
+  }
+
+  return isValid;
+}
+
+payButton.addEventListener('click', function() {
+  let isValid = true;
+  
+  const validations = [
+    { field: cardNumberInput, message: 'Please enter a valid card number' },
+    { field: expiryDateInput, message: 'Please enter a valid expiry date' },
+    { field: cvvInput, message: 'Please enter a valid CVV' },
+    { field: cardNameInput, message: 'Please enter the cardholder name' }
+  ];
+
+  validations.forEach(({field, message}) => {
+    if (!validateField(field, message)) {
+      isValid = false;
+    }
+  });
+
+  if (!isValid) {
+    shakeButton();
+    return;
+  }
+
+  document.getElementById('processing-modal').classList.remove('hidden');
+  
+  setTimeout(function() {
+    document.getElementById('processing-modal').classList.add('hidden');
+    document.getElementById('payment-screen').classList.add('hidden');
+    document.getElementById('confirmation-screen').classList.remove('hidden');
+  }, 2000);
+});
+});
+</script>
+<script id="modals-control">
+document.addEventListener('DOMContentLoaded', function() {
+const cvvInfo = document.getElementById('cvv-info');
+const cvvModal = document.getElementById('cvv-modal');
+const closeModal = document.getElementById('close-modal');
+cvvInfo.addEventListener('click', function() {
+cvvModal.classList.remove('hidden');
+});
+closeModal.addEventListener('click', function() {
+cvvModal.classList.add('hidden');
+});
+// Close modal when clicking outside
+cvvModal.addEventListener('click', function(e) {
+if (e.target === cvvModal) {
+cvvModal.classList.add('hidden');
+}
+});
+});
+</script>
+<script id="navigation-control">
+document.addEventListener('DOMContentLoaded', function() {
+const backButton = document.getElementById('back-button');
+const closeButton = document.getElementById('close-button');
+const sendAnotherButton = document.getElementById('send-another-button');
+backButton.addEventListener('click', function() {
+// In a real app, this would navigate back
+console.log('Navigate back');
+});
+closeButton.addEventListener('click', function() {
+document.getElementById('confirmation-screen').classList.add('hidden');
+document.getElementById('payment-screen').classList.remove('hidden');
+// Reset form
+document.getElementById('payment-form').reset();
+});
+sendAnotherButton.addEventListener('click', function() {
+document.getElementById('confirmation-screen').classList.add('hidden');
+document.getElementById('payment-screen').classList.remove('hidden');
+// Reset form
+document.getElementById('payment-form').reset();
+});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gift Card Selection</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#FF6B35',secondary:'#3A86FF'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Montserrat', sans-serif;
+}
+.gift-card-design {
+transition: transform 0.3s ease;
+}
+.gift-card-design.selected {
+transform: scale(1.05);
+}
+.amount-option {
+transition: all 0.3s ease;
+}
+.amount-option.selected {
+border-color: #FF6B35;
+background-color: rgba(255, 107, 53, 0.1);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type=number] {
+-moz-appearance: textfield;
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Montserrat', sans-serif;
+}
+.gift-card-design {
+transition: transform 0.3s ease;
+}
+.gift-card-design.selected {
+transform: scale(1.05);
+}
+.amount-option {
+transition: all 0.3s ease;
+}
+.amount-option.selected {
+border-color: #FF6B35;
+background-color: rgba(255, 107, 53, 0.1);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+input[type=number] {
+-moz-appearance: textfield;
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+<!-- Navigation Bar -->
+<nav class="bg-white shadow-md fixed top-0 w-full z-50 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center mr-3" onclick="history.back()">
+<i class="ri-arrow-left-s-line ri-lg"></i>
+</button>
+<h1 class="text-lg font-semibold">Payment</h1>
+</div>
+<div class="font-['Pacifico'] text-primary text-xl">logo</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-16 pb-24 px-4">
+<!-- Progress Steps -->
+<div class="flex items-center justify-between mb-6 px-2">
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-xs mt-1 text-gray-400">Select</span>
+</div>
+<div class="flex-1 h-[2px] bg-primary mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-xs mt-1 text-gray-400">Details</span>
+</div>
+<div class="flex-1 h-[2px] bg-primary mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 bg-primary/20 text-primary rounded-full flex items-center justify-center text-sm">
+<i class="ri-check-line"></i>
+</div>
+<span class="text-xs mt-1 text-gray-400">Review</span>
+</div>
+<div class="flex-1 h-[2px] bg-primary mx-2"></div>
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">4</div>
+<span class="text-xs mt-1 text-primary font-medium">Pay</span>
+</div>
+</div>
+<!-- Main Content -->
+<main class="pt-16 pb-24 px-4">
+<!-- Hero Section -->
+<section class="relative mt-4 mb-6 rounded-lg overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=Gift%20card%20with%20adventure%20theme%2C%20colorful%20gradient%20background%20with%20subtle%20travel%20icons%2C%20professional%20gift%20card%20design%2C%20high%20quality%20digital%20illustration%2C%20soft%20lighting%2C%20modern%20aesthetic&width=800&height=400&seq=1&orientation=landscape" alt="Gift Card Banner" class="w-full h-48 object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
+<h2 class="text-white text-2xl font-bold mb-1">Give the Gift of Adventure!</h2>
+<p class="text-white text-sm opacity-90">Perfect for any occasion. Easy to send, exciting to receive.</p>
+</div>
+</section>
+<!-- Value Selection -->
+<section class="mb-8">
+<h3 class="text-lg font-semibold mb-3">Select Amount</h3>
+<div class="flex overflow-x-auto pb-2 gap-3 no-scrollbar">
+<div class="amount-option cursor-pointer flex-shrink-0 w-24 h-20 border-2 border-gray-200 rounded-lg flex flex-col items-center justify-center shadow-sm">
+<span class="text-lg font-semibold">QAR 50</span>
+<span class="text-xs text-gray-500">Basic</span>
+</div>
+<div class="amount-option cursor-pointer flex-shrink-0 w-24 h-20 border-2 border-gray-200 rounded-lg flex flex-col items-center justify-center shadow-sm">
+<span class="text-lg font-semibold">QAR 100</span>
+<span class="text-xs text-gray-500">Standard</span>
+</div>
+<div class="amount-option selected cursor-pointer flex-shrink-0 w-24 h-20 border-2 border-gray-200 rounded-lg flex flex-col items-center justify-center shadow-sm">
+<span class="text-lg font-semibold">QAR 250</span>
+<span class="text-xs text-gray-500">Premium</span>
+</div>
+<div class="amount-option cursor-pointer flex-shrink-0 w-24 h-20 border-2 border-gray-200 rounded-lg flex flex-col items-center justify-center shadow-sm">
+<span class="text-lg font-semibold">QAR 500</span>
+<span class="text-xs text-gray-500">Deluxe</span>
+</div>
+</div>
+<div class="mt-4">
+<label for="custom-amount" class="text-sm font-medium text-gray-700 block mb-2">Custom Amount</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-gray-500">QAR</span>
+</div>
+<input type="number" id="custom-amount" class="pl-12 pr-4 py-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-primary focus:border-primary outline-none" placeholder="Enter amount" min="25" max="1000">
+</div>
+<p class="text-xs text-gray-500 mt-1">Min: QAR 25 | Max: QAR 1,000</p>
+</div>
+</section>
+<!-- Design Selection -->
+<section class="mb-8">
+<div class="flex justify-between items-center mb-3">
+<h3 class="text-lg font-semibold">Choose Design</h3>
+<span class="text-xs text-primary">5 designs</span>
+</div>
+<div class="relative">
+<div class="flex overflow-x-auto gap-3 pb-4 snap-x snap-mandatory no-scrollbar">
+<div class="gift-card-design selected snap-center flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Desert%20sunset%20gift%20card%20design%2C%20professional%20gift%20card%20with%20warm%20orange%20and%20purple%20gradient%2C%20minimalist%20desert%20silhouette%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=2&orientation=landscape" alt="Desert Sunset Design" class="w-full h-full object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+<span class="text-white text-sm font-medium">Desert Sunset</span>
+</div>
+</div>
+<div class="gift-card-design snap-center flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Doha%20skyline%20gift%20card%20design%2C%20professional%20gift%20card%20with%20modern%20city%20silhouette%2C%20blue%20gradient%20background%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=3&orientation=landscape" alt="Doha Skyline Design" class="w-full h-full object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+<span class="text-white text-sm font-medium">Doha Skyline</span>
+</div>
+</div>
+<div class="gift-card-design snap-center flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Family%20fun%20day%20gift%20card%20design%2C%20professional%20gift%20card%20with%20colorful%20playful%20elements%2C%20cheerful%20colors%2C%20silhouettes%20of%20family%20activities%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=4&orientation=landscape" alt="Family Fun Day Design" class="w-full h-full object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+<span class="text-white text-sm font-medium">Family Fun Day</span>
+</div>
+</div>
+<div class="gift-card-design snap-center flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Holiday%20festivities%20gift%20card%20design%2C%20professional%20gift%20card%20with%20festive%20elements%2C%20warm%20colors%2C%20celebration%20theme%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=5&orientation=landscape" alt="Holiday Festivities Design" class="w-full h-full object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-3">
+<div class="w-full">
+<span class="text-white text-sm font-medium block">Holiday Festivities</span>
+<div class="flex items-center mt-1">
+<i class="ri-star-line text-yellow-400 text-xs mr-1"></i>
+<span class="text-white/90 text-xs">Special Edition</span>
+</div>
+</div>
+</div>
+</div>
+<div class="gift-card-design snap-center flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden shadow-md cursor-pointer">
+<img src="https://readdy.ai/api/search-image?query=Adventure%20awaits%20gift%20card%20design%2C%20professional%20gift%20card%20with%20outdoor%20adventure%20elements%2C%20mountain%20silhouette%2C%20compass%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=6&orientation=landscape" alt="Adventure Awaits Design" class="w-full h-full object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+<span class="text-white text-sm font-medium">Adventure Awaits</span>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-2">
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-gray-300"></div>
+<div class="w-2 h-2 rounded-full bg-gray-300"></div>
+<div class="w-2 h-2 rounded-full bg-gray-300"></div>
+<div class="w-2 h-2 rounded-full bg-gray-300"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="mb-8 bg-gray-50 rounded-lg border border-gray-100 overflow-hidden">
+<div id="how-it-works-header" class="flex justify-between items-center p-4 cursor-pointer">
+<h3 class="text-base font-semibold">How It Works</h3>
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-arrow-down-s-line ri-lg" id="how-it-works-icon"></i>
+</div>
+</div>
+<div id="how-it-works-content" class="hidden px-4 pb-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">1</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Choose Value & Design</h4>
+<p class="text-xs text-gray-600">Select an amount and pick your favorite design.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">2</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Add Recipient Details</h4>
+<p class="text-xs text-gray-600">Enter recipient information and add a personal message.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">3</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Review</h4>
+<p class="text-xs text-gray-600">Review your gift card details before payment.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">4</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Pay & Send</h4>
+<p class="text-xs text-gray-600">Complete payment and we'll deliver your gift card.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4">
+<button id="continue-to-details" class="w-full bg-primary text-white font-medium py-3 rounded-button flex items-center justify-center">
+Continue to Details
+<i class="ri-arrow-right-s-line ml-2"></i>
+</button>
+</div>
+<script id="howItWorksScript">
+document.addEventListener('DOMContentLoaded', function() {
+const howItWorksHeader = document.getElementById('how-it-works-header');
+const howItWorksContent = document.getElementById('how-it-works-content');
+const howItWorksIcon = document.getElementById('how-it-works-icon');
+howItWorksHeader.addEventListener('click', function() {
+howItWorksContent.classList.toggle('hidden');
+if (howItWorksContent.classList.contains('hidden')) {
+howItWorksIcon.classList.remove('ri-arrow-up-s-line');
+howItWorksIcon.classList.add('ri-arrow-down-s-line');
+} else {
+howItWorksIcon.classList.remove('ri-arrow-down-s-line');
+howItWorksIcon.classList.add('ri-arrow-up-s-line');
+}
+});
+});
+</script>
+<script id="navigationScript">
+document.addEventListener('DOMContentLoaded', function() {
+const continueBtn = document.getElementById('continue-to-details');
+continueBtn.addEventListener('click', function() {
+// Validate selections
+const selectedAmount = document.querySelector('.amount-option.selected');
+const selectedDesign = document.querySelector('.gift-card-design.selected');
+const customAmount = document.getElementById('custom-amount').value;
+if (!selectedAmount && !customAmount) {
+showToast('Please select or enter a gift card amount');
+return;
+}
+if (!selectedDesign) {
+showToast('Please select a gift card design');
+return;
+}
+// Validate custom amount if entered
+if (customAmount) {
+const amount = parseFloat(customAmount);
+if (amount < 25 || amount > 1000) {
+showToast('Please enter an amount between QAR 25 and QAR 1,000');
+return;
+}
+}
+// Store selections in sessionStorage
+const amount = selectedAmount ?
+selectedAmount.querySelector('.text-lg').textContent :
+`QAR ${customAmount}`;
+const design = selectedDesign.querySelector('img').alt;
+sessionStorage.setItem('giftCardAmount', amount);
+sessionStorage.setItem('giftCardDesign', design);
+sessionStorage.setItem('giftCardImage', selectedDesign.querySelector('img').src);
+// Navigate to details page
+window.location.href = 'gift-card-details.html';
+});
+function showToast(message) {
+let toast = document.getElementById('toast');
+if (!toast) {
+toast = document.createElement('div');
+toast.id = 'toast';
+toast.className = 'fixed top-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg opacity-0 transition-opacity duration-300 z-50';
+document.body.appendChild(toast);
+}
+toast.textContent = message;
+toast.classList.remove('opacity-0');
+toast.classList.add('opacity-90');
+setTimeout(() => {
+toast.classList.remove('opacity-90');
+toast.classList.add('opacity-0');
+}, 3000);
+}
+});
+</script>
+</body>
+</html>
+<div class="flex gap-3 mb-4">
+<div class="gift-option-card cursor-pointer flex-1 border-2 border-primary bg-primary/5 rounded-lg p-4 flex flex-col items-center transition-all duration-300" data-option="gift">
+<div class="w-12 h-12 flex items-center justify-center mb-2 rounded-full bg-primary/20 text-primary">
+<i class="ri-gift-line ri-xl"></i>
+</div>
+<span class="text-sm font-medium">For Someone Else</span>
+<span class="text-xs text-gray-500 mt-1">Send as a gift</span>
+</div>
+<div class="gift-option-card cursor-pointer flex-1 border-2 border-gray-200 rounded-lg p-4 flex flex-col items-center transition-all duration-300" data-option="self">
+<div class="w-12 h-12 flex items-center justify-center mb-2 rounded-full bg-gray-100 text-gray-600">
+<i class="ri-user-line ri-xl"></i>
+</div>
+<span class="text-sm font-medium">For Myself</span>
+<span class="text-xs text-gray-500 mt-1">Use it yourself</span>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="recipient-form transition-all duration-300 overflow-hidden" style="max-height: 500px;">
+<div class="flex items-start mb-4">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 mt-1">
+<i class="ri-mail-line"></i>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-semibold mb-1">Recipient Information</h4>
+<div class="space-y-3">
+<div>
+<label for="sender-name" class="text-xs text-gray-500 block mb-1">Your Name (Optional)</label>
+<input type="text" id="sender-name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Enter your name">
+<p class="text-xs text-gray-500 mt-1">How you want to be identified to the recipient</p>
+</div>
+<div class="mt-3">
+<label for="recipient-name" class="text-xs text-gray-500 block mb-1">Recipient's Full Name <span class="text-primary">*</span></label>
+<input type="text" id="recipient-name" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Enter recipient's full name">
+</div>
+<div>
+<label for="recipient-email" class="text-xs text-gray-500 block mb-1">Recipient's Email <span class="text-primary">*</span></label>
+<input type="email" id="recipient-email" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Enter recipient's email">
+<p class="text-xs text-gray-500 mt-1">Digital gift card will be sent to this email</p>
+</div>
+<div>
+<label for="recipient-phone" class="text-xs text-gray-500 block mb-1">Recipient's Phone Number (Optional)</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="text-gray-500">+974</span>
+</div>
+<input type="tel" id="recipient-phone" class="w-full border border-gray-300 rounded-lg pl-14 pr-3 py-2 text-sm" placeholder="Enter phone number">
+</div>
+<p class="text-xs text-gray-500 mt-1">For SMS notification when gift card is sent</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 mt-1">
+<i class="ri-message-2-line"></i>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h4 class="text-sm font-semibold">Personal Message</h4>
+<span id="char-counter" class="text-xs text-gray-500">0/200</span>
+</div>
+<textarea id="personal-message" rows="3" maxlength="200" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Write your personal message here (optional)"></textarea>
+<p class="text-xs text-gray-500 mt-1">Add a special note to your gift</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-sm p-4">
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 mt-1">
+<i class="ri-calendar-line"></i>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-semibold mb-1">Delivery Date</h4>
+<p class="text-xs text-gray-500 mb-2">When should we send this gift card?</p>
+<div class="flex gap-3 mb-3">
+<div class="delivery-option cursor-pointer flex-1 border border-primary bg-primary/5 rounded-lg p-2 flex flex-col items-center" data-option="now">
+<span class="text-xs font-medium text-primary">Send Now</span>
+</div>
+<div class="delivery-option cursor-pointer flex-1 border border-gray-200 rounded-lg p-2 flex flex-col items-center" data-option="schedule">
+<span class="text-xs font-medium">Schedule</span>
+</div>
+</div>
+<div id="schedule-date-container" class="hidden">
+<input type="date" id="schedule-date" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" min="">
+<p class="text-xs text-gray-500 mt-1">Select a future date for delivery</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="mb-8 bg-gray-50 rounded-lg border border-gray-100 overflow-hidden">
+<div id="how-it-works-header" class="flex justify-between items-center p-4 cursor-pointer">
+<h3 class="text-base font-semibold">How It Works</h3>
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-arrow-down-s-line ri-lg" id="how-it-works-icon"></i>
+</div>
+</div>
+<div id="how-it-works-content" class="hidden px-4 pb-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">1</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Choose Value & Design</h4>
+<p class="text-xs text-gray-600">Select an amount and pick your favorite design.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">2</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Add Recipient Details</h4>
+<p class="text-xs text-gray-600">Enter recipient information and add a personal message.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">3</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Pay</h4>
+<p class="text-xs text-gray-600">Complete your purchase securely.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary mr-3 flex-shrink-0">
+<span class="text-sm font-bold">4</span>
+</div>
+<div>
+<h4 class="text-sm font-medium">Recipient Redeems</h4>
+<p class="text-xs text-gray-600">The recipient gets an email with instructions to redeem their gift.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Order Summary -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-semibold">Review Your Gift Card</h3>
+<button class="text-sm text-primary flex items-center" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+<i class="ri-arrow-left-s-line mr-1"></i>
+<span>Back to Edit</span>
+</button>
+</div>
+<!-- Gift Card Preview -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex items-center mb-4">
+<div class="w-20 h-14 rounded-lg overflow-hidden mr-3">
+<img src="https://readdy.ai/api/search-image?query=Desert%20sunset%20gift%20card%20design%2C%20professional%20gift%20card%20with%20warm%20orange%20and%20purple%20gradient%2C%20minimalist%20desert%20silhouette%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=2&orientation=landscape" alt="Selected Design" class="w-full h-full object-cover">
+</div>
+<div>
+<h4 class="text-sm font-medium">Desert Sunset Design</h4>
+<p class="text-xs text-gray-500">Digital Gift Card</p>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Gift Amount -->
+<div class="flex items-center justify-between py-2 border-b border-gray-100">
+<div class="flex items-center">
+<span class="text-sm text-gray-600">Gift Amount</span>
+<button class="ml-2 text-primary" onclick="scrollToSection('value-section')">
+<i class="ri-edit-line ri-sm"></i>
+</button>
+</div>
+<span class="text-sm font-medium">QAR 250.00</span>
+</div>
+<!-- Recipient Details -->
+<div class="py-2">
+<div class="flex items-center mb-2">
+<h4 class="text-sm font-medium">Recipient Details</h4>
+<button class="ml-2 text-primary" onclick="scrollToSection('recipient-section')">
+<i class="ri-edit-line ri-sm"></i>
+</button>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Name</span>
+<span class="text-sm text-right" id="review-recipient-name">-</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Email</span>
+<span class="text-sm text-right" id="review-recipient-email">-</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Phone</span>
+<span class="text-sm text-right" id="review-recipient-phone">-</span>
+</div>
+</div>
+</div>
+<!-- Sender Details -->
+<div class="py-2 border-t border-gray-100">
+<h4 class="text-sm font-medium mb-2">From</h4>
+<span class="text-sm text-gray-600" id="review-sender-name">-</span>
+</div>
+<!-- Message -->
+<div class="py-2 border-t border-gray-100">
+<div class="flex items-center mb-2">
+<h4 class="text-sm font-medium">Personal Message</h4>
+<button class="ml-2 text-primary" onclick="scrollToSection('message-section')">
+<i class="ri-edit-line ri-sm"></i>
+</button>
+</div>
+<p class="text-sm text-gray-600 italic" id="review-message">-</p>
+</div>
+<!-- Delivery Details -->
+<div class="py-2 border-t border-gray-100">
+<h4 class="text-sm font-medium mb-2">Delivery Details</h4>
+<div class="flex items-center">
+<i class="ri-calendar-line text-primary mr-2"></i>
+<span class="text-sm text-gray-600" id="review-delivery-date">Send Immediately</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Cost Breakdown -->
+<div class="bg-white rounded-lg shadow-sm p-4">
+<h4 class="text-sm font-medium mb-3">Cost Breakdown</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Gift Card Value</span>
+<span class="text-sm font-medium">QAR 250.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Service Fee</span>
+<span class="text-sm font-medium">QAR 0.00</span>
+</div>
+<div class="border-t border-gray-100 pt-3 mt-2">
+<div class="flex justify-between items-center">
+<span class="text-sm font-medium">Total</span>
+<span class="text-base font-semibold text-primary">QAR 250.00</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Section -->
+<section class="mb-8" id="payment-section">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-semibold">Payment Information</h3>
+<div class="flex items-center text-sm text-primary">
+<i class="ri-shield-check-line mr-1"></i>
+<span>Secure Payment</span>
+</div>
+</div>
+<!-- Total Amount Card -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">Total Amount Due</span>
+<span class="text-xl font-semibold text-primary">QAR 250.00</span>
+</div>
+</div>
+<!-- Saved Cards -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h4 class="text-sm font-medium mb-3">Saved Cards</h4>
+<div class="space-y-3">
+<label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+<input type="radio" name="payment-method" class="hidden" value="saved-card-1">
+<div class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3">
+<div class="w-3 h-3 bg-primary rounded-full hidden"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center">
+<i class="ri-visa-line text-blue-600 mr-2 ri-lg"></i>
+<span class="text-sm">•••• 4589</span>
+</div>
+<span class="text-xs text-gray-500">Expires 12/25</span>
+</div>
+</label>
+<label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+<input type="radio" name="payment-method" class="hidden" value="saved-card-2">
+<div class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3">
+<div class="w-3 h-3 bg-primary rounded-full hidden"></div>
+</div>
+<div class="flex-1">
+<div class="flex items-center">
+<i class="ri-mastercard-line text-orange-600 mr-2 ri-lg"></i>
+<span class="text-sm">•••• 7821</span>
+</div>
+<span class="text-xs text-gray-500">Expires 09/24</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Add New Card -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+<input type="radio" name="payment-method" class="hidden" value="new-card">
+<div class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3">
+<div class="w-3 h-3 bg-primary rounded-full hidden"></div>
+</div>
+<div class="flex items-center">
+<i class="ri-bank-card-line text-gray-600 mr-2 ri-lg"></i>
+<span class="text-sm">Add New Card</span>
+</div>
+</label>
+<div id="new-card-form" class="hidden mt-4 space-y-4">
+<div>
+<label class="text-xs text-gray-500 block mb-1">Card Number</label>
+<div class="relative">
+<input type="text" class="w-full border border-gray-300 rounded-lg pl-11 pr-10 py-2 text-sm" placeholder="1234 5678 9012 3456" maxlength="19">
+<i class="ri-bank-card-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+<img src="https://readdy.ai/api/search-image?query=secure%20payment%20icon%2C%20minimalist%20padlock%20icon%2C%20high%20quality%20digital%20illustration&width=20&height=20&seq=7&orientation=squarish" alt="Secure" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5">
+</div>
+<p class="text-xs text-gray-500 mt-1 flex items-center">
+<i class="ri-shield-check-line text-green-500 mr-1"></i>
+Your card details are encrypted and secure
+</p>
+</div>
+<div class="flex gap-3">
+<div class="flex-1">
+<label class="text-xs text-gray-500 block mb-1">Expiry Date</label>
+<input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="MM/YY" maxlength="5">
+</div>
+<div class="flex-1">
+<label class="text-xs text-gray-500 block mb-1">CVV/CVC</label>
+<div class="relative group">
+<input type="password" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="123" maxlength="3">
+<div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-question-line text-gray-400 cursor-help"></i>
+<div class="hidden group-hover:block absolute right-0 bottom-full mb-2 w-48 p-2 bg-gray-800 text-white text-xs rounded-lg">
+3-digit security code found on the back of your card
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="text-xs text-gray-500 block mb-1">Name on Card</label>
+<input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Enter name as shown on card">
+</div>
+<div class="pt-2">
+<label class="text-xs text-gray-500 block mb-1">Billing Address (Optional)</label>
+<div class="space-y-3">
+<input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Street Address">
+<div class="flex gap-3">
+<input type="text" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="City">
+<input type="text" class="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="ZIP">
+</div>
+</div>
+</div>
+<div class="pt-4">
+<button id="promo-code-btn" class="text-primary text-sm flex items-center">
+<i class="ri-coupon-line mr-1"></i>
+Apply Promo Code
+</button>
+<div id="promo-code-form" class="hidden mt-2">
+<div class="flex gap-2">
+<input type="text" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm uppercase" placeholder="Enter promo code">
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium">Apply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Digital Wallets -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h4 class="text-sm font-medium mb-3">Digital Wallets</h4>
+<div class="space-y-3">
+<label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+<input type="radio" name="payment-method" class="hidden" value="apple-pay">
+<div class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3">
+<div class="w-3 h-3 bg-primary rounded-full hidden"></div>
+</div>
+<div class="flex items-center">
+<i class="ri-apple-fill text-black mr-2 ri-lg"></i>
+<span class="text-sm">Apple Pay</span>
+</div>
+</label>
+<label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+<input type="radio" name="payment-method" class="hidden" value="google-pay">
+<div class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3">
+<div class="w-3 h-3 bg-primary rounded-full hidden"></div>
+</div>
+<div class="flex items-center">
+<i class="ri-google-fill text-blue-500 mr-2 ri-lg"></i>
+<span class="text-sm">Google Pay</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Local Payment Methods -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+<h4 class="text-sm font-medium mb-3">Local Payment Methods</h4>
+<label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+<input type="radio" name="payment-method" class="hidden" value="qpay">
+<div class="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center mr-3">
+<div class="w-3 h-3 bg-primary rounded-full hidden"></div>
+</div>
+<div class="flex items-center">
+<i class="ri-qr-code-line text-purple-600 mr-2 ri-lg"></i>
+<span class="text-sm">QPay</span>
+</div>
+</label>
+</div>
+</section>
+</main>
+<!-- Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 w-full bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4">
+<div class="space-y-3">
+<div class="flex items-center justify-between mb-2">
+<button class="text-gray-600 text-sm flex items-center" onclick="history.back()">
+<i class="ri-arrow-left-s-line mr-1"></i>
+Back
+</button>
+<div class="flex items-center">
+<i class="ri-shield-check-line text-green-500 mr-1"></i>
+<span class="text-xs text-gray-600">SSL Encrypted Payment</span>
+</div>
+</div>
+<div class="flex items-center justify-center">
+<label class="inline-flex items-center">
+<input type="checkbox" class="form-checkbox h-4 w-4 text-primary rounded border-gray-300" id="terms-checkbox">
+<span class="ml-2 text-xs text-gray-600">I agree to the <a href="#" class="text-primary underline">Terms & Conditions</a> and <a href="#" class="text-primary underline">Refund Policy</a></span>
+</label>
+</div>
+<button id="pay-now-btn" class="w-full bg-primary text-white font-medium py-3 rounded-button flex items-center justify-center cursor-pointer opacity-50 relative" disabled>
+<div class="absolute left-3 flex items-center">
+<i class="ri-lock-line mr-1"></i>
+</div>
+<span>Pay QAR 250.00</span>
+</button>
+</div>
+</div>
+<script id="paymentMethodsScript">
+document.addEventListener('DOMContentLoaded', function() {
+const paymentMethods = document.querySelectorAll('input[name="payment-method"]');
+const newCardForm = document.getElementById('new-card-form');
+const termsCheckbox = document.getElementById('terms-checkbox');
+const payNowBtn = document.getElementById('pay-now-btn');
+const promoCodeBtn = document.getElementById('promo-code-btn');
+const promoCodeForm = document.getElementById('promo-code-form');
+promoCodeBtn.addEventListener('click', function() {
+promoCodeForm.classList.toggle('hidden');
+});
+// Handle payment method selection
+paymentMethods.forEach(method => {
+method.addEventListener('change', function() {
+// Update radio button styles
+document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+const parent = radio.closest('label');
+const circle = parent.querySelector('.w-3');
+if (radio.checked) {
+parent.classList.add('border-primary');
+circle.classList.remove('hidden');
+} else {
+parent.classList.remove('border-primary');
+circle.classList.add('hidden');
+}
+});
+// Show/hide new card form
+if (this.value === 'new-card') {
+newCardForm.classList.remove('hidden');
+} else {
+newCardForm.classList.add('hidden');
+}
+});
+});
+// Card number formatting
+const cardNumberInput = document.querySelector('input[placeholder="1234 5678 9012 3456"]');
+if (cardNumberInput) {
+cardNumberInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\D/g, '');
+let formattedValue = '';
+for (let i = 0; i < value.length; i++) {
+if (i > 0 && i % 4 === 0) {
+formattedValue += ' ';
+}
+formattedValue += value[i];
+}
+e.target.value = formattedValue;
+});
+}
+// Expiry date formatting
+const expiryInput = document.querySelector('input[placeholder="MM/YY"]');
+if (expiryInput) {
+expiryInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\D/g, '');
+if (value.length > 2) {
+value = value.slice(0, 2) + '/' + value.slice(2);
+}
+e.target.value = value;
+});
+}
+// Enable/disable pay button based on terms checkbox
+termsCheckbox.addEventListener('change', function() {
+payNowBtn.disabled = !this.checked;
+payNowBtn.classList.toggle('opacity-50', !this.checked);
+});
+// Handle payment submission
+payNowBtn.addEventListener('click', function() {
+if (!document.querySelector('input[name="payment-method"]:checked')) {
+showToast('Please select a payment method');
+return;
+}
+const selectedMethod = document.querySelector('input[name="payment-method"]:checked').value;
+if (selectedMethod === 'new-card') {
+// Validate new card details
+const cardNumber = document.querySelector('input[placeholder="1234 5678 9012 3456"]').value;
+const expiry = document.querySelector('input[placeholder="MM/YY"]').value;
+const cvv = document.querySelector('input[placeholder="123"]').value;
+const name = document.querySelector('input[placeholder="Enter name as shown on card"]').value;
+if (!cardNumber || !expiry || !cvv || !name) {
+showToast('Please fill in all card details');
+return;
+}
+}
+showToast('Processing payment...');
+// Here you would typically integrate with your payment processor
+});
+});
+</script>
+<!-- Scripts -->
+<script id="amountSelectionScript">
+document.addEventListener('DOMContentLoaded', function() {
+const amountOptions = document.querySelectorAll('.amount-option');
+amountOptions.forEach(option => {
+option.addEventListener('click', function() {
+// Remove selected class from all options
+amountOptions.forEach(opt => opt.classList.remove('selected'));
+// Add selected class to clicked option
+this.classList.add('selected');
+// Clear custom amount input
+document.getElementById('custom-amount').value = '';
+});
+});
+// Custom amount input handler
+const customAmountInput = document.getElementById('custom-amount');
+customAmountInput.addEventListener('input', function() {
+if (this.value) {
+// Remove selected class from all preset options
+amountOptions.forEach(opt => opt.classList.remove('selected'));
+}
+});
+});
+</script>
+<script id="designSelectionScript">
+document.addEventListener('DOMContentLoaded', function() {
+const designOptions = document.querySelectorAll('.gift-card-design');
+designOptions.forEach(design => {
+design.addEventListener('click', function() {
+// Remove selected class from all designs
+designOptions.forEach(d => d.classList.remove('selected'));
+// Add selected class to clicked design
+this.classList.add('selected');
+});
+});
+});
+</script>
+<script id="giftOptionsScript">
+document.addEventListener('DOMContentLoaded', function() {
+const giftOptions = document.querySelectorAll('.gift-option-card');
+const recipientForm = document.querySelector('.recipient-form');
+const senderName = document.getElementById('sender-name');
+const recipientName = document.getElementById('recipient-name');
+const recipientEmail = document.getElementById('recipient-email');
+const recipientPhone = document.getElementById('recipient-phone');
+const personalMessage = document.getElementById('personal-message');
+const charCounter = document.getElementById('char-counter');
+const deliveryOptions = document.querySelectorAll('.delivery-option');
+const scheduleDateContainer = document.getElementById('schedule-date-container');
+const scheduleDate = document.getElementById('schedule-date');
+// Set minimum date to tomorrow
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+scheduleDate.min = tomorrow.toISOString().split('T')[0];
+// Delivery option selection
+deliveryOptions.forEach(option => {
+option.addEventListener('click', function() {
+const isSchedule = this.dataset.option === 'schedule';
+// Remove selected styling from all options
+deliveryOptions.forEach(opt => {
+opt.classList.remove('border-primary', 'bg-primary/5');
+opt.querySelector('span').classList.remove('text-primary');
+});
+// Add selected styling to clicked option
+this.classList.add('border-primary', 'bg-primary/5');
+this.querySelector('span').classList.add('text-primary');
+// Toggle schedule date input
+if (isSchedule) {
+scheduleDateContainer.classList.remove('hidden');
+} else {
+scheduleDateContainer.classList.add('hidden');
+scheduleDate.value = '';
+}
+});
+});
+// Character counter for personal message
+personalMessage.addEventListener('input', function() {
+const currentLength = this.value.length;
+charCounter.textContent = `${currentLength}/200`;
+if (currentLength >= 190) {
+charCounter.classList.add('text-primary');
+} else {
+charCounter.classList.remove('text-primary');
+}
+});
+// Phone number validation
+recipientPhone.addEventListener('input', function() {
+this.value = this.value.replace(/[^0-9]/g, '');
+if (this.value.length > 8) {
+this.value = this.value.slice(0, 8);
+}
+});
+// Mock user data (in real app, this would come from user session)
+const currentUser = {
+name: 'Sarah Anderson',
+email: 'sarah.anderson@example.com'
+};
+function updateFormVisibility(isGift) {
+recipientForm.style.maxHeight = isGift ? recipientForm.scrollHeight + 'px' : '0';
+recipientForm.style.opacity = isGift ? '1' : '0';
+if (!isGift) {
+// Auto-fill with current user's data
+senderName.value = currentUser.name;
+recipientName.value = currentUser.name;
+recipientEmail.value = currentUser.email;
+recipientPhone.value = '';
+senderName.disabled = true;
+recipientName.disabled = true;
+recipientEmail.disabled = true;
+recipientPhone.disabled = true;
+personalMessage.disabled = true;
+scheduleDateContainer.classList.add('hidden');
+} else {
+// Clear and enable fields
+senderName.value = '';
+recipientName.value = '';
+recipientEmail.value = '';
+recipientPhone.value = '';
+senderName.disabled = false;
+recipientName.disabled = false;
+recipientEmail.disabled = false;
+recipientPhone.disabled = false;
+personalMessage.disabled = false;
+}
+charCounter.textContent = '0/200';
+charCounter.classList.remove('text-primary');
+}
+giftOptions.forEach(option => {
+option.addEventListener('click', function() {
+const isGiftOption = this.dataset.option === 'gift';
+// Remove selected styling from all options
+giftOptions.forEach(opt => {
+opt.classList.remove('border-primary', 'bg-primary/5');
+opt.classList.add('border-gray-200');
+const iconDiv = opt.querySelector('div');
+iconDiv.classList.remove('bg-primary/20', 'text-primary');
+iconDiv.classList.add('bg-gray-100', 'text-gray-600');
+});
+// Add selected styling to clicked option
+this.classList.remove('border-gray-200');
+this.classList.add('border-primary', 'bg-primary/5');
+const iconDiv = this.querySelector('div');
+iconDiv.classList.remove('bg-gray-100', 'text-gray-600');
+iconDiv.classList.add('bg-primary/20', 'text-primary');
+// Update form visibility and fields
+updateFormVisibility(isGiftOption);
+});
+});
+// Initialize with "For Someone Else" selected
+updateFormVisibility(true);
+});
+// Delivery option selection
+const deliveryOptions = document.querySelectorAll('.delivery-option');
+deliveryOptions.forEach(option => {
+option.addEventListener('click', function() {
+// Remove selected styling from all options
+deliveryOptions.forEach(opt => {
+opt.classList.remove('border-primary', 'bg-primary/5');
+opt.querySelector('span').classList.remove('text-primary');
+});
+// Add selected styling to clicked option
+this.classList.add('border-primary', 'bg-primary/5');
+this.querySelector('span').classList.add('text-primary');
+});
+});
+});
+</script>
+<script id="howItWorksScript">
+document.addEventListener('DOMContentLoaded', function() {
+const howItWorksHeader = document.getElementById('how-it-works-header');
+const howItWorksContent = document.getElementById('how-it-works-content');
+const howItWorksIcon = document.getElementById('how-it-works-icon');
+howItWorksHeader.addEventListener('click', function() {
+howItWorksContent.classList.toggle('hidden');
+if (howItWorksContent.classList.contains('hidden')) {
+howItWorksIcon.classList.remove('ri-arrow-up-s-line');
+howItWorksIcon.classList.add('ri-arrow-down-s-line');
+} else {
+howItWorksIcon.classList.remove('ri-arrow-down-s-line');
+howItWorksIcon.classList.add('ri-arrow-up-s-line');
+}
+});
+});
+</script>
+<script id="continueButtonScript">
+document.addEventListener('DOMContentLoaded', function() {
+const continueBtn = document.getElementById('continue-btn');
+const termsCheckbox = document.getElementById('terms-checkbox');
+function scrollToSection(sectionId) {
+const section = document.querySelector(`#${sectionId}`);
+if (section) {
+section.scrollIntoView({ behavior: 'smooth' });
+}
+}
+termsCheckbox.addEventListener('change', function() {
+continueBtn.disabled = !this.checked;
+continueBtn.classList.toggle('opacity-50', !this.checked);
+});
+continueBtn.addEventListener('click', function() {
+// Validate inputs
+const recipientName = document.getElementById('recipient-name').value;
+const recipientEmail = document.getElementById('recipient-email').value;
+if (!recipientName) {
+showToast("Please enter recipient's name");
+return;
+}
+if (!recipientEmail) {
+showToast("Please enter recipient's email");
+return;
+}
+if (!validateEmail(recipientEmail)) {
+showToast("Please enter a valid email address");
+return;
+}
+const recipientPhone = document.getElementById('recipient-phone').value;
+if (recipientPhone && recipientPhone.length !== 8) {
+showToast("Please enter a valid phone number");
+return;
+}
+const scheduleOption = document.querySelector('.delivery-option[data-option="schedule"]');
+const isScheduled = scheduleOption.classList.contains('border-primary');
+if (isScheduled && !scheduleDate.value) {
+showToast("Please select a delivery date");
+return;
+}
+// Update review section
+document.getElementById('review-recipient-name').textContent = recipientName;
+document.getElementById('review-recipient-email').textContent = recipientEmail;
+document.getElementById('review-recipient-phone').textContent = recipientPhone || '-';
+document.getElementById('review-sender-name').textContent = document.getElementById('sender-name').value || '-';
+document.getElementById('review-message').textContent = document.getElementById('personal-message').value || '-';
+const deliveryDate = document.getElementById('schedule-date').value;
+document.getElementById('review-delivery-date').textContent = deliveryDate ?
+`Scheduled for ${new Date(deliveryDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}` :
+'Send Immediately';
+// If validation passes, proceed to payment
+showToast("Proceeding to payment...");
+// In a real app, you would redirect to payment page or show payment modal
+});
+function validateEmail(email) {
+const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+return re.test(email);
+}
+function showToast(message) {
+// Create toast element if it doesn't exist
+let toast = document.getElementById('toast');
+if (!toast) {
+toast = document.createElement('div');
+toast.id = 'toast';
+toast.className = 'fixed top-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg opacity-0 transition-opacity duration-300 z-50';
+document.body.appendChild(toast);
+}
+// Set message and show toast
+toast.textContent = message;
+toast.classList.remove('opacity-0');
+toast.classList.add('opacity-90');
+// Hide toast after 3 seconds
+setTimeout(() => {
+toast.classList.remove('opacity-90');
+toast.classList.add('opacity-0');
+}, 3000);
+}
+});
+</script>
+<!-- Confirmation Screen -->
+<div id="confirmation-screen" class="fixed inset-0 bg-white z-50 overflow-y-auto hidden">
+<nav class="bg-white shadow-md fixed top-0 w-full z-50 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center">
+<h1 class="text-lg font-semibold">Order Confirmation</h1>
+</div>
+<div class="font-['Pacifico'] text-primary text-xl">logo</div>
+</nav>
+<main class="pt-16 pb-24 px-4">
+<!-- Success Animation -->
+<div class="flex flex-col items-center justify-center py-8">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-check-line ri-2x text-primary"></i>
+</div>
+<h2 class="text-xl font-semibold text-center mb-1">Gift Card Purchased Successfully!</h2>
+<p class="text-sm text-gray-600 text-center">Thank you for your purchase</p>
+</div>
+<!-- Order Details -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-medium">Order Details</h3>
+<span class="text-xs text-gray-500" id="order-date">June 15, 2025</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-gray-100">
+<span class="text-sm text-gray-600">Order ID</span>
+<span class="text-sm font-medium" id="order-id">GC-25061500123</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-gray-100">
+<span class="text-sm text-gray-600">Amount</span>
+<span class="text-sm font-medium">QAR 250.00</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-sm text-gray-600">Payment Method</span>
+<div class="flex items-center">
+<i class="ri-visa-line text-blue-600 mr-1"></i>
+<span class="text-sm">•••• 4589</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Delivery Status -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<h3 class="text-sm font-medium mb-4">Delivery Status</h3>
+<div class="flex items-start mb-4">
+<div class="w-8 h-8 flex-shrink-0 bg-green-100 rounded-full flex items-center justify-center mr-3">
+<i class="ri-mail-send-line text-green-600"></i>
+</div>
+<div>
+<h4 class="text-sm font-medium text-green-600 mb-1" id="delivery-status">Gift Card Sent!</h4>
+<p class="text-sm text-gray-600" id="delivery-details">Gift card sent to sarah.anderson@example.com</p>
+</div>
+</div>
+<div class="text-xs text-gray-500">
+<p>The recipient will receive an email with instructions to redeem their gift card.</p>
+</div>
+</div>
+<!-- Gift Card Preview -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<h3 class="text-sm font-medium mb-4">Gift Card Details</h3>
+<div class="flex items-center mb-4">
+<div class="w-20 h-14 rounded-lg overflow-hidden mr-3">
+<img src="https://readdy.ai/api/search-image?query=Desert%20sunset%20gift%20card%20design%2C%20professional%20gift%20card%20with%20warm%20orange%20and%20purple%20gradient%2C%20minimalist%20desert%20silhouette%2C%20elegant%20typography%2C%20high%20quality%20digital%20illustration&width=300&height=200&seq=2&orientation=landscape" alt="Selected Design" class="w-full h-full object-cover">
+</div>
+<div>
+<h4 class="text-sm font-medium">Desert Sunset Design</h4>
+<p class="text-xs text-gray-500">Digital Gift Card</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="py-2">
+<h4 class="text-sm font-medium mb-2">Recipient Details</h4>
+<div class="space-y-2">
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Name</span>
+<span class="text-sm" id="confirm-recipient-name">Sarah Anderson</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm text-gray-600">Email</span>
+<span class="text-sm" id="confirm-recipient-email">sarah.anderson@example.com</span>
+</div>
+</div>
+</div>
+<div class="py-2 border-t border-gray-100">
+<h4 class="text-sm font-medium mb-2">From</h4>
+<span class="text-sm text-gray-600" id="confirm-sender-name">John Smith</span>
+</div>
+<div class="py-2 border-t border-gray-100">
+<h4 class="text-sm font-medium mb-2">Personal Message</h4>
+<p class="text-sm text-gray-600 italic" id="confirm-message">Happy birthday! Hope you enjoy this gift card.</p>
+</div>
+</div>
+</div>
+<!-- Sender's Receipt -->
+<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+<div class="flex items-start">
+<div class="w-8 h-8 flex-shrink-0 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+<i class="ri-mail-line text-blue-600"></i>
+</div>
+<div>
+<h4 class="text-sm font-medium text-blue-600 mb-1">Purchase Receipt Sent!</h4>
+<p class="text-sm text-gray-600" id="receipt-details">A copy of your gift card details has been sent to your email</p>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="space-y-3">
+<button class="w-full bg-primary text-white font-medium py-3 rounded-button flex items-center justify-center" onclick="window.location.href='/my-gift-cards'">
+<i class="ri-gift-line mr-2"></i>
+View My Purchased Gift Cards
+</button>
+<button class="w-full bg-white border border-gray-200 text-gray-600 font-medium py-3 rounded-button flex items-center justify-center" onclick="window.location.href='/activities'">
+<i class="ri-compass-3-line mr-2"></i>
+Explore More Activities
+</button>
+<button class="w-full bg-white border border-gray-200 text-gray-600 font-medium py-3 rounded-button flex items-center justify-center" onclick="shareApp()">
+<i class="ri-share-line mr-2"></i>
+Share With Friends
+</button>
+<button class="w-full bg-white border border-gray-200 text-gray-600 font-medium py-3 rounded-button flex items-center justify-center">
+<i class="ri-customer-service-line mr-2"></i>
+Contact Support
+</button>
+</div>
+</main>
+</div>
+<!-- Error Screen -->
+<div id="error-screen" class="fixed inset-0 bg-white z-50 overflow-y-auto hidden">
+<nav class="bg-white shadow-md fixed top-0 w-full z-50 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center">
+<button class="w-8 h-8 flex items-center justify-center mr-3" onclick="hideErrorScreen()">
+<i class="ri-arrow-left-s-line ri-lg"></i>
+</button>
+<h1 class="text-lg font-semibold">Payment Failed</h1>
+</div>
+<div class="font-['Pacifico'] text-primary text-xl">logo</div>
+</nav>
+<main class="pt-16 pb-24 px-4">
+<div class="flex flex-col items-center justify-center py-8">
+<div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+<i class="ri-error-warning-line ri-2x text-red-600"></i>
+</div>
+<h2 class="text-xl font-semibold text-center mb-2">Payment Failed</h2>
+<p class="text-sm text-gray-600 text-center mb-6" id="error-message">Your payment could not be processed. Please try again.</p>
+<div class="w-full space-y-3">
+<button class="w-full bg-primary text-white font-medium py-3 rounded-button flex items-center justify-center" onclick="retryPayment()">
+<i class="ri-refresh-line mr-2"></i>
+Try Again
+</button>
+<button class="w-full bg-white border border-gray-200 text-gray-600 font-medium py-3 rounded-button flex items-center justify-center" onclick="hideErrorScreen()">
+<i class="ri-arrow-left-line mr-2"></i>
+Back to Payment
+</button>
+</div>
+</div>
+</main>
+</div>
+<script id="confirmationScript">
+document.addEventListener('DOMContentLoaded', function() {
+const payNowBtn = document.getElementById('pay-now-btn');
+const confirmationScreen = document.getElementById('confirmation-screen');
+const errorScreen = document.getElementById('error-screen');
+function showErrorScreen(message) {
+errorScreen.classList.remove('hidden');
+document.getElementById('error-message').textContent = message || 'Your payment could not be processed. Please try again.';
+}
+function hideErrorScreen() {
+errorScreen.classList.add('hidden');
+payNowBtn.disabled = false;
+payNowBtn.innerHTML = 'Pay QAR 250.00';
+}
+function retryPayment() {
+hideErrorScreen();
+payNowBtn.click();
+}
+function shareApp() {
+if (navigator.share) {
+navigator.share({
+title: 'Gift Cards App',
+text: 'Check out this amazing gift card app!',
+url: window.location.origin
+}).catch(console.error);
+} else {
+// Fallback for browsers that don't support Web Share API
+const dummy = document.createElement('textarea');
+dummy.value = window.location.origin;
+document.body.appendChild(dummy);
+dummy.select();
+document.execCommand('copy');
+document.body.removeChild(dummy);
+showToast('Link copied to clipboard!');
+}
+}
+payNowBtn.addEventListener('click', function() {
+if (!document.querySelector('input[name="payment-method"]:checked')) {
+showToast('Please select a payment method');
+return;
+}
+const selectedMethod = document.querySelector('input[name="payment-method"]:checked').value;
+if (selectedMethod === 'new-card') {
+const cardNumber = document.querySelector('input[placeholder="1234 5678 9012 3456"]').value;
+const expiry = document.querySelector('input[placeholder="MM/YY"]').value;
+const cvv = document.querySelector('input[placeholder="123"]').value;
+const name = document.querySelector('input[placeholder="Enter name as shown on card"]').value;
+if (!cardNumber || !expiry || !cvv || !name) {
+showToast('Please fill in all card details');
+return;
+}
+}
+// Show processing state
+payNowBtn.disabled = true;
+payNowBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Processing...';
+// Simulate payment processing with success/failure scenarios
+setTimeout(() => {
+// Simulate random payment success/failure
+const isSuccess = Math.random() > 0.2; // 80% success rate
+if (isSuccess) {
+// Update confirmation screen with actual data
+document.getElementById('order-date').textContent = new Date().toLocaleDateString('en-US', {
+month: 'long',
+day: 'numeric',
+year: 'numeric'
+});
+document.getElementById('order-id').textContent = 'GC-' + Date.now().toString().slice(-8);
+const recipientEmail = document.getElementById('recipient-email').value;
+const scheduleDate = document.getElementById('schedule-date').value;
+if (scheduleDate) {
+document.getElementById('delivery-status').textContent = 'Scheduled for Delivery';
+document.getElementById('delivery-details').textContent =
+`Gift card will be sent to ${recipientEmail} on ${new Date(scheduleDate).toLocaleDateString('en-US', {
+month: 'long',
+day: 'numeric',
+year: 'numeric'
+})}`;
+} else {
+document.getElementById('delivery-status').textContent = 'Gift Card Sent!';
+document.getElementById('delivery-details').textContent = `Gift card sent to ${recipientEmail}`;
+}
+document.getElementById('confirm-recipient-name').textContent = document.getElementById('recipient-name').value;
+document.getElementById('confirm-recipient-email').textContent = recipientEmail;
+document.getElementById('confirm-sender-name').textContent = document.getElementById('sender-name').value || '-';
+document.getElementById('confirm-message').textContent = document.getElementById('personal-message').value || '-';
+// Show confirmation screen
+confirmationScreen.classList.remove('hidden');
+} else {
+// Show error screen with specific message
+payNowBtn.disabled = false;
+payNowBtn.innerHTML = 'Pay QAR 250.00';
+showErrorScreen('Payment declined. Please check your card details and try again.');
+}
+}, 2000);
+});
+});
+</script>
+</body>
+</html>

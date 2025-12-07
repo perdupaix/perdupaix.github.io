@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Details</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#F59E0B'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+}
+.carousel-container {
+position: relative;
+overflow: hidden;
+height: 280px;
+}
+.carousel {
+display: flex;
+transition: transform 0.5s ease;
+height: 100%;
+}
+.carousel-item {
+min-width: 100%;
+height: 100%;
+}
+.carousel-item img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center;
+}
+.carousel-gradient {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+height: 120px;
+background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+.carousel-dots {
+position: absolute;
+bottom: 16px;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+gap: 8px;
+}
+.dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background-color: rgba(255, 255, 255, 0.5);
+}
+.dot.active {
+background-color: white;
+}
+.tab-content {
+display: none;
+}
+.tab-content.active {
+display: block;
+}
+.event-details-container {
+padding-bottom: 80px;
+}
+</style>
+</head>
+<body class="bg-white text-gray-900">
+<!-- Nav bar -->
+<div class="fixed top-0 w-full bg-white z-50 shadow-sm">
+<div class="flex items-center justify-between px-4 py-3">
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-arrow-left-line ri-lg"></i>
+</div>
+<h1 class="text-lg font-semibold">Event Details</h1>
+<div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-more-2-line ri-lg"></i>
+</div>
+</div>
+</div>
+<!-- Main content with appropriate top padding for fixed navbar -->
+<div class="pt-14 event-details-container">
+<!-- Hero Section with Carousel -->
+<div class="carousel-container">
+<div class="carousel">
+<div class="carousel-item">
+<img src="https://readdy.ai/api/search-image?query=Cultural%20festival%20in%20Qatar%20with%20colorful%20decorations%2C%20traditional%20performances%2C%20vibrant%20lighting%2C%20large%20crowd%20enjoying%20the%20festivities%2C%20evening%20atmosphere%2C%20high-quality%20professional%20event%20photography%2C%20wide%20shot%20showing%20the%20venue%20and%20atmosphere&width=375&height=280&seq=1&orientation=landscape" alt="Qatar Cultural Festival">
+</div>
+<div class="carousel-item">
+<img src="https://readdy.ai/api/search-image?query=Close-up%20of%20traditional%20Qatari%20performers%20in%20colorful%20costumes%20on%20stage%2C%20cultural%20dance%20performance%2C%20professional%20lighting%2C%20enthusiastic%20audience%20visible%2C%20high-quality%20event%20photography&width=375&height=280&seq=2&orientation=landscape" alt="Traditional Performers">
+</div>
+<div class="carousel-item">
+<img src="https://readdy.ai/api/search-image?query=Qatar%20festival%20food%20stalls%20with%20traditional%20cuisine%2C%20colorful%20decorations%2C%20people%20enjoying%20food%2C%20evening%20atmosphere%20with%20festive%20lighting%2C%20high-quality%20event%20photography&width=375&height=280&seq=3&orientation=landscape" alt="Festival Food Stalls">
+</div>
+</div>
+<div class="carousel-gradient"></div>
+<div class="carousel-dots">
+<div class="dot active"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+</div>
+<div class="absolute top-4 right-4 flex gap-3">
+<div class="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center cursor-pointer">
+<i class="ri-heart-line ri-lg text-white"></i>
+</div>
+<div class="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center cursor-pointer">
+<i class="ri-share-line ri-lg text-white"></i>
+</div>
+</div>
+<div class="absolute bottom-4 right-4">
+<button class="px-3 py-1.5 rounded-full bg-black/30 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1 cursor-pointer">
+<i class="ri-image-line ri-sm"></i>
+<span>See All Photos</span>
+</button>
+</div>
+</div>
+<!-- Event Header Information -->
+<div class="px-4 py-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">Live Now</span>
+<span class="px-2 py-1 bg-secondary/10 text-secondary text-xs font-medium rounded-full">Ticketed Event</span>
+</div>
+<h1 class="text-2xl font-bold mb-2">Qatar Cultural Festival 2025</h1>
+<div class="bg-primary/5 rounded-lg p-4 mb-4">
+<p class="text-lg font-medium text-primary mb-1">Experience Qatar's Rich Heritage</p>
+<p class="text-gray-600 text-sm">A four-day celebration of authentic Qatari culture featuring traditional performances, culinary delights, and artisan crafts. Join us for an unforgettable journey through Qatar's vibrant traditions.</p>
+</div>
+<div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg mb-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<i class="ri-calendar-2-line text-primary"></i>
+<span class="font-medium">Wed - Sat, June 12-15, 2025</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-time-line text-primary"></i>
+<span class="font-medium">4:00 PM - 11:00 PM</span>
+</div>
+</div>
+<button id="calendarBtn" class="px-3 py-1.5 bg-primary/10 text-primary rounded-button font-medium text-sm flex items-center gap-1 cursor-pointer">
+<i class="ri-calendar-check-line"></i>
+<span>Add to Calendar</span>
+</button>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 mb-6">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20logo%20for%20Qatar%20Tourism%20Authority%2C%20minimalist%20design%2C%20clean%20lines%2C%20modern%20style%2C%20isolated%20on%20white%20background&width=48&height=48&seq=4&orientation=squarish" alt="Organizer" class="w-full h-full object-cover">
+</div>
+<div>
+<p class="font-medium">Qatar Tourism Authority</p>
+<p class="text-sm text-gray-500">Official Tourism Board</p>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-half-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-sm text-gray-500">4.5 (2.8K reviews)</span>
+</div>
+</div>
+</div>
+<button class="px-3 py-1.5 bg-primary text-white rounded-button font-medium text-sm cursor-pointer">Follow</button>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<i class="ri-calendar-event-line text-gray-500"></i>
+<span>126 Events</span>
+</div>
+<div class="flex items-center gap-1">
+<i class="ri-group-line text-gray-500"></i>
+<span>58K Followers</span>
+</div>
+</div>
+<button class="text-primary font-medium flex items-center gap-1 cursor-pointer" id="viewReviewsBtn">
+View Reviews
+<i class="ri-arrow-right-s-line"></i>
+</button>
+</div>
+</div>
+<div class="bg-primary/5 p-4 rounded-lg mb-6">
+<div class="flex items-center justify-between mb-3">
+<div>
+<p class="text-sm text-gray-600">Starting from</p>
+<p class="text-xl font-bold">QAR 150.00</p>
+</div>
+<button class="px-5 py-2.5 bg-primary text-white rounded-button font-medium cursor-pointer">Get Tickets</button>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-ticket-line text-primary"></i>
+<span class="text-sm text-gray-600">120 tickets remaining</span>
+</div>
+</div>
+</div>
+<!-- Tabs Navigation -->
+<div class="px-4 border-b">
+<div class="flex gap-6 mb-1">
+<button class="tab-btn active py-3 font-medium text-primary border-b-2 border-primary cursor-pointer" data-tab="details">Details</button>
+<button class="tab-btn py-3 font-medium text-gray-500 cursor-pointer" data-tab="schedule">Schedule</button>
+<button class="tab-btn py-3 font-medium text-gray-500 cursor-pointer" data-tab="location">Location</button>
+</div>
+</div>
+<!-- Tab Contents -->
+<div class="px-4 py-5">
+<!-- Details Tab -->
+<div id="details" class="tab-content active">
+<div class="bg-gradient-to-r from-primary/10 to-transparent p-4 rounded-lg mb-5">
+<h1 class="text-xl font-bold text-primary mb-2">Experience Qatar's Living Heritage</h1>
+<p class="text-gray-700">Immerse yourself in a four-day celebration of authentic Qatari traditions, where ancient meets modern in a spectacular cultural showcase.</p>
+</div>
+<div class="flex gap-2 flex-wrap mb-4">
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Cultural</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Family-Friendly</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Live Music</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Food Festival</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Kids Zone</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Outdoor</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Artisan Market</span>
+<span class="px-3 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full">Traditional Dance</span>
+</div>
+<div class="space-y-5">
+<div>
+<h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+<i class="ri-information-line text-primary"></i>
+About the Festival
+</h2>
+<p class="text-gray-700 mb-3">
+The Qatar Cultural Festival 2025 is the country's premier cultural celebration, bringing together the finest elements of Qatari heritage, arts, and traditions. This immersive four-day event transforms Katara Cultural Village into a vibrant showcase of Qatar's rich cultural tapestry.
+</p>
+<p class="text-gray-700">
+Whether you're a local resident, expatriate, or visitor, this festival offers a unique opportunity to experience the authentic spirit of Qatar through interactive exhibitions, live performances, and cultural exchanges.
+</p>
+</div>
+<div>
+<h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+<i class="ri-calendar-event-line text-primary"></i>
+Festival Program
+</h2>
+<div class="space-y-3">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+<i class="ri-mic-line text-primary"></i>
+</div>
+<div>
+<p class="font-medium">Cultural Performances</p>
+<p class="text-sm text-gray-600">Traditional music ensembles, folk dance troupes, and contemporary Qatari artists showcase the evolution of local performing arts.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+<i class="ri-palette-line text-primary"></i>
+</div>
+<div>
+<p class="font-medium">Art & Crafts Exhibition</p>
+<p class="text-sm text-gray-600">Watch master artisans demonstrate traditional crafts like pottery, weaving, and calligraphy. Interactive workshops available for all ages.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+<i class="ri-restaurant-line text-primary"></i>
+</div>
+<div>
+<p class="font-medium">Culinary Journey</p>
+<p class="text-sm text-gray-600">Savor authentic Qatari cuisine, attend cooking demonstrations, and learn about traditional food preparation techniques.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+<i class="ri-star-line text-primary"></i>
+Special Features
+</h2>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-gray-50 p-3 rounded-lg">
+<p class="font-medium mb-1">Heritage Village</p>
+<p class="text-sm text-gray-600">Experience traditional Qatari lifestyle in our recreated historical settlement</p>
+</div>
+<div class="bg-gray-50 p-3 rounded-lg">
+<p class="font-medium mb-1">Pearl Diving Show</p>
+<p class="text-sm text-gray-600">Daily demonstrations of Qatar's historic pearl diving tradition</p>
+</div>
+<div class="bg-gray-50 p-3 rounded-lg">
+<p class="font-medium mb-1">Fashion Gallery</p>
+<p class="text-sm text-gray-600">Exhibition of traditional and modern Qatari fashion</p>
+</div>
+<div class="bg-gray-50 p-3 rounded-lg">
+<p class="font-medium mb-1">Children's Zone</p>
+<p class="text-sm text-gray-600">Interactive cultural activities and traditional games</p>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+<i class="ri-group-line text-primary"></i>
+Featured Performers & Artists
+</h2>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20middle%20eastern%20male%20musician%20in%20traditional%20dress%2C%20performing%20with%20oud%20instrument%2C%20high%20quality%20photography%2C%20centered%20composition&width=150&height=150&seq=7&orientation=squarish" alt="Performer" class="w-full aspect-square rounded-lg object-cover mb-3">
+<div>
+<p class="font-medium">Mohammed Al-Sulaiti</p>
+<p class="text-sm text-gray-600">Master Oud Performer</p>
+<p class="text-xs text-gray-500 mt-1">Internationally acclaimed oud virtuoso, known for blending traditional and contemporary styles</p>
+<button class="mt-2 px-3 py-1.5 text-xs bg-primary/10 text-primary rounded-button flex items-center gap-1 w-full justify-center">
+<i class="ri-profile-line"></i>
+<span>View Profile</span>
+</button>
+</div>
+</div>
+<div class="bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20middle%20eastern%20female%20artist%20in%20traditional%20dress%2C%20elegant%20pose%2C%20high%20quality%20photography%2C%20centered%20composition&width=150&height=150&seq=8&orientation=squarish" alt="Performer" class="w-full aspect-square rounded-lg object-cover mb-3">
+<div>
+<p class="font-medium">Fatima Al-Khater</p>
+<p class="text-sm text-gray-600">Traditional Vocal Artist</p>
+<p class="text-xs text-gray-500 mt-1">Renowned vocalist specializing in traditional Qatari folk songs and modern interpretations</p>
+<button class="mt-2 px-3 py-1.5 text-xs bg-primary/10 text-primary rounded-button flex items-center gap-1 w-full justify-center">
+<i class="ri-profile-line"></i>
+<span>View Profile</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+<i class="ri-store-2-line text-primary"></i>
+Featured Vendors & Artisans
+</h2>
+<div class="space-y-3">
+<div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=traditional%20middle%20eastern%20pottery%20and%20ceramics%20display%2C%20artisan%20crafts%2C%20professional%20product%20photography%2C%20centered%20composition&width=64&height=64&seq=16&orientation=squarish" alt="Vendor" class="w-16 h-16 rounded-lg object-cover">
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<p class="font-medium">Al-Fakhura Pottery</p>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">Artisan</span>
+</div>
+<p class="text-sm text-gray-600">Traditional Qatari pottery & ceramics</p>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-half-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">(128 reviews)</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=traditional%20middle%20eastern%20textiles%20and%20fabrics%20display%2C%20colorful%20woven%20materials%2C%20professional%20product%20photography%2C%20centered%20composition&width=64&height=64&seq=17&orientation=squarish" alt="Vendor" class="w-16 h-16 rounded-lg object-cover">
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<p class="font-medium">Sadu House</p>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">Heritage</span>
+</div>
+<p class="text-sm text-gray-600">Traditional Qatari textiles & weaving</p>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">(156 reviews)</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=traditional%20middle%20eastern%20food%20stall%20with%20authentic%20dishes%2C%20professional%20food%20photography%2C%20centered%20composition&width=64&height=64&seq=18&orientation=squarish" alt="Vendor" class="w-16 h-16 rounded-lg object-cover">
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<p class="font-medium">Majlis Al-Diyafa</p>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">Food</span>
+</div>
+<p class="text-sm text-gray-600">Authentic Qatari cuisine & desserts</p>
+<div class="flex items-center gap-2 mt-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-line text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">(92 reviews)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+<i class="ri-user-star-line text-primary"></i>
+Special Guests
+</h2>
+<div class="space-y-3">
+<div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20middle%20eastern%20cultural%20expert%20in%20formal%20attire%2C%20scholarly%20appearance%2C%20high%20quality%20photography&width=64&height=64&seq=19&orientation=squarish" alt="Guest" class="w-16 h-16 rounded-lg object-cover">
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<p class="font-medium">Dr. Hassan Al-Thani</p>
+<span class="px-2 py-0.5 bg-secondary/10 text-secondary text-xs rounded-full">Guest Speaker</span>
+</div>
+<p class="text-sm text-gray-600">Cultural Heritage Expert</p>
+<p class="text-xs text-gray-500 mt-1">Leading authority on Qatari cultural preservation</p>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20middle%20eastern%20female%20fashion%20designer%20in%20elegant%20traditional%20dress%2C%20artistic%20portrait&width=64&height=64&seq=20&orientation=squarish" alt="Guest" class="w-16 h-16 rounded-lg object-cover">
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<p class="font-medium">Maha Al-Kuwari</p>
+<span class="px-2 py-0.5 bg-secondary/10 text-secondary text-xs rounded-full">Fashion Designer</span>
+</div>
+<p class="text-sm text-gray-600">Contemporary Qatari Fashion</p>
+<p class="text-xs text-gray-500 mt-1">Blending traditional elements with modern design</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+<i class="ri-user-voice-line text-primary"></i>
+Who Should Attend
+</h2>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<i class="ri-checkbox-circle-line text-primary"></i>
+<span class="text-gray-700">Culture enthusiasts interested in authentic Qatari traditions</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-checkbox-circle-line text-primary"></i>
+<span class="text-gray-700">Families looking for educational and entertaining experiences</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-checkbox-circle-line text-primary"></i>
+<span class="text-gray-700">Art and music lovers seeking unique performances</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-checkbox-circle-line text-primary"></i>
+<span class="text-gray-700">Food enthusiasts eager to explore traditional cuisine</span>
+</div>
+</div>
+</div>
+</div>
+<h2 class="text-lg font-semibold mb-3">Highlights</h2>
+<div class="grid grid-cols-2 gap-4 mb-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<i class="ri-music-line text-primary"></i>
+</div>
+<span class="text-gray-700">Live Performances</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<i class="ri-restaurant-line text-primary"></i>
+</div>
+<span class="text-gray-700">Food Festival</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<i class="ri-shopping-bag-line text-primary"></i>
+</div>
+<span class="text-gray-700">Artisan Market</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<i class="ri-group-line text-primary"></i>
+</div>
+<span class="text-gray-700">Family Activities</span>
+</div>
+</div>
+<h2 class="text-lg font-semibold mb-3">What to Expect</h2>
+<p class="text-gray-700 mb-4">
+The Qatar Cultural Festival offers a vibrant celebration of Qatari heritage through music, dance, food, and art. Visitors can enjoy traditional performances, taste authentic cuisine, shop for handcrafted items, and participate in cultural workshops.
+</p>
+<p class="text-gray-700 mb-5">
+This year's festival features special performances by renowned Qatari musicians, a dedicated children's area with traditional games, and an expanded food court showcasing regional specialties from across the country.
+</p>
+<h2 class="text-lg font-semibold mb-3">Additional Information</h2>
+<div class="space-y-3 mb-5">
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-information-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Age Restrictions</p>
+<p class="text-sm text-gray-600">Suitable for all ages. Children under 12 must be accompanied by an adult.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-wheelchair-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Accessibility</p>
+<p class="text-sm text-gray-600">Venue is wheelchair accessible with designated viewing areas.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-camera-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Photography</p>
+<p class="text-sm text-gray-600">Photography is permitted for personal use only. No professional equipment without prior authorization.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-t-shirt-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Dress Code</p>
+<p class="text-sm text-gray-600">Please dress modestly out of respect for local culture. Shoulders and knees should be covered. Light, breathable clothing recommended due to evening heat.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-timer-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Arrival & Entry</p>
+<p class="text-sm text-gray-600">Arrive 30 minutes before performances. Entry closes 15 minutes after show times. Bring your ticket and valid ID for verification.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-umbrella-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">What to Bring</p>
+<p class="text-sm text-gray-600">Water bottle (refill stations available), comfortable walking shoes, sun protection for daytime activities, and cash for artisan market purchases.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-error-warning-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Not Permitted</p>
+<p class="text-sm text-gray-600">Outside food and beverages, professional cameras without permits, drones, pets (except service animals), and large bags or backpacks.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Schedule Tab -->
+<div id="schedule" class="tab-content">
+<div class="flex items-center justify-between px-4 py-3 bg-primary/5 rounded-lg mb-5">
+<div>
+<h2 class="text-lg font-semibold text-primary">Festival Schedule</h2>
+<p class="text-sm text-gray-600">June 12-15, 2025</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="download-schedule px-3 py-1.5 bg-white border border-primary text-primary rounded-button text-sm font-medium flex items-center gap-1 cursor-pointer">
+<i class="ri-download-line"></i>
+<span>Download</span>
+</button>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<h2 class="text-lg font-semibold">Day 1</h2>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-sm font-medium rounded-full">June 12, Thursday</span>
+</div>
+<div class="flex items-center gap-1 text-sm text-primary font-medium">
+<i class="ri-calendar-event-line"></i>
+<span>Add to Calendar</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Opening Ceremony</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">4:00 PM - 5:30 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Main Stage</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-red-500/10 text-red-500 text-xs font-medium rounded-full">Featured</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">Official opening with traditional music and welcome speeches by dignitaries. Experience the grandeur of Qatari hospitality.</p>
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20middle%20eastern%20male%20dignitary%20in%20traditional%20dress%2C%20formal%20portrait&width=24&height=24&seq=10&orientation=squarish" alt="Speaker" class="w-full h-full object-cover">
+</div>
+<span class="text-sm font-medium">H.E. Sheikh Abdullah Al-Thani</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Pearl Diving Demonstration</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">5:00 PM - 5:45 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Heritage Village</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded-full">Interactive</span>
+</div>
+<p class="text-sm text-gray-600">Watch master pearl divers demonstrate traditional techniques and learn about Qatar's rich maritime history.</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Traditional Dance Performance</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">6:00 PM - 7:00 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Amphitheatre</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-blue-500/10 text-blue-500 text-xs font-medium rounded-full">Performance</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">Showcase of Qatar's traditional folk dances by the National Dance Troupe, featuring the iconic Ardah and other regional dances.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Ardah Dance</span>
+<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Folk Music</span>
+<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Traditional Costumes</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Artisan Market & Food Stalls</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">7:00 PM - 9:00 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Festival Square</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-yellow-500/10 text-yellow-500 text-xs font-medium rounded-full">Ongoing</span>
+</div>
+<p class="text-sm text-gray-600">Browse traditional crafts and savor authentic Qatari cuisine from local artisans and food vendors.</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200 hidden"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Evening Concert: Sounds of Qatar</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">8:00 PM - 10:00 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Main Stage</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-purple-500/10 text-purple-500 text-xs font-medium rounded-full">Headliner</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">A mesmerizing performance by renowned Qatari musician Mohammed Al-Sulaiti and his ensemble, featuring traditional and contemporary compositions.</p>
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20middle%20eastern%20male%20musician%20with%20oud%20instrument%2C%20artistic%20portrait&width=24&height=24&seq=11&orientation=squarish" alt="Performer" class="w-full h-full object-cover">
+</div>
+<span class="text-sm font-medium">Mohammed Al-Sulaiti</span>
+<span class="text-xs text-gray-500">Oud Master</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<h2 class="text-lg font-semibold">Day 2</h2>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-sm font-medium rounded-full">June 13, Friday</span>
+</div>
+<div class="flex items-center gap-1 text-sm text-primary font-medium">
+<i class="ri-calendar-event-line"></i>
+<span>Add to Calendar</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Culinary Workshop: Traditional Qatari Cuisine</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">4:00 PM - 5:30 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Culinary Pavilion</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded-full">Workshop</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">Learn to prepare authentic Qatari dishes with Chef Fatima Al-Khater. Limited to 30 participants.</p>
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20middle%20eastern%20female%20chef%20in%20traditional%20dress%20and%20chef%20coat%2C%20culinary%20portrait&width=24&height=24&seq=12&orientation=squarish" alt="Chef" class="w-full h-full object-cover">
+</div>
+<span class="text-sm font-medium">Chef Fatima Al-Khater</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Children's Traditional Games</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">5:00 PM - 6:30 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Kids Zone</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-orange-500/10 text-orange-500 text-xs font-medium rounded-full">Family</span>
+</div>
+<p class="text-sm text-gray-600">Interactive session featuring traditional Qatari children's games and storytelling.</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Poetry Recital: Verses of Qatar</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">6:30 PM - 7:30 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Literary Salon</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-blue-500/10 text-blue-500 text-xs font-medium rounded-full">Performance</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">Traditional and contemporary Qatari poetry presented by renowned local poets, with English translations provided.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Nabati Poetry</span>
+<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Modern Verse</span>
+<span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Bilingual</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-0.5 h-full bg-gray-200 hidden"></div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 flex-1">
+<div class="flex items-start justify-between mb-2">
+<div>
+<p class="font-medium">Fashion Show: Heritage & Modern</p>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-sm text-gray-500">8:30 PM - 10:00 PM</span>
+<span class="w-1 h-1 rounded-full bg-gray-300"></span>
+<span class="text-sm text-gray-500">Fashion Pavilion</span>
+</div>
+</div>
+<span class="px-2 py-0.5 bg-purple-500/10 text-purple-500 text-xs font-medium rounded-full">Showcase</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">A stunning showcase of traditional and contemporary Qatari fashion by leading local designers.</p>
+<div class="flex items-center gap-2">
+<span class="text-xs text-gray-500">Featured Designers:</span>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20middle%20eastern%20fashion%20designer%2C%20creative%20portrait&width=24&height=24&seq=13&orientation=squarish" alt="Designer" class="w-full h-full object-cover">
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-white overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20female%20middle%20eastern%20fashion%20designer%2C%20artistic%20portrait&width=24&height=24&seq=14&orientation=squarish" alt="Designer" class="w-full h-full object-cover">
+</div>
+<div class="w-6 h-6 rounded-full border-2 border-white overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20young%20middle%20eastern%20fashion%20designer%2C%20modern%20portrait&width=24&height=24&seq=15&orientation=squarish" alt="Designer" class="w-full h-full object-cover">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<button class="w-full py-3 bg-primary text-white font-medium rounded-button flex items-center justify-center gap-2 cursor-pointer">
+<i class="ri-calendar-event-line"></i>
+<span>View Full 4-Day Schedule</span>
+</button>
+<button class="w-full py-3 border border-primary text-primary font-medium rounded-button flex items-center justify-center gap-2 cursor-pointer">
+<i class="ri-notification-line"></i>
+<span>Set Event Reminders</span>
+</button>
+</div>
+</div>
+<!-- Location Tab -->
+<div id="location" class="tab-content">
+<div class="relative">
+<div class="rounded-lg overflow-hidden mb-4 h-48 bg-cover bg-center" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png')"></div>
+<div class="absolute bottom-4 right-4">
+<button class="px-3 py-1.5 bg-white shadow-md rounded-full text-sm font-medium flex items-center gap-1 cursor-pointer">
+<i class="ri-fullscreen-line text-gray-700"></i>
+<span>View Full Map</span>
+</button>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 mb-5">
+<div class="flex items-start gap-3 mb-3">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-lg">
+<i class="ri-map-pin-line text-primary ri-lg"></i>
+</div>
+<div class="flex-1">
+<h2 class="font-semibold mb-1">Katara Cultural Village Amphitheatre</h2>
+<p class="text-sm text-gray-600">Building 25, Cultural Village Foundation</p>
+<p class="text-sm text-gray-600">West Bay, Doha, Qatar</p>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-sm font-medium text-primary">2.5 km</span>
+<span class="text-xs text-gray-500">from you</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2.5 bg-primary text-white font-medium rounded-button flex items-center justify-center gap-2 cursor-pointer">
+<i class="ri-navigation-line"></i>
+<span>Get Directions</span>
+</button>
+<button class="w-10 h-10 border border-gray-200 rounded-button flex items-center justify-center cursor-pointer">
+<i class="ri-share-line text-gray-700"></i>
+</button>
+</div>
+</div>
+<h2 class="text-lg font-semibold mb-3">Transportation</h2>
+<div class="space-y-4 mb-5">
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-taxi-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Taxi & Ride-sharing</p>
+<p class="text-sm text-gray-600">Dedicated drop-off and pick-up points available at the north and south entrances.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-bus-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Public Transportation</p>
+<p class="text-sm text-gray-600">Metro Red Line to Katara Station, then a 5-minute walk to the venue.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-6 h-6 flex items-center justify-center mt-0.5">
+<i class="ri-parking-box-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Parking</p>
+<p class="text-sm text-gray-600">Free parking available at Katara Parking Lots A, B, and C. Valet parking available for QAR 50.</p>
+</div>
+</div>
+</div>
+<h2 class="text-lg font-semibold mb-3">Nearby Accommodations</h2>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=luxury%20hotel%20exterior%20in%20Qatar%2C%20modern%20architecture%2C%20professional%20hotel%20photography%2C%20isolated%20building&width=40&height=40&seq=5&orientation=squarish" alt="Hotel" class="w-full h-full object-cover">
+</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<p class="font-medium">The Ritz-Carlton Doha</p>
+<p class="text-sm text-gray-500">1.2 km</p>
+</div>
+<div class="flex items-center gap-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">5-star hotel</span>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=modern%20hotel%20exterior%20in%20Qatar%2C%20contemporary%20architecture%2C%20professional%20hotel%20photography%2C%20isolated%20building&width=40&height=40&seq=6&orientation=squarish" alt="Hotel" class="w-full h-full object-cover">
+</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<p class="font-medium">InterContinental Doha</p>
+<p class="text-sm text-gray-500">1.8 km</p>
+</div>
+<div class="flex items-center gap-1">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">5-star hotel</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Fixed bottom CTA -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex items-center justify-between z-50">
+<div>
+<p class="text-sm text-gray-600">Starting from</p>
+<div class="flex items-center gap-2">
+<p class="text-xl font-bold">QAR 150.00</p>
+<span class="px-2 py-0.5 bg-red-500/10 text-red-500 text-xs font-medium rounded-full">Limited</span>
+</div>
+</div>
+<button id="ticketBtn" class="px-6 py-3 bg-primary text-white font-medium rounded-button flex items-center gap-2 cursor-pointer">
+<i class="ri-ticket-2-line"></i>
+<span>Get Tickets</span>
+</button>
+</div>
+<script id="carouselScript">
+document.addEventListener('DOMContentLoaded', function() {
+const carousel = document.querySelector('.carousel');
+const items = document.querySelectorAll('.carousel-item');
+const dots = document.querySelectorAll('.dot');
+let currentIndex = 0;
+const itemCount = items.length;
+function updateCarousel() {
+carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+dots.forEach((dot, index) => {
+dot.classList.toggle('active', index === currentIndex);
+});
+}
+function nextSlide() {
+currentIndex = (currentIndex + 1) % itemCount;
+updateCarousel();
+}
+function prevSlide() {
+currentIndex = (currentIndex - 1 + itemCount) % itemCount;
+updateCarousel();
+}
+// Auto slide every 5 seconds
+const autoSlideInterval = setInterval(nextSlide, 5000);
+// Touch events for swiping
+let touchStartX = 0;
+let touchEndX = 0;
+carousel.addEventListener('touchstart', function(e) {
+touchStartX = e.changedTouches[0].screenX;
+clearInterval(autoSlideInterval);
+}, false);
+carousel.addEventListener('touchend', function(e) {
+touchEndX = e.changedTouches[0].screenX;
+handleSwipe();
+}, false);
+function handleSwipe() {
+if (touchEndX < touchStartX - 50) {
+nextSlide();
+} else if (touchEndX > touchStartX + 50) {
+prevSlide();
+}
+}
+// Dot navigation
+dots.forEach((dot, index) => {
+dot.addEventListener('click', () => {
+currentIndex = index;
+updateCarousel();
+clearInterval(autoSlideInterval);
+});
+});
+});
+</script>
+<script id="tabScript">
+document.addEventListener('DOMContentLoaded', function() {
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+tabButtons.forEach(button => {
+button.addEventListener('click', function() {
+const tabId = this.getAttribute('data-tab');
+// Remove active class from all buttons and contents
+tabButtons.forEach(btn => btn.classList.remove('active', 'text-primary', 'border-b-2', 'border-primary'));
+tabButtons.forEach(btn => btn.classList.add('text-gray-500'));
+tabContents.forEach(content => content.classList.remove('active'));
+// Add active class to clicked button and corresponding content
+this.classList.add('active', 'text-primary', 'border-b-2', 'border-primary');
+this.classList.remove('text-gray-500');
+document.getElementById(tabId).classList.add('active');
+});
+});
+});
+</script>
+<script id="favoriteScript">
+document.addEventListener('DOMContentLoaded', function() {
+const favoriteBtn = document.querySelector('.ri-heart-line').parentElement;
+let isFavorite = false;
+favoriteBtn.addEventListener('click', function() {
+isFavorite = !isFavorite;
+const icon = this.querySelector('i');
+if (isFavorite) {
+icon.classList.remove('ri-heart-line');
+icon.classList.add('ri-heart-fill');
+icon.classList.add('text-red-500');
+} else {
+icon.classList.remove('ri-heart-fill');
+icon.classList.remove('text-red-500');
+icon.classList.add('ri-heart-line');
+}
+});
+});
+</script>
+<script id="locationScript">
+document.addEventListener('DOMContentLoaded', function() {
+const viewMapBtn = document.querySelector('.ri-fullscreen-line').parentElement;
+const getDirectionsBtn = document.querySelector('.ri-navigation-line').parentElement;
+const shareLocationBtn = document.querySelector('.ri-share-line').parentElement;
+viewMapBtn.addEventListener('click', function() {
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=Katara+Cultural+Village+Amphitheatre+Doha+Qatar`;
+window.open(mapUrl, '_blank');
+});
+getDirectionsBtn.addEventListener('click', function() {
+if ("geolocation" in navigator) {
+navigator.geolocation.getCurrentPosition(function(position) {
+const destination = "Katara Cultural Village Amphitheatre Doha Qatar";
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+window.open(directionsUrl, '_blank');
+}, function(error) {
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=Katara+Cultural+Village+Amphitheatre+Doha+Qatar`;
+window.open(mapUrl, '_blank');
+});
+} else {
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=Katara+Cultural+Village+Amphitheatre+Doha+Qatar`;
+window.open(mapUrl, '_blank');
+}
+});
+shareLocationBtn.addEventListener('click', function() {
+const locationUrl = `https://maps.google.com/?q=Katara+Cultural+Village+Amphitheatre+Doha+Qatar`;
+if (navigator.share) {
+navigator.share({
+title: 'Katara Cultural Village Amphitheatre',
+text: 'Check out this location: Katara Cultural Village Amphitheatre, West Bay, Doha, Qatar',
+url: locationUrl
+});
+} else {
+navigator.clipboard.writeText(locationUrl).then(() => {
+const originalIcon = shareLocationBtn.innerHTML;
+shareLocationBtn.innerHTML = '<i class="ri-check-line text-primary"></i>';
+setTimeout(() => {
+shareLocationBtn.innerHTML = originalIcon;
+}, 2000);
+});
+}
+});
+});
+</script>
+<script id="calendarScript">
+document.addEventListener('DOMContentLoaded', function() {
+const calendarBtn = document.getElementById('calendarBtn');
+const dayCalendarBtns = document.querySelectorAll('.flex.items-center.gap-1.text-sm.text-primary.font-medium');
+const downloadScheduleBtn = document.querySelector('.download-schedule');
+downloadScheduleBtn.addEventListener('click', function() {
+const scheduleText = `Qatar Cultural Festival 2025 - Schedule
+Day 1 - June 12, Thursday
+4:00 PM - 5:30 PM: Opening Ceremony (Main Stage)
+5:00 PM - 5:45 PM: Pearl Diving Demonstration (Heritage Village)
+6:00 PM - 7:00 PM: Traditional Dance Performance (Amphitheatre)
+7:00 PM - 9:00 PM: Artisan Market & Food Stalls (Festival Square)
+8:00 PM - 10:00 PM: Evening Concert: Sounds of Qatar (Main Stage)
+Day 2 - June 13, Friday
+4:00 PM - 5:30 PM: Culinary Workshop (Culinary Pavilion)
+5:00 PM - 6:30 PM: Children's Traditional Games (Kids Zone)
+6:30 PM - 7:30 PM: Poetry Recital (Literary Salon)
+8:30 PM - 10:00 PM: Fashion Show (Fashion Pavilion)`;
+const blob = new Blob([scheduleText], { type: 'text/plain' });
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'QatarFestival2025_Schedule.txt';
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+window.URL.revokeObjectURL(url);
+});
+dayCalendarBtns.forEach(btn => {
+btn.addEventListener('click', function() {
+const dayHeader = this.closest('.mb-6').querySelector('.font-semibold').textContent;
+const dateSpan = this.closest('.mb-6').querySelector('.bg-primary\\/10').textContent;
+showCalendarModal(dayHeader, dateSpan);
+});
+});
+function showCalendarModal(day, date) {
+const modal = document.createElement('div');
+modal.className = 'fixed inset-0 bg-black/50 flex items-end justify-center z-50';
+const modalContent = document.createElement('div');
+modalContent.className = 'bg-white rounded-t-2xl w-full p-5 animate-slide-up';
+modalContent.innerHTML = `
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-semibold">Add ${day} to Calendar</h3>
+<button class="close-modal w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="space-y-3">
+<button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50">
+<div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center">
+<i class="ri-google-line text-white ri-lg"></i>
+</div>
+<div class="flex-1 text-left">
+<p class="font-medium">Google Calendar</p>
+<p class="text-sm text-gray-500">Add to your Google Calendar</p>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50">
+<div class="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
+<i class="ri-apple-line text-white ri-lg"></i>
+</div>
+<div class="flex-1 text-left">
+<p class="font-medium">Apple Calendar</p>
+<p class="text-sm text-gray-500">Add to your Apple Calendar</p>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50">
+<div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
+<i class="ri-microsoft-line text-white ri-lg"></i>
+</div>
+<div class="flex-1 text-left">
+<p class="font-medium">Outlook Calendar</p>
+<p class="text-sm text-gray-500">Add to your Outlook Calendar</p>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+</div>
+`;
+modal.appendChild(modalContent);
+document.body.appendChild(modal);
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+modalContent.style.transform = 'translateY(0)';
+modalContent.style.transition = 'transform 0.3s ease-out';
+}, 10);
+const closeBtn = modalContent.querySelector('.close-modal');
+closeBtn.addEventListener('click', function() {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+});
+modal.addEventListener('click', function(e) {
+if (e.target === modal) {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+}
+});
+}
+calendarBtn.addEventListener('click', function() {
+const modal = document.createElement('div');
+modal.className = 'fixed inset-0 bg-black/50 flex items-end justify-center z-50';
+const modalContent = document.createElement('div');
+modalContent.className = 'bg-white rounded-t-2xl w-full p-5 animate-slide-up';
+modalContent.innerHTML = `
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-semibold">Add to Calendar</h3>
+<button class="close-modal w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 cursor-pointer">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="space-y-3">
+<button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center">
+<i class="ri-google-line text-white ri-lg"></i>
+</div>
+<div class="flex-1 text-left">
+<p class="font-medium">Google Calendar</p>
+<p class="text-sm text-gray-500">Add to your Google Calendar</p>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
+<i class="ri-apple-line text-white ri-lg"></i>
+</div>
+<div class="flex-1 text-left">
+<p class="font-medium">Apple Calendar</p>
+<p class="text-sm text-gray-500">Add to your Apple Calendar</p>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+<button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+<div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
+<i class="ri-microsoft-line text-white ri-lg"></i>
+</div>
+<div class="flex-1 text-left">
+<p class="font-medium">Outlook Calendar</p>
+<p class="text-sm text-gray-500">Add to your Outlook Calendar</p>
+</div>
+<i class="ri-arrow-right-s-line text-gray-400"></i>
+</button>
+</div>
+`;
+modal.appendChild(modalContent);
+document.body.appendChild(modal);
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+modalContent.style.transform = 'translateY(0)';
+modalContent.style.transition = 'transform 0.3s ease-out';
+}, 10);
+const closeBtn = modalContent.querySelector('.close-modal');
+closeBtn.addEventListener('click', function() {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+});
+modal.addEventListener('click', function(e) {
+if (e.target === modal) {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+}
+});
+const calendarButtons = modalContent.querySelectorAll('button:not(.close-modal)');
+calendarButtons.forEach(button => {
+button.addEventListener('click', function() {
+const eventDetails = {
+title: 'Qatar Cultural Festival 2025',
+description: 'Join us for the annual Qatar Cultural Festival, celebrating the rich heritage and traditions of Qatar.',
+location: 'Katara Cultural Village, Lusail Expressway, Doha, Qatar',
+startDate: '2025-06-12T16:00:00',
+endDate: '2025-06-15T23:00:00'
+};
+const calendarType = button.querySelector('.font-medium').textContent;
+handleCalendarClick(calendarType, eventDetails);
+});
+});
+});
+function handleCalendarClick(calendarType, eventDetails) {
+let calendarUrl = '';
+const encodedTitle = encodeURIComponent(eventDetails.title);
+const encodedDesc = encodeURIComponent(eventDetails.description);
+const encodedLocation = encodeURIComponent(eventDetails.location);
+switch(calendarType) {
+case 'Google Calendar':
+calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodedTitle}&details=${encodedDesc}&location=${encodedLocation}&dates=20250612T160000Z/20250615T230000Z`;
+break;
+case 'Apple Calendar':
+calendarUrl = `webcal://calendar.google.com/calendar/ical/${encodedTitle}/basic.ics`;
+break;
+case 'Outlook Calendar':
+calendarUrl = `https://outlook.office.com/calendar/0/deeplink/compose?subject=${encodedTitle}&body=${encodedDesc}&location=${encodedLocation}&startdt=2025-06-12T16:00:00&enddt=2025-06-15T23:00:00`;
+break;
+}
+if (calendarUrl) {
+window.open(calendarUrl, '_blank');
+}
+}
+});
+</script>
+<script id="reviewsScript">
+document.addEventListener('DOMContentLoaded', function() {
+const viewReviewsBtn = document.getElementById('viewReviewsBtn');
+viewReviewsBtn.addEventListener('click', function() {
+const modal = document.createElement('div');
+modal.className = 'fixed inset-0 bg-black/50 flex items-end justify-center z-50';
+const modalContent = document.createElement('div');
+modalContent.className = 'bg-white rounded-t-2xl w-full h-[80vh] flex flex-col animate-slide-up';
+modalContent.innerHTML = `
+<div class="flex justify-between items-center p-4 border-b">
+<h3 class="text-lg font-semibold">Reviews</h3>
+<button class="close-modal w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="p-4 bg-gray-50">
+<div class="flex items-center gap-6 mb-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-3xl font-bold">4.5</span>
+<div class="flex flex-col">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-half-fill text-yellow-400"></i>
+</div>
+<span class="text-sm text-gray-500">2,847 reviews</span>
+</div>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<span class="text-xs ml-1">5</span>
+</div>
+<div class="h-2 flex-1 bg-gray-200 rounded-full overflow-hidden">
+<div class="h-full bg-yellow-400 rounded-full" style="width: 75%"></div>
+</div>
+<span class="text-xs text-gray-500">1,892</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<span class="text-xs ml-1">4</span>
+</div>
+<div class="h-2 flex-1 bg-gray-200 rounded-full overflow-hidden">
+<div class="h-full bg-yellow-400 rounded-full" style="width: 15%"></div>
+</div>
+<span class="text-xs text-gray-500">612</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<span class="text-xs ml-1">3</span>
+</div>
+<div class="h-2 flex-1 bg-gray-200 rounded-full overflow-hidden">
+<div class="h-full bg-yellow-400 rounded-full" style="width: 7%"></div>
+</div>
+<span class="text-xs text-gray-500">198</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<span class="text-xs ml-1">2</span>
+</div>
+<div class="h-2 flex-1 bg-gray-200 rounded-full overflow-hidden">
+<div class="h-full bg-yellow-400 rounded-full" style="width: 2%"></div>
+</div>
+<span class="text-xs text-gray-500">89</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<span class="text-xs ml-1">1</span>
+</div>
+<div class="h-2 flex-1 bg-gray-200 rounded-full overflow-hidden">
+<div class="h-full bg-yellow-400 rounded-full" style="width: 1%"></div>
+</div>
+<span class="text-xs text-gray-500">56</span>
+</div>
+</div>
+</div>
+<button class="write-review-btn w-full py-3 bg-primary text-white font-medium rounded-button flex items-center justify-center gap-2">
+<i class="ri-edit-line"></i>
+<span>Write a Review</span>
+</button>
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-medium">Recent Reviews</h4>
+<div class="flex items-center gap-2">
+<button class="filter-btn px-2 py-1 text-sm border rounded-full active">All</button>
+<button class="filter-btn px-2 py-1 text-sm border rounded-full">With Photos</button>
+<button class="filter-btn px-2 py-1 text-sm border rounded-full">Critical</button>
+</div>
+</div>
+<div class="space-y-4">
+<div class="border-b pb-4">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Sarah Anderson</p>
+<div class="flex items-center gap-2">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">2 days ago</span>
+</div>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+<i class="ri-more-2-fill text-gray-500"></i>
+</button>
+</div>
+<p class="text-gray-700 mb-3">Amazing cultural experience! The festival was well-organized with fantastic performances and delicious traditional food. The highlight was definitely the evening concert featuring traditional Qatari music. The atmosphere was electric and the crowd was so engaged. Will definitely attend next year!</p>
+<div class="flex gap-2 mb-3">
+<img src="https://readdy.ai/api/search-image?query=qatar%20cultural%20festival%20performance%2C%20traditional%20music%20concert%2C%20evening%20atmosphere%2C%20audience%20enjoying&width=80&height=80&seq=21&orientation=squarish" alt="Review Photo" class="w-20 h-20 rounded-lg object-cover">
+<img src="https://readdy.ai/api/search-image?query=traditional%20qatari%20food%20display%2C%20cultural%20festival%20food%20stalls%2C%20authentic%20cuisine&width=80&height=80&seq=22&orientation=squarish" alt="Review Photo" class="w-20 h-20 rounded-lg object-cover">
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-sm text-gray-500">
+<i class="ri-thumb-up-line"></i>
+<span>Helpful (24)</span>
+</button>
+<button class="text-sm text-gray-500">Reply</button>
+</div>
+</div>
+<div class="border-b pb-4">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Mohammed Al-Sayed</p>
+<div class="flex items-center gap-2">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-line text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">1 week ago</span>
+</div>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+<i class="ri-more-2-fill text-gray-500"></i>
+</button>
+</div>
+<p class="text-gray-700 mb-3">Great event that showcases our rich cultural heritage. The venue was perfect and the staff were very helpful. The traditional craft demonstrations were particularly impressive. Would recommend bringing water as it can get quite warm, especially during the afternoon sessions.</p>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-sm text-gray-500">
+<i class="ri-thumb-up-line"></i>
+<span>Helpful (18)</span>
+</button>
+<button class="text-sm text-gray-500">Reply</button>
+</div>
+</div>
+<div class="border-b pb-4">
+<div class="flex items-start justify-between mb-2">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+<i class="ri-user-line text-gray-500"></i>
+</div>
+<div>
+<p class="font-medium">Emily Chen</p>
+<div class="flex items-center gap-2">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+<i class="ri-star-fill text-yellow-400 text-xs"></i>
+</div>
+<span class="text-xs text-gray-500">2 weeks ago</span>
+<span class="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">Verified Purchase</span>
+</div>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100">
+<i class="ri-more-2-fill text-gray-500"></i>
+</button>
+</div>
+<p class="text-gray-700 mb-3">The cultural performances were absolutely stunning! Loved learning about Qatari traditions and the interactive workshops were a highlight. The pearl diving demonstration was fascinating, and the artisan market had beautiful handcrafted items. The organizers did an excellent job with the layout and scheduling.</p>
+<div class="flex gap-2 mb-3">
+<img src="https://readdy.ai/api/search-image?query=traditional%20pearl%20diving%20demonstration%2C%20qatar%20cultural%20heritage%2C%20educational%20display&width=80&height=80&seq=23&orientation=squarish" alt="Review Photo" class="w-20 h-20 rounded-lg object-cover">
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-1 text-sm text-gray-500">
+<i class="ri-thumb-up-line"></i>
+<span>Helpful (31)</span>
+</button>
+<button class="text-sm text-gray-500">Reply</button>
+</div>
+</div>
+</div>
+<button class="load-more w-full py-3 border border-primary text-primary font-medium rounded-button mt-4">Load More Reviews</button>
+</div>
+</div>
+`;
+modal.appendChild(modalContent);
+document.body.appendChild(modal);
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+modalContent.style.transform = 'translateY(0)';
+modalContent.style.transition = 'transform 0.3s ease-out';
+}, 10);
+const closeBtn = modalContent.querySelector('.close-modal');
+closeBtn.addEventListener('click', function() {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+});
+modal.addEventListener('click', function(e) {
+if (e.target === modal) {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+}
+});
+// Handle filter buttons
+const filterBtns = modalContent.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+btn.addEventListener('click', function() {
+filterBtns.forEach(b => b.classList.remove('active', 'bg-primary', 'text-white', 'border-primary'));
+this.classList.add('active', 'bg-primary', 'text-white', 'border-primary');
+});
+});
+// Handle write review button
+const writeReviewBtn = modalContent.querySelector('.write-review-btn');
+writeReviewBtn.addEventListener('click', function() {
+const reviewForm = document.createElement('div');
+reviewForm.className = 'fixed inset-0 bg-black/50 flex items-end justify-center z-50';
+reviewForm.innerHTML = `
+<div class="bg-white rounded-t-2xl w-full animate-slide-up">
+<div class="flex justify-between items-center p-4 border-b">
+<h3 class="text-lg font-semibold">Write a Review</h3>
+<button class="close-form w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<form class="p-4 space-y-4">
+<div class="space-y-2">
+<label class="text-sm font-medium">Overall Rating</label>
+<div class="flex gap-2">
+<button type="button" class="star-btn w-10 h-10 rounded-lg border flex items-center justify-center">
+<i class="ri-star-line text-gray-400"></i>
+</button>
+<button type="button" class="star-btn w-10 h-10 rounded-lg border flex items-center justify-center">
+<i class="ri-star-line text-gray-400"></i>
+</button>
+<button type="button" class="star-btn w-10 h-10 rounded-lg border flex items-center justify-center">
+<i class="ri-star-line text-gray-400"></i>
+</button>
+<button type="button" class="star-btn w-10 h-10 rounded-lg border flex items-center justify-center">
+<i class="ri-star-line text-gray-400"></i>
+</button>
+<button type="button" class="star-btn w-10 h-10 rounded-lg border flex items-center justify-center">
+<i class="ri-star-line text-gray-400"></i>
+</button>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium">Your Review</label>
+<textarea class="w-full h-32 px-3 py-2 border rounded-lg text-sm resize-none" placeholder="Share your experience with others..." maxlength="500"></textarea>
+<div class="flex justify-between text-xs text-gray-500">
+<span>Min 50 characters</span>
+<span class="char-count">0/500</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium">Add Photos</label>
+<div class="flex gap-2">
+<button type="button" class="w-20 h-20 border-2 border-dashed rounded-lg flex items-center justify-center">
+<i class="ri-add-line text-gray-400 text-2xl"></i>
+</button>
+</div>
+<p class="text-xs text-gray-500">Add up to 5 photos</p>
+</div>
+<button type="submit" class="w-full py-3 bg-primary text-white font-medium rounded-button">Submit Review</button>
+</form>
+</div>
+`;
+document.body.appendChild(reviewForm);
+const closeFormBtn = reviewForm.querySelector('.close-form');
+closeFormBtn.addEventListener('click', function() {
+document.body.removeChild(reviewForm);
+});
+// Handle star rating
+const starBtns = reviewForm.querySelectorAll('.star-btn');
+starBtns.forEach((btn, index) => {
+btn.addEventListener('click', function() {
+starBtns.forEach((b, i) => {
+const icon = b.querySelector('i');
+if (i <= index) {
+icon.classList.remove('ri-star-line', 'text-gray-400');
+icon.classList.add('ri-star-fill', 'text-yellow-400');
+} else {
+icon.classList.remove('ri-star-fill', 'text-yellow-400');
+icon.classList.add('ri-star-line', 'text-gray-400');
+}
+});
+});
+});
+// Handle character count
+const textarea = reviewForm.querySelector('textarea');
+const charCount = reviewForm.querySelector('.char-count');
+textarea.addEventListener('input', function() {
+charCount.textContent = `${this.value.length}/500`;
+});
+// Handle form submission
+const form = reviewForm.querySelector('form');
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+// Show success message
+const successMsg = document.createElement('div');
+successMsg.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+successMsg.innerHTML = `
+<div class="bg-white rounded-lg p-6 w-[90%] max-w-md text-center">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-check-line text-primary text-3xl"></i>
+</div>
+<h3 class="text-xl font-semibold mb-2">Thank You!</h3>
+<p class="text-gray-600 mb-4">Your review has been submitted successfully.</p>
+<button class="w-full py-3 bg-primary text-white font-medium rounded-button">Done</button>
+</div>
+`;
+document.body.appendChild(successMsg);
+successMsg.querySelector('button').addEventListener('click', function() {
+document.body.removeChild(successMsg);
+document.body.removeChild(reviewForm);
+});
+});
+});
+// Handle helpful buttons
+const helpfulBtns = modalContent.querySelectorAll('.ri-thumb-up-line').forEach(btn => {
+btn.parentElement.addEventListener('click', function() {
+const countSpan = this.querySelector('span');
+const currentCount = parseInt(countSpan.textContent.match(/\d+/)[0]);
+if (!this.classList.contains('text-primary')) {
+this.classList.remove('text-gray-500');
+this.classList.add('text-primary');
+countSpan.textContent = `Helpful (${currentCount + 1})`;
+} else {
+this.classList.remove('text-primary');
+this.classList.add('text-gray-500');
+countSpan.textContent = `Helpful (${currentCount - 1})`;
+}
+});
+});
+});
+});
+</script>
+<script id="ticketScript">
+document.addEventListener('DOMContentLoaded', function() {
+const ticketBtn = document.getElementById('ticketBtn');
+ticketBtn.addEventListener('click', function() {
+const modal = document.createElement('div');
+modal.className = 'fixed inset-0 bg-black/50 flex items-end justify-center z-50';
+const modalContent = document.createElement('div');
+modalContent.className = 'bg-white rounded-t-2xl w-full h-[90vh] flex flex-col animate-slide-up';
+modalContent.innerHTML = `
+<div class="flex justify-between items-center p-4 border-b">
+<h3 class="text-lg font-semibold">Select Tickets</h3>
+<button class="close-modal w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="p-4 space-y-4">
+<div class="bg-primary/5 p-4 rounded-lg mb-5">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<i class="ri-timer-line text-primary"></i>
+<span class="text-sm font-medium text-primary">Sales end on June 11, 2025 at 11:59 PM</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-ticket-line text-primary"></i>
+<span class="text-sm font-medium text-primary">120 tickets remaining</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-calendar-check-line text-primary"></i>
+<span class="text-sm font-medium text-primary">Early bird pricing available until May 31, 2025</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<button class="flex-1 py-2 bg-white border border-primary text-primary rounded-button text-sm font-medium flex items-center justify-center gap-1">
+<i class="ri-store-line"></i>
+<span>Buy at Box Office</span>
+</button>
+<button class="flex-1 py-2 bg-white border border-primary text-primary rounded-button text-sm font-medium flex items-center justify-center gap-1">
+<i class="ri-external-link-line"></i>
+<span>Buy on Q-Tickets</span>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<div class="border rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">Standard Entry</h4>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">Access to all general areas and performances</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 150.00</p>
+<p class="text-xs text-gray-500">per person</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center disabled:opacity-50" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+<div class="border rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">VIP Experience</h4>
+<span class="px-2 py-0.5 bg-red-500/10 text-red-500 text-xs font-medium rounded-full">Limited</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">Priority access, exclusive lounge & refreshments</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 350.00</p>
+<p class="text-xs text-gray-500">per person</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center disabled:opacity-50" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+<div class="border rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">Child Entry (5-12 years)</h4>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">Children under 5 enter free with paying adult</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 75.00</p>
+<p class="text-xs text-gray-500">per child</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center disabled:opacity-50" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+<div class="border rounded-lg p-4 opacity-50">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">Family Package</h4>
+<span class="px-2 py-0.5 bg-gray-500/10 text-gray-500 text-xs font-medium rounded-full">Sold Out</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">2 adults + 2 children, includes meal vouchers</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 450.00</p>
+<p class="text-xs text-gray-500">per package</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center" disabled>
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t p-4 space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between text-sm">
+<span class="text-gray-600">Booking Fee</span>
+<span class="booking-fee">QAR 0.00</span>
+</div>
+<div class="flex items-center justify-between font-medium">
+<span>Total Amount</span>
+<span class="total-amount">QAR 0.00</span>
+</div>
+</div>
+<form class="space-y-4" id="bookingForm">
+<div class="space-y-2">
+<label class="text-sm font-medium">Contact Information</label>
+<input type="text" name="name" placeholder="Full Name" class="w-full px-3 py-2 border rounded-lg text-sm" required>
+<input type="email" name="email" placeholder="Email Address" class="w-full px-3 py-2 border rounded-lg text-sm" required>
+<input type="tel" name="phone" placeholder="Phone Number" class="w-full px-3 py-2 border rounded-lg text-sm" required>
+</div>
+<div class="flex items-center gap-2">
+<input type="checkbox" id="terms" name="terms" required>
+<label for="terms" class="text-sm text-gray-600">I agree to the terms and conditions</label>
+</div>
+<button type="submit" class="checkout-btn w-full py-3 bg-gray-200 text-gray-500 font-medium rounded-button flex items-center justify-center gap-2 cursor-pointer disabled" disabled>
+<i class="ri-shopping-cart-line"></i>
+<span>Proceed to Checkout</span>
+</button>
+</form>
+</div>
+`;
+<div class="flex-1 overflow-y-auto">
+<div class="p-4 space-y-4">
+<div class="bg-primary/5 rounded-lg p-4">
+<div class="flex items-center gap-2 mb-2">
+<i class="ri-timer-line text-primary"></i>
+<span class="text-sm font-medium text-primary">Limited time offer ends in 2 days</span>
+</div>
+<div class="flex items-center gap-2">
+<i class="ri-ticket-line text-primary"></i>
+<span class="text-sm font-medium text-primary">120 tickets remaining</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="border rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">Standard Entry</h4>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">Access to all general areas and performances</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 150.00</p>
+<p class="text-xs text-gray-500">per person</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center disabled:opacity-50" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+<div class="border rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">VIP Experience</h4>
+<span class="px-2 py-0.5 bg-red-500/10 text-red-500 text-xs font-medium rounded-full">Limited</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">Priority access, exclusive lounge & refreshments</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 350.00</p>
+<p class="text-xs text-gray-500">per person</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center disabled:opacity-50" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+<div class="border rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">Child Entry (5-12 years)</h4>
+<span class="px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-medium rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">Children under 5 enter free with paying adult</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 75.00</p>
+<p class="text-xs text-gray-500">per child</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center disabled:opacity-50" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+<div class="border rounded-lg p-4 opacity-50">
+<div class="flex justify-between items-start mb-3">
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-semibold">Family Package</h4>
+<span class="px-2 py-0.5 bg-gray-500/10 text-gray-500 text-xs font-medium rounded-full">Sold Out</span>
+</div>
+<p class="text-sm text-gray-500 mt-1">2 adults + 2 children, includes meal vouchers</p>
+</div>
+<div class="text-right">
+<p class="font-bold">QAR 450.00</p>
+<p class="text-xs text-gray-500">per package</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="quantity-btn minus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center" disabled>
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<span class="quantity-value w-8 text-center">0</span>
+<button class="quantity-btn plus w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center" disabled>
+<i class="ri-add-line text-gray-700"></i>
+</button>
+</div>
+<p class="subtotal text-sm font-medium">QAR 0.00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t p-4 space-y-3">
+<div class="flex items-center justify-between text-sm">
+<span class="text-gray-600">Booking Fee</span>
+<span class="booking-fee">QAR 0.00</span>
+</div>
+<div class="flex items-center justify-between font-medium">
+<span>Total Amount</span>
+<span class="total-amount">QAR 0.00</span>
+</div>
+<button class="checkout-btn w-full py-3 bg-gray-200 text-gray-500 font-medium rounded-button flex items-center justify-center gap-2 cursor-pointer disabled" disabled>
+<i class="ri-shopping-cart-line"></i>
+<span>Proceed to Checkout</span>
+</button>
+</div>
+`;
+modal.appendChild(modalContent);
+document.body.appendChild(modal);
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+modalContent.style.transform = 'translateY(0)';
+modalContent.style.transition = 'transform 0.3s ease-out';
+}, 10);
+const closeBtn = modalContent.querySelector('.close-modal');
+closeBtn.addEventListener('click', function() {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+});
+modal.addEventListener('click', function(e) {
+if (e.target === modal) {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+}
+});
+// Handle booking form submission
+const bookingForm = modalContent.querySelector('#bookingForm');
+if (bookingForm) {
+bookingForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const formData = new FormData(this);
+const bookingData = {
+name: formData.get('name'),
+email: formData.get('email'),
+phone: formData.get('phone'),
+tickets: [],
+totalAmount: parseFloat(document.querySelector('.total-amount').textContent.replace('QAR ', '')),
+bookingFee: parseFloat(document.querySelector('.booking-fee').textContent.replace('QAR ', ''))
+};
+document.querySelectorAll('.border.rounded-lg').forEach(container => {
+if (container.querySelector('.text-gray-500.text-xs.font-medium')) return;
+const ticketType = container.querySelector('.font-semibold').textContent;
+const quantity = parseInt(container.querySelector('.quantity-value').textContent);
+if (quantity > 0) {
+bookingData.tickets.push({
+type: ticketType,
+quantity: quantity,
+price: parseFloat(container.querySelector('.font-bold').textContent.replace('QAR ', ''))
+});
+}
+});
+if (bookingData.tickets.length === 0) {
+const errorMsg = document.createElement('p');
+errorMsg.className = 'text-red-500 text-sm mt-2';
+errorMsg.textContent = 'Please select at least one ticket';
+bookingForm.insertBefore(errorMsg, bookingForm.firstChild);
+setTimeout(() => errorMsg.remove(), 3000);
+return;
+}
+// Show confirmation modal
+const confirmationModal = document.createElement('div');
+confirmationModal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+confirmationModal.innerHTML = `
+<div class="bg-white rounded-lg p-6 w-[90%] max-w-md">
+<div class="text-center mb-4">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-check-line text-primary text-3xl"></i>
+</div>
+<h3 class="text-xl font-semibold mb-2">Booking Confirmed!</h3>
+<p class="text-gray-600">Thank you for your purchase. We've sent the confirmation details to your email.</p>
+</div>
+<div class="space-y-3 mb-4">
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Booking Reference</span>
+<span class="font-medium">#QF${Math.random().toString(36).substr(2, 8).toUpperCase()}</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Total Amount Paid</span>
+<span class="font-medium">QAR ${bookingData.totalAmount.toFixed(2)}</span>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-white font-medium rounded-button">View E-Tickets</button>
+</div>
+`;
+document.body.appendChild(confirmationModal);
+confirmationModal.addEventListener('click', function(e) {
+if (e.target === confirmationModal) {
+document.body.removeChild(confirmationModal);
+}
+});
+});
+}
+const ticketContainers = modalContent.querySelectorAll('.border.rounded-lg');
+ticketContainers.forEach(container => {
+if (container.querySelector('.text-gray-500.text-xs.font-medium')) return;
+const minusBtn = container.querySelector('.minus');
+const plusBtn = container.querySelector('.plus');
+const quantitySpan = container.querySelector('.quantity-value');
+const subtotalP = container.querySelector('.subtotal');
+const priceText = container.querySelector('.font-bold').textContent;
+const price = parseFloat(priceText.replace('QAR ', ''));
+let quantity = 0;
+minusBtn.addEventListener('click', () => {
+if (quantity > 0) {
+quantity--;
+quantitySpan.textContent = quantity;
+subtotalP.textContent = `QAR ${(price * quantity).toFixed(2)}`;
+minusBtn.disabled = quantity === 0;
+updateTotal();
+}
+});
+plusBtn.addEventListener('click', () => {
+quantity++;
+quantitySpan.textContent = quantity;
+subtotalP.textContent = `QAR ${(price * quantity).toFixed(2)}`;
+minusBtn.disabled = false;
+updateTotal();
+});
+});
+function updateTotal() {
+let subtotal = 0;
+ticketContainers.forEach(container => {
+if (container.querySelector('.text-gray-500.text-xs.font-medium')) return;
+const quantitySpan = container.querySelector('.quantity-value');
+const priceText = container.querySelector('.font-bold').textContent;
+const price = parseFloat(priceText.replace('QAR ', ''));
+const quantity = parseInt(quantitySpan.textContent);
+subtotal += price * quantity;
+});
+const bookingFee = subtotal * 0.05;
+const totalAmount = subtotal + bookingFee;
+modalContent.querySelector('.booking-fee').textContent = `QAR ${bookingFee.toFixed(2)}`;
+modalContent.querySelector('.total-amount').textContent = `QAR ${totalAmount.toFixed(2)}`;
+const checkoutBtn = modalContent.querySelector('.checkout-btn');
+if (totalAmount > 0) {
+checkoutBtn.disabled = false;
+checkoutBtn.classList.remove('bg-gray-200', 'text-gray-500');
+checkoutBtn.classList.add('bg-primary', 'text-white');
+} else {
+checkoutBtn.disabled = true;
+checkoutBtn.classList.remove('bg-primary', 'text-white');
+checkoutBtn.classList.add('bg-gray-200', 'text-gray-500');
+}
+}
+});
+});
+</script>
+<script id="shareScript">
+document.addEventListener('DOMContentLoaded', function() {
+const shareBtn = document.querySelector('.ri-share-line').parentElement;
+shareBtn.addEventListener('click', function() {
+// Create share modal
+const modal = document.createElement('div');
+modal.className = 'fixed inset-0 bg-black/50 flex items-end justify-center z-50';
+const modalContent = document.createElement('div');
+modalContent.className = 'bg-white rounded-t-2xl w-full p-5 animate-slide-up';
+modalContent.innerHTML = `
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-semibold">Share Event</h3>
+<button class="close-modal w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 cursor-pointer">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="grid grid-cols-4 gap-4 mb-5">
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
+<i class="ri-facebook-fill text-white ri-lg"></i>
+</div>
+<span class="text-xs">Facebook</span>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-sky-400 flex items-center justify-center">
+<i class="ri-twitter-x-fill text-white ri-lg"></i>
+</div>
+<span class="text-xs">Twitter</span>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+<i class="ri-whatsapp-fill text-white ri-lg"></i>
+</div>
+<span class="text-xs">WhatsApp</span>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
+<i class="ri-telegram-fill text-white ri-lg"></i>
+</div>
+<span class="text-xs">Telegram</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-gray-100 p-3 rounded-lg mb-3">
+<input type="text" value="https://qatarfestival.com/events/cultural-festival-2025" class="bg-transparent flex-1 outline-none text-sm" readonly>
+<button class="px-3 py-1.5 bg-primary text-white text-sm rounded-button cursor-pointer">Copy</button>
+</div>
+`;
+modal.appendChild(modalContent);
+document.body.appendChild(modal);
+// Add animation class
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+modalContent.style.transform = 'translateY(0)';
+modalContent.style.transition = 'transform 0.3s ease-out';
+}, 10);
+// Close modal functionality
+const closeBtn = modalContent.querySelector('.close-modal');
+closeBtn.addEventListener('click', function() {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+});
+// Close when clicking outside
+modal.addEventListener('click', function(e) {
+if (e.target === modal) {
+modalContent.style.transform = 'translateY(100%)';
+setTimeout(() => {
+document.body.removeChild(modal);
+}, 300);
+}
+});
+// Copy link functionality
+const copyBtn = modalContent.querySelector('button:last-child');
+const linkInput = modalContent.querySelector('input');
+copyBtn.addEventListener('click', function() {
+linkInput.select();
+document.execCommand('copy');
+const originalText = copyBtn.textContent;
+copyBtn.textContent = 'Copied!';
+setTimeout(() => {
+copyBtn.textContent = originalText;
+}, 2000);
+});
+});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Review Your Experience</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#F59E0B'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+margin: 0;
+padding: 0;
+min-width: 375px;
+overflow-x: hidden;
+}
+html {
+overflow-x: hidden;
+}
+@keyframes fade-in {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-up {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+animation: fade-in 0.6s ease-out 0.3s both;
+}
+.animate-slide-up {
+animation: slide-up 0.6s ease-out 0.6s both;
+}
+.rating-container input {
+display: none;
+}
+.rating-container label {
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.rating-container input:checked ~ label {
+color: #d1d5db;
+}
+.rating-container label:hover,
+.rating-container label:hover ~ label,
+.rating-container input:checked + label {
+color: #F59E0B;
+}
+.rating-container {
+direction: rtl;
+}
+</style>
+</head>
+<body class="bg-white min-h-screen">
+<div class="w-full min-w-[375px] max-w-[375px] mx-auto relative">
+<!-- Navigation Bar -->
+<nav class="bg-white shadow-sm fixed top-0 w-full min-w-[375px] max-w-[375px] left-1/2 -translate-x-1/2 z-10">
+<div class="flex items-center justify-between px-4 py-4">
+<button class="w-8 h-8 flex items-center justify-center text-gray-700 cursor-pointer">
+<i class="ri-arrow-left-s-line ri-lg"></i>
+</button>
+<h1 class="text-lg font-semibold">Review Your Experience</h1>
+<button class="text-gray-500 text-sm cursor-pointer">Cancel</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-16 pb-24 px-4">
+<!-- Experience Details -->
+<div class="bg-gray-50 rounded-lg p-4 mb-6 mt-4 flex items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+<img src="https://readdy.ai/api/search-image?query=adventure%20park%20with%20ziplines%20and%20rope%20courses%20in%20forest%2C%20outdoor%20activity%2C%20vibrant%20colors%2C%20sunny%20day%2C%20adventure%20tourism&width=200&height=200&seq=1&orientation=squarish" alt="Zipline Adventure" class="w-full h-full object-cover">
+</div>
+<div class="ml-3">
+<h3 class="font-semibold">Forest Zipline Adventure</h3>
+<p class="text-gray-500 text-sm">June 10, 2025 • 10:30 AM</p>
+<div class="flex items-center mt-1">
+<span class="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded-full">Completed</span>
+</div>
+</div>
+</div>
+<!-- Rating Section -->
+<div class="mb-8">
+<h2 class="text-xl font-semibold mb-6 text-center">How was your experience?</h2>
+<div class="rating-container flex justify-center mb-4">
+<input type="radio" name="rating" id="star5" value="5">
+<label for="star5" class="text-4xl px-1">★</label>
+<input type="radio" name="rating" id="star4" value="4">
+<label for="star4" class="text-4xl px-1">★</label>
+<input type="radio" name="rating" id="star3" value="3">
+<label for="star3" class="text-4xl px-1">★</label>
+<input type="radio" name="rating" id="star2" value="2">
+<label for="star2" class="text-4xl px-1">★</label>
+<input type="radio" name="rating" id="star1" value="1">
+<label for="star1" class="text-4xl px-1">★</label>
+</div>
+<p id="rating-text" class="text-center text-gray-600 mb-6">Tap to rate</p>
+</div>
+<!-- Photo Upload Section -->
+<div class="mb-8">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-lg font-semibold">Capture the Moment!</h2>
+<button class="text-primary text-sm font-medium">Skip</button>
+</div>
+<p class="text-gray-600 text-sm mb-4">Share your experience with photos & videos (up to 10 files)</p>
+<div class="flex items-center gap-3 mb-6 text-sm">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+<span class="text-gray-700">Keep photos private</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+<span class="text-gray-700">Post anonymously</span>
+</label>
+</div>
+<div class="grid grid-cols-4 gap-3 mb-4">
+<div id="photo-preview-1" class="hidden relative aspect-square rounded-lg overflow-hidden shadow-sm">
+<img id="preview-img-1" class="w-full h-full object-cover" src="" alt="Preview">
+<button class="absolute top-1 right-1 bg-black bg-opacity-50 rounded-full w-6 h-6 flex items-center justify-center" onclick="removePhoto(1)">
+<i class="ri-close-line text-white ri-sm"></i>
+</button>
+</div>
+<div id="photo-preview-2" class="hidden relative aspect-square rounded-lg overflow-hidden shadow-sm">
+<img id="preview-img-2" class="w-full h-full object-cover" src="" alt="Preview">
+<button class="absolute top-1 right-1 bg-black bg-opacity-50 rounded-full w-6 h-6 flex items-center justify-center" onclick="removePhoto(2)">
+<i class="ri-close-line text-white ri-sm"></i>
+</button>
+</div>
+<div id="photo-preview-3" class="hidden relative aspect-square rounded-lg overflow-hidden shadow-sm">
+<img id="preview-img-3" class="w-full h-full object-cover" src="" alt="Preview">
+<button class="absolute top-1 right-1 bg-black bg-opacity-50 rounded-full w-6 h-6 flex items-center justify-center" onclick="removePhoto(3)">
+<i class="ri-close-line text-white ri-sm"></i>
+</button>
+</div>
+<div id="photo-preview-4" class="hidden relative aspect-square rounded-lg overflow-hidden shadow-sm">
+<img id="preview-img-4" class="w-full h-full object-cover" src="" alt="Preview">
+<button class="absolute top-1 right-1 bg-black bg-opacity-50 rounded-full w-6 h-6 flex items-center justify-center" onclick="removePhoto(4)">
+<i class="ri-close-line text-white ri-sm"></i>
+</button>
+</div>
+</div>
+<div class="flex gap-3 mb-4">
+<label for="camera-upload" class="flex-1 cursor-pointer py-4 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-2">
+<i class="ri-camera-line ri-lg text-primary"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">Take Photo</span>
+<span class="text-xs text-gray-500 mt-1">Use your camera</span>
+</label>
+<label for="gallery-upload" class="flex-1 cursor-pointer py-4 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-50 hover:bg-gray-100 transition-colors">
+<div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center mb-2">
+<i class="ri-image-line ri-lg text-primary"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">Gallery</span>
+<span class="text-xs text-gray-500 mt-1">Choose existing</span>
+</label>
+</div>
+<input type="file" id="camera-upload" accept="image/*" capture="environment" class="hidden">
+<input type="file" id="gallery-upload" accept="image/*,video/*" multiple class="hidden">
+<div class="flex items-center gap-2 text-xs text-gray-500">
+<i class="ri-information-line"></i>
+<span>Supported: JPG, PNG, MP4 • Max size: 10MB per file</span>
+</div>
+</div>
+<!-- Written Review Section -->
+<div class="mb-8">
+<h2 class="text-lg font-semibold mb-4">Share your experience</h2>
+<div class="space-y-6">
+<div>
+<h3 class="text-base font-medium mb-2">What was great?</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The staff was very professional and friendly">Friendly Staff</button>
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The equipment was well-maintained and safe">Great Equipment</button>
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The experience was thrilling and exciting">Exciting Experience</button>
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The location was beautiful and easy to find">Perfect Location</button>
+</div>
+<textarea
+id="positive-text"
+class="w-full border border-gray-300 rounded-lg p-3 h-24 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+placeholder="What did you love about your experience? (minimum 25 characters)"
+></textarea>
+</div>
+<div>
+<h3 class="text-base font-medium mb-2">What could be improved?</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The waiting time could be shorter">Waiting Time</button>
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="Better instructions before starting would help">Instructions</button>
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The facilities could be more comfortable">Facilities</button>
+<button class="suggestion-tag px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors" data-text="The price could be more reasonable">Pricing</button>
+</div>
+<textarea
+id="improvement-text"
+class="w-full border border-gray-300 rounded-lg p-3 h-24 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+placeholder="What aspects could be improved? (optional)"
+></textarea>
+</div>
+</div>
+<p id="char-count" class="text-right text-xs text-gray-500 mt-2">0/500</p>
+</div>
+<!-- Specific Ratings -->
+<div class="mb-8">
+<h2 class="text-lg font-semibold mb-4">Tell us more about specific aspects</h2>
+<p class="text-gray-600 text-sm mb-6">Your detailed ratings help others understand the experience better</p>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<span class="text-gray-700 font-medium">Safety Measures</span>
+<p class="text-xs text-gray-500 mt-0.5">Equipment, instructions & procedures</p>
+</div>
+<div class="flex">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="safety" data-value="1">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="safety" data-value="2">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="safety" data-value="3">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="safety" data-value="4">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="safety" data-value="5">
+<i class="ri-star-line ri-lg"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<span class="text-gray-700 font-medium">Staff & Service</span>
+<p class="text-xs text-gray-500 mt-0.5">Friendliness, helpfulness & professionalism</p>
+</div>
+<div class="flex">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="staff" data-value="1">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="staff" data-value="2">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="staff" data-value="3">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="staff" data-value="4">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="staff" data-value="5">
+<i class="ri-star-line ri-lg"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<span class="text-gray-700 font-medium">Value for Money</span>
+<p class="text-xs text-gray-500 mt-0.5">Price compared to experience quality</p>
+</div>
+<div class="flex">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="value" data-value="1">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="value" data-value="2">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="value" data-value="3">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="value" data-value="4">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="value" data-value="5">
+<i class="ri-star-line ri-lg"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<span class="text-gray-700 font-medium">Facilities & Equipment</span>
+<p class="text-xs text-gray-500 mt-0.5">Quality, maintenance & cleanliness</p>
+</div>
+<div class="flex">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="facilities" data-value="1">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="facilities" data-value="2">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="facilities" data-value="3">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="facilities" data-value="4">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="facilities" data-value="5">
+<i class="ri-star-line ri-lg"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-6">
+<div>
+<span class="text-gray-700 font-medium">Fun Factor</span>
+<p class="text-xs text-gray-500 mt-0.5">Overall enjoyment & excitement</p>
+</div>
+<div class="flex">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="fun" data-value="1">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="fun" data-value="2">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="fun" data-value="3">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="fun" data-value="4">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="fun" data-value="5">
+<i class="ri-star-line ri-lg"></i>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between mt-6">
+<div>
+<span class="text-gray-700 font-medium">Accessibility</span>
+<p class="text-xs text-gray-500 mt-0.5">Location & ease of access</p>
+</div>
+<div class="flex">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="accessibility" data-value="1">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="accessibility" data-value="2">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="accessibility" data-value="3">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="accessibility" data-value="4">
+<i class="ri-star-line ri-lg"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 aspect-rating" data-aspect="accessibility" data-value="5">
+<i class="ri-star-line ri-lg"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Fixed Bottom Button -->
+<div class="fixed bottom-0 w-full min-w-[375px] max-w-[375px] left-1/2 -translate-x-1/2 bg-white border-t border-gray-200 p-4">
+<div class="mb-4">
+<label class="flex items-start gap-3 cursor-pointer">
+<div class="relative flex items-center justify-center mt-0.5">
+<input type="checkbox" id="terms-checkbox" class="peer appearance-none w-5 h-5 border border-gray-300 rounded-sm checked:border-primary checked:bg-primary transition-colors">
+<i class="ri-check-line absolute text-white scale-0 peer-checked:scale-100 transition-transform"></i>
+</div>
+<div class="text-sm text-gray-600">
+I agree to the <button type="button" class="text-primary font-medium hover:underline">Content Guidelines</button> and confirm that this review is based on my genuine experience
+</div>
+</label>
+</div>
+<div class="flex gap-3">
+<button id="cancel-button" class="flex-1 py-3 border border-gray-300 text-gray-700 font-medium rounded-button hover:bg-gray-50 transition-colors">
+Cancel
+</button>
+<button id="preview-button" class="flex-1 py-3 bg-gray-300 text-white font-medium rounded-button transition-colors duration-300 cursor-not-allowed" disabled>
+Submit Review
+</button>
+</div>
+</div>
+<!-- Photo Upload Preview Modal -->
+<div id="preview-modal" class="fixed inset-0 bg-black bg-opacity-75 z-40 flex items-center justify-center hidden" style="overflow-y: auto; padding: 20px 0;">
+<div class="bg-white rounded-lg w-[340px] overflow-hidden my-auto">
+<div class="p-4 border-b border-gray-200 flex justify-between items-center">
+<h3 class="font-semibold">Preview Photo</h3>
+<button id="close-modal" class="w-8 h-8 flex items-center justify-center cursor-pointer">
+<i class="ri-close-line ri-lg"></i>
+</button>
+</div>
+<div class="p-4">
+<img id="modal-preview-img" class="w-full rounded" src="" alt="Preview">
+</div>
+<div class="p-4 flex justify-end space-x-3">
+<button id="discard-photo" class="px-4 py-2 border border-gray-300 rounded-button text-gray-700">Discard</button>
+<button id="use-photo" class="px-4 py-2 bg-primary text-white rounded-button">Use Photo</button>
+</div>
+</div>
+</div>
+<!-- Preview Modal -->
+<div id="preview-modal" class="fixed inset-0 bg-black bg-opacity-75 z-30 flex items-center justify-center hidden">
+<div class="bg-white w-full h-full overflow-y-auto">
+<div class="sticky top-0 bg-white border-b border-gray-200 z-20">
+<div class="flex items-center justify-between px-4 py-4">
+<button class="w-8 h-8 flex items-center justify-center text-gray-700" id="close-preview">
+<i class="ri-close-line ri-lg"></i>
+</button>
+<h1 class="text-lg font-semibold">Review Preview</h1>
+<button id="final-submit" class="text-primary font-medium">Submit</button>
+</div>
+</div>
+<div class="p-4 space-y-6">
+<!-- User Info -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
+<i class="ri-user-line ri-lg text-gray-400"></i>
+</div>
+<div>
+<p class="font-medium">John Anderson</p>
+<p class="text-sm text-gray-500">Public Review</p>
+</div>
+</div>
+<button class="text-primary text-sm" onclick="editSection('profile')">Edit</button>
+</div>
+<!-- Rating Preview -->
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Overall Rating</h3>
+<button class="text-primary text-sm" onclick="editSection('rating')">Edit</button>
+</div>
+<div id="preview-rating" class="flex text-2xl text-yellow-400"></div>
+</div>
+<!-- Photos Preview -->
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Photos</h3>
+<button class="text-primary text-sm" onclick="editSection('photos')">Edit</button>
+</div>
+<div id="preview-photos" class="grid grid-cols-4 gap-2"></div>
+</div>
+<!-- Written Review Preview -->
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Written Review</h3>
+<button class="text-primary text-sm" onclick="editSection('text')">Edit</button>
+</div>
+<div class="space-y-4">
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-2">What was great?</h4>
+<p id="preview-positive" class="text-gray-600"></p>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-700 mb-2">What could be improved?</h4>
+<p id="preview-improvement" class="text-gray-600"></p>
+</div>
+</div>
+</div>
+<!-- Detailed Ratings Preview -->
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium">Detailed Ratings</h3>
+<button class="text-primary text-sm" onclick="editSection('aspects')">Edit</button>
+</div>
+<div id="preview-aspects" class="space-y-4"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Success Modal -->
+<div id="success-modal" class="fixed inset-0 bg-black bg-opacity-75 z-60 flex items-center justify-center hidden" style="overflow-y: auto; padding: 20px 0;">
+<div class="bg-white rounded-lg w-[340px] overflow-hidden my-auto">
+<div class="p-6 text-center">
+<div class="relative">
+<div class="w-24 h-24 mx-auto mb-6 rounded-full bg-primary bg-opacity-10 flex items-center justify-center">
+<i class="ri-check-line ri-3x text-primary"></i>
+</div>
+<div class="absolute -right-2 -top-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
+<i class="ri-award-line text-white ri-lg"></i>
+</div>
+</div>
+<h3 class="text-2xl font-semibold mb-3">Thank You!</h3>
+<div class="flex flex-col items-center gap-3 mb-8">
+<p class="text-gray-600">Your review has been successfully published. Your insights will help others make better decisions!</p>
+<div class="flex items-center gap-2 text-yellow-500 font-medium animate-fade-in">
+<i class="ri-coin-line"></i>
+<span>+50 points earned!</span>
+</div>
+<div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full flex items-center gap-2 animate-slide-up">
+<i class="ri-compass-3-line"></i>
+<span>Explorer Badge Unlocked!</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="p-4 bg-gray-50 rounded-lg text-center">
+<div class="w-10 h-10 mx-auto mb-2 rounded-full bg-white flex items-center justify-center">
+<i class="ri-eye-line text-primary"></i>
+</div>
+<p class="text-sm font-medium">View Review</p>
+</div>
+<div class="p-4 bg-gray-50 rounded-lg text-center">
+<div class="w-10 h-10 mx-auto mb-2 rounded-full bg-white flex items-center justify-center">
+<i class="ri-share-line text-primary"></i>
+</div>
+<p class="text-sm font-medium">Share Review</p>
+</div>
+</div>
+<div class="space-y-3">
+<button class="w-full py-3 bg-primary text-white font-medium rounded-button flex items-center justify-center gap-2">
+<i class="ri-compass-3-line"></i>
+Explore More Activities
+</button>
+<button class="w-full py-3 border border-gray-200 text-gray-700 font-medium rounded-button flex items-center justify-center gap-2">
+<i class="ri-user-add-line"></i>
+Invite Friends
+</button>
+</div>
+</div>
+<div class="p-4 bg-gray-50 border-t border-gray-100">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=adventure%20park%20with%20ziplines%20and%20rope%20courses%20in%20forest%2C%20outdoor%20activity%2C%20vibrant%20colors%2C%20sunny%20day%2C%20adventure%20tourism&width=200&height=200&seq=2&orientation=squarish" alt="Next Adventure" class="w-full h-full object-cover">
+</div>
+<div class="text-left">
+<h4 class="font-medium text-sm">Rock Climbing Adventure</h4>
+<p class="text-xs text-gray-500">15% off for next booking</p>
+</div>
+</div>
+<button class="text-primary font-medium text-sm">View</button>
+</div>
+</div>
+</div>
+</div>
+<div id="guidelines-modal" class="fixed inset-0 bg-black bg-opacity-75 z-60 flex items-center justify-center hidden" style="overflow-y: auto; padding: 20px 0;">
+<div class="bg-white rounded-lg w-[340px] overflow-hidden my-auto">
+<div class="p-4 border-b border-gray-200 flex justify-between items-center">
+<h3 class="font-semibold">Content Guidelines</h3>
+<button class="close-guidelines w-8 h-8 flex items-center justify-center">
+<i class="ri-close-line ri-lg"></i>
+</button>
+</div>
+<div class="p-4 space-y-4 text-sm text-gray-600">
+<p>Please ensure your review:</p>
+<ul class="list-disc pl-4 space-y-2">
+<li>Is based on your genuine first-hand experience</li>
+<li>Is honest, respectful, and constructive</li>
+<li>Doesn't contain offensive or inappropriate content</li>
+<li>Respects others' privacy and personal information</li>
+<li>Doesn't include promotional or commercial content</li>
+</ul>
+<p>We reserve the right to remove reviews that don't meet these guidelines.</p>
+</div>
+<div class="p-4 bg-gray-50 flex justify-end">
+<button class="close-guidelines px-4 py-2 text-primary font-medium">Got it</button>
+</div>
+</div>
+</div>
+<script id="rating-script">
+document.addEventListener('DOMContentLoaded', function() {
+const ratingLabels = document.querySelectorAll('.rating-container label');
+const ratingInputs = document.querySelectorAll('.rating-container input');
+const ratingText = document.getElementById('rating-text');
+let selectedRating = 0;
+ratingInputs.forEach(input => {
+input.addEventListener('change', function() {
+selectedRating = this.value;
+ratingText.textContent = `${selectedRating} out of 5`;
+validateForm();
+});
+});
+// Add hover effect manually
+ratingLabels.forEach(label => {
+label.addEventListener('mouseover', function() {
+const currentId = this.getAttribute('for');
+const currentValue = document.getElementById(currentId).value;
+ratingLabels.forEach(l => {
+const forId = l.getAttribute('for');
+const forValue = document.getElementById(forId).value;
+if (forValue >= currentValue) {
+l.style.color = '#F59E0B';
+} else {
+l.style.color = '#d1d5db';
+}
+});
+});
+label.addEventListener('mouseout', function() {
+ratingLabels.forEach(l => {
+const forId = l.getAttribute('for');
+const forValue = document.getElementById(forId).value;
+if (forValue <= selectedRating) {
+l.style.color = '#F59E0B';
+} else {
+l.style.color = '#d1d5db';
+}
+});
+});
+});
+});
+</script>
+<script id="photo-upload-script">
+document.addEventListener('DOMContentLoaded', function() {
+const cameraUpload = document.getElementById('camera-upload');
+const galleryUpload = document.getElementById('gallery-upload');
+const skipButton = document.querySelector('button.text-primary');
+const backButton = document.getElementById('back-button');
+skipButton.addEventListener('click', function() {
+const positiveText = document.getElementById('positive-text');
+if (positiveText.value.length >= 25) {
+document.getElementById('submit-button').disabled = false;
+document.getElementById('submit-button').classList.remove('bg-gray-300', 'cursor-not-allowed');
+document.getElementById('submit-button').classList.add('bg-primary');
+}
+});
+backButton.addEventListener('click', function() {
+if (confirm('Are you sure you want to go back? Your review progress will be saved as draft.')) {
+// Here you would typically handle navigation or state management
+console.log('Going back, saving draft...');
+}
+});
+const previewModal = document.getElementById('preview-modal');
+const modalPreviewImg = document.getElementById('modal-preview-img');
+const closeModal = document.getElementById('close-modal');
+const usePhoto = document.getElementById('use-photo');
+const discardPhoto = document.getElementById('discard-photo');
+let currentFile = null;
+let currentPreviewIndex = 1;
+let uploadedFiles = 0;
+const MAX_FILES = 10;
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+function handleFileSelect(e) {
+const files = Array.from(e.target.files);
+if (uploadedFiles + files.length > MAX_FILES) {
+const remainingSlots = MAX_FILES - uploadedFiles;
+const message = `You can only upload ${remainingSlots} more file${remainingSlots !== 1 ? 's' : ''}`;
+showToast(message, 'warning');
+return;
+}
+files.forEach(file => {
+if (file.size > MAX_FILE_SIZE) {
+showToast(`${file.name} exceeds 10MB limit`, 'error');
+return;
+}
+if (uploadedFiles < MAX_FILES) {
+currentFile = file;
+const reader = new FileReader();
+reader.onload = function(e) {
+modalPreviewImg.src = e.target.result;
+previewModal.classList.remove('hidden');
+}
+reader.readAsDataURL(file);
+}
+});
+}
+cameraUpload.addEventListener('change', handleFileSelect);
+galleryUpload.addEventListener('change', handleFileSelect);
+closeModal.addEventListener('click', function() {
+previewModal.classList.add('hidden');
+cameraUpload.value = '';
+galleryUpload.value = '';
+});
+discardPhoto.addEventListener('click', function() {
+previewModal.classList.add('hidden');
+cameraUpload.value = '';
+galleryUpload.value = '';
+});
+usePhoto.addEventListener('click', function() {
+if (!currentFile) {
+showToast('No photo selected', 'error');
+return;
+}
+if (uploadedFiles >= MAX_FILES) {
+showToast('Maximum number of photos reached (10)', 'warning');
+previewModal.classList.add('hidden');
+cameraUpload.value = '';
+galleryUpload.value = '';
+return;
+}
+// Find the next available preview slot
+let nextSlot = 1;
+while (nextSlot <= MAX_FILES) {
+const previewContainer = document.getElementById(`photo-preview-${nextSlot}`);
+if (previewContainer.classList.contains('hidden')) {
+break;
+}
+nextSlot++;
+}
+if (nextSlot <= MAX_FILES) {
+const previewContainer = document.getElementById(`photo-preview-${nextSlot}`);
+const previewImg = document.getElementById(`preview-img-${nextSlot}`);
+if (previewContainer && previewImg) {
+uploadedFiles++;
+previewImg.src = modalPreviewImg.src;
+previewContainer.classList.remove('hidden');
+// Show remaining photos count
+const remaining = MAX_FILES - uploadedFiles;
+showToast(`${remaining} photo${remaining !== 1 ? 's' : ''} remaining`, 'info');
+// Reset file inputs and close modal
+previewModal.classList.add('hidden');
+cameraUpload.value = '';
+galleryUpload.value = '';
+// Update form validation
+validateForm();
+} else {
+showToast('Error displaying photo', 'error');
+}
+}
+});
+window.removePhoto = function(index) {
+const previewContainer = document.getElementById(`photo-preview-${index}`);
+previewContainer.classList.add('hidden');
+// Shift photos if needed
+for (let i = index; i < MAX_FILES; i++) {
+const currentContainer = document.getElementById(`photo-preview-${i}`);
+const nextContainer = document.getElementById(`photo-preview-${i+1}`);
+const currentImg = document.getElementById(`preview-img-${i}`);
+const nextImg = document.getElementById(`preview-img-${i+1}`);
+if (!nextContainer.classList.contains('hidden')) {
+currentImg.src = nextImg.src;
+currentContainer.classList.remove('hidden');
+nextContainer.classList.add('hidden');
+}
+}
+uploadedFiles--;
+validateForm();
+}
+function showToast(message, type = 'info') {
+const toast = document.createElement('div');
+toast.className = `fixed bottom-20 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg text-white text-sm z-50 ${
+type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-gray-800'
+}`;
+toast.textContent = message;
+document.body.appendChild(toast);
+setTimeout(() => {
+toast.remove();
+}, 3000);
+}
+});
+</script>
+<script id="review-text-script">
+document.addEventListener('DOMContentLoaded', function() {
+const positiveText = document.getElementById('positive-text');
+const improvementText = document.getElementById('improvement-text');
+const charCount = document.getElementById('char-count');
+const suggestionTags = document.querySelectorAll('.suggestion-tag');
+function updateCharCount() {
+const totalCount = positiveText.value.length + improvementText.value.length;
+charCount.textContent = `${totalCount}/500`;
+validateForm();
+}
+positiveText.addEventListener('input', updateCharCount);
+improvementText.addEventListener('input', updateCharCount);
+suggestionTags.forEach(tag => {
+tag.addEventListener('click', function() {
+const suggestionText = this.getAttribute('data-text');
+const targetTextarea = this.closest('div').nextElementSibling;
+const currentText = targetTextarea.value;
+if (currentText) {
+targetTextarea.value = currentText + '\n' + suggestionText;
+} else {
+targetTextarea.value = suggestionText;
+}
+updateCharCount();
+targetTextarea.focus();
+const len = targetTextarea.value.length;
+targetTextarea.setSelectionRange(len, len);
+});
+});
+});
+</script>
+<script id="aspect-rating-script">
+document.addEventListener('DOMContentLoaded', function() {
+const aspectRatingButtons = document.querySelectorAll('.aspect-rating');
+const aspectRatings = {
+safety: 0,
+staff: 0,
+value: 0,
+facilities: 0,
+fun: 0,
+accessibility: 0
+};
+aspectRatingButtons.forEach(button => {
+button.addEventListener('click', function() {
+const aspect = this.getAttribute('data-aspect');
+const value = parseInt(this.getAttribute('data-value'));
+aspectRatings[aspect] = value;
+// Update visual state
+document.querySelectorAll(`.aspect-rating[data-aspect="${aspect}"]`).forEach(btn => {
+const btnValue = parseInt(btn.getAttribute('data-value'));
+if (btnValue <= value) {
+btn.innerHTML = '<i class="ri-star-fill ri-lg text-yellow-400"></i>';
+} else {
+btn.innerHTML = '<i class="ri-star-line ri-lg"></i>';
+}
+});
+validateForm();
+});
+});
+});
+</script>
+<script id="form-validation-script">
+document.addEventListener('DOMContentLoaded', function() {
+const previewButton = document.getElementById('preview-button');
+const previewModal = document.getElementById('preview-modal');
+const closePreview = document.getElementById('close-preview');
+const finalSubmit = document.getElementById('final-submit');
+const successModal = document.getElementById('success-modal');
+const closeSuccess = document.getElementById('close-success');
+const termsCheckbox = document.getElementById('terms-checkbox');
+const cancelButton = document.getElementById('cancel-button');
+cancelButton.addEventListener('click', function() {
+if (confirm('Are you sure you want to cancel? Your review progress will be lost.')) {
+window.location.href = '/'; // Replace with actual home URL
+}
+});
+window.validateForm = function() {
+const ratingInputs = document.querySelectorAll('.rating-container input');
+const positiveText = document.getElementById('positive-text');
+const improvementText = document.getElementById('improvement-text');
+let hasRating = false;
+ratingInputs.forEach(input => {
+if (input.checked) {
+hasRating = true;
+}
+});
+const hasReviewText = positiveText.value.length >= 25;
+const hasAgreedToTerms = termsCheckbox.checked;
+if (hasRating && hasReviewText && hasAgreedToTerms) {
+previewButton.classList.remove('bg-gray-300', 'cursor-not-allowed');
+previewButton.classList.add('bg-primary');
+previewButton.disabled = false;
+} else {
+previewButton.classList.add('bg-gray-300', 'cursor-not-allowed');
+previewButton.classList.remove('bg-primary');
+previewButton.disabled = true;
+}
+};
+function updatePreview() {
+// Update rating preview
+const selectedRating = document.querySelector('.rating-container input:checked');
+const previewRating = document.getElementById('preview-rating');
+previewRating.innerHTML = '';
+if (selectedRating) {
+for (let i = 0; i < selectedRating.value; i++) {
+previewRating.innerHTML += '<span>★</span>';
+}
+for (let i = selectedRating.value; i < 5; i++) {
+previewRating.innerHTML += '<span class="text-gray-300">★</span>';
+}
+}
+// Update photos preview
+const previewPhotos = document.getElementById('preview-photos');
+previewPhotos.innerHTML = '';
+for (let i = 1; i <= 4; i++) {
+const photoPreview = document.getElementById(`photo-preview-${i}`);
+if (!photoPreview.classList.contains('hidden')) {
+const img = document.getElementById(`preview-img-${i}`).src;
+previewPhotos.innerHTML += `
+<div class="aspect-square rounded-lg overflow-hidden">
+<img src="${img}" class="w-full h-full object-cover">
+</div>`;
+}
+}
+// Update text preview
+document.getElementById('preview-positive').textContent = document.getElementById('positive-text').value;
+document.getElementById('preview-improvement').textContent = document.getElementById('improvement-text').value || 'No suggestions for improvement.';
+// Update detailed ratings preview
+const previewAspects = document.getElementById('preview-aspects');
+previewAspects.innerHTML = '';
+const aspects = ['Safety Measures', 'Staff & Service', 'Value for Money', 'Facilities & Equipment', 'Fun Factor', 'Accessibility'];
+aspects.forEach(aspect => {
+const aspectId = aspect.toLowerCase().replace(/\s+/g, '-').replace(/[&]/g, '');
+const stars = document.querySelectorAll(`[data-aspect="${aspectId}"] i.ri-star-fill`).length;
+if (stars > 0) {
+previewAspects.innerHTML += `
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-700">${aspect}</span>
+<div class="flex text-yellow-400">
+${('★'.repeat(stars) + '☆'.repeat(5-stars))}
+</div>
+</div>`;
+}
+});
+}
+window.editSection = function(section) {
+previewModal.classList.add('hidden');
+switch(section) {
+case 'rating':
+document.querySelector('.rating-container').scrollIntoView({ behavior: 'smooth' });
+break;
+case 'photos':
+document.querySelector('.photo-upload-section').scrollIntoView({ behavior: 'smooth' });
+break;
+case 'text':
+document.getElementById('positive-text').scrollIntoView({ behavior: 'smooth' });
+break;
+case 'aspects':
+document.querySelector('.aspect-rating').scrollIntoView({ behavior: 'smooth' });
+break;
+}
+};
+previewButton.addEventListener('click', function() {
+if (!this.disabled) {
+updatePreview();
+previewModal.classList.remove('hidden');
+}
+});
+closePreview.addEventListener('click', function() {
+previewModal.classList.add('hidden');
+});
+finalSubmit.addEventListener('click', function() {
+previewModal.classList.add('hidden');
+successModal.classList.remove('hidden');
+});
+document.querySelectorAll('#success-modal button').forEach(button => {
+button.addEventListener('click', function() {
+if (this.textContent.includes('Explore')) {
+window.location.href = '/activities';
+} else if (this.textContent.includes('Invite')) {
+// Open share dialog
+const shareData = {
+title: 'Join me on Adventure App',
+text: 'Discover and review amazing outdoor activities!',
+url: window.location.origin
+};
+if (navigator.share) {
+navigator.share(shareData);
+}
+} else if (this.textContent === 'View') {
+window.location.href = '/activities/rock-climbing';
+} else {
+successModal.classList.add('hidden');
+window.location.href = '/';
+}
+});
+});
+const guidelinesButtons = document.querySelectorAll('.text-primary.font-medium');
+const guidelinesModal = document.getElementById('guidelines-modal');
+const closeGuidelinesButtons = document.querySelectorAll('.close-guidelines');
+guidelinesButtons.forEach(button => {
+button.addEventListener('click', function() {
+guidelinesModal.classList.remove('hidden');
+});
+});
+closeGuidelinesButtons.forEach(button => {
+button.addEventListener('click', function() {
+guidelinesModal.classList.add('hidden');
+});
+});
+});
+</script>
+</body>
+</html>

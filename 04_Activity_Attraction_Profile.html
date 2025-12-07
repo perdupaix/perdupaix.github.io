@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=400px, initial-scale=1.0">
+    <title>Alcatraz Island Tour</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', secondary: '#8b5cf6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        /* body {
+font-family: 'Inter', sans-serif;
+} */
+        /* Add custom font faces */
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-bold.yji-9690ce6275ddc5645cfa.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/poppins-medium.yji-dc16a3592fdb61b620cc.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-regular.yji-aff9b80e384301f2ae0c.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-semibold.yji-d3abae27d3eac73b40a5.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('https://s3-media0.fl.yelpcdn.com/assets/public/open-sans-bold.yji-1145ff0b749fff2d31bb.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* Example usage */
+        .poppins-bold {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .poppins-medium {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .open-sans {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+        }
+
+        .open-sans-semibold {
+            font-family: 'Open Sans';
+            font-weight: 600;
+        }
+
+        .open-sans-bold {
+            font-family: 'Open Sans';
+            font-weight: 700;
+        }
+
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        /*body {
+     font-family: 'Inter', sans-serif;
+     overflow: hidden;
+ }*/
+
+        /* Use Poppins Bold for all headings */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label,
+        aside,
+        .ctaz,
+        .navz {
+            font-family: 'Poppins';
+            /*font-weight: 700;*/
+        }
+
+        /* Use Open Sans Regular for body */
+        body {
+            font-family: 'Open Sans';
+            /*font-weight: 400;*/
+            max-width: 400px;
+        }
+
+
+        .image-gallery::-webkit-scrollbar {
+            display: none;
+        }
+
+        .image-gallery {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .review-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .review-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .related-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .related-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .date-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .date-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .time-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .time-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .date-btn.selected {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .time-btn.selected {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .ticket-counter {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expandable-text {
+            max-height: 4.5rem;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .expandable-text.expanded {
+            max-height: 1000px;
+        }
+
+        .gallery-pagination .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            margin: 0 3px;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-pagination .dot.active {
+            width: 20px;
+            border-radius: 3px;
+            background-color: white;
+        }
+
+        /* Hide scrollbar for Chrome, Safari, Edge */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for Firefox */
+        .no-scrollbar {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE/Edge */
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/ae1ab5f6-81b9-4024-a0fe-17b03056aef8"
+                    data-readdy="true" class="w-8 h-8 flex items-center justify-center cursor-pointer">
+                    <i class="ri-arrow-left-s-line ri-lg"></i>
+                </a>
+                <h1 class="ml-2 text-lg font-semibold">Alcatraz Island Tour</h1>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+                    <i class="ri-share-line ri-lg"></i>
+                </div>
+                <div class="w-8 h-8 flex items-center justify-center cursor-pointer">
+                    <i class="ri-heart-line ri-lg text-gray-700"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="pt-14 pb-24">
+        <!-- Image Gallery -->
+        <div class="relative">
+            <div class="image-gallery flex overflow-x-auto snap-x snap-mandatory">
+                <div class="flex-shrink-0 w-full h-64 snap-start">
+                    <img src="https://readdy.ai/api/search-image?query=Alcatraz%2520Island%2520prison%2520tour%252C%2520historical%2520landmark%252C%2520tourist%2520attraction%252C%2520San%2520Francisco%2520Bay%252C%2520clear%2520day%252C%2520professional%2520travel%2520photography%252C%2520detailed%2520architecture%252C%2520iconic%2520prison%2520buildings%252C%2520tourist%2520boats%2520docked%2520at%2520pier%252C%2520visitors%2520exploring%2520the%2520island&width=375&height=256&seq=12&orientation=landscape"
+                        alt="Alcatraz Island" class="w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="flex-shrink-0 w-full h-64 snap-start">
+                    <img src="https://readdy.ai/api/search-image?query=Inside%2520Alcatraz%2520prison%2520cell%2520block%252C%2520historic%2520jail%2520cells%252C%2520long%2520corridor%2520perspective%252C%2520tourists%2520on%2520guided%2520tour%252C%2520professional%2520interior%2520photography%252C%2520moody%2520lighting%252C%2520historic%2520preservation%252C%2520famous%2520prison%2520interior&width=375&height=256&seq=13&orientation=landscape"
+                        alt="Inside Alcatraz" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-shrink-0 w-full h-64 snap-start">
+                    <img src="https://readdy.ai/api/search-image?query=Alcatraz%2520Island%2520lighthouse%2520and%2520water%2520tower%252C%2520historic%2520structures%252C%2520panoramic%2520view%2520of%2520San%2520Francisco%2520skyline%2520in%2520background%252C%2520clear%2520day%252C%2520professional%2520travel%2520photography%252C%2520iconic%2520landmark%252C%2520tourist%2520destination&width=375&height=256&seq=14&orientation=landscape"
+                        alt="Alcatraz Lighthouse" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-shrink-0 w-full h-64 snap-start">
+                    <img src="https://readdy.ai/api/search-image?query=Ferry%2520boat%2520approaching%2520Alcatraz%2520Island%252C%2520tourists%2520on%2520deck%252C%2520San%2520Francisco%2520Bay%252C%2520Golden%2520Gate%2520Bridge%2520visible%2520in%2520background%252C%2520professional%2520travel%2520photography%252C%2520clear%2520day%252C%2520iconic%2520tourist%2520experience&width=375&height=256&seq=15&orientation=landscape"
+                        alt="Ferry to Alcatraz" class="w-full h-full object-cover">
+                </div>
+
+            </div>
+            <!-- Image Counter -->
+            <div class="absolute top-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full">
+                <span class="gallery-counter">1/4</span>
+            </div>
+            <!-- Pagination Dots -->
+            <div class="absolute bottom-3 left-0 right-0 flex justify-center gallery-pagination">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        <!-- Basic Information -->
+        <div class="px-4 py-4">
+            <h1 class="text-2xl font-bold">Alcatraz Island Tour</h1>
+            <div class="flex items-center mt-2">
+                <div class="flex">
+                    <i class="ri-star-fill text-yellow-400"></i>
+                    <i class="ri-star-fill text-yellow-400"></i>
+                    <i class="ri-star-fill text-yellow-400"></i>
+                    <i class="ri-star-fill text-yellow-400"></i>
+                    <i class="ri-star-line text-yellow-400"></i>
+                </div>
+                <span class="text-gray-600 text-sm ml-1">4.2 (2,105 reviews)</span>
+                <span class="ml-3 text-gray-500">$$</span>
+            </div>
+            <!-- <div class="flex gap-2 mt-3 overflow-hidden">
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm">
+                    <i class="ri-time-line mr-1 text-gray-600"></i>
+                    <span>3-4 hours</span>
+                </div>
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm">
+                    <i class="ri-map-pin-line mr-1 text-gray-600"></i>
+                    <span>2.5 mi away</span>
+                </div>
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm">
+                    <i class="ri-group-line mr-1 text-gray-600"></i>
+                    <span>Group Tour</span>
+                </div>
+
+                <div class="flex items-center bg-gray-100 rounded-full px-3 py-1.5 text-sm">
+                    <i class="ri-time-line mr-1 text-gray-600"></i>
+                    <span>3-4 hours</span>
+                </div>
+                <div class="flex items-center bg-gray-100 rounded-full px-3 py-1.5 text-sm">
+                    <i class="ri-map-pin-line mr-1 text-gray-600"></i>
+                    <span>2.5 mi away</span>
+                </div>
+                <div class="flex items-center bg-gray-100 rounded-full px-3 py-1.5 text-sm">
+                    <i class="ri-group-line mr-1 text-gray-600"></i>
+                    <span>Group Tour</span>
+                </div>
+            </div> -->
+
+
+
+            <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar">
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm flex-shrink-0">
+                    <i class="ri-time-line mr-1 text-gray-600"></i>
+                    <span>3-4 hourszzz</span>
+                </div>
+
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm flex-shrink-0">
+                    <i class="ri-map-pin-line mr-1 text-gray-600"></i>
+                    <span>2.5 mi away</span>
+                </div>
+
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm flex-shrink-0">
+                    <i class="ri-group-line mr-1 text-gray-600"></i>
+                    <span>Group Tour</span>
+                </div>
+
+                <!-- <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm flex-shrink-0">
+                <i class="ri-time-line mr-1 text-gray-600"></i>
+                <span>Longer duration tag text example</span>
+                </div>
+
+                <div class="flex items-center bg-gray-100 rounded-lg px-3 py-1.5 text-sm flex-shrink-0">
+                <i class="ri-map-pin-line mr-1 text-gray-600"></i>
+                <span>This tag is much longer than the others</span>
+            </div> -->
+
+            </div>
+
+
+
+
+        </div>
+        <!-- Quick Actions -->
+        <div class="px-4">
+            <div class="flex gap-3 pb-2 overflow-x-auto no-scrollbar">
+                <button
+                    class="flex-shrink-0 bg-primary text-white font-medium px-4 py-2 !rounded-button flex items-center justify-center">
+                    <i class="ri-calendar-check-line mr-2"></i>
+                    <span>Book Now</span>
+                </button>
+                <button
+                    class="flex-shrink-0 border border-gray-300 text-gray-700 font-medium px-4 py-2 !rounded-button flex items-center justify-center">
+                    <i class="ri-calendar-line mr-2"></i>
+                    <span>Check Availability</span>
+                </button>
+                <button
+                    class="flex-shrink-0 border border-gray-300 text-gray-700 font-medium px-4 py-2 !rounded-button flex items-center justify-center">
+                    <i class="ri-map-2-line mr-2"></i>
+                    <span>View Map</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-2">About This Tour</h2>
+            <div class="expandable-text text-gray-600 text-sm leading-relaxed">
+                Experience the infamous Alcatraz Federal Penitentiary on this comprehensive tour of "The Rock." Located
+                1.5 miles from San Francisco's shore, Alcatraz Island served as a federal prison from 1934 to 1963,
+                housing notorious criminals like Al Capone and the "Birdman" Robert Stroud.
+                Your tour begins with a scenic ferry ride across San Francisco Bay, offering spectacular views of the
+                Golden Gate Bridge, Bay Bridge, and the city skyline. Upon arrival, knowledgeable National Park Rangers
+                will provide an introduction to the island's rich history.
+                Explore the cellhouse with our award-winning audio tour "Doing Time," featuring actual interviews with
+                former inmates and correctional officers. Walk through the same cells where America's most dangerous
+                criminals were once confined and hear their fascinating stories.
+                Beyond its prison history, Alcatraz is also home to the West Coast's first lighthouse, early military
+                fortifications, and natural features with unique flora and fauna. The island is a designated bird
+                sanctuary and offers some of the best views of San Francisco.
+            </div>
+            <button class="text-primary text-sm font-medium mt-2 expand-text-btn cursor-pointer">Read more</button>
+        </div>
+
+        <style>
+            .centered-div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        </style>
+        <div class="px-4 py-4 border-t border-gray-100 centered-div">
+            <h6 style="font-size: 14px; font-weight: 600;">Do you recommend this business?</h6>
+            <div class="ctaz ">
+                <button
+                    style="padding: 10px 20px; margin: 5px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer;">Yes</button>
+                <button
+                    style="padding: 10px 20px; margin: 5px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer;">No</button>
+                <button
+                    style="padding: 10px 20px; margin: 5px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer;">Maybe</button>
+            </div>
+        </div>
+
+
+        <!-- Testing here ************* -->
+
+
+
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">Itinerary</h2>
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full mr-3">1
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-sm">Ferry Departure</h3>
+                        <p class="text-xs text-gray-500">Start from Pier 33 at 9:30 AM</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full mr-3">2
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-sm">Prison Tour</h3>
+                        <p class="text-xs text-gray-500">Audio tour inside the historic cell blocks</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full mr-3">3
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-sm">Scenic Walk</h3>
+                        <p class="text-xs text-gray-500">Explore the lighthouse & gardens</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- -------------------- -->
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">Frequently Asked Questions</h2>
+            <div class="space-y-2">
+                <details class="border border-gray-200 rounded-lg p-3">
+                    <summary class="font-medium text-sm cursor-pointer">Do I need to book in advance?</summary>
+                    <p class="text-xs text-gray-500 mt-2">Yes, tickets often sell out weeks ahead. Booking early is
+                        recommended.</p>
+                </details>
+                <details class="border border-gray-200 rounded-lg p-3">
+                    <summary class="font-medium text-sm cursor-pointer">Is the tour family-friendly?</summary>
+                    <p class="text-xs text-gray-500 mt-2">Yes, children are welcome. The ferry and island have stroller
+                        access.</p>
+                </details>
+                <details class="border border-gray-200 rounded-lg p-3">
+                    <summary class="font-medium text-sm cursor-pointer">What if it rains?</summary>
+                    <p class="text-xs text-gray-500 mt-2">The tour runs rain or shine, so bring layered clothing and an
+                        umbrella.</p>
+                </details>
+            </div>
+        </div>
+
+
+
+        <!-- --------------------------- -->
+
+
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">Location & Nearby Attractions</h2>
+            <iframe class="w-full h-48 rounded-lg"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3156.823421373206!2d-122.4230490846817!3d37.8269777797469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858087c0aa5f1d%3A0x82995a61d5d6f944!2sAlcatraz%20Island!5e0!3m2!1sen!2sus!4v1675875483179"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <ul class="mt-3 space-y-1 text-sm text-gray-600">
+                <li>• Fisherman’s Wharf (10 min)</li>
+                <li>• Golden Gate Bridge (20 min)</li>
+                <li>• Pier 39 Sea Lions (12 min)</li>
+            </ul>
+        </div>
+
+        <!-- ------------------------------------------------- -->
+
+
+        <div class="px-4 py-4 border-t border-gray-100 bg-gray-50 rounded-lg">
+            <h2 class="text-lg font-semibold mb-3">Traveler Tips</h2>
+            <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                <li>Arrive 30 minutes early for ferry boarding.</li>
+                <li>Bring snacks since food is not sold on the island.</li>
+                <li>Take the earliest ferry to avoid crowds.</li>
+                <li>Wear comfortable shoes – lots of walking!</li>
+            </ul>
+        </div>
+
+
+        <!-- ----------------- -->
+
+
+
+        <!-- Testing Ending here ************* -->
+
+        <!-- Tour Highlights -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">Tour Highlights</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary mr-2">
+                        <i class="ri-ship-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium">Ferry Ride</h3>
+                        <p class="text-xs text-gray-500">Scenic bay crossing</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary mr-2">
+                        <i class="ri-headphone-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium">Audio Tour</h3>
+                        <p class="text-xs text-gray-500">Award-winning narration</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary mr-2">
+                        <i class="ri-building-4-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium">Cell House</h3>
+                        <p class="text-xs text-gray-500">Historic prison blocks</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full text-primary mr-2">
+                        <i class="ri-landscape-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium">Scenic Views</h3>
+                        <p class="text-xs text-gray-500">Panoramic city skyline</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- What's Included -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">What's Included</h2>
+            <div class="space-y-2">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-green-500 mr-2">
+                        <i class="ri-check-line"></i>
+                    </div>
+                    <span class="text-sm">Round-trip ferry transportation</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-green-500 mr-2">
+                        <i class="ri-check-line"></i>
+                    </div>
+                    <span class="text-sm">Cellhouse audio tour "Doing Time"</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-green-500 mr-2">
+                        <i class="ri-check-line"></i>
+                    </div>
+                    <span class="text-sm">Access to all available areas on the island</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-green-500 mr-2">
+                        <i class="ri-check-line"></i>
+                    </div>
+                    <span class="text-sm">Ranger-guided orientation tour (optional)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-red-500 mr-2">
+                        <i class="ri-close-line"></i>
+                    </div>
+                    <span class="text-sm">Food and beverages</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-red-500 mr-2">
+                        <i class="ri-close-line"></i>
+                    </div>
+                    <span class="text-sm">Hotel pickup and drop-off</span>
+                </div>
+            </div>
+        </div>
+        <!-- What to Bring -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">What to Bring</h2>
+            <div class="space-y-2">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-gray-500 mr-2">
+                        <i class="ri-sun-line"></i>
+                    </div>
+                    <span class="text-sm">Comfortable walking shoes</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-gray-500 mr-2">
+                        <i class="ri-sun-line"></i>
+                    </div>
+                    <span class="text-sm">Layered clothing (weather can change quickly)</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-gray-500 mr-2">
+                        <i class="ri-camera-line"></i>
+                    </div>
+                    <span class="text-sm">Camera</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 flex items-center justify-center text-gray-500 mr-2">
+                        <i class="ri-water-flash-line"></i>
+                    </div>
+                    <span class="text-sm">Water bottle</span>
+                </div>
+            </div>
+        </div>
+        <!-- Pricing & Availability -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">Pricing & Availability</h2>
+            <!-- Date Selection -->
+            <h3 class="text-sm font-medium mb-2">Select Date</h3>
+            <div class="date-scroll flex overflow-x-auto gap-2 pb-3">
+                <button
+                    class="date-btn flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs text-gray-500">Sat</span>
+                    <span class="text-base font-medium">31</span>
+                    <span class="text-xs text-gray-500">May</span>
+                </button>
+                <button
+                    class="date-btn flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs text-gray-500">Sun</span>
+                    <span class="text-base font-medium">1</span>
+                    <span class="text-xs text-gray-500">Jun</span>
+                </button>
+                <button
+                    class="date-btn selected flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs">Mon</span>
+                    <span class="text-base font-medium">2</span>
+                    <span class="text-xs">Jun</span>
+                </button>
+                <button
+                    class="date-btn flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs text-gray-500">Tue</span>
+                    <span class="text-base font-medium">3</span>
+                    <span class="text-xs text-gray-500">Jun</span>
+                </button>
+                <button
+                    class="date-btn flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs text-gray-500">Wed</span>
+                    <span class="text-base font-medium">4</span>
+                    <span class="text-xs text-gray-500">Jun</span>
+                </button>
+                <button
+                    class="date-btn flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs text-gray-500">Thu</span>
+                    <span class="text-base font-medium">5</span>
+                    <span class="text-xs text-gray-500">Jun</span>
+                </button>
+                <button
+                    class="date-btn flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center border border-gray-200 rounded-lg">
+                    <span class="text-xs text-gray-500">Fri</span>
+                    <span class="text-base font-medium">6</span>
+                    <span class="text-xs text-gray-500">Jun</span>
+                </button>
+            </div>
+            <!-- Time Selection -->
+            <h3 class="text-sm font-medium mb-2 mt-4">Select Time</h3>
+            <div class="time-scroll flex overflow-x-auto gap-2 pb-2">
+                <button class="time-btn flex-shrink-0 px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    9:30 AM
+                </button>
+                <button class="time-btn flex-shrink-0 px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    10:30 AM
+                </button>
+                <button class="time-btn selected flex-shrink-0 px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    11:30 AM
+                </button>
+                <button class="time-btn flex-shrink-0 px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    12:30 PM
+                </button>
+                <button class="time-btn flex-shrink-0 px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    1:30 PM
+                </button>
+                <button class="time-btn flex-shrink-0 px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    2:30 PM
+                </button>
+            </div>
+            <!-- Ticket Types -->
+            <h3 class="text-sm font-medium mb-2 mt-4">Ticket Types</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div>
+                        <h4 class="font-medium">Adult (18+)</h4>
+                        <p class="text-sm text-gray-500">$41.00 per person</p>
+                    </div>
+                    <div class="flex items-center">
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full text-gray-500 decrement-btn"
+                            data-target="adult-count">
+                            <i class="ri-subtract-line"></i>
+                        </button>
+                        <div class="ticket-counter mx-2 text-sm font-medium" id="adult-count">2</div>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full text-gray-700 increment-btn"
+                            data-target="adult-count">
+                            <i class="ri-add-line"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div>
+                        <h4 class="font-medium">Child (5-17)</h4>
+                        <p class="text-sm text-gray-500">$25.00 per person</p>
+                    </div>
+                    <div class="flex items-center">
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full text-gray-500 decrement-btn"
+                            data-target="child-count">
+                            <i class="ri-subtract-line"></i>
+                        </button>
+                        <div class="ticket-counter mx-2 text-sm font-medium" id="child-count">1</div>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full text-gray-700 increment-btn"
+                            data-target="child-count">
+                            <i class="ri-add-line"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div>
+                        <h4 class="font-medium">Senior (62+)</h4>
+                        <p class="text-sm text-gray-500">$38.00 per person</p>
+                    </div>
+                    <div class="flex items-center">
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full text-gray-500 decrement-btn"
+                            data-target="senior-count">
+                            <i class="ri-subtract-line"></i>
+                        </button>
+                        <div class="ticket-counter mx-2 text-sm font-medium" id="senior-count">0</div>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full text-gray-700 increment-btn"
+                            data-target="senior-count">
+                            <i class="ri-add-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Total Price -->
+            <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">Total</span>
+                    <span class="font-semibold text-lg" id="total-price">$107.00</span>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">Includes all taxes and fees</div>
+            </div>
+        </div>
+        <!-- Cancellation Policy -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-2">Cancellation Policy</h2>
+            <p class="text-sm text-gray-600">
+                Free cancellation up to 24 hours before the start time. If you cancel less than 24 hours before the
+                experience, the amount paid will not be refunded. Changes made less than 24 hours before the experience
+                start time cannot be accepted.
+            </p>
+        </div>
+        <!-- Reviews Section -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-semibold">Reviews</h2>
+                <button class="text-primary text-sm font-medium" id="write-review-btn">Write a Review</button>
+            </div>
+            <!-- Rating Summary -->
+            <div class="flex items-center mb-4">
+                <div class="text-3xl font-bold mr-3">4.2</div>
+                <div>
+                    <div class="flex">
+                        <i class="ri-star-fill text-yellow-400"></i>
+                        <i class="ri-star-fill text-yellow-400"></i>
+                        <i class="ri-star-fill text-yellow-400"></i>
+                        <i class="ri-star-fill text-yellow-400"></i>
+                        <i class="ri-star-line text-yellow-400"></i>
+                    </div>
+                    <div class="text-sm text-gray-500">2,105 reviews</div>
+                </div>
+            </div>
+            <!-- Review Form Modal -->
+            <div id="review-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+                <div class="bg-white rounded-lg max-w-lg mx-auto mt-20 overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Write a Review</h3>
+                            <button class="text-gray-500" id="close-review-modal">
+                                <i class="ri-close-line ri-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <form id="review-form" class="p-4">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Overall Rating</label>
+                            <div class="flex gap-2" id="rating-stars">
+                                <i class="ri-star-line text-2xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                <i class="ri-star-line text-2xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                <i class="ri-star-line text-2xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                <i class="ri-star-line text-2xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                <i class="ri-star-line text-2xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-3 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                                <div class="flex gap-2 rating-category" data-category="value">
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Guide</label>
+                                <div class="flex gap-2 rating-category" data-category="guide">
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Experience</label>
+                                <div class="flex gap-2 rating-category" data-category="experience">
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                    <i
+                                        class="ri-star-line text-xl text-gray-300 cursor-pointer hover:text-yellow-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+                            <textarea class="w-full border border-gray-200 rounded-lg p-3 text-sm" rows="4"
+                                placeholder="Share your experience with others..." maxlength="500"></textarea>
+                            <div class="text-xs text-gray-500 mt-1">
+                                <span id="char-count">0</span>/500 characters
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Add Photos</label>
+                            <div class="flex gap-2 mb-2" id="photo-preview"></div>
+                            <label
+                                class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                <i class="ri-image-add-line mr-2"></i>
+                                Add Photos
+                                <input type="file" class="hidden" id="photo-input" accept="image/*" multiple>
+                            </label>
+                            <div class="text-xs text-gray-500 mt-1">Maximum 3 photos</div>
+                        </div>
+                        <div class="flex justify-end gap-2 mt-6">
+                            <button type="button"
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium"
+                                id="cancel-review">Cancel</button>
+                            <button type="submit"
+                                class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">Post
+                                Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Rating Categories -->
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Value</span>
+                        <div class="flex items-center">
+                            <span class="mr-1 font-medium">4.3</span>
+                            <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full" style="width: 86%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Guide</span>
+                        <div class="flex items-center">
+                            <span class="mr-1 font-medium">4.5</span>
+                            <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Experience</span>
+                        <div class="flex items-center">
+                            <span class="mr-1 font-medium">4.4</span>
+                            <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600">Organization</span>
+                        <div class="flex items-center">
+                            <span class="mr-1 font-medium">3.9</span>
+                            <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full" style="width: 78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Review List -->
+            <div class="review-scroll space-y-4 max-h-96 overflow-y-auto pr-1">
+                <!-- Review 1 -->
+                <div class="p-3 border border-gray-200 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520middle-aged%2520woman%2520with%2520short%2520brown%2520hair%2520smiling%2520at%2520camera%252C%2520neutral%2520background%252C%2520portrait%2520photography&width=40&height=40&seq=16&orientation=squarish"
+                                    alt="Reviewer" class="w-full h-full object-cover">
+                            </div>
+                            <div class="ml-2">
+                                <h4 class="font-medium text-sm">Jennifer Wilson</h4>
+                                <div class="text-xs text-gray-500">May 28, 2025</div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        Absolutely fascinating experience! The audio tour was incredibly well done with actual voices of
+                        former inmates and guards. The ferry ride offers stunning views of the city and Golden Gate
+                        Bridge. Definitely book in advance as tickets sell out quickly.
+                    </p>
+                    <div class="flex gap-2 mt-3">
+                        <img src="https://readdy.ai/api/search-image?query=tourist%2520taking%2520photo%2520inside%2520Alcatraz%2520prison%2520cell%2520block%252C%2520smartphone%2520photography%252C%2520historic%2520jail%2520interior%252C%2520tourist%2520perspective&width=80&height=80&seq=17&orientation=squarish"
+                            alt="Review photo" class="w-20 h-20 object-cover rounded">
+                        <img src="https://readdy.ai/api/search-image?query=view%2520of%2520San%2520Francisco%2520skyline%2520from%2520Alcatraz%2520Island%252C%2520tourist%2520photo%252C%2520panoramic%2520city%2520view%252C%2520Golden%2520Gate%2520Bridge%2520visible&width=80&height=80&seq=18&orientation=squarish"
+                            alt="Review photo" class="w-20 h-20 object-cover rounded">
+                    </div>
+                    <div class="flex gap-4 mt-3">
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50"
+                                data-type="helpful">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_helpful_bulb_v2.yji-927d56e36e3a11c12e58.svg"
+                                    alt="Helpful" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Helpful</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">0</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50"
+                                data-type="thanks">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_thanks_v2.yji-1fec900fe14a2fa15c10.svg"
+                                    alt="Thanks" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Thanks</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">0</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50"
+                                data-type="love">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_love_this_v2.yji-e4b17143e9d097f34029.svg"
+                                    alt="Love this" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Love this</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">0</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(225, 244, 254); border-color: rgba(26, 109, 195, 0.1);"
+                                data-type="ohno">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_oh_no_v2.yji-d19e61e9dc84c2e954c1.svg"
+                                    alt="Oh no" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Oh no</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 2 -->
+                <div class="p-3 border border-gray-200 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520young%2520man%2520with%2520glasses%2520and%2520short%2520black%2520hair%252C%2520neutral%2520background%252C%2520portrait%2520photography&width=40&height=40&seq=19&orientation=squarish"
+                                    alt="Reviewer" class="w-full h-full object-cover">
+                            </div>
+                            <div class="ml-2">
+                                <h4 class="font-medium text-sm">Michael Chen</h4>
+                                <div class="text-xs text-gray-500">May 15, 2025</div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-line text-yellow-400 text-sm"></i>
+                            <i class="ri-star-line text-yellow-400 text-sm"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        The history is fascinating but be prepared for crowds. The ferry was packed and we had to wait
+                        in several lines. The audio tour is excellent but I wish we had more time to explore at our own
+                        pace. Wear comfortable shoes and bring a jacket as it gets windy.
+                    </p>
+                    <div class="flex gap-4 mt-3">
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(225, 247, 220); border-color: rgba(50, 124, 30, 0.1);"
+                                data-type="helpful">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_helpful_bulb_filled_v2.yji-c72f0ed042cc86d10bb5.svg"
+                                    alt="Helpful" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Helpful</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">24</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(255, 237, 221); border-color: rgba(192, 66, 20, 0.1);"
+                                data-type="thanks">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_thanks_filled_v2.yji-e28121368ec4747a8fb8.svg"
+                                    alt="Thanks" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Thanks</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">1</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(255, 236, 236); border-color: rgba(215, 22, 22, 0.1);"
+                                data-type="love">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_love_this_filled_v2.yji-3a06bfb232fca6674dc0.svg"
+                                    alt="Love this" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Love this</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">5</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(225, 244, 254); border-color: rgba(26, 109, 195, 0.1);"
+                                data-type="ohno">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_oh_no_v2.yji-d19e61e9dc84c2e954c1.svg"
+                                    alt="Oh no" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Oh no</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 3 -->
+                <div class="p-3 border border-gray-200 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                                <img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520older%2520man%2520with%2520gray%2520beard%2520smiling%2520at%2520camera%252C%2520neutral%2520background%252C%2520portrait%2520photography&width=40&height=40&seq=20&orientation=squarish"
+                                    alt="Reviewer" class="w-full h-full object-cover">
+                            </div>
+                            <div class="ml-2">
+                                <h4 class="font-medium text-sm">Robert Johnson</h4>
+                                <div class="text-xs text-gray-500">May 10, 2025</div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+                            <i class="ri-star-half-fill text-yellow-400 text-sm"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">
+                        As a history buff, this tour exceeded my expectations. Walking through the same halls as
+                        infamous criminals was surreal. The audio tour is extremely well done and informative. I
+                        recommend taking the first ferry of the day to avoid the largest crowds.
+                    </p>
+                    <div class="flex gap-2 mt-3">
+                        <img src="https://readdy.ai/api/search-image?query=tourist%2520photo%2520of%2520Alcatraz%2520prison%2520yard%252C%2520historic%2520site%252C%2520visitor%2520perspective%252C%2520sunny%2520day&width=80&height=80&seq=21&orientation=squarish"
+                            alt="Review photo" class="w-20 h-20 object-cover rounded">
+                    </div>
+                    <div class="flex gap-4 mt-3">
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50"
+                                data-type="helpful">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_helpful_bulb_v2.yji-927d56e36e3a11c12e58.svg"
+                                    alt="Helpful" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Helpful</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">18</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50"
+                                data-type="thanks">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_thanks_v2.yji-1fec900fe14a2fa15c10.svg"
+                                    alt="Thanks" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Thanks</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">0</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(255, 236, 236); border-color: rgba(215, 22, 22, 0.1);"
+                                data-type="love">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_love_this_filled_v2.yji-3a06bfb232fca6674dc0.svg"
+                                    alt="Love this" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Love this</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">7</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button
+                                class="review-reaction w-12 h-12 flex items-center justify-center rounded-full border hover:bg-gray-50 active"
+                                style="background-color: rgb(225, 244, 254); border-color: rgba(26, 109, 195, 0.1);"
+                                data-type="ohno">
+                                <img src="https://s3-media0.fl.yelpcdn.com/assets/public/24x24_oh_no_v2.yji-d19e61e9dc84c2e954c1.svg"
+                                    alt="Oh no" class="w-6 h-6">
+                            </button>
+                            <div class="flex items-center gap-1 mt-1">
+                                <span class="text-sm text-gray-600">Oh no</span>
+                                <span class="text-sm font-bold text-gray-500 ml-1">1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Related Tours -->
+        <div class="px-4 py-4 border-t border-gray-100">
+            <h2 class="text-lg font-semibold mb-3">You Might Also Like</h2>
+            <div class="related-scroll flex overflow-x-auto gap-4 pb-2">
+                <!-- Related Tour 1 -->
+                <div
+                    class="flex-shrink-0 w-60 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 cursor-pointer">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Golden%2520Gate%2520Bridge%2520tour%252C%2520tourists%2520walking%2520on%2520bridge%252C%2520San%2520Francisco%2520landmark%252C%2520clear%2520day%252C%2520professional%2520travel%2520photography&width=240&height=160&seq=22&orientation=landscape"
+                            alt="Golden Gate Bridge Tour" class="w-full h-36 object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-sm">Golden Gate Bridge Walking Tour</h3>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-half-fill text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-gray-600 text-xs ml-1">4.7</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            <span>$$</span>
+                            <span class="mx-1">•</span>
+                            <span>2 hours</span>
+                        </div>
+                        <div class="text-sm font-medium text-primary mt-2">From $29.99</div>
+                    </div>
+                </div>
+                <!-- Related Tour 2 -->
+                <div
+                    class="flex-shrink-0 w-60 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 cursor-pointer">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=San%2520Francisco%2520Bay%2520cruise%252C%2520tourist%2520boat%2520tour%252C%2520people%2520on%2520deck%252C%2520Golden%2520Gate%2520Bridge%2520view%252C%2520professional%2520travel%2520photography&width=240&height=160&seq=23&orientation=landscape"
+                            alt="Bay Cruise" class="w-full h-36 object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-sm">San Francisco Bay Cruise</h3>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-line text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-gray-600 text-xs ml-1">4.2</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            <span>$$</span>
+                            <span class="mx-1">•</span>
+                            <span>1.5 hours</span>
+                        </div>
+                        <div class="text-sm font-medium text-primary mt-2">From $38.00</div>
+                    </div>
+                </div>
+                <!-- Related Tour 3 -->
+                <div
+                    class="flex-shrink-0 w-60 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 cursor-pointer">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Fishermans%2520Wharf%2520San%2520Francisco%2520guided%2520tour%252C%2520tourists%2520exploring%252C%2520seafood%2520restaurants%252C%2520street%2520performers%252C%2520professional%2520travel%2520photography&width=240&height=160&seq=24&orientation=landscape"
+                            alt="Fisherman's Wharf Tour" class="w-full h-36 object-cover">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-semibold text-sm">Fisherman's Wharf Walking Tour</h3>
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-fill text-yellow-400 text-xs"></i>
+                                <i class="ri-star-line text-yellow-400 text-xs"></i>
+                            </div>
+                            <span class="text-gray-600 text-xs ml-1">4.1</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            <span>$</span>
+                            <span class="mx-1">•</span>
+                            <span>2 hours</span>
+                        </div>
+                        <div class="text-sm font-medium text-primary mt-2">From $25.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Bottom Action Bar -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 p-4 z-50">
+        <div class="flex items-center justify-between mb-2">
+            <div>
+                <div class="text-sm text-gray-500">Total Price</div>
+                <div class="text-xl font-bold" id="bottom-total-price">$107.00</div>
+            </div>
+            <button class="bg-primary text-white font-medium px-6 py-3 !rounded-button">
+                Book Now
+            </button>
+        </div>
+        <div class="text-xs text-gray-500 text-center">
+            <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/ae1ab5f6-81b9-4024-a0fe-17b03056aef8"
+                data-readdy="true" class="underline">Back to Activities</a>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script id="image-gallery-handler">
+        document.addEventListener('DOMContentLoaded', function () {
+            const gallery = document.querySelector('.image-gallery');
+            const dots = document.querySelectorAll('.gallery-pagination .dot');
+            const counter = document.querySelector('.gallery-counter');
+            const slides = gallery.querySelectorAll('.flex-shrink-0');
+            let currentIndex = 0;
+            let touchStartX = 0;
+            let touchEndX = 0;
+            let autoSlideInterval;
+            let isAnimating = false;
+            let startTime;
+            const animationDuration = 500;
+            function updateGallery() {
+                if (isAnimating) return;
+                isAnimating = true;
+                startTime = Date.now();
+                const itemWidth = gallery.querySelector('div').offsetWidth;
+                const startPosition = gallery.scrollLeft;
+                const targetPosition = itemWidth * currentIndex;
+                const distance = targetPosition - startPosition;
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / animationDuration, 1);
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    gallery.scrollLeft = startPosition + (distance * easeProgress);
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        isAnimating = false;
+                    }
+                }
+                requestAnimationFrame(animate);
+                counter.textContent = `${currentIndex + 1}/4`;
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+                slides.forEach((slide, index) => {
+                    if (index === currentIndex) {
+                        slide.style.opacity = '1';
+                        slide.style.transform = 'scale(1)';
+                    } else {
+                        slide.style.opacity = '0.8';
+                        slide.style.transform = 'scale(0.95)';
+                    }
+                });
+            }
+            function nextSlide() {
+                if (currentIndex < slides.length - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                updateGallery();
+            }
+            function prevSlide() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                } else {
+                    currentIndex = slides.length - 1;
+                }
+                updateGallery();
+            }
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+            function stopAutoSlide() {
+                clearInterval(autoSlideInterval);
+            }
+            gallery.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                stopAutoSlide();
+            });
+            gallery.addEventListener('touchmove', (e) => {
+                touchEndX = e.touches[0].clientX;
+            });
+            gallery.addEventListener('touchend', () => {
+                const swipeDistance = touchStartX - touchEndX;
+                if (Math.abs(swipeDistance) > 50) {
+                    if (swipeDistance > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+                startAutoSlide();
+            });
+            gallery.addEventListener('scroll', function () {
+                const scrollPosition = gallery.scrollLeft;
+                const itemWidth = gallery.querySelector('div').offsetWidth;
+                currentIndex = Math.round(scrollPosition / itemWidth);
+                counter.textContent = `${currentIndex + 1}/4`;
+                dots.forEach((dot, index) => {
+                    if (index === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function () {
+                    currentIndex = index;
+                    updateGallery();
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            });
+            gallery.addEventListener('mouseenter', stopAutoSlide);
+            gallery.addEventListener('mouseleave', startAutoSlide);
+            startAutoSlide();
+        });
+    </script>
+    <script id="expandable-text-handler">
+        document.addEventListener('DOMContentLoaded', function () {
+            const expandableText = document.querySelector('.expandable-text');
+            const expandButton = document.querySelector('.expand-text-btn');
+            expandButton.addEventListener('click', function () {
+                expandableText.classList.toggle('expanded');
+                if (expandableText.classList.contains('expanded')) {
+                    expandButton.textContent = 'Read less';
+                } else {
+                    expandButton.textContent = 'Read more';
+                }
+            });
+        });
+    </script>
+    <script id="date-time-selector">
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateBtns = document.querySelectorAll('.date-btn');
+            const timeBtns = document.querySelectorAll('.time-btn');
+            dateBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    dateBtns.forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            timeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    timeBtns.forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        });
+    </script>
+    <script id="ticket-counter-handler">
+        document.addEventListener('DOMContentLoaded', function () {
+            const incrementBtns = document.querySelectorAll('.increment-btn');
+            const decrementBtns = document.querySelectorAll('.decrement-btn');
+            function updateTotal() {
+                const adultCount = parseInt(document.getElementById('adult-count').textContent) || 0;
+                const childCount = parseInt(document.getElementById('child-count').textContent) || 0;
+                const seniorCount = parseInt(document.getElementById('senior-count').textContent) || 0;
+                const total = (adultCount * 41) + (childCount * 25) + (seniorCount * 38);
+                document.getElementById('total-price').textContent = `$${total.toFixed(2)}`;
+                document.getElementById('bottom-total-price').textContent = `$${total.toFixed(2)}`;
+            }
+            incrementBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target');
+                    const counterEl = document.getElementById(targetId);
+                    let count = parseInt(counterEl.textContent) || 0;
+                    count++;
+                    counterEl.textContent = count;
+                    updateTotal();
+                });
+            });
+            decrementBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target');
+                    const counterEl = document.getElementById(targetId);
+                    let count = parseInt(counterEl.textContent) || 0;
+                    if (count > 0) {
+                        count--;
+                        counterEl.textContent = count;
+                        updateTotal();
+                    }
+                });
+            });
+        });
+    </script>
+    <script id="heart-toggle">
+        document.addEventListener('DOMContentLoaded', function () {
+            const heartIcon = document.querySelector('nav .ri-heart-line');
+            heartIcon.parentElement.addEventListener('click', function () {
+                if (heartIcon.classList.contains('ri-heart-line')) {
+                    heartIcon.classList.remove('ri-heart-line');
+                    heartIcon.classList.add('ri-heart-fill');
+                    heartIcon.classList.add('text-primary');
+                } else {
+                    heartIcon.classList.remove('ri-heart-fill');
+                    heartIcon.classList.remove('text-primary');
+                    heartIcon.classList.add('ri-heart-line');
+                    heartIcon.classList.add('text-gray-700');
+                }
+            });
+        });
+    </script>
+    <style>
+        .image-gallery {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .image-gallery>div {
+            scroll-snap-align: start;
+            transition: all 0.3s ease;
+        }
+
+        .review-reaction {
+            transition: all 0.2s ease;
+        }
+
+        .review-reaction.active {
+            background-color: rgb(225, 247, 220);
+            border-color: rgba(50, 124, 30, 0.1);
+        }
+
+        .review-reaction:hover {
+            background-color: #F5F5F5;
+            transform: translateY(-2px);
+        }
+
+        .review-reaction.active+div span:first-child {
+            color: inherit;
+        }
+
+        .gallery-pagination .dot {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-pagination .dot.active {
+            transform: scale(1.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        .image-gallery>div {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .image-gallery>div.sliding-out {
+            animation: slideOut 0.5s ease forwards;
+        }
+    </style>
+    <script id="review-system-handler">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Review Reactions Handler
+            const reactionButtons = document.querySelectorAll('.review-reaction');
+            reactionButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const type = this.getAttribute('data-type');
+                    const countElement = this.querySelector('.reaction-count');
+                    let count = parseInt(countElement.textContent);
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        count--;
+                    } else {
+                        this.classList.add('active');
+                        count++;
+                    }
+                    countElement.textContent = count;
+                    // Here you would typically send the reaction to your server
+                });
+            });
+            const modal = document.getElementById('review-modal');
+            const writeReviewBtn = document.getElementById('write-review-btn');
+            const closeModalBtn = document.getElementById('close-review-modal');
+            const cancelBtn = document.getElementById('cancel-review');
+            const reviewForm = document.getElementById('review-form');
+            const photoInput = document.getElementById('photo-input');
+            const photoPreview = document.getElementById('photo-preview');
+            const textarea = reviewForm.querySelector('textarea');
+            const charCount = document.getElementById('char-count');
+            // Modal Control
+            function toggleModal(show = true) {
+                modal.style.display = show ? 'block' : 'none';
+                if (!show) {
+                    resetForm();
+                }
+            }
+            writeReviewBtn.addEventListener('click', () => toggleModal(true));
+            closeModalBtn.addEventListener('click', () => toggleModal(false));
+            cancelBtn.addEventListener('click', () => toggleModal(false));
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    toggleModal(false);
+                }
+            });
+            // Star Rating System
+            function initializeRatingSystem(container) {
+                const stars = container.querySelectorAll('i');
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        stars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.classList.remove('ri-star-line');
+                                s.classList.add('ri-star-fill', 'text-yellow-400');
+                            } else {
+                                s.classList.remove('ri-star-fill', 'text-yellow-400');
+                                s.classList.add('ri-star-line');
+                            }
+                        });
+                    });
+                    star.addEventListener('mouseover', () => {
+                        stars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.classList.add('text-yellow-400');
+                            }
+                        });
+                    });
+                    star.addEventListener('mouseout', () => {
+                        stars.forEach((s) => {
+                            if (s.classList.contains('ri-star-line')) {
+                                s.classList.remove('text-yellow-400');
+                            }
+                        });
+                    });
+                });
+            }
+            // Initialize all rating systems
+            initializeRatingSystem(document.getElementById('rating-stars'));
+            document.querySelectorAll('.rating-category').forEach(category => {
+                initializeRatingSystem(category);
+            });
+            // Character Counter
+            textarea.addEventListener('input', () => {
+                const count = textarea.value.length;
+                charCount.textContent = count;
+                if (count > 500) {
+                    textarea.value = textarea.value.slice(0, 500);
+                }
+            });
+            // Photo Upload Preview
+            photoInput.addEventListener('change', () => {
+                const files = Array.from(photoInput.files);
+                if (files.length > 3) {
+                    alert('Maximum 3 photos allowed');
+                    photoInput.value = '';
+                    return;
+                }
+                photoPreview.innerHTML = '';
+                files.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.className = 'relative w-20 h-20';
+                        div.innerHTML = `
+<img src="${e.target.result}" class="w-full h-full object-cover rounded">
+<button type="button" class="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-sm">
+<i class="ri-close-line text-gray-500"></i>
+</button>
+`;
+                        div.querySelector('button').addEventListener('click', () => div.remove());
+                        photoPreview.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+            // Form Reset
+            function resetForm() {
+                reviewForm.reset();
+                photoPreview.innerHTML = '';
+                document.querySelectorAll('.rating-category i, #rating-stars i').forEach(star => {
+                    star.className = 'ri-star-line text-2xl text-gray-300 cursor-pointer hover:text-yellow-400';
+                });
+                charCount.textContent = '0';
+            }
+            // Form Submit
+            reviewForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Here you would typically send the data to your server
+                toggleModal(false);
+                // Show success message
+                const successToast = document.createElement('div');
+                successToast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
+                successToast.textContent = 'Review submitted successfully!';
+                document.body.appendChild(successToast);
+                setTimeout(() => successToast.remove(), 3000);
+            });
+        });
+    </script>
+</body>
+
+</html>
