@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View All Items</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#ff4545',secondary:'#ffa41b'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: 'Inter', sans-serif;
+}
+.search-input:focus {
+  outline: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+<!-- Nav Bar -->
+<nav class="fixed top-0 w-full bg-white shadow-sm z-50 px-4 py-3">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/de6bb801-12de-4d54-bb5b-5ac71c5a324f" data-readdy="true" class="cursor-pointer">
+        <i class="ri-arrow-left-line ri-lg"></i>
+      </a>
+      <h1 class="text-lg font-semibold">Upcoming Holiday Events</h1>
+    </div>
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 flex items-center justify-center cursor-pointer" id="filterBtn">
+        <i class="ri-equalizer-line ri-lg"></i>
+      </div>
+      <div class="w-8 h-8 flex items-center justify-center cursor-pointer" id="viewToggleBtn">
+        <i class="ri-layout-grid-line ri-lg"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Filter Bar -->
+<div class="fixed top-[60px] w-full bg-white border-b border-gray-100 z-40 px-4 py-2">
+  <div class="flex overflow-x-auto space-x-2 no-scrollbar py-1" style="-webkit-overflow-scrolling: touch;">
+    <button class="flex items-center space-x-1.5 px-3 py-1.5 bg-primary text-white text-sm rounded-full whitespace-nowrap !rounded-button">
+      <span>All</span>
+    </button>
+    <button class="flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full whitespace-nowrap !rounded-button border border-gray-200">
+      <span>Family-Friendly</span>
+    </button>
+    <button class="flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full whitespace-nowrap !rounded-button border border-gray-200">
+      <span>Festival</span>
+    </button>
+    <button class="flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full whitespace-nowrap !rounded-button border border-gray-200">
+      <span>Cultural</span>
+    </button>
+    <button class="flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full whitespace-nowrap !rounded-button border border-gray-200">
+      <span>Historical</span>
+    </button>
+    <button class="flex items-center space-x-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full whitespace-nowrap !rounded-button border border-gray-200">
+      <span>Free Entry</span>
+    </button>
+  </div>
+  
+  <div class="flex items-center justify-between mt-2">
+    <div class="flex items-center space-x-2">
+      <button class="flex items-center space-x-1 text-sm text-gray-700 px-3 py-1.5 bg-gray-100 rounded-full !rounded-button border border-gray-200">
+        <i class="ri-sort-desc-line"></i>
+        <span>Sort</span>
+      </button>
+      <button class="flex items-center space-x-1 text-sm text-gray-700 px-3 py-1.5 bg-gray-100 rounded-full !rounded-button border border-gray-200">
+        <i class="ri-calendar-line"></i>
+        <span>Date</span>
+      </button>
+    </div>
+    <span class="text-sm text-gray-500">24 events</span>
+  </div>
+</div>
+
+<!-- Main Content -->
+<main class="mt-[130px] mb-20 px-4">
+  <div class="grid grid-cols-1 gap-4">
+    <!-- Event Card 1 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=eid%2520celebration%252C%2520traditional%2520lanterns%252C%2520festive%2520decorations%252C%2520warm%2520lighting%252C%2520cultural%2520celebration%252C%2520professional%2520event%2520photography%252C%2520joyful%2520atmosphere%252C%2520middle%2520eastern%2520style&width=375&height=200&seq=101&orientation=landscape" alt="Eid Festival" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-primary bg-opacity-90 text-white px-2 py-1 rounded text-xs">EID AL-ADHA</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>June 28 - July 2, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-green-100 text-green-600 px-2.5 py-0.5 rounded-full">Family-Friendly</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Festival</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Grand Eid Festival</h3>
+        <p class="text-sm text-gray-600 mb-3">Traditional celebrations with cultural performances, food stalls, and family activities at Katara Cultural Village.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Katara Cultural Village</span>
+          </div>
+          <span class="text-primary text-sm font-medium">Free Entry</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Book Now</button>
+      </div>
+    </div>
+
+    <!-- Event Card 2 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=qatar%2520national%2520day%2520celebration%252C%2520fireworks%2520display%252C%2520city%2520skyline%252C%2520night%2520photography%252C%2520patriotic%2520celebration%252C%2520professional%2520event%2520photography%252C%2520dramatic%2520sky&width=375&height=200&seq=102&orientation=landscape" alt="National Day" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-secondary bg-opacity-90 text-white px-2 py-1 rounded text-xs">NATIONAL DAY</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>December 18, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-green-100 text-green-600 px-2.5 py-0.5 rounded-full">Historical</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Festival</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Qatar National Day Celebration</h3>
+        <p class="text-sm text-gray-600 mb-3">Spectacular fireworks, military parade, and cultural shows at the Corniche celebrating Qatar's heritage.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Doha Corniche</span>
+          </div>
+          <span class="text-primary text-sm font-medium">Public Event</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Details</button>
+      </div>
+    </div>
+
+    <!-- Event Card 3 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=ramadan%2520iftar%2520gathering%252C%2520traditional%2520middle%2520eastern%2520food%2520spread%252C%2520lanterns%2520and%2520decorations%252C%2520warm%2520ambient%2520lighting%252C%2520professional%2520food%2520photography%252C%2520festive%2520mood&width=375&height=200&seq=103&orientation=landscape" alt="Ramadan Event" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-primary bg-opacity-90 text-white px-2 py-1 rounded text-xs">RAMADAN</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>March 11 - April 9, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-purple-100 text-purple-600 px-2.5 py-0.5 rounded-full">Cultural</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Festival</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Ramadan Nights Festival</h3>
+        <p class="text-sm text-gray-600 mb-3">Experience magical nights with traditional iftars, cultural activities, and shopping at Souq Waqif.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Souq Waqif</span>
+          </div>
+          <span class="text-primary text-sm font-medium">From QAR 150</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Reserve</button>
+      </div>
+    </div>
+
+    <!-- Event Card 4 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=cultural%2520festival%2520performance%252C%2520traditional%2520dance%2520show%252C%2520colorful%2520costumes%252C%2520stage%2520lighting%252C%2520professional%2520event%2520photography%252C%2520entertainment%2520showcase&width=375&height=200&seq=104&orientation=landscape" alt="Cultural Festival" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-secondary bg-opacity-90 text-white px-2 py-1 rounded text-xs">FESTIVAL</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>July 15-20, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-orange-100 text-orange-600 px-2.5 py-0.5 rounded-full">Cultural</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Festival</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Summer Cultural Festival</h3>
+        <p class="text-sm text-gray-600 mb-3">A week-long celebration of Qatar's rich cultural heritage with performances, workshops, and exhibitions.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Museum of Islamic Art</span>
+          </div>
+          <span class="text-primary text-sm font-medium">From QAR 75</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Book Now</button>
+      </div>
+    </div>
+
+    <!-- Event Card 5 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=dhow%2520festival%2520qatar%252C%2520traditional%2520wooden%2520boats%252C%2520maritime%2520heritage%252C%2520coastal%2520celebration%252C%2520professional%2520event%2520photography%252C%2520cultural%2520festival&width=375&height=200&seq=105&orientation=landscape" alt="Dhow Festival" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-primary bg-opacity-90 text-white px-2 py-1 rounded text-xs">MARITIME</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>November 15-20, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-green-100 text-green-600 px-2.5 py-0.5 rounded-full">Historical</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Family-Friendly</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Katara Traditional Dhow Festival</h3>
+        <p class="text-sm text-gray-600 mb-3">Celebration of Qatar's maritime heritage featuring traditional dhow boats, pearl diving demonstrations, and seafaring crafts.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Katara Beach</span>
+          </div>
+          <span class="text-primary text-sm font-medium">Free Entry</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Details</button>
+      </div>
+    </div>
+
+    <!-- Event Card 6 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=international%2520food%2520festival%252C%2520diverse%2520cuisine%2520stalls%252C%2520outdoor%2520dining%2520area%252C%2520culinary%2520event%252C%2520professional%2520food%2520photography%252C%2520vibrant%2520atmosphere&width=375&height=200&seq=106&orientation=landscape" alt="Food Festival" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-secondary bg-opacity-90 text-white px-2 py-1 rounded text-xs">CULINARY</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>October 5-10, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-red-100 text-red-600 px-2.5 py-0.5 rounded-full">Culinary</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Family-Friendly</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">International Food Festival</h3>
+        <p class="text-sm text-gray-600 mb-3">Explore global cuisines with over 50 food stalls, cooking demonstrations, and culinary workshops from renowned chefs.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Oxygen Park</span>
+          </div>
+          <span class="text-primary text-sm font-medium">From QAR 50</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Get Tickets</button>
+      </div>
+    </div>
+
+    <!-- Event Card 7 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=music%2520concert%2520outdoor%2520stage%252C%2520evening%2520performance%252C%2520crowd%2520of%2520spectators%252C%2520professional%2520concert%2520photography%252C%2520stage%2520lighting%252C%2520entertainment%2520event&width=375&height=200&seq=107&orientation=landscape" alt="Music Festival" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-primary bg-opacity-90 text-white px-2 py-1 rounded text-xs">MUSIC</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>August 25-27, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-purple-100 text-purple-600 px-2.5 py-0.5 rounded-full">Entertainment</span>
+            <span class="text-xs bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full">Festival</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Summer Music Festival</h3>
+        <p class="text-sm text-gray-600 mb-3">Three days of live music featuring international and local artists across multiple genres with food vendors and art installations.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Lusail Amphitheater</span>
+          </div>
+          <span class="text-primary text-sm font-medium">From QAR 250</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Book Tickets</button>
+      </div>
+    </div>
+
+    <!-- Event Card 8 -->
+    <div class="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100">
+      <div class="relative">
+        <img src="https://readdy.ai/api/search-image?query=art%2520exhibition%2520gallery%252C%2520modern%2520art%2520display%252C%2520museum%2520interior%252C%2520professional%2520gallery%2520photography%252C%2520cultural%2520event%252C%2520elegant%2520exhibition%2520space&width=375&height=200&seq=108&orientation=landscape" alt="Art Exhibition" class="w-full h-[200px] object-cover">
+        <div class="absolute top-3 left-3 bg-secondary bg-opacity-90 text-white px-2 py-1 rounded text-xs">ART</div>
+        <div class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm cursor-pointer">
+          <i class="ri-heart-line text-gray-600"></i>
+        </div>
+      </div>
+      <div class="p-4">
+        <div class="space-y-2 mb-3">
+          <div class="flex items-center text-xs text-gray-500">
+            <i class="ri-calendar-line mr-1"></i>
+            <span>September 10-30, 2025</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-xs bg-purple-100 text-purple-600 px-2.5 py-0.5 rounded-full">Cultural</span>
+            <span class="text-xs bg-green-100 text-green-600 px-2.5 py-0.5 rounded-full">Educational</span>
+          </div>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">Contemporary Art Exhibition</h3>
+        <p class="text-sm text-gray-600 mb-3">Showcasing works from emerging and established artists from the Middle East and beyond with guided tours and artist talks.</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i class="ri-map-pin-line text-primary"></i>
+            <span class="text-sm text-gray-600">Fire Station Art Gallery</span>
+          </div>
+          <span class="text-primary text-sm font-medium">QAR 45</span>
+        </div>
+        <button class="w-full bg-primary text-white py-2 mt-3 rounded-lg text-sm !rounded-button">Reserve Tickets</button>
+      </div>
+    </div>
+    
+    <!-- Load More Button -->
+    <button class="bg-white text-primary border border-primary py-3 rounded-lg text-sm font-medium !rounded-button mt-2">
+      Load More Events
+    </button>
+  </div>
+</main>
+
+<!-- Tab Bar -->
+<div class="fixed bottom-0 w-full bg-white border-t border-gray-100 px-2 py-2 z-50">
+  <div class="grid grid-cols-5">
+    <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/de6bb801-12de-4d54-bb5b-5ac71c5a324f" data-readdy="true" class="flex flex-col items-center justify-center cursor-pointer">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-home-line ri-lg text-gray-500"></i>
+      </div>
+      <span class="text-[10px] mt-1 text-gray-500">Home</span>
+    </a>
+    <div class="flex flex-col items-center justify-center cursor-pointer" id="searchTab">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-search-line ri-lg text-gray-500"></i>
+      </div>
+      <span class="text-[10px] mt-1 text-gray-500">Search</span>
+    </div>
+    <div class="flex flex-col items-center justify-center cursor-pointer" id="exploreTab">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-compass-3-line ri-lg text-primary"></i>
+      </div>
+      <span class="text-[10px] mt-1 text-primary">Explore</span>
+    </div>
+    <div class="flex flex-col items-center justify-center cursor-pointer" id="savedTab">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-heart-line ri-lg text-gray-500"></i>
+      </div>
+      <span class="text-[10px] mt-1 text-gray-500">Saved</span>
+    </div>
+    <div class="flex flex-col items-center justify-center cursor-pointer" id="profileTab">
+      <div class="w-6 h-6 flex items-center justify-center">
+        <i class="ri-user-line ri-lg text-gray-500"></i>
+      </div>
+      <span class="text-[10px] mt-1 text-gray-500">Profile</span>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script id="filter-interaction">
+document.addEventListener('DOMContentLoaded', function() {
+  const filterBtn = document.getElementById('filterBtn');
+  const filterButtons = document.querySelectorAll('.bg-gray-100.text-gray-700.rounded-full');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      if (this.classList.contains('bg-gray-100')) {
+        this.classList.remove('bg-gray-100', 'text-gray-700');
+        this.classList.add('bg-primary', 'text-white');
+      } else {
+        this.classList.remove('bg-primary', 'text-white');
+        this.classList.add('bg-gray-100', 'text-gray-700');
+      }
+    });
+  });
+  
+  filterBtn.addEventListener('click', function() {
+    const filterModal = document.createElement('div');
+    filterModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    filterModal.innerHTML = `
+      <div class="bg-white w-[90%] rounded-lg p-4 max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold">Filter Events</h3>
+          <button class="text-gray-500" id="closeFilterModal">
+            <i class="ri-close-line ri-lg"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-medium mb-2">Event Type</h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-left">Festival</button>
+              <button class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-left">Cultural</button>
+              <button class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-left">Historical</button>
+              <button class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-left">Music</button>
+              <button class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-left">Art</button>
+              <button class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-left">Culinary</button>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-medium mb-2">Date Range</h4>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-500 mb-1 block">From</label>
+                <input type="date" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="text-xs text-gray-500 mb-1 block">To</label>
+                <input type="date" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-medium mb-2">Price Range</h4>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-gray-500 mb-1 block">Min (QAR)</label>
+                <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="text-xs text-gray-500 mb-1 block">Max (QAR)</label>
+                <input type="number" placeholder="500" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="font-medium mb-2">Features</h4>
+            <div class="space-y-2">
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" class="w-4 h-4 text-primary">
+                <span class="text-sm">Family-Friendly</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" class="w-4 h-4 text-primary">
+                <span class="text-sm">Free Entry</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" class="w-4 h-4 text-primary">
+                <span class="text-sm">Wheelchair Accessible</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" class="w-4 h-4 text-primary">
+                <span class="text-sm">Food Available</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex space-x-3 mt-6">
+          <button class="flex-1 py-2 border border-gray-300 rounded-lg text-sm !rounded-button">Reset</button>
+          <button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm !rounded-button">Apply Filters</button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(filterModal);
+    
+    document.getElementById('closeFilterModal').addEventListener('click', function() {
+      document.body.removeChild(filterModal);
+    });
+  });
+});
+</script>
+
+<script id="view-toggle">
+document.addEventListener('DOMContentLoaded', function() {
+  const viewToggleBtn = document.getElementById('viewToggleBtn');
+  let isGridView = true;
+  
+  viewToggleBtn.addEventListener('click', function() {
+    isGridView = !isGridView;
+    
+    if (isGridView) {
+      viewToggleBtn.innerHTML = '<i class="ri-layout-grid-line ri-lg"></i>';
+      document.querySelector('main > div').className = 'grid grid-cols-1 gap-4';
+    } else {
+      viewToggleBtn.innerHTML = '<i class="ri-list-check-line ri-lg"></i>';
+      document.querySelector('main > div').className = 'flex flex-col gap-4';
+      
+      // Update card layout for list view
+      const cards = document.querySelectorAll('.bg-white.rounded-lg');
+      cards.forEach(card => {
+        const imgContainer = card.querySelector('.relative');
+        const contentContainer = card.querySelector('.p-4');
+        
+        if (isGridView) {
+          card.classList.remove('flex');
+          imgContainer.classList.remove('w-1/3');
+          contentContainer.classList.remove('w-2/3');
+        } else {
+          card.classList.add('flex');
+          imgContainer.classList.add('w-1/3');
+          contentContainer.classList.add('w-2/3');
+        }
+      });
+    }
+  });
+});
+</script>
+
+<script id="heart-interaction">
+document.addEventListener('DOMContentLoaded', function() {
+  const heartButtons = document.querySelectorAll('.absolute.top-3.right-3');
+  
+  heartButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const icon = this.querySelector('i');
+      
+      if (icon.classList.contains('ri-heart-line')) {
+        icon.classList.replace('ri-heart-line', 'ri-heart-fill');
+        icon.classList.add('text-primary');
+        
+        // Show saved confirmation
+        const savedToast = document.createElement('div');
+        savedToast.className = 'fixed bottom-20 left-0 right-0 flex justify-center z-50';
+        savedToast.innerHTML = `
+          <div class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm flex items-center space-x-2">
+            <i class="ri-check-line"></i>
+            <span>Added to saved events</span>
+          </div>
+        `;
+        
+        document.body.appendChild(savedToast);
+        
+        setTimeout(() => {
+          savedToast.remove();
+        }, 2000);
+      } else {
+        icon.classList.replace('ri-heart-fill', 'ri-heart-line');
+        icon.classList.remove('text-primary');
+        
+        // Show removed confirmation
+        const removedToast = document.createElement('div');
+        removedToast.className = 'fixed bottom-20 left-0 right-0 flex justify-center z-50';
+        removedToast.innerHTML = `
+          <div class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm flex items-center space-x-2">
+            <i class="ri-close-line"></i>
+            <span>Removed from saved events</span>
+          </div>
+        `;
+        
+        document.body.appendChild(removedToast);
+        
+        setTimeout(() => {
+          removedToast.remove();
+        }, 2000);
+      }
+    });
+  });
+});
+</script>
+
+<script id="card-interaction">
+document.addEventListener('DOMContentLoaded', function() {
+  const eventCards = document.querySelectorAll('.bg-white.rounded-lg.overflow-hidden');
+  
+  eventCards.forEach(card => {
+    card.addEventListener('click', function() {
+      const title = this.querySelector('h3').textContent;
+      const date = this.querySelector('.text-gray-500 span').textContent;
+      const location = this.querySelector('.text-gray-600').textContent;
+      const price = this.querySelector('.text-primary.text-sm').textContent;
+      
+      const detailModal = document.createElement('div');
+      detailModal.className = 'fixed inset-0 bg-white z-50';
+      detailModal.innerHTML = `
+        <div class="h-full flex flex-col">
+          <div class="relative">
+            <img src="${this.querySelector('img').src}" class="w-full h-[250px] object-cover">
+            <button class="absolute top-4 left-4 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm" id="closeDetailModal">
+              <i class="ri-arrow-left-line"></i>
+            </button>
+            <button class="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm">
+              <i class="ri-share-line"></i>
+            </button>
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h2 class="text-white text-xl font-semibold">${title}</h2>
+              <div class="flex items-center text-white/80 text-sm mt-1">
+                <i class="ri-calendar-line mr-1"></i>
+                <span>${date}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex-1 overflow-y-auto p-4">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-2">
+                <i class="ri-map-pin-line text-primary"></i>
+                <span class="text-sm">${location}</span>
+              </div>
+              <span class="text-primary font-medium">${price}</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              ${Array.from(this.querySelectorAll('.rounded-full')).map(tag => 
+                `<span class="${tag.className}">${tag.textContent}</span>`
+              ).join('')}
+            </div>
+            
+            <div class="space-y-4">
+              <div>
+                <h3 class="font-medium mb-2">About This Event</h3>
+                <p class="text-sm text-gray-600">${this.querySelector('p').textContent}</p>
+              </div>
+              
+              <div>
+                <h3 class="font-medium mb-2">Event Details</h3>
+                <div class="space-y-2">
+                  <div class="flex items-start space-x-3">
+                    <div class="w-6 h-6 flex items-center justify-center mt-0.5">
+                      <i class="ri-calendar-line text-primary"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-medium">Date & Time</h4>
+                      <p class="text-sm text-gray-600">${date}</p>
+                      <p class="text-sm text-gray-600">10:00 AM - 10:00 PM</p>
+                    </div>
+                  </div>
+                  
+                  <div class="flex items-start space-x-3">
+                    <div class="w-6 h-6 flex items-center justify-center mt-0.5">
+                      <i class="ri-map-pin-line text-primary"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-medium">Location</h4>
+                      <p class="text-sm text-gray-600">${location}</p>
+                      <p class="text-sm text-gray-600">Doha, Qatar</p>
+                    </div>
+                  </div>
+                  
+                  <div class="flex items-start space-x-3">
+                    <div class="w-6 h-6 flex items-center justify-center mt-0.5">
+                      <i class="ri-ticket-line text-primary"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-medium">Ticket Information</h4>
+                      <p class="text-sm text-gray-600">${price}</p>
+                      <p class="text-sm text-gray-600">Children under 12: Free entry</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="font-medium mb-2">Organizer</h3>
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                    <i class="ri-building-line text-gray-500"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-medium">Qatar Tourism Authority</h4>
+                    <p class="text-xs text-gray-500">Official Event Organizer</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="p-4 border-t border-gray-100">
+            <button class="w-full bg-primary text-white py-3 rounded-lg font-medium !rounded-button">Book Now</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(detailModal);
+      
+      document.getElementById('closeDetailModal').addEventListener('click', function() {
+        document.body.removeChild(detailModal);
+      });
+    });
+  });
+});
+</script>
+
+<script id="tab-bar-interaction">
+document.addEventListener('DOMContentLoaded', function() {
+  const searchTab = document.getElementById('searchTab');
+  const savedTab = document.getElementById('savedTab');
+  const profileTab = document.getElementById('profileTab');
+  
+  searchTab.addEventListener('click', function() {
+    const searchModal = document.createElement('div');
+    searchModal.className = 'fixed inset-0 bg-white z-50';
+    searchModal.innerHTML = `
+      <div class="h-full flex flex-col">
+        <div class="px-4 py-3 flex items-center justify-between border-b border-gray-100">
+          <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/de6bb801-12de-4d54-bb5b-5ac71c5a324f" data-readdy="true" class="text-gray-500">
+            <i class="ri-arrow-left-line ri-lg"></i>
+          </a>
+          <div class="flex-1 mx-4">
+            <div class="relative">
+              <input type="text" placeholder="Search events, activities..." class="w-full px-4 py-2 bg-gray-100 rounded-full text-sm">
+              <i class="ri-search-line absolute right-3 top-2.5 text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+        <div class="flex-1 p-4">
+          <h3 class="text-sm font-medium mb-3">Popular Searches</h3>
+          <div class="space-y-2">
+            <button class="w-full text-left px-4 py-2 hover:bg-gray-50 rounded-lg flex items-center space-x-2">
+              <i class="ri-history-line text-gray-400"></i>
+              <span class="text-sm">Eid Festival</span>
+            </button>
+            <button class="w-full text-left px-4 py-2 hover:bg-gray-50 rounded-lg flex items-center space-x-2">
+              <i class="ri-history-line text-gray-400"></i>
+              <span class="text-sm">Cultural Events</span>
+            </button>
+            <button class="w-full text-left px-4 py-2 hover:bg-gray-50 rounded-lg flex items-center space-x-2">
+              <i class="ri-history-line text-gray-400"></i>
+              <span class="text-sm">Free Activities</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(searchModal);
+  });
+  
+  savedTab.addEventListener('click', function() {
+    const savedModal = document.createElement('div');
+    savedModal.className = 'fixed inset-0 bg-white z-50';
+    savedModal.innerHTML = `
+      <div class="h-full flex flex-col">
+        <div class="px-4 py-3 flex items-center justify-between border-b border-gray-100">
+          <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/de6bb801-12de-4d54-bb5b-5ac71c5a324f" data-readdy="true" class="text-gray-500">
+            <i class="ri-arrow-left-line ri-lg"></i>
+          </a>
+          <h3 class="text-lg font-semibold">Saved Events</h3>
+          <div class="w-8"></div>
+        </div>
+        <div class="flex-1 p-4">
+          <div class="text-center mt-12">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="ri-heart-line ri-2x text-gray-400"></i>
+            </div>
+            <h4 class="text-lg font-medium mb-2">No saved events yet</h4>
+            <p class="text-sm text-gray-500 mb-4">Start exploring and save your favorite events</p>
+            <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/de6bb801-12de-4d54-bb5b-5ac71c5a324f" data-readdy="true" class="bg-primary text-white px-6 py-2 rounded-lg text-sm !rounded-button inline-block">Start Exploring</a>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(savedModal);
+  });
+  
+  profileTab.addEventListener('click', function() {
+    const profileModal = document.createElement('div');
+    profileModal.className = 'fixed inset-0 bg-white z-50';
+    profileModal.innerHTML = `
+      <div class="h-full flex flex-col">
+        <div class="px-4 py-3 flex items-center justify-between border-b border-gray-100">
+          <a href="https://readdy.ai/home/45f73d62-0c75-4759-81d0-bedab26ecbc1/de6bb801-12de-4d54-bb5b-5ac71c5a324f" data-readdy="true" class="text-gray-500">
+            <i class="ri-arrow-left-line ri-lg"></i>
+          </a>
+          <h3 class="text-lg font-semibold">Profile</h3>
+          <div class="w-8"></div>
+        </div>
+        <div class="flex-1 p-4">
+          <div class="text-center mt-8">
+            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="ri-user-3-line ri-2x text-gray-400"></i>
+            </div>
+            <h4 class="text-lg font-medium mb-4">Welcome to Mascott</h4>
+            <button class="bg-primary text-white px-8 py-2 rounded-lg text-sm mb-3 !rounded-button">Sign In</button>
+            <p class="text-sm text-gray-500">or</p>
+            <button class="mt-3 text-primary text-sm font-medium">Create an Account</button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(profileModal);
+  });
+});
+</script>
+</body>
+</html>

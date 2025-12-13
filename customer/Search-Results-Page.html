@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Results</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#10B981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+background-color: #FAFAFA;
+}
+.search-results-container {
+padding-top: 96px;
+padding-bottom: 64px;
+}
+.filter-tag {
+white-space: nowrap;
+}
+.rating-stars i {
+color: #FFB800;
+}
+.result-card {
+transition: transform 0.2s ease;
+}
+.result-card:active {
+transform: scale(0.98);
+}
+.map-container {
+background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png');
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
+min-height: 100%;
+min-width: 100%;
+cursor: grab;
+}
+.map-container:active {
+cursor: grabbing;
+}
+.result-tag {
+white-space: nowrap;
+}
+</style>
+</head>
+<body class="bg-white">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+<div class="flex flex-col px-4 py-3">
+<div class="flex items-center justify-between mb-3">
+<button class="w-8 h-8 flex items-center justify-center text-gray-700 cursor-pointer">
+<i class="ri-arrow-left-line ri-lg"></i>
+</button>
+<div class="flex items-center gap-2">
+<div class="relative">
+<input type="text" id="locationInput" value="Doha, Qatar" class="w-[120px] h-8 pl-9 pr-3 bg-gray-100 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-primary/20 border-none" />
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-500">
+<i class="ri-map-pin-line"></i>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center text-gray-700 cursor-pointer bg-gray-100 rounded-full">
+<i class="ri-filter-3-line"></i>
+</button>
+</div>
+</div>
+<div class="relative">
+<div class="flex gap-2">
+<div class="flex-1 relative">
+<input type="text" id="searchInput" value="Hiking Trails" placeholder="Search events, activities..." class="w-full h-11 pl-10 pr-10 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 border-none" />
+<div class="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-500">
+<i class="ri-search-line"></i>
+</div>
+<button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="flex items-center bg-gray-100 p-0.5 rounded-full">
+<button id="listViewBtn" class="flex items-center justify-center w-8 h-8 rounded-full bg-white text-gray-700 shadow-sm transition-all duration-200 hover:bg-white/90">
+<i class="ri-layout-grid-line"></i>
+</button>
+<button id="mapViewBtn" class="flex items-center justify-center w-8 h-8 rounded-full text-gray-600 transition-all duration-200 hover:bg-white/90">
+<i class="ri-map-2-line"></i>
+</button>
+</div>
+</div>
+<button id="nearMeBtn" class="absolute right-[140px] top-1/2 transform -translate-y-1/2 text-xs text-primary font-medium whitespace-nowrap hover:text-primary/80">
+Near Me
+</button>
+</div>
+</div>
+</header>
+<!-- Active Filters -->
+<div class="sticky top-[96px] z-40 bg-white border-t border-b border-gray-100">
+<div class="px-4 py-2">
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-map-pin-line text-primary"></i>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-base font-medium text-gray-800">234</span>
+<span class="text-sm text-gray-600">results</span>
+</div>
+<p class="text-xs text-gray-500">Doha, Qatar • 5 km radius</p>
+</div>
+</div>
+<button id="sortDropdownBtn" class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-equalizer-line text-gray-700"></i>
+<span class="text-sm text-gray-700">Highest Rated</span>
+<i class="ri-arrow-down-s-line text-gray-500"></i>
+</button>
+</div>
+<div class="space-y-3">
+<!-- Quick Filters -->
+<div class="flex overflow-x-auto gap-2 no-scrollbar pb-1">
+<button class="filter-tag min-w-fit bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-primary/15 transition-colors">
+<i class="ri-equalizer-line mr-1"></i>
+<span>All Filters</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-time-line mr-1 text-primary"></i>
+<span>Today</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-calendar-line mr-1 text-primary"></i>
+<span>This Weekend</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-time-line mr-1 text-green-500"></i>
+<span>Open Now</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-ticket-line mr-1 text-primary"></i>
+<span>Free Entry</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-calendar-check-line mr-1 text-primary"></i>
+<span>Book Online</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-sun-line mr-1 text-primary"></i>
+<span>Outdoor</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-parent-line mr-1 text-primary"></i>
+<span>Family-Friendly</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-wheelchair-line mr-1 text-primary"></i>
+<span>Wheelchair Accessible</span>
+</button>
+<button class="filter-tag min-w-fit bg-white border border-gray-200 px-3 py-1.5 rounded-full text-xs font-medium flex items-center shadow-sm hover:bg-gray-50 transition-colors">
+<i class="ri-footprint-line mr-1 text-primary"></i>
+<span>Pets Allowed</span>
+</button>
+</div>
+<!-- Active Filters -->
+<div class="flex overflow-x-auto gap-2 no-scrollbar pb-1">
+<div class="filter-tag min-w-fit bg-primary/5 text-primary px-3 py-1.5 rounded-full text-xs font-medium flex items-center group hover:bg-primary/10 transition-colors">
+<span>Live Music</span>
+<i class="ri-close-line ml-1.5 group-hover:text-primary/80"></i>
+</div>
+<div class="filter-tag min-w-fit bg-primary/5 text-primary px-3 py-1.5 rounded-full text-xs font-medium flex items-center group hover:bg-primary/10 transition-colors">
+<span>This Weekend</span>
+<i class="ri-close-line ml-1.5 group-hover:text-primary/80"></i>
+</div>
+<div class="filter-tag min-w-fit bg-primary/5 text-primary px-3 py-1.5 rounded-full text-xs font-medium flex items-center group hover:bg-primary/10 transition-colors">
+<span>Under $50</span>
+<i class="ri-close-line ml-1.5 group-hover:text-primary/80"></i>
+</div>
+<div class="filter-tag min-w-fit bg-primary/5 text-primary px-3 py-1.5 rounded-full text-xs font-medium flex items-center group hover:bg-primary/10 transition-colors">
+<span>Manhattan</span>
+<i class="ri-close-line ml-1.5 group-hover:text-primary/80"></i>
+</div>
+<div class="filter-tag min-w-fit bg-primary/5 text-primary px-3 py-1.5 rounded-full text-xs font-medium flex items-center group hover:bg-primary/10 transition-colors">
+<span>4+ Stars</span>
+<i class="ri-close-line ml-1.5 group-hover:text-primary/80"></i>
+</div>
+<button class="min-w-fit text-xs text-gray-500 font-medium hover:text-primary transition-colors">Clear All</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sort Dropdown Menu -->
+<div id="sortDropdown" class="hidden absolute right-4 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-primary">
+<i class="ri-thumb-up-line"></i>
+<span>Recommended</span>
+<i class="ri-check-line ml-auto"></i>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-map-pin-line"></i>
+<span>Nearest to Me</span>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-star-line"></i>
+<span>Highest Rated</span>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-message-3-line"></i>
+<span>Most Reviewed</span>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-fire-line"></i>
+<span>Most Popular</span>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-arrow-up-line"></i>
+<span>Price: Low to High</span>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-arrow-down-line"></i>
+<span>Price: High to Low</span>
+</button>
+<button class="w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+<i class="ri-time-line"></i>
+<span>Date: Soonest First</span>
+</button>
+</div>
+</div>
+</header>
+<!-- List View -->
+<div id="listView" class="search-results-container px-4">
+<!-- Result Card 1 -->
+<div class="result-card bg-white rounded-xl shadow-sm mb-4 overflow-hidden cursor-pointer hover:shadow-md transition-shadow duration-200">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Scenic%20hiking%20trail%20in%20Central%20Park%20during%20summer%2C%20people%20enjoying%20outdoor%20activities%2C%20lush%20greenery%2C%20natural%20sunlight%20filtering%20through%20trees%2C%20professional%20photography%2C%20vibrant%20colors%2C%20peaceful%20setting%2C%20high-quality%20image%2C%20detailed%20scene%2C%20nature%20landscape%2C%20dramatic%20lighting%2C%20high%20resolution&width=375&height=240&seq=1&orientation=landscape" alt="Central Park Nature Walk" class="w-full h-60 object-cover object-center">
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 shadow-sm">
+Today, 9 AM
+</div>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent h-24"></div>
+</div>
+<div class="p-4">
+<div class="relative">
+<div class="flex flex-col gap-4">
+<div>
+<h3 class="text-lg font-semibold text-gray-800 leading-tight mb-3">Central Park Nature Walk</h3>
+<div class="flex items-center gap-2 mb-1">
+<div class="rating-stars flex text-[#FFB800]">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">4.7</span>
+<span class="text-sm text-gray-500">(543 reviews)</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center hover:bg-gray-100">
+<i class="ri-phone-line text-gray-600"></i>
+</button>
+<button class="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center hover:bg-gray-100">
+<i class="ri-global-line text-gray-600"></i>
+</button>
+<button class="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center hover:bg-gray-100">
+<i class="ri-map-pin-line text-gray-600"></i>
+</button>
+<button class="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center hover:bg-gray-100">
+<i class="ri-heart-line text-gray-600"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-map-pin-line text-gray-500"></i>
+</div>
+<p class="text-sm text-gray-500">E 72nd St, Central Park • <span class="text-primary">0.8 mi away</span></p>
+</div>
+<div class="flex items-center gap-1 text-sm">
+<span class="text-gray-700">$</span>
+<span class="text-gray-300">$$$</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-time-line text-green-600"></i>
+</div>
+<p class="text-sm text-green-600">Open now • 9:00 AM - 6:00 PM</p>
+</div>
+<div class="mt-3 p-3 bg-gray-50 rounded-lg">
+<p class="text-sm text-gray-600 italic">"Amazing experience! Our guide was incredibly knowledgeable about local wildlife. Perfect morning activity."</p>
+<p class="text-xs text-gray-500 mt-1">- Sarah M.</p>
+</div>
+<p class="text-sm text-gray-600 mt-3 line-clamp-2">Join our expert naturalist for a guided walk through Central Park's hidden trails, discovering local wildlife and seasonal flora.</p>
+<div class="flex flex-wrap mt-3 gap-1.5">
+<span class="result-tag bg-primary/10 text-primary text-xs px-2.5 py-1 rounded-full font-medium flex items-center">
+<i class="ri-calendar-check-line mr-1"></i>Book Now
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-sun-line mr-1"></i>Outdoor
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-group-line mr-1"></i>Guided Tour
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-parent-line mr-1"></i>Family-Friendly
+</span>
+</div>
+<div class="flex justify-between items-center mt-4 pt-3 border-t border-gray-100">
+<div>
+<span class="text-lg font-semibold text-gray-900">$25</span>
+<span class="text-sm text-gray-500 ml-1">per person</span>
+</div>
+<button class="bg-primary text-white px-5 py-2 text-sm font-medium !rounded-button hover:bg-primary/90 transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Result Card 2 -->
+<div class="result-card bg-white rounded-lg shadow-sm mb-4 overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Scenic%20mountain%20biking%20trail%20in%20a%20park%2C%20cyclists%20riding%20through%20beautiful%20nature%20paths%2C%20action%20photography%2C%20sunny%20day%2C%20professional%20outdoor%20sports%20photography%2C%20high-quality%20image%2C%20detailed%20scene%2C%20adventure%20sports&width=375&height=200&seq=2&orientation=landscape" alt="Mountain Biking Adventure" class="w-full h-48 object-cover object-top">
+<div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+Tomorrow, 9 AM
+</div>
+</div>
+<div class="p-4">
+<div class="flex flex-col gap-2">
+<h3 class="text-lg font-semibold text-gray-800">Mountain Biking Adventure</h3>
+<div class="flex items-center gap-2">
+<div class="rating-stars flex">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">4.8</span>
+<span class="text-sm text-gray-500">(328 reviews)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-map-pin-line text-gray-500"></i>
+</div>
+<p class="text-sm text-gray-500">196-10 Union Tpke, Queens • <span class="text-primary">5.2 mi away</span></p>
+</div>
+<div class="flex items-center gap-1 text-sm">
+<span class="text-gray-700">$$</span>
+<span class="text-gray-300">$$</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-time-line text-yellow-600"></i>
+</div>
+<p class="text-sm text-yellow-600">Closes soon • Open until 7:00 PM</p>
+</div>
+<div class="mt-3 p-3 bg-gray-50 rounded-lg">
+<p class="text-sm text-gray-600 italic">"Great trails for both beginners and advanced riders. The equipment is well-maintained and staff is super helpful."</p>
+<p class="text-xs text-gray-500 mt-1">- Michael R.</p>
+</div>
+<p class="text-sm text-gray-600 mt-3 line-clamp-2">Experience thrilling mountain biking trails suitable for all skill levels. Equipment rental and guided tours available.</p>
+<div class="flex flex-wrap mt-3 gap-1.5">
+<span class="result-tag bg-primary/10 text-primary text-xs px-2.5 py-1 rounded-full font-medium flex items-center">
+<i class="ri-calendar-check-line mr-1"></i>Book Now
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-bike-line mr-1"></i>Equipment Rental
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-group-line mr-1"></i>Guided Tour
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-shield-check-line mr-1"></i>Beginner Friendly
+</span>
+</div>
+<div class="flex justify-between items-center mt-3">
+<span class="font-medium text-gray-900">$45 per person</span>
+<button class="bg-primary text-white px-4 py-1.5 text-sm font-medium !rounded-button">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Result Card 3 -->
+<div class="result-card bg-white rounded-lg shadow-sm mb-4 overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Rock%20climbing%20wall%20with%20climbers%2C%20indoor%20climbing%20facility%2C%20professional%20sports%20photography%2C%20safety%20equipment%2C%20dynamic%20poses%2C%20high-quality%20image%2C%20detailed%20scene%2C%20adventure%20sports%2C%20bright%20lighting&width=375&height=200&seq=3&orientation=landscape" alt="Indoor Rock Climbing" class="w-full h-48 object-cover object-top">
+<div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+Saturday, 10 AM
+</div>
+</div>
+<div class="p-4">
+<div class="flex flex-col gap-2">
+<h3 class="text-lg font-semibold text-gray-800">Indoor Rock Climbing</h3>
+<div class="flex items-center gap-2">
+<div class="rating-stars flex">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">4.6</span>
+<span class="text-sm text-gray-500">(892 reviews)</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-map-pin-line text-gray-500"></i>
+</div>
+<p class="text-sm text-gray-500">575 Degraw St, Brooklyn • <span class="text-primary">3.1 mi away</span></p>
+</div>
+<div class="flex items-center gap-1 text-sm">
+<span class="text-gray-700">$$$</span>
+<span class="text-gray-300">$</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-time-line text-red-600"></i>
+</div>
+<p class="text-sm text-red-600">Closed • Opens tomorrow at 6:00 AM</p>
+</div>
+<div class="mt-3 p-3 bg-gray-50 rounded-lg">
+<p class="text-sm text-gray-600 italic">"The variety of routes is impressive. Perfect for date night or serious training. Instructors are top-notch!"</p>
+<p class="text-xs text-gray-500 mt-1">- Alex K.</p>
+</div>
+<p class="text-sm text-gray-600 mt-3 line-clamp-2">Challenge yourself on world-class climbing walls with routes for beginners to experts. Includes gear rental and basic instruction.</p>
+<div class="flex flex-wrap mt-3 gap-1.5">
+<span class="result-tag bg-primary/10 text-primary text-xs px-2.5 py-1 rounded-full font-medium flex items-center">
+<i class="ri-calendar-check-line mr-1"></i>Book Now
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-tools-line mr-1"></i>Equipment Included
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-group-line mr-1"></i>Instruction
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-shield-check-line mr-1"></i>All Levels
+</span>
+</div>
+<div class="flex justify-between items-center mt-3">
+<span class="font-medium text-gray-900">$35 per person</span>
+<button class="bg-primary text-white px-4 py-1.5 text-sm font-medium !rounded-button">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Result Card 4 -->
+<div class="result-card bg-white rounded-lg shadow-sm mb-4 overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Art%20gallery%20exhibition%20with%20modern%20artwork%20displayed%20on%20white%20walls%2C%20people%20viewing%20art%2C%20gallery%20lighting%2C%20sophisticated%20atmosphere%2C%20professional%20photography%2C%20high-quality%20image%2C%20detailed%20scene%2C%20cultural%20event%2C%20elegant%20setting&width=375&height=200&seq=4&orientation=landscape" alt="MoMA Special Exhibition" class="w-full h-48 object-cover object-top">
+<div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+All Weekend
+</div>
+</div>
+<div class="p-4">
+<div class="flex flex-col gap-2">
+<h3 class="text-lg font-semibold text-gray-800">MoMA Special Exhibition</h3>
+<div class="flex items-center gap-2">
+<div class="rating-stars flex">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">4.6</span>
+<span class="text-sm text-gray-500">(1,234 reviews)</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 mt-1">Museum of Modern Art, Midtown</p>
+<p class="text-sm text-gray-600 mt-2">Explore contemporary masterpieces in this limited-time exhibition featuring works from renowned international artists.</p>
+<div class="flex flex-wrap mt-3 gap-1.5">
+<span class="result-tag bg-primary/10 text-primary text-xs px-2.5 py-1 rounded-full font-medium flex items-center">
+<i class="ri-ticket-line mr-1"></i>Ticketed Event
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-wifi-line mr-1"></i>Free Wi-Fi
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-wheelchair-line mr-1"></i>Accessible
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-parent-line mr-1"></i>Family-Friendly
+</span>
+</div>
+<div class="flex justify-between items-center mt-3">
+<span class="font-medium text-gray-900">$25 per person</span>
+<button class="bg-primary text-white px-4 py-1.5 text-sm font-medium !rounded-button">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Result Card 5 -->
+<div class="result-card bg-white rounded-lg shadow-sm mb-4 overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Kayaking%20adventure%20on%20calm%20river%20waters%2C%20people%20paddling%20kayaks%2C%20scenic%20natural%20surroundings%2C%20beautiful%20summer%20day%2C%20action%20sports%20photography%2C%20high-quality%20image%2C%20detailed%20scene%2C%20outdoor%20recreation&width=375&height=200&seq=5&orientation=landscape" alt="Kayaking Adventure" class="w-full h-48 object-cover object-top">
+<div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+Sunday, 9 AM - 5 PM
+</div>
+</div>
+<div class="p-4">
+<div class="flex flex-col gap-2">
+<h3 class="text-lg font-semibold text-gray-800">Kayaking Adventure</h3>
+<div class="flex items-center gap-2">
+<div class="rating-stars flex">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">4.3</span>
+<span class="text-sm text-gray-500">(567 reviews)</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 mt-1">Hudson River Park, Manhattan</p>
+<p class="text-sm text-gray-600 mt-2">Experience the thrill of kayaking on the Hudson River. Perfect for beginners with equipment and instruction included.</p>
+<div class="flex flex-wrap mt-3 gap-1.5">
+<span class="result-tag bg-primary/10 text-primary text-xs px-2.5 py-1 rounded-full font-medium flex items-center">
+<i class="ri-calendar-check-line mr-1"></i>Book Now
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-tools-line mr-1"></i>Equipment Included
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-group-line mr-1"></i>Instruction
+</span>
+<span class="result-tag bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded-full flex items-center">
+<i class="ri-shield-check-line mr-1"></i>Beginner Friendly
+</span>
+</div>
+<div class="flex justify-between items-center mt-3">
+<span class="font-medium text-gray-900">$40 per person</span>
+<button class="bg-primary text-white px-4 py-1.5 text-sm font-medium !rounded-button">Book Now</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Map View (Hidden by default) -->
+<div id="mapView" class="search-results-container hidden">
+<div class="map-container h-full fixed inset-0 z-40 overflow-auto touch-pan-x touch-pan-y">
+<!-- Map Search Bar -->
+<div class="absolute top-20 left-4 right-4">
+<div class="flex gap-2">
+<div class="flex-1 relative">
+<input type="text" placeholder="Search events, activities..." class="w-full h-10 pl-9 pr-3 bg-white/90 backdrop-blur-sm rounded-full text-sm shadow-lg border-none focus:outline-none focus:ring-2 focus:ring-primary/20" />
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-500">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center bg-white/90 backdrop-blur-sm rounded-full shadow-lg text-gray-700">
+<i class="ri-filter-3-line"></i>
+</button>
+</div>
+</div>
+<!-- Map pins -->
+<div class="absolute top-1/4 left-1/3 cursor-pointer group" data-listing-id="1">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+<i class="ri-map-pin-fill"></i>
+</div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="p-3">
+<div class="flex gap-3">
+<img src="https://readdy.ai/api/search-image?query=Scenic%20hiking%20trail%20in%20Central%20Park%20during%20summer%2C%20people%20enjoying%20outdoor%20activities%2C%20lush%20greenery%2C%20natural%20sunlight%20filtering%20through%20trees%2C%20professional%20photography&width=80&height=80&seq=9&orientation=squarish" alt="Central Park Nature Walk" class="w-20 h-20 rounded-lg object-cover">
+<div class="flex-1">
+<h3 class="text-sm font-semibold text-gray-800 mb-1">Central Park Nature Walk</h3>
+<div class="flex items-center gap-1 mb-1">
+<div class="rating-stars flex text-[#FFB800] text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-xs text-gray-600">4.7</span>
+</div>
+<p class="text-xs text-gray-500 flex items-center gap-1">
+<i class="ri-map-pin-line"></i>
+<span>0.8 mi away</span>
+</p>
+<p class="text-xs font-medium text-gray-900 mt-1">$25 per person</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute top-1/3 right-1/4 cursor-pointer group" data-listing-id="2">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+<i class="ri-map-pin-fill"></i>
+</div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="p-3">
+<div class="flex gap-3">
+<img src="https://readdy.ai/api/search-image?query=Scenic%20mountain%20biking%20trail%20in%20a%20park%2C%20cyclists%20riding%20through%20beautiful%20nature%20paths%2C%20action%20photography%2C%20sunny%20day%2C%20professional%20outdoor%20sports%20photography&width=80&height=80&seq=10&orientation=squarish" alt="Mountain Biking Adventure" class="w-20 h-20 rounded-lg object-cover">
+<div class="flex-1">
+<h3 class="text-sm font-semibold text-gray-800 mb-1">Mountain Biking Adventure</h3>
+<div class="flex items-center gap-1 mb-1">
+<div class="rating-stars flex text-[#FFB800] text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-xs text-gray-600">4.8</span>
+</div>
+<p class="text-xs text-gray-500 flex items-center gap-1">
+<i class="ri-map-pin-line"></i>
+<span>5.2 mi away</span>
+</p>
+<p class="text-xs font-medium text-gray-900 mt-1">$45 per person</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/2 cursor-pointer group" data-listing-id="3">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+<i class="ri-map-pin-fill"></i>
+</div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="p-3">
+<div class="flex gap-3">
+<img src="https://readdy.ai/api/search-image?query=Rock%20climbing%20wall%20with%20climbers%2C%20indoor%20climbing%20facility%2C%20professional%20sports%20photography%2C%20safety%20equipment%2C%20dynamic%20poses&width=80&height=80&seq=11&orientation=squarish" alt="Indoor Rock Climbing" class="w-20 h-20 rounded-lg object-cover">
+<div class="flex-1">
+<h3 class="text-sm font-semibold text-gray-800 mb-1">Indoor Rock Climbing</h3>
+<div class="flex items-center gap-1 mb-1">
+<div class="rating-stars flex text-[#FFB800] text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-xs text-gray-600">4.6</span>
+</div>
+<p class="text-xs text-gray-500 flex items-center gap-1">
+<i class="ri-map-pin-line"></i>
+<span>3.1 mi away</span>
+</p>
+<p class="text-xs font-medium text-gray-900 mt-1">$35 per person</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-1/4 right-1/3 cursor-pointer group" data-listing-id="4">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+<i class="ri-map-pin-fill"></i>
+</div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="p-3">
+<div class="flex gap-3">
+<img src="https://readdy.ai/api/search-image?query=Art%20gallery%20exhibition%20with%20modern%20artwork%20displayed%20on%20white%20walls%2C%20people%20viewing%20art%2C%20gallery%20lighting%2C%20sophisticated%20atmosphere&width=80&height=80&seq=12&orientation=squarish" alt="MoMA Special Exhibition" class="w-20 h-20 rounded-lg object-cover">
+<div class="flex-1">
+<h3 class="text-sm font-semibold text-gray-800 mb-1">MoMA Special Exhibition</h3>
+<div class="flex items-center gap-1 mb-1">
+<div class="rating-stars flex text-[#FFB800] text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-xs text-gray-600">4.6</span>
+</div>
+<p class="text-xs text-gray-500 flex items-center gap-1">
+<i class="ri-map-pin-line"></i>
+<span>1.5 mi away</span>
+</p>
+<p class="text-xs font-medium text-gray-900 mt-1">$25 per person</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute top-1/2 left-1/4 cursor-pointer group" data-listing-id="5">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+<i class="ri-map-pin-fill"></i>
+</div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="p-3">
+<div class="flex gap-3">
+<img src="https://readdy.ai/api/search-image?query=Kayaking%20adventure%20on%20calm%20river%20waters%2C%20people%20paddling%20kayaks%2C%20scenic%20natural%20surroundings%2C%20beautiful%20summer%20day&width=80&height=80&seq=13&orientation=squarish" alt="Kayaking Adventure" class="w-20 h-20 rounded-lg object-cover">
+<div class="flex-1">
+<h3 class="text-sm font-semibold text-gray-800 mb-1">Kayaking Adventure</h3>
+<div class="flex items-center gap-1 mb-1">
+<div class="rating-stars flex text-[#FFB800] text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-xs text-gray-600">4.3</span>
+</div>
+<p class="text-xs text-gray-500 flex items-center gap-1">
+<i class="ri-map-pin-line"></i>
+<span>2.3 mi away</span>
+</p>
+<p class="text-xs font-medium text-gray-900 mt-1">$40 per person</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Map controls -->
+<div class="absolute bottom-32 right-4 flex flex-col gap-2">
+<button class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-white/100 transition-all">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+<button class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-white/100 transition-all">
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<button class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-white/100 transition-all">
+<i class="ri-compass-3-line text-gray-700"></i>
+</button>
+<button class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-white/100 transition-all">
+<i class="ri-focus-3-line text-gray-700"></i>
+</button>
+<button class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-white/100 transition-all">
+<i class="ri-map-pin-user-line text-gray-700"></i>
+</button>
+</div>
+<!-- Selected Listing Card -->
+<div id="selectedListing" class="fixed left-4 right-4 bottom-4 bg-white rounded-xl shadow-lg transition-transform transform translate-y-full opacity-0">
+<div class="relative">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md">
+<div class="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
+</div>
+<div class="p-4">
+<div class="flex gap-4">
+<img src="" alt="" class="w-24 h-24 rounded-lg object-cover">
+<div class="flex-1">
+<h3 class="text-lg font-semibold text-gray-800 mb-1"></h3>
+<div class="flex items-center gap-2 mb-1">
+<div class="rating-stars flex text-[#FFB800]"></div>
+<span class="text-sm font-medium text-gray-700"></span>
+<span class="text-sm text-gray-500"></span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-map-pin-line text-gray-500"></i>
+</div>
+<p class="text-sm text-gray-500"></p>
+</div>
+</div>
+<div class="flex flex-col items-end justify-between">
+<div class="flex items-center gap-1 text-sm">
+<span class="text-gray-700"></span>
+<span class="text-gray-300"></span>
+</div>
+<button class="bg-primary text-white px-4 py-1.5 text-sm font-medium !rounded-button">Book Now</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute top-1/3 right-1/4 cursor-pointer">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<i class="ri-map-pin-fill"></i>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/2 cursor-pointer">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<i class="ri-map-pin-fill"></i>
+</div>
+</div>
+<div class="absolute bottom-1/4 right-1/3 cursor-pointer">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<i class="ri-map-pin-fill"></i>
+</div>
+</div>
+<div class="absolute top-1/2 left-1/4 cursor-pointer">
+<div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<i class="ri-map-pin-fill"></i>
+</div>
+</div>
+<!-- Map controls -->
+<div class="absolute bottom-4 right-4 flex flex-col gap-2">
+<button class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer">
+<i class="ri-add-line text-gray-700"></i>
+</button>
+<button class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer">
+<i class="ri-subtract-line text-gray-700"></i>
+</button>
+<button class="w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center cursor-pointer">
+<i class="ri-focus-3-line text-gray-700"></i>
+</button>
+</div>
+</div>
+<!-- Map Result Cards -->
+<div class="mt-4 px-4">
+<h3 class="text-lg font-medium text-gray-800 mb-3">Nearby Events</h3>
+<div class="flex overflow-x-auto gap-4 pb-4">
+<!-- Map Result Card 1 -->
+<div class="min-w-[280px] bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Scenic%20hiking%20trail%20in%20Central%20Park%20during%20summer%2C%20people%20enjoying%20outdoor%20activities%2C%20lush%20greenery%2C%20natural%20sunlight%2C%20professional%20photography&width=280&height=150&seq=6&orientation=landscape" alt="Central Park Nature Walk" class="w-full h-32 object-cover object-top">
+</div>
+<div class="p-3">
+<div class="flex justify-between items-start">
+<h3 class="text-base font-semibold text-gray-800">Central Park Nature Walk</h3>
+<div class="flex items-center">
+<div class="rating-stars flex mr-1 text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-xs text-gray-600">4.7</span>
+</div>
+</div>
+<p class="text-xs text-gray-500 mt-1">Central Park, Manhattan</p>
+<div class="flex justify-between items-center mt-2">
+<span class="text-sm font-medium text-gray-900">$25 per person</span>
+<span class="text-xs text-gray-500">0.3 mi</span>
+</div>
+</div>
+</div>
+<!-- Map Result Card 2 -->
+<div class="min-w-[280px] bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Broadway%20theater%20show%20with%20dramatic%20stage%20lighting%2C%20performers%20on%20stage%20in%20costumes%2C%20theater%20audience%20in%20foreground%2C%20professional%20photography&width=280&height=150&seq=7&orientation=landscape" alt="Hamilton on Broadway" class="w-full h-32 object-cover object-top">
+</div>
+<div class="p-3">
+<div class="flex justify-between items-start">
+<h3 class="text-base font-semibold text-gray-800">Hamilton on Broadway</h3>
+<div class="flex items-center">
+<div class="rating-stars flex mr-1 text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-xs text-gray-600">4.9</span>
+</div>
+</div>
+<p class="text-xs text-gray-500 mt-1">Richard Rodgers Theatre, Broadway</p>
+<div class="flex justify-between items-center mt-2">
+<span class="text-sm font-medium text-gray-900">$199 - $499</span>
+<span class="text-xs text-gray-500">0.7 mi</span>
+</div>
+</div>
+</div>
+<!-- Map Result Card 3 -->
+<div class="min-w-[280px] bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer">
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=Rooftop%20party%20in%20New%20York%20City%20with%20Manhattan%20skyline%20view%20at%20sunset%2C%20people%20socializing%20with%20drinks%2C%20string%20lights%20overhead%2C%20urban%20setting%2C%20professional%20photography&width=280&height=150&seq=8&orientation=landscape" alt="Rooftop Summer Party" class="w-full h-32 object-cover object-top">
+</div>
+<div class="p-3">
+<div class="flex justify-between items-start">
+<h3 class="text-base font-semibold text-gray-800">Rooftop Summer Party</h3>
+<div class="flex items-center">
+<div class="rating-stars flex mr-1 text-xs">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-xs text-gray-600">4.2</span>
+</div>
+</div>
+<p class="text-xs text-gray-500 mt-1">230 Fifth Rooftop, Flatiron</p>
+<div class="flex justify-between items-center mt-2">
+<span class="text-sm font-medium text-gray-900">$45 entry</span>
+<span class="text-xs text-gray-500">1.2 mi</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filter Overlay (Hidden by default) -->
+<div id="filterOverlay" class="fixed inset-0 bg-white z-50 hidden">
+<div class="flex flex-col h-full">
+<!-- Filter Header -->
+<div class="px-4 py-4 border-b border-gray-100 flex justify-between items-center">
+<button id="closeFilterBtn" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full">
+<i class="ri-close-line ri-lg"></i>
+</button>
+<h2 class="text-xl font-semibold text-gray-800">Filters</h2>
+<button id="clearAllBtn" class="text-primary text-sm font-medium hover:text-primary/80">Clear All</button>
+</div>
+<!-- Filter Content -->
+<div class="flex-1 overflow-y-auto p-4">
+<!-- Sort Options -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Sort By</h3>
+<div class="space-y-2">
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort1" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary" checked>
+<label for="sort1" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-thumb-up-line"></i>
+<span>Recommended</span>
+<span class="text-xs text-gray-500 ml-auto">Best matches first</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort2" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort2" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-map-pin-line"></i>
+<span>Nearest to Me</span>
+<span class="text-xs text-gray-500 ml-auto">Distance based</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort3" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort3" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-star-line"></i>
+<span>Highest Rated</span>
+<span class="text-xs text-gray-500 ml-auto">5.0 → 1.0</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort4" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort4" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-message-3-line"></i>
+<span>Most Reviewed</span>
+<span class="text-xs text-gray-500 ml-auto">Number of reviews</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort5" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort5" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-fire-line"></i>
+<span>Most Popular</span>
+<span class="text-xs text-gray-500 ml-auto">Trending now</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort6" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort6" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-arrow-up-line"></i>
+<span>Price: Low to High</span>
+<span class="text-xs text-gray-500 ml-auto">$ → $$$</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort7" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort7" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-arrow-down-line"></i>
+<span>Price: High to Low</span>
+<span class="text-xs text-gray-500 ml-auto">$$$ → $</span>
+</label>
+</div>
+<div class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+<input type="radio" id="sort8" name="sort" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="sort8" class="ml-2 text-sm text-gray-700 flex items-center gap-2 flex-1">
+<i class="ri-time-line"></i>
+<span>Date: Soonest First</span>
+<span class="text-xs text-gray-500 ml-auto">Upcoming events</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Categories -->
+<div class="mb-6">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-base font-medium text-gray-800">Categories</h3>
+<button class="text-sm text-primary">Select All</button>
+</div>
+<!-- Activities Section -->
+<div class="mb-4">
+<button class="w-full flex items-center justify-between py-2 text-left" onclick="toggleSection('activities')">
+<span class="text-sm font-medium text-gray-700">Activities</span>
+<i class="ri-arrow-down-s-line transition-transform" id="activities-arrow"></i>
+</button>
+<div id="activities-section" class="grid grid-cols-2 gap-2 mt-2">
+<div class="flex items-center">
+<input type="checkbox" id="activity1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary" checked>
+<label for="activity1" class="ml-2 text-sm text-gray-700">Hiking</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="activity2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="activity2" class="ml-2 text-sm text-gray-700">Biking</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="activity3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="activity3" class="ml-2 text-sm text-gray-700">Water Sports</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="activity4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="activity4" class="ml-2 text-sm text-gray-700">Rock Climbing</label>
+</div>
+</div>
+</div>
+<!-- Attractions Section -->
+<div class="mb-4">
+<button class="w-full flex items-center justify-between py-2 text-left" onclick="toggleSection('attractions')">
+<span class="text-sm font-medium text-gray-700">Attractions</span>
+<i class="ri-arrow-down-s-line transition-transform" id="attractions-arrow"></i>
+</button>
+<div id="attractions-section" class="grid grid-cols-2 gap-2 mt-2">
+<div class="flex items-center">
+<input type="checkbox" id="attraction1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="attraction1" class="ml-2 text-sm text-gray-700">Museums</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="attraction2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="attraction2" class="ml-2 text-sm text-gray-700">Theme Parks</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="attraction3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="attraction3" class="ml-2 text-sm text-gray-700">Historical Sites</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="attraction4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="attraction4" class="ml-2 text-sm text-gray-700">Art Galleries</label>
+</div>
+</div>
+</div>
+<!-- Events Section -->
+<div class="mb-4">
+<button class="w-full flex items-center justify-between py-2 text-left" onclick="toggleSection('events')">
+<span class="text-sm font-medium text-gray-700">Events</span>
+<i class="ri-arrow-down-s-line transition-transform" id="events-arrow"></i>
+</button>
+<div id="events-section" class="grid grid-cols-2 gap-2 mt-2">
+<div class="flex items-center">
+<input type="checkbox" id="event1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="event1" class="ml-2 text-sm text-gray-700">Festivals</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="event2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="event2" class="ml-2 text-sm text-gray-700">Concerts</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="event3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="event3" class="ml-2 text-sm text-gray-700">Theater Shows</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="event4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="event4" class="ml-2 text-sm text-gray-700">Sports Events</label>
+</div>
+</div>
+</div>
+<!-- Dining Section -->
+<div class="mb-4">
+<button class="w-full flex items-center justify-between py-2 text-left" onclick="toggleSection('dining')">
+<span class="text-sm font-medium text-gray-700">Dining</span>
+<i class="ri-arrow-down-s-line transition-transform" id="dining-arrow"></i>
+</button>
+<div id="dining-section" class="grid grid-cols-2 gap-2 mt-2">
+<div class="flex items-center">
+<input type="checkbox" id="dining1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="dining1" class="ml-2 text-sm text-gray-700">Restaurants</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="dining2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="dining2" class="ml-2 text-sm text-gray-700">Cafes</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="dining3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="dining3" class="ml-2 text-sm text-gray-700">Food Tours</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="dining4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="dining4" class="ml-2 text-sm text-gray-700">Bars & Pubs</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Date -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Date</h3>
+<div class="space-y-2">
+<div class="flex items-center">
+<input type="radio" id="date1" name="date" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="date1" class="ml-2 text-sm text-gray-700">Today (June 15)</label>
+</div>
+<div class="flex items-center">
+<input type="radio" id="date2" name="date" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="date2" class="ml-2 text-sm text-gray-700">Tomorrow (June 16)</label>
+</div>
+<div class="flex items-center">
+<input type="radio" id="date3" name="date" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary" checked>
+<label for="date3" class="ml-2 text-sm text-gray-700">This Weekend (June 15-16)</label>
+</div>
+<div class="flex items-center">
+<input type="radio" id="date4" name="date" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="date4" class="ml-2 text-sm text-gray-700">Next Week (June 17-23)</label>
+</div>
+<div class="flex items-center">
+<input type="radio" id="date5" name="date" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary">
+<label for="date5" class="ml-2 text-sm text-gray-700">Custom Date Range</label>
+</div>
+</div>
+</div>
+<!-- Price Range -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Price Range</h3>
+<div class="px-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm text-gray-700">$0</span>
+<span class="text-sm text-gray-700">$500+</span>
+</div>
+<div class="relative mb-6">
+<div class="absolute h-1 bg-gray-200 inset-x-0 top-1/2 -translate-y-1/2 rounded-full"></div>
+<div class="absolute h-1 bg-primary left-[20%] right-[40%] top-1/2 -translate-y-1/2 rounded-full"></div>
+<input type="range" min="0" max="500" value="100" class="absolute w-full h-1 opacity-0 cursor-pointer" id="minPrice">
+<input type="range" min="0" max="500" value="300" class="absolute w-full h-1 opacity-0 cursor-pointer" id="maxPrice">
+<div class="absolute w-4 h-4 bg-white border-2 border-primary rounded-full top-1/2 -translate-y-1/2 left-[20%] cursor-pointer"></div>
+<div class="absolute w-4 h-4 bg-white border-2 border-primary rounded-full top-1/2 -translate-y-1/2 right-[40%] cursor-pointer"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-sm text-gray-700">$</span>
+<input type="number" id="minPriceInput" value="100" class="w-16 text-sm text-gray-700 bg-gray-100 rounded px-2 py-1">
+</div>
+<span class="text-sm text-gray-500">to</span>
+<div class="flex items-center gap-2">
+<span class="text-sm text-gray-700">$</span>
+<input type="number" id="maxPriceInput" value="300" class="w-16 text-sm text-gray-700 bg-gray-100 rounded px-2 py-1">
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-4">
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">Free</button>
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">Under $50</button>
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">$50-$100</button>
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">$100+</button>
+</div>
+</div>
+</div>
+<!-- Location -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Location</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center">
+<input type="checkbox" id="loc1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary" checked>
+<label for="loc1" class="ml-2 text-sm text-gray-700">Manhattan</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="loc2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="loc2" class="ml-2 text-sm text-gray-700">Brooklyn</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="loc3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="loc3" class="ml-2 text-sm text-gray-700">Queens</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="loc4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="loc4" class="ml-2 text-sm text-gray-700">The Bronx</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="loc5" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="loc5" class="ml-2 text-sm text-gray-700">Staten Island</label>
+</div>
+</div>
+</div>
+<!-- Features & Amenities -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Features & Amenities</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center">
+<input type="checkbox" id="feature1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature1" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-wheelchair-line"></i>
+<span>Wheelchair Access</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature2" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-parent-line"></i>
+<span>Kid-friendly</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature3" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-wifi-line"></i>
+<span>Free Wi-Fi</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature4" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-restroom-line"></i>
+<span>Restrooms</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature5" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature5" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-footprint-line"></i>
+<span>Pet-Friendly</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature6" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature6" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-tools-line"></i>
+<span>Equipment Rental</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature7" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature7" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-sun-line"></i>
+<span>Outdoor Seating</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="feature8" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="feature8" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-parking-line"></i>
+<span>Parking</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Booking Options -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Booking Options</h3>
+<div class="space-y-2">
+<div class="flex items-center">
+<input type="checkbox" id="booking1" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="booking1" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-calendar-check-line"></i>
+<span>Book Online</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="booking2" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="booking2" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-close-circle-line"></i>
+<span>Free Cancellation</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="booking3" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="booking3" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-ticket-line"></i>
+<span>Free Entry</span>
+</label>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="booking4" class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary">
+<label for="booking4" class="ml-2 text-sm text-gray-700 flex items-center gap-1">
+<i class="ri-group-line"></i>
+<span>Group Booking</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Time of Day -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Time of Day</h3>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+<i class="ri-sun-line"></i>
+<span class="text-sm text-gray-700">Morning</span>
+</button>
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+<i class="ri-sun-foggy-line"></i>
+<span class="text-sm text-gray-700">Afternoon</span>
+</button>
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+<i class="ri-moon-line"></i>
+<span class="text-sm text-gray-700">Evening</span>
+</button>
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+<i class="ri-moon-foggy-line"></i>
+<span class="text-sm text-gray-700">Night</span>
+</button>
+</div>
+</div>
+<!-- Distance -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Distance</h3>
+<div class="px-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm text-gray-700">0 km</span>
+<span class="text-sm text-gray-700">50+ km</span>
+</div>
+<div class="relative mb-6">
+<div class="absolute h-1 bg-gray-200 inset-x-0 top-1/2 -translate-y-1/2 rounded-full"></div>
+<div class="absolute h-1 bg-primary left-0 right-[60%] top-1/2 -translate-y-1/2 rounded-full"></div>
+<input type="range" min="0" max="50" value="20" class="absolute w-full h-1 opacity-0 cursor-pointer" id="distance">
+<div class="absolute w-4 h-4 bg-white border-2 border-primary rounded-full top-1/2 -translate-y-1/2 right-[60%] cursor-pointer"></div>
+</div>
+<div class="flex items-center justify-between">
+<input type="number" id="distanceInput" value="20" class="w-16 text-sm text-gray-700 bg-gray-100 rounded px-2 py-1">
+<span class="text-sm text-gray-700">km</span>
+</div>
+<div class="flex flex-wrap gap-2 mt-4">
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">1 km</button>
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">5 km</button>
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">10 km</button>
+<button class="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200 text-gray-700">20 km</button>
+</div>
+</div>
+</div>
+<!-- Rating -->
+<div class="mb-6">
+<h3 class="text-base font-medium text-gray-800 mb-3">Rating</h3>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
+<div class="flex items-center gap-2">
+<div class="rating-stars flex text-[#FFB800]">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-sm text-gray-700">5.0</span>
+</div>
+<span class="text-xs text-gray-500">(1,234)</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors">
+<div class="flex items-center gap-2">
+<div class="rating-stars flex text-[#FFB800]">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-sm text-primary">4.0+</span>
+</div>
+<span class="text-xs text-primary">(5,678)</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
+<div class="flex items-center gap-2">
+<div class="rating-stars flex text-[#FFB800]">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-sm text-gray-700">3.0+</span>
+</div>
+<span class="text-xs text-gray-500">(10,234)</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
+<div class="flex items-center gap-2">
+<div class="rating-stars flex text-[#FFB800]">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-line"></i>
+<i class="ri-star-line"></i>
+<i class="ri-star-line"></i>
+</div>
+<span class="text-sm text-gray-700">2.0+</span>
+</div>
+<span class="text-xs text-gray-500">(15,678)</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Filter Action Buttons -->
+<div class="px-4 py-4 border-t border-gray-100">
+<div class="flex flex-col gap-3">
+<button id="applyFilterBtn" class="w-full bg-primary text-white py-3.5 font-medium !rounded-button hover:bg-primary/90 transition-colors flex items-center justify-center">
+<span>Show Results</span>
+<span class="ml-2 bg-white/20 px-2 py-0.5 rounded text-sm">234</span>
+</button>
+<button id="closeFilterBtn2" class="w-full bg-gray-100 text-gray-700 py-3.5 font-medium !rounded-button hover:bg-gray-200 transition-colors">Cancel</button>
+</div>
+</div>
+</div>
+</div>
+<!-- No Results State (Hidden by default) -->
+<div id="noResultsView" class="search-results-container px-4 hidden">
+<div class="flex flex-col items-center justify-center text-center py-12">
+<div class="w-32 h-32 mb-6 flex items-center justify-center text-gray-300">
+<i class="ri-search-line ri-5x"></i>
+</div>
+<h2 class="text-xl font-semibold text-gray-800 mb-2">No Results Found for "<span id="searchQueryText" class="text-primary">Hiking Trails</span>"</h2>
+<p class="text-gray-600 mb-8">Don't worry! Here are some suggestions to help you find what you're looking for:</p>
+<div class="w-full max-w-sm mx-auto space-y-6">
+<!-- Suggestions List -->
+<div class="space-y-4">
+<div class="flex items-start gap-3 text-left">
+<div class="w-8 h-8 flex-shrink-0 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-filter-off-line text-primary"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Try adjusting your filters</p>
+<p class="text-xs text-gray-500 mt-0.5">You have 5 active filters that might be limiting your results</p>
+<button class="mt-2 px-4 py-1.5 text-sm bg-primary/10 text-primary font-medium !rounded-button hover:bg-primary/20">Clear All Filters</button>
+</div>
+</div>
+<div class="flex items-start gap-3 text-left">
+<div class="w-8 h-8 flex-shrink-0 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-map-pin-range-line text-primary"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Expand your search area</p>
+<p class="text-xs text-gray-500 mt-0.5">Currently searching within 5 km of Doha</p>
+<button class="mt-2 px-4 py-1.5 text-sm bg-primary/10 text-primary font-medium !rounded-button hover:bg-primary/20">Search within 10 km</button>
+</div>
+</div>
+<div class="flex items-start gap-3 text-left">
+<div class="w-8 h-8 flex-shrink-0 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-compass-3-line text-primary"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Browse popular categories instead</p>
+<div class="flex flex-wrap gap-2 mt-2">
+<button class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">Outdoor Activities</button>
+<button class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">Family Fun</button>
+<button class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200">Adventure Sports</button>
+</div>
+</div>
+</div>
+<div class="flex items-start gap-3 text-left">
+<div class="w-8 h-8 flex-shrink-0 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-add-circle-line text-primary"></i>
+</div>
+<div>
+<p class="text-sm font-medium text-gray-800">Know a great hiking trail that's missing?</p>
+<button class="mt-2 px-4 py-1.5 text-sm text-gray-700 border border-gray-200 font-medium !rounded-button hover:bg-gray-50">Suggest a Place</button>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-4 border-t border-gray-100">
+<button class="w-full bg-white border border-gray-200 text-gray-700 py-3 font-medium !rounded-button hover:bg-gray-50 mb-3">
+<i class="ri-home-line mr-2"></i>Go to Home Page
+</button>
+<button class="w-full bg-white border border-gray-200 text-gray-700 py-3 font-medium !rounded-button hover:bg-gray-50">
+<i class="ri-customer-service-line mr-2"></i>Contact Support
+</button>
+</div>
+</div>
+</div>
+</div>
+<script id="searchScript">
+document.addEventListener('DOMContentLoaded', function() {
+const searchInput = document.getElementById('searchInput');
+const locationInput = document.getElementById('locationInput');
+const clearSearchBtn = document.getElementById('clearSearch');
+const nearMeBtn = document.getElementById('nearMeBtn');
+const searchQueryText = document.getElementById('searchQueryText');
+// Update search query text in no results view
+if (searchInput && searchQueryText) {
+searchInput.addEventListener('input', function() {
+searchQueryText.textContent = this.value || 'your search';
+});
+}
+const actionButtons = document.querySelectorAll('.result-card button');
+actionButtons.forEach(button => {
+button.addEventListener('click', function(e) {
+e.stopPropagation();
+const icon = this.querySelector('i');
+if (icon.classList.contains('ri-heart-line')) {
+icon.classList.remove('ri-heart-line');
+icon.classList.add('ri-heart-fill', 'text-red-500');
+} else if (icon.classList.contains('ri-heart-fill')) {
+icon.classList.remove('ri-heart-fill', 'text-red-500');
+icon.classList.add('ri-heart-line');
+} else if (icon.classList.contains('ri-phone-line')) {
+window.location.href = 'tel:+1234567890';
+} else if (icon.classList.contains('ri-global-line')) {
+window.open('https://example.com', '_blank');
+} else if (icon.classList.contains('ri-map-pin-line')) {
+window.open('https://maps.google.com', '_blank');
+}
+});
+});
+if (searchInput) {
+searchInput.addEventListener('focus', function() {
+this.parentElement.classList.add('ring-2', 'ring-primary/20');
+});
+searchInput.addEventListener('blur', function() {
+this.parentElement.classList.remove('ring-2', 'ring-primary/20');
+});
+}
+if (locationInput) {
+locationInput.addEventListener('focus', function() {
+this.parentElement.classList.add('ring-2', 'ring-primary/20');
+});
+locationInput.addEventListener('blur', function() {
+this.parentElement.classList.remove('ring-2', 'ring-primary/20');
+});
+}
+if (clearSearchBtn) {
+clearSearchBtn.addEventListener('click', function() {
+if (searchInput) {
+searchInput.value = '';
+searchInput.focus();
+}
+});
+}
+if (nearMeBtn) {
+nearMeBtn.addEventListener('click', function() {
+if (navigator.geolocation && locationInput) {
+nearMeBtn.innerHTML = '<i class="ri-loader-4-line animate-spin"></i>';
+navigator.geolocation.getCurrentPosition(
+function(position) {
+locationInput.value = 'Getting location...';
+setTimeout(() => {
+locationInput.value = 'Near Me';
+nearMeBtn.innerHTML = 'Near Me';
+}, 1500);
+},
+function(error) {
+locationInput.value = 'Location access denied';
+nearMeBtn.innerHTML = 'Near Me';
+}
+);
+}
+});
+}
+});
+</script>
+<script id="viewToggleScript">
+document.addEventListener('DOMContentLoaded', function() {
+const listViewBtn = document.getElementById('listViewBtn');
+const mapViewBtn = document.getElementById('mapViewBtn');
+const listView = document.getElementById('listView');
+const mapView = document.getElementById('mapView');
+const mapContainer = document.querySelector('.map-container');
+let isDragging = false;
+let startX;
+let startY;
+let scrollLeft;
+let scrollTop;
+mapContainer.addEventListener('mousedown', (e) => {
+isDragging = true;
+mapContainer.style.cursor = 'grabbing';
+startX = e.pageX - mapContainer.offsetLeft;
+startY = e.pageY - mapContainer.offsetTop;
+scrollLeft = mapContainer.scrollLeft;
+scrollTop = mapContainer.scrollTop;
+});
+mapContainer.addEventListener('mouseleave', () => {
+isDragging = false;
+mapContainer.style.cursor = 'grab';
+});
+mapContainer.addEventListener('mouseup', () => {
+isDragging = false;
+mapContainer.style.cursor = 'grab';
+});
+mapContainer.addEventListener('mousemove', (e) => {
+if (!isDragging) return;
+e.preventDefault();
+const x = e.pageX - mapContainer.offsetLeft;
+const y = e.pageY - mapContainer.offsetTop;
+const moveX = x - startX;
+const moveY = y - startY;
+mapContainer.scrollLeft = scrollLeft - moveX;
+mapContainer.scrollTop = scrollTop - moveY;
+});
+// Touch events for mobile
+mapContainer.addEventListener('touchstart', (e) => {
+isDragging = true;
+startX = e.touches[0].pageX - mapContainer.offsetLeft;
+startY = e.touches[0].pageY - mapContainer.offsetTop;
+scrollLeft = mapContainer.scrollLeft;
+scrollTop = mapContainer.scrollTop;
+});
+mapContainer.addEventListener('touchend', () => {
+isDragging = false;
+});
+mapContainer.addEventListener('touchmove', (e) => {
+if (!isDragging) return;
+e.preventDefault();
+const x = e.touches[0].pageX - mapContainer.offsetLeft;
+const y = e.touches[0].pageY - mapContainer.offsetTop;
+const moveX = x - startX;
+const moveY = y - startY;
+mapContainer.scrollLeft = scrollLeft - moveX;
+mapContainer.scrollTop = scrollTop - moveY;
+});
+const mapControls = document.querySelectorAll('.map-container .absolute.bottom-32 button');
+// Map control buttons functionality
+mapControls.forEach((button, index) => {
+button.addEventListener('click', function() {
+switch(index) {
+case 0: // Zoom in
+console.log('Zoom in');
+break;
+case 1: // Zoom out
+console.log('Zoom out');
+break;
+case 2: // Compass
+button.classList.toggle('rotate-180');
+console.log('Rotate map');
+break;
+case 3: // Center map
+console.log('Center map');
+break;
+case 4: // My location
+if (navigator.geolocation) {
+button.innerHTML = '<i class="ri-loader-4-line animate-spin text-gray-700"></i>';
+navigator.geolocation.getCurrentPosition(
+function(position) {
+setTimeout(() => {
+button.innerHTML = '<i class="ri-map-pin-user-line text-gray-700"></i>';
+console.log('Location found');
+}, 1000);
+},
+function(error) {
+button.innerHTML = '<i class="ri-map-pin-user-line text-gray-700"></i>';
+console.log('Location error');
+}
+);
+}
+break;
+}
+});
+});
+const selectedListing = document.getElementById('selectedListing');
+const listingData = {
+'1': {
+title: 'Central Park Nature Walk',
+image: 'https://readdy.ai/api/search-image?query=Scenic%20hiking%20trail%20in%20Central%20Park%20during%20summer%2C%20people%20enjoying%20outdoor%20activities%2C%20lush%20greenery%2C%20natural%20sunlight%20filtering%20through%20trees%2C%20professional%20photography&width=96&height=96&seq=9&orientation=squarish',
+rating: '4.7',
+reviews: '543',
+location: 'E 72nd St, Central Park',
+distance: '0.8 mi away',
+price: '$',
+maxPrice: '$$$'
+},
+'2': {
+title: 'Mountain Biking Adventure',
+image: 'https://readdy.ai/api/search-image?query=Scenic%20mountain%20biking%20trail%20in%20a%20park%2C%20cyclists%20riding%20through%20beautiful%20nature%20paths%2C%20action%20photography%2C%20sunny%20day%2C%20professional%20outdoor%20sports%20photography&width=96&height=96&seq=10&orientation=squarish',
+rating: '4.8',
+reviews: '328',
+location: '196-10 Union Tpke, Queens',
+distance: '5.2 mi away',
+price: '$$',
+maxPrice: '$$'
+},
+'3': {
+title: 'Indoor Rock Climbing',
+image: 'https://readdy.ai/api/search-image?query=Rock%20climbing%20wall%20with%20climbers%2C%20indoor%20climbing%20facility%2C%20professional%20sports%20photography%2C%20safety%20equipment%2C%20dynamic%20poses&width=96&height=96&seq=11&orientation=squarish',
+rating: '4.6',
+reviews: '892',
+location: '575 Degraw St, Brooklyn',
+distance: '3.1 mi away',
+price: '$$$',
+maxPrice: '$'
+},
+'4': {
+title: 'MoMA Special Exhibition',
+image: 'https://readdy.ai/api/search-image?query=Art%20gallery%20exhibition%20with%20modern%20artwork%20displayed%20on%20white%20walls%2C%20people%20viewing%20art%2C%20gallery%20lighting%2C%20sophisticated%20atmosphere&width=96&height=96&seq=12&orientation=squarish',
+rating: '4.6',
+reviews: '1,234',
+location: 'Museum of Modern Art, Midtown',
+distance: '1.5 mi away',
+price: '$$',
+maxPrice: '$$'
+},
+'5': {
+title: 'Kayaking Adventure',
+image: 'https://readdy.ai/api/search-image?query=Kayaking%20adventure%20on%20calm%20river%20waters%2C%20people%20paddling%20kayaks%2C%20scenic%20natural%20surroundings%2C%20beautiful%20summer%20day&width=96&height=96&seq=13&orientation=squarish',
+rating: '4.3',
+reviews: '567',
+location: 'Hudson River Park, Manhattan',
+distance: '2.3 mi away',
+price: '$$',
+maxPrice: '$$'
+}
+};
+function updateSelectedListing(id) {
+const data = listingData[id];
+if (!data) return;
+const card = selectedListing;
+card.querySelector('img').src = data.image;
+card.querySelector('img').alt = data.title;
+card.querySelector('h3').textContent = data.title;
+const starsContainer = card.querySelector('.rating-stars');
+starsContainer.innerHTML = '';
+for (let i = 0; i < 5; i++) {
+const star = document.createElement('i');
+star.className = i < Math.floor(data.rating) ? 'ri-star-fill' : (i < data.rating ? 'ri-star-half-fill' : 'ri-star-line');
+starsContainer.appendChild(star);
+}
+card.querySelector('.rating-stars + span').textContent = data.rating;
+card.querySelector('.rating-stars + span + span').textContent = `(${data.reviews} reviews)`;
+card.querySelector('.ri-map-pin-line + p').textContent = `${data.location} • `;
+const distanceSpan = document.createElement('span');
+distanceSpan.className = 'text-primary';
+distanceSpan.textContent = data.distance;
+card.querySelector('.ri-map-pin-line + p').appendChild(distanceSpan);
+const priceContainer = card.querySelector('.text-gray-700');
+priceContainer.textContent = data.price;
+const maxPriceContainer = card.querySelector('.text-gray-300');
+maxPriceContainer.textContent = data.maxPrice;
+card.classList.remove('translate-y-full', 'opacity-0');
+}
+document.querySelectorAll('[data-listing-id]').forEach(pin => {
+pin.addEventListener('click', () => {
+updateSelectedListing(pin.dataset.listingId);
+});
+});
+function setActiveView(isMapView) {
+if (isMapView) {
+listView.classList.add('hidden');
+mapView.classList.remove('hidden');
+listViewBtn.classList.remove('bg-white', 'shadow-sm', 'text-gray-700');
+listViewBtn.classList.add('text-gray-600');
+mapViewBtn.classList.add('bg-white', 'shadow-sm', 'text-gray-700');
+mapViewBtn.classList.remove('text-gray-600');
+document.body.style.overflow = 'hidden';
+} else {
+mapView.classList.add('hidden');
+listView.classList.remove('hidden');
+mapViewBtn.classList.remove('bg-white', 'shadow-sm', 'text-gray-700');
+mapViewBtn.classList.add('text-gray-600');
+listViewBtn.classList.add('bg-white', 'shadow-sm', 'text-gray-700');
+listViewBtn.classList.remove('text-gray-600');
+selectedListing.classList.add('translate-y-full', 'opacity-0');
+document.body.style.overflow = '';
+}
+}
+listViewBtn.addEventListener('click', () => setActiveView(false));
+mapViewBtn.addEventListener('click', () => setActiveView(true));
+let touchStartY = 0;
+let touchEndY = 0;
+selectedListing.addEventListener('touchstart', e => {
+touchStartY = e.touches[0].clientY;
+});
+selectedListing.addEventListener('touchmove', e => {
+touchEndY = e.touches[0].clientY;
+const deltaY = touchEndY - touchStartY;
+if (deltaY > 50) {
+selectedListing.classList.add('translate-y-full', 'opacity-0');
+}
+});
+});
+</script>
+<script id="filterOverlayScript">
+document.addEventListener('DOMContentLoaded', function() {
+const filterButtons = document.querySelectorAll('.ri-filter-3-line, .ri-equalizer-line');
+const quickFilterButtons = document.querySelectorAll('.filter-tag');
+const clearAllBtn = document.getElementById('clearAllBtn');
+const closeFilterBtn2 = document.getElementById('closeFilterBtn2');
+const minPriceInput = document.getElementById('minPriceInput');
+const maxPriceInput = document.getElementById('maxPriceInput');
+const minPriceSlider = document.getElementById('minPrice');
+const maxPriceSlider = document.getElementById('maxPrice');
+const distanceInput = document.getElementById('distanceInput');
+const distanceSlider = document.getElementById('distance');
+if (distanceSlider && distanceInput) {
+function updateDistanceInput() {
+distanceInput.value = distanceSlider.value;
+}
+function updateDistanceSlider() {
+const value = parseInt(distanceInput.value);
+if (!isNaN(value) && value >= 0 && value <= 50) {
+distanceSlider.value = value;
+}
+}
+distanceSlider.addEventListener('input', updateDistanceInput);
+distanceInput.addEventListener('change', updateDistanceSlider);
+}
+function toggleSection(sectionId) {
+const section = document.getElementById(`${sectionId}-section`);
+const arrow = document.getElementById(`${sectionId}-arrow`);
+if (section.style.display === 'none') {
+section.style.display = 'grid';
+arrow.style.transform = 'rotate(0deg)';
+} else {
+section.style.display = 'none';
+arrow.style.transform = 'rotate(-180deg)';
+}
+}
+window.toggleSection = toggleSection;
+if (minPriceSlider && maxPriceSlider) {
+function updatePriceInputs() {
+minPriceInput.value = minPriceSlider.value;
+maxPriceInput.value = maxPriceSlider.value;
+}
+function updatePriceSliders() {
+const min = parseInt(minPriceInput.value);
+const max = parseInt(maxPriceInput.value);
+if (min < max) {
+minPriceSlider.value = min;
+maxPriceSlider.value = max;
+}
+}
+minPriceSlider.addEventListener('input', updatePriceInputs);
+maxPriceSlider.addEventListener('input', updatePriceInputs);
+minPriceInput.addEventListener('change', updatePriceSliders);
+maxPriceInput.addEventListener('change', updatePriceSliders);
+}
+quickFilterButtons.forEach(button => {
+button.addEventListener('click', function() {
+if (!this.classList.contains('bg-primary/10')) {
+this.classList.toggle('bg-primary/10');
+this.classList.toggle('text-primary');
+this.classList.toggle('bg-gray-100');
+}
+});
+});
+if (clearAllBtn) {
+clearAllBtn.addEventListener('click', function() {
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+checkbox.checked = false;
+});
+document.querySelectorAll('input[type="radio"]').forEach(radio => {
+radio.checked = false;
+});
+});
+}
+if (closeFilterBtn2) {
+closeFilterBtn2.addEventListener('click', function() {
+filterOverlay.classList.add('hidden');
+document.body.style.overflow = '';
+});
+}
+const filterOverlay = document.getElementById('filterOverlay');
+const closeFilterBtn = document.getElementById('closeFilterBtn');
+const applyFilterBtn = document.getElementById('applyFilterBtn');
+const sortDropdownBtn = document.getElementById('sortDropdownBtn');
+const sortDropdown = document.getElementById('sortDropdown');
+let isDropdownOpen = false;
+sortDropdownBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+isDropdownOpen = !isDropdownOpen;
+sortDropdown.classList.toggle('hidden', !isDropdownOpen);
+});
+document.addEventListener('click', function(e) {
+if (!sortDropdown.contains(e.target) && !sortDropdownBtn.contains(e.target)) {
+isDropdownOpen = false;
+sortDropdown.classList.add('hidden');
+}
+});
+sortDropdown.querySelectorAll('button').forEach(button => {
+button.addEventListener('click', function() {
+const selectedText = this.querySelector('span').textContent;
+sortDropdownBtn.querySelector('span').textContent = `Sort: ${selectedText}`;
+isDropdownOpen = false;
+sortDropdown.classList.add('hidden');
+sortDropdown.querySelectorAll('button').forEach(btn => {
+btn.classList.remove('text-primary');
+btn.querySelector('i')?.remove();
+});
+this.classList.add('text-primary');
+if (!this.querySelector('i')) {
+this.insertAdjacentHTML('beforeend', '<i class="ri-check-line"></i>');
+}
+});
+});
+filterButtons.forEach(button => {
+button.parentElement.addEventListener('click', function() {
+filterOverlay.classList.remove('hidden');
+document.body.style.overflow = 'hidden';
+});
+});
+closeFilterBtn.addEventListener('click', function() {
+filterOverlay.classList.add('hidden');
+document.body.style.overflow = '';
+});
+applyFilterBtn.addEventListener('click', function() {
+filterOverlay.classList.add('hidden');
+document.body.style.overflow = '';
+// For demo purposes, we could show the "no results" view
+// Uncomment the lines below to see the no results state
+/*
+listView.classList.add('hidden');
+mapView.classList.add('hidden');
+noResultsView.classList.remove('hidden');
+*/
+});
+});
+</script>
+</body>
+</html>
